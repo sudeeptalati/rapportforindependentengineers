@@ -224,25 +224,29 @@ td { 	vertical-align:top;
 <tr><td colspan="4"><h3><i>Product Details</i></h3></td></tr>
 <tr>
 
-			<td width=25%><small><b>Product</b></small>
+			<td width=20%><small><b>Product</b></small>
 			<br>
 			<?php echo $model->product->brand->name; ?>&nbsp;
 			<?php echo $model->product->productType->name; ?>
 			</td >
-			<td width=25%><small><b>Model</b></small>
+			<td width=20%><small><b>Model</b></small>
 			<br>
 			<?php echo $model->product->model_number; ?>
 			</td>
-			<td width=25%><small><b>Serial Number</b></small>
+			<td width=20%><small><b>Serial Number</b></small>
 				<br>
 				<?php echo $model->product->serial_number; ?>
 			</td>
-			<td width=25%><small><b>Product Code</b></small>
+			<td width=20%><small><b>Product Code</b></small>
 				<br>
 				<?php echo $model->product->production_code; ?>
 			</td>
+			<td width=20%><small><b>Colour</b></small>
+				<br>
+				<?php echo $model->product->enr_number; ?>
+			</td>
 		</tr>
-
+		<!--
 		<tr>
 			<td><small><b>Retailer</b></small>
 			<br>
@@ -256,9 +260,10 @@ td { 	vertical-align:top;
 			</td>			
 			<td></td>
 			<td></td>
+			<td></td>
 		</tr>
-		
-		<tr><td colspan="4"><hr></td></tr>
+		-->
+		<tr><td colspan="5"><hr></td></tr>
 </table>		
 		
 	 	
@@ -279,7 +284,8 @@ td { 	vertical-align:top;
 			<td>
 			<small><b>Refrence No#</b></small>
 			<br>
-			<?php echo $model->insurer_reference_number; ?>
+			
+					<?php echo $model->insurer_reference_number; ?>
 			
 			<!--
 			<small><b>Start</b></small>
@@ -303,12 +309,13 @@ td { 	vertical-align:top;
 				 echo $model->getAttributeLabel('notes');
 			?> </b></small>
 			
-			<br>
+			<br><b style="background: yellow;padding: 2px;">
 			<?php 
 			echo $model->notes;
 				 
 					
 			?>
+			</b>
 			
 			
 			<!--
@@ -360,7 +367,8 @@ td { 	vertical-align:top;
 		
 		<tr>
 		<td colspan="4" style="width:30%; vertical-align:top;"><small><b>Issue Reported</b></small>
-			<br><?php echo $model->fault_description?><br><br><br>
+			<br>
+			<?php echo $model->fault_description?><br><br><br>
 		</td>
 		</tr>
 		
@@ -477,7 +485,17 @@ else
 		
 	</tr>
 	<tr>
-		<td><br><hr></td>
+		<td>
+			<?php
+			$allvisits=Enggdiary::model()->findAllByAttributes(array('servicecall_id'=>$model->id));
+			foreach ($allvisits as $v)
+			{
+				echo "<br>".date('d-M-Y',$v->visit_start_date); 
+			}
+			
+			?>
+		<br><hr>
+		</td>
 		<td>
 			<?php 
 			if(!empty($model->job_finished_date))

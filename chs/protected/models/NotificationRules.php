@@ -487,7 +487,7 @@ class NotificationRules extends CActiveRecord
 			//echo "<br>Fault Desc = ".$serviceDetailsModel->fault_description;
 			$fault_desc = $serviceDetailsModel->fault_description;
 			//echo "<br>Customer Name = ".$serviceDetailsModel->customer->fullname;
-			$customer_name = $serviceDetailsModel->customer->fullname;
+			$customer_name = $serviceDetailsModel->customer->title.' '.$serviceDetailsModel->customer->last_name;
 			//echo "<br>Engineer Name = ".$serviceDetailsModel->engineer->fullname;
 			$engineer_name = $serviceDetailsModel->engineer->company.', '.$serviceDetailsModel->engineer->fullname;
 				
@@ -499,8 +499,12 @@ class NotificationRules extends CActiveRecord
 			//echo "<br>Subject = ".$subject;
 				
 			$body = '<br>  The status of your '.$product_brand.' '.$product_type_name.' servicecall with reference no '.$reference_number.' is changed to '.$status."\n".'Engineer: '.$engineer_name.'<br><br>For any queries related to this call, please contact '.$company_email.'. <br><br>Regards,<br>'.$company_name;
-			$smsMessage = 'Dear '.$customer_name.', The status of your '.$product_brand.' '.$product_type_name.' servicecall with reference no '.$reference_number.' is changed to '.$status."\n".'Engineer: '.$engineer_name;
+			//$smsMessage = 'Dear '.$customer_name.', The status of your '.$product_brand.' '.$product_type_name.' servicecall with reference no '.$reference_number.' is changed to '.$status."\n".'Engineer: '.$engineer_name;
 		
+			$smsMessage='Hello '.$customer_name.', The parts for your '.$product_brand.' '.$product_type_name.' are on order and we will contact you to arrange an engineer visit when they arrive.
+				Any queries pls contact info@careysappliancerepairs.co.uk with servicecall reference no. '.$reference_number;
+
+
 			foreach($notificationModel as $data)
 			{
 				$customerNotificationCode =$data->customer_notification_code;

@@ -36,7 +36,11 @@
 				'value'=>'($data->active == 0)?"No":"Yes"',
 				'filter'=>array('1'=>'Yes', '0'=>'No'),
 			),
-	
+
+		array(	'header' => 'Email',
+		
+				'value'=>'$data->contactDetails->email',
+				),
 	
 		//array('name'=>'vat_reg_number', 'filter'=>false),
 		//'created_by_user_id',
@@ -45,6 +49,7 @@
 			  'value'=>'$data->createdByUser->username',
 				'filter'=>false
 				),
+		
 		/*
 		'notes',
 		'inactivated_by_user_id',

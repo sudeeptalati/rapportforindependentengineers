@@ -91,7 +91,7 @@ class Servicecall extends CActiveRecord
 			array('engineer_name, product_serial_number,number_of_visits, customer_town,customer_postcode , recalled_job, activity_log , insurer_reference_number, fault_date, fault_code, engg_diary_id, work_carried_out, job_payment_date, job_finished_date, notes, modified, cancelled, closed, comments, model_number, serial_number, notify_flag, pervious_job_status, work_summary', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('engineer_name,engineer_id, product_serial_number,created_by_user_id, id, customer_town , customer_postcode, customer_name, customer_id, job_status, engineer_name, product_name, service_reference_number, insurer_reference_number, job_status_id, fault_date, fault_code, fault_description, engg_visit_date, work_carried_out, spares_used_status_id, total_cost, vat_on_total, net_cost, job_payment_date, job_finished_date, notes,  created, modified, cancelled, closed, model_number, serial_number', 'safe', 'on'=>'search'),
+			array('contract_name, engineer_name,engineer_id, product_serial_number,created_by_user_id, id, customer_town , customer_postcode, customer_name, customer_id, job_status, engineer_name, product_name, service_reference_number, insurer_reference_number, job_status_id, fault_date, fault_code, fault_description, engg_visit_date, work_carried_out, spares_used_status_id, total_cost, vat_on_total, net_cost, job_payment_date, job_finished_date, notes,  created, modified, cancelled, closed, model_number, serial_number', 'safe', 'on'=>'search'),
 			
 		);
 	}
@@ -169,12 +169,15 @@ class Servicecall extends CActiveRecord
 		
 		//$criteria->order = 'service_reference_number DESC';
 		
-		$criteria->with = array( 'engineer','jobStatus','customer', 'product');
+		$criteria->with = array( 'engineer','jobStatus','customer', 'product', 'contract');
 		//$criteria->together= true;
 		
 		$criteria->compare( 'customer.fullname', $this->customer_name, true );
 		$criteria->compare( 'customer.town', $this->customer_town, true );
 		$criteria->compare( 'customer.postcode', $this->customer_postcode, true );
+		
+		
+		$criteria->compare( 'contract.name', $this->contract_name, true );
 		
 		$criteria->compare( 'jobStatus.name', $this->job_status, true );
 		$criteria->compare( 'engineer.company', $this->engineer_name, true );

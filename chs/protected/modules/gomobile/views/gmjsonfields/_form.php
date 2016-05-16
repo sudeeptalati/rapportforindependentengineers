@@ -77,7 +77,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'active'); ?>
-		<?php echo $form->textField($model,'active'); ?>
+		<?php echo $form->dropDownList($model,'active', array('1'=>'Active', '0'=>'Inactive')); ?>
 		<?php echo $form->error($model,'active'); ?>
 	</div>
 

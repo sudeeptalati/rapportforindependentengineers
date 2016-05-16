@@ -23,7 +23,11 @@ $this->menu=array(
 		'field_relation',
 		'field_label',
 		'sort_order',
-		'active',
+		array(  'name'=>'active',
+				'header'=>'Active',
+				'value'=>'($data->active == 0)?"No":"Yes"',
+				'filter'=>array('1'=>'Yes', '0'=>'No'),
+			),
 		/*
 		'created',
 		*/

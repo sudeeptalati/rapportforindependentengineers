@@ -45,7 +45,7 @@ $('.search-form form').submit(function(){
 		array('name'=>'serial_number','value'=>'$data->product->serial_number'),
 		
 		//'contract_id',
-		//array('name'=>'contract_name','value'=>'$data->contract->name'),
+		array('name'=>'contract_name','value'=>'$data->contract->name'),
 		
 		//'engineer_id',
 		array(

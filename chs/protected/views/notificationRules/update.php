@@ -6,8 +6,6 @@
 
 
 
-<h1>Update Notification Rule: <?php echo $model->jobStatus->name; ?></h1>
-
  
  
 <div id="submenu">   
@@ -18,6 +16,8 @@
 </div>
 
 <br>
+
+<h3>Notification Rule# <?php echo $model->jobStatus->name; ?></h3>
 
 
 <?php echo $this->renderPartial('_form', array('model'=>$model, 'showDialogue'=>'0')); ?>

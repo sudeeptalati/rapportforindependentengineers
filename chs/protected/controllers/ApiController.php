@@ -271,7 +271,7 @@ class ApiController extends RController
 					
 					if($internet_status == 1)
 					{
-						$response = NotificationRules::model()->performNotification($status_id, $service_id);
+						$response = NotificationRules::model()->performNotification($status_id, $service_id, 'daily');
 					}//end of if(check for internet connection). 
 					else 
 					{

@@ -14,6 +14,8 @@
  * @property string $scheduled
  * @property string $executed
  * @property string $finished
+ * @property string $frequency_type
+ *
  */
 class TasksToDo extends CActiveRecord
 {
@@ -42,10 +44,10 @@ class TasksToDo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('task, status, msgbody, subject, send_to, created, scheduled, executed, finished', 'safe'),
+			array('frequency_type, task, status, msgbody, subject, send_to, created, scheduled, executed, finished', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, task, status, msgbody, subject, send_to, created, scheduled, executed, finished', 'safe', 'on'=>'search'),
+			array('frequency_type, id, task, status, msgbody, subject, send_to, created, scheduled, executed, finished', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,6 +78,8 @@ class TasksToDo extends CActiveRecord
 			'scheduled' => 'Scheduled',
 			'executed' => 'Executed',
 			'finished' => 'Finished',
+			'frequency_type' => 'Frequency Type',
+
 		);
 	}
 
@@ -100,6 +104,7 @@ class TasksToDo extends CActiveRecord
 		$criteria->compare('scheduled',$this->scheduled,true);
 		$criteria->compare('executed',$this->executed,true);
 		$criteria->compare('finished',$this->finished,true);
+		$criteria->compare('frequency_type',$this->frequency_type,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

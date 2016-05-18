@@ -29,12 +29,12 @@ class NotificationRules extends CActiveRecord
 	public $warranty_provider_notification;
 	public $created;
 	public $custom_column;
-			
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return NotificationRules the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -55,13 +55,13 @@ class NotificationRules extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('job_status_id', 'required'),
-			array('job_status_id, customer_notification_code, engineer_notification_code, warranty_provider_notification_code', 'numerical', 'integerOnly'=>true),
+			array('email_template, sms_template, frequency, job_status_id', 'required'),
+			array('job_status_id, customer_notification_code, engineer_notification_code, warranty_provider_notification_code', 'numerical', 'integerOnly' => true),
 			array('active, notify_others, created, modified, delete', 'safe'),
-			array('job_status_id','unique','message'=>'{attribute}:{value} already exists!'),
+			array('job_status_id', 'unique', 'message' => '{attribute}:{value} already exists!'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, job_status_id, active, customer_notification_code, engineer_notification_code, warranty_provider_notification_code, notify_others, created, modified, delete', 'safe', 'on'=>'search'),
+			array('email_template, sms_template, frequency, id, job_status_id, active, customer_notification_code, engineer_notification_code, warranty_provider_notification_code, notify_others, created, modified, delete', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -88,17 +88,23 @@ class NotificationRules extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'job_status_id' => 'Job Status',
-			'active' => 'Enabled',
+			'active' => 'Enable this Rule',
 			'customer_notification_code' => 'Customer ',
 			'engineer_notification_code' => 'Engineer ',
 			'warranty_provider_notification_code' => 'Warranty Provider ',
 			'notify_others' => 'Notify Others',
 			'created' => 'Created on',
 			'modified' => 'Last Modified on',
+
 			'delete' => 'Delete',
+
+			'email_template' => 'Email Template',
+			'sms_template' => 'Sms Template',
+			'frequency' => 'Frequency of this Rule',
+
 		);
 	}
-	
+
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -109,108 +115,99 @@ class NotificationRules extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
-		
-		$criteria->with = array('jobStatus');
-		$criteria->compare( 'jobStatus.name', $this->status_changed, true );
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('job_status_id',$this->job_status_id);
-		$criteria->compare('active',$this->active,true);
-		$criteria->compare('customer_notification_code',$this->customer_notification_code);
-		$criteria->compare('engineer_notification_code',$this->engineer_notification_code);
-		$criteria->compare('warranty_provider_notification_code',$this->warranty_provider_notification_code);
-		$criteria->compare('notify_others',$this->notify_others,true);
-		$criteria->compare('created',$this->created,true);
-		$criteria->compare('modified',$this->modified,true);
-		$criteria->compare('delete',$this->delete,true);
+		$criteria->with = array('jobStatus');
+		$criteria->compare('jobStatus.name', $this->status_changed, true);
+
+		$criteria->compare('id', $this->id);
+		$criteria->compare('job_status_id', $this->job_status_id);
+		$criteria->compare('active', $this->active, true);
+		$criteria->compare('customer_notification_code', $this->customer_notification_code);
+		$criteria->compare('engineer_notification_code', $this->engineer_notification_code);
+		$criteria->compare('warranty_provider_notification_code', $this->warranty_provider_notification_code);
+		$criteria->compare('notify_others', $this->notify_others, true);
+		$criteria->compare('created', $this->created, true);
+		$criteria->compare('modified', $this->modified, true);
+		$criteria->compare('delete', $this->delete, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}//end of search.
-	
+
 	protected function beforeSave()
-    {
-    	if(parent::beforeSave())
-        {
-        	//********** Creating new record
-        	if($this->isNewRecord)  
-            {
-        		$this->created=time();
-        		return true;
-            }//END OF IF NEW RECORD.
-            else
-            {
-            	$this->modified=time();
-            	return true;
-            }//END OF ELSE, THIS BIT IS CALLED IN UPDATE.
-            
-        }//end of if(parent())
-    }//end of beforeSave().
-    
-    
-    protected function afterSave()
-    {
-    	
-    }//end of afterSave().
-    
-	
-    public function getNotificationCode($email_status,$sms_status)
+	{
+		if (parent::beforeSave()) {
+			//********** Creating new record
+			if ($this->isNewRecord) {
+				$this->created = time();
+				return true;
+			}//END OF IF NEW RECORD.
+			else {
+				$this->modified = time();
+				return true;
+			}//END OF ELSE, THIS BIT IS CALLED IN UPDATE.
+
+		}//end of if(parent())
+	}//end of beforeSave().
+
+
+	protected function afterSave()
+	{
+
+	}//end of afterSave().
+
+
+	public function getNotificationCode($email_status, $sms_status)
 	{
 		$email_value;
 		$sms_value;
-		/**RETURNING CODE IS (Refer Table) 
-		 * 	0- NONE
-		 * 	1- Email Only
+		/**RETURNING CODE IS (Refer Table)
+		 *    0- NONE
+		 *    1- Email Only
 		 *  2- SMS Only
 		 *  3- Email & SMS
 		 * */
 		//echo "in model method";
 		$emailNotificationCodeModel = NotificationCode::model()->findByAttributes(
-																array(
-																'notify_by'=>'email'
-															));
+			array(
+				'notify_by' => 'email'
+			));
 		//echo "<hr>EMAIL id got from db using findall = ".$emailNotificationCodeModel->id;	
-		$emailNotifyId = $emailNotificationCodeModel->id;														
-		
+		$emailNotifyId = $emailNotificationCodeModel->id;
+
 		$smsNotificationCodeModel = NotificationCode::model()->findByAttributes(
-																array(
-																'notify_by'=>'sms'
-															));
+			array(
+				'notify_by' => 'sms'
+			));
 		//echo "<hr>SMS id got from db using findall = ".$smsNotificationCodeModel->id;
 		$smsNotifyId = $smsNotificationCodeModel->id;
-		
-		if ($email_status==true)
-		{
+
+		if ($email_status == true) {
 			//$email_value=1;	///*You can also write logic here to get email code by findAllByAttribute and sending value as 'email' *//
 			$email_value = $emailNotifyId;
+		} else {
+			$email_value = 0;
 		}
-		else
-		{ 
-			$email_value=0;
-		}
-		
-		if ($sms_status==true)
-		{
+
+		if ($sms_status == true) {
 			//$sms_value=2;	///*You can also write logic here to get email code by findAllByAttribute and sending value as 'sms' *//
 			$sms_value = $smsNotifyId;
+		} else {
+			$sms_value = 0;
 		}
-		else
-		{ 
-			$sms_value=0;
-		}
-		
-		$notification_code=$email_value+$sms_value;
+
+		$notification_code = $email_value + $sms_value;
 		return $notification_code;
 
-					
+
 	}///end of function getNotificationCode($email_status,$sms_status)
-	
+
 	public function getEmailCheckBoxStatus($notification_code)
 	{
-		switch($notification_code) { 
-			
+		switch ($notification_code) {
+
 			case 0://*Since none is value of 0*//
 				return false;
 				break;
@@ -223,15 +220,15 @@ class NotificationRules extends CActiveRecord
 			case 3://*Since Email & SMS is value of 3*//
 				return true;
 				break;
-			
+
 		}//end of switch
 	}//getEmailCheckBoxStatus($notification_code)
-	
-	
+
+
 	public function getSMSCheckBoxStatus($notification_code)
 	{
-		switch($notification_code) { 
-			
+		switch ($notification_code) {
+
 			case 0://*Since none is value of 0*//
 				return false;
 				break;
@@ -244,125 +241,106 @@ class NotificationRules extends CActiveRecord
 			case 3://*Since Email & SMS is value of 3*//
 				return true;
 				break;
-			
+
 		}//end of switch
 	}//getEmailCheckBoxStatus($notification_code)
-	
-	public function notifyByEmailAndSms($receiver_email_address, $telephone, $notificaionCode, $body, $subject, $smsMessage)
+
+	public function notifyByEmailAndSms($receiver_email_address, $telephone, $notificaionCode, $body, $subject, $smsMessage, $frequency_type)
 	{
-		//echo "<br>Receiver email addresss = ".$receiver_email_address;
-		//echo "<br>Telephone no = ".$telephone;
-		//echo "<br>Notification code in model = ".$notificaionCode;
+
 		$response_array = array();
-		switch ($notificaionCode)
-		{
+		switch ($notificaionCode) {
 			case 1:
 				//echo "<br>Send email";
-				
+
 				//************ ADDING TASK TO TASKS TO DO TABLE *******
 				$tasksModel = new TasksToDo();
 				$tasksModel->task = 'email';
 				$tasksModel->status = 'pending';
-				$tasksModel->msgbody =  $body;
-				$tasksModel->subject =  $subject;
+				$tasksModel->msgbody = $body;
+				$tasksModel->subject = $subject;
 				$tasksModel->send_to = $receiver_email_address;
 				$tasksModel->created = time();
-				
+				$tasksModel->frequency_type = $frequency_type;
+
 				$tasksModel->save();
 				//******** END OF ADDING TASK TO TASKS TO DO TABLE *******
-				
-				/*
-				$email_response = NotificationRules::sendEmail($receiver_email_address, $body, $subject);
-				$response_array['sms_response']= 'none';
-				$response_array['email_response']= $email_response;
-				return $response_array;
-				*/
+
+
 				break;
-				
+
 			case 2:
 				//echo "<br>Send SMS";
-				
+
 				//************ ADDING TASK TO TASKS TO DO TABLE *******
 				$tasksModel = new TasksToDo();
 				$tasksModel->task = 'sms';
 				$tasksModel->status = 'pending';
-				$tasksModel->msgbody =  $smsMessage;
+				$tasksModel->msgbody = $smsMessage;
 				$tasksModel->send_to = $telephone;
 				$tasksModel->created = time();
-				
+				$tasksModel->frequency_type = $frequency_type;
+
 				$tasksModel->save();
 				//******** END OF ADDING TASK TO TASKS TO DO TABLE *******
-				
-				/*
-				$sms_response = NotificationRules::sendSMS($telephone, $smsMessage);
-				//echo "<br> sms notification message in model = ".$sms_response;
-				$response_array['sms_response']= $sms_response;
-				$response_array['email_response']= 'none';
-				return $response_array;
-				*/
+
+
 				break;
-				
-				
+
+
 			case 3:
-				echo "<br>Send email and SMS also";
-				
+				///echo "<br>Send email and SMS also";
+
 				//************ ADDING EMAIL TASK TO TASKS TO DO TABLE *******
 				$tasksModel = new TasksToDo();
 				$tasksModel->task = 'email';
 				$tasksModel->status = 'pending';
-				$tasksModel->msgbody =  $body;
-				$tasksModel->subject =  $subject;
+				$tasksModel->msgbody = $body;
+				$tasksModel->subject = $subject;
 				$tasksModel->send_to = $receiver_email_address;
 				$tasksModel->created = time();
-				
+				$tasksModel->frequency_type = $frequency_type;
+
 				$tasksModel->save();
 				//******** END OF ADDING EMAIL TASK TO TASKS TO DO TABLE *******
-				
+
 				//************ ADDING SMS TASK TO TASKS TO DO TABLE *******
 				$tasksModel = new TasksToDo();
 				$tasksModel->task = 'sms';
 				$tasksModel->status = 'pending';
-				$tasksModel->msgbody =  $smsMessage;
+				$tasksModel->msgbody = $smsMessage;
 				$tasksModel->send_to = $telephone;
 				$tasksModel->created = time();
-				
+				$tasksModel->frequency_type = $frequency_type;
+
 				$tasksModel->save();
 				//******** END OF ADDING SMS TASK TO TASKS TO DO TABLE *******
-				
-				
-				/*
-				$sms_response = NotificationRules::sendSMS($telephone, $smsMessage);
-				$email_response = NotificationRules::sendEmail($receiver_email_address, $body, $subject);
-				//echo "<br> sms notification message in model = ".$sms_response;
-				$response_array['sms_response']= $sms_response;
-				//echo "<br>TYPE OF RESPONSE IN MODEL FUNC = ".gettype($sms_response);
-				$response_array['email_response']= $email_response;
-				return $response_array;
-				*/
+
+
+
 				break;
-				
+
 		}//end of switch().
-		
+
 	}//end of sendCustomerEmailAndSms().
-	
-	
+
+
 	public function sendEmail($reciever_email_address, $body, $subject)
 	{
 		$email_response = '';
 		$email_body = $body;
-		
+
 		$setupModel = Setup::model()->findByPk(1);
 		$company_name = $setupModel->company;
-		
-		$reciever_email=$reciever_email_address;
-		$sender_email=$setupModel->email;
-		
-		try 
-		{
+
+		$reciever_email = $reciever_email_address;
+		$sender_email = $setupModel->email;
+
+		try {
 			//****** SENDING CODE FROM PHPMAILER ****************
 			Yii::import('application.vendors.*');
-			require_once ('mailer/class.phpmailer.php');
-				
+			require_once('mailer/class.phpmailer.php');
+
 			$host = Yii::app()->params['smtp_host'];
 			//echo "<br>Host value from main = ".$host;
 			$username = Yii::app()->params['smtp_username'];
@@ -375,11 +353,10 @@ class NotificationRules extends CActiveRecord
 			//echo "<br>SMTP authentication = ".$smtp_auth;
 			$smtp_port = Yii::app()->params['smtp_port'];
 			//echo "<br>SMTP authentication = ".$smtp_auth;
-			
-			
-			
+
+
 			//$sender_email = $username;
-				
+
 			$mail = new PHPMailer();
 
 			$mail->IsSMTP();
@@ -387,243 +364,358 @@ class NotificationRules extends CActiveRecord
 			$mail->Host = $host;  // Specify main and backup server
 			$mail->Username = $username;// SMTP username
 			$mail->Password = $password;// SMTP password
-			$mail->SMTPSecure = $encry;  
-			$mail->Port       = $smtp_port;
+			$mail->SMTPSecure = $encry;
+			$mail->Port = $smtp_port;
 			$from_name = $company_name;
-				
+
 			$mail->From = $sender_email;
 			$mail->FromName = $from_name;
 			$mail->AddAddress($reciever_email);  // Add a recipient
 			$mail->AddReplyTo($sender_email);
-			 
-				
+
+
 			$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
 			//$mail->AddAttachment('/var/tmp/file.tar.gz');         // Add attachments
 			//$mail->AddAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 			$mail->IsHTML(true);                                  // Set email format to HTML
-				
+
 			$mail->Subject = $subject;
 			$mail->Body = $email_body;
 			//$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-			
-			if(!$mail->Send())
-			{
-				echo "<br>Mailer Error: " . $mail->ErrorInfo."<hr>";
-				echo "<br>Mailer Error: " . $mail->ErrorInfo."<hr>";
-				echo "<br> IsSMTP: ".$mail->IsSMTP();
-				echo "<br> SMTPAuth: ".$mail->SMTPAuth; 
-				echo "<br> Host: ".$mail->Host ;  // Specify main and backup server
-				echo "<br>Username :".$mail->Username ;// SMTP username
-				echo "<br>Password :".$mail->Password ;// SMTP password
-				echo "<br>SMTPSecure :".$mail->SMTPSecure ;  
-				echo "<br>SMTP PORT :".$mail->Port ;  
-				
+
+			if (!$mail->Send()) {
+				echo "<br>Mailer Error: " . $mail->ErrorInfo . "<hr>";
+				echo "<br>Mailer Error: " . $mail->ErrorInfo . "<hr>";
+				echo "<br> IsSMTP: " . $mail->IsSMTP();
+				echo "<br> SMTPAuth: " . $mail->SMTPAuth;
+				echo "<br> Host: " . $mail->Host;  // Specify main and backup server
+				echo "<br>Username :" . $mail->Username;// SMTP username
+				echo "<br>Password :" . $mail->Password;// SMTP password
+				echo "<br>SMTPSecure :" . $mail->SMTPSecure;
+				echo "<br>SMTP PORT :" . $mail->Port;
+
 				$email_response = 0;
-			}
-			else
-			{
+			} else {
 				//echo "<br>Mail sent<hr>";
 				$email_response = 1;
 			}
-			
+
 		}//end of try.
-		catch (Exception $e) 
-		{
+		catch (Exception $e) {
 			echo $e->getMessage();
 			$email_response = 0;
 		}
-		
+
 		return $email_response;
-		
+
 	}//end of sendEmail().
-	
+
 	public function sendSMS($mobileNumber, $smsMessage)
 	{
 		//echo "sendSMS func called";
-		$response = Yii::app()->sms->send(array('to'=>$mobileNumber, 'message'=>$smsMessage));
+
+		$smsMessage=strip_tags($smsMessage, '<br>');
+		$response = Yii::app()->sms->send(array('to' => $mobileNumber, 'message' => $smsMessage));
 		//print_r($response);
-		
-		if(isset($response[1]))
-		{
+
+		if (isset($response[1])) {
 			//echo "<br>error mesg = ".$response[1];
 			return $response[1];
-		}
-		else 
+		} else
 			return true;
-		
+
 	}//end of sendSMS().
-	
-	public function performNotification($status_id, $service_id)
+
+
+	public function performNotification($status_id, $service_id, $frequency_type)
 	{
 		$info = '';
-		//echo "<hr>in perform validation function, follwoing data is from this func";
-		//echo "<br>Value of status_id = ".$status_id;
-		//echo "<br>Value of service_id = ".$service_id;
-	
-		$serviceModel = Servicecall::model()->findByPk($service_id);
-		$setupModel = Setup::model()->findByPk(1);
-	
-		$cust_id = $serviceModel->customer_id;
-		$engineer_id = $serviceModel->engineer_id;
-		$contract_id = $serviceModel->product->contract_id;
-		$company_name = $setupModel->company;
-		$company_email = $setupModel->email;
 
-		$product_type_name=$serviceModel->product->productType->name;
-		$product_brand=$serviceModel->product->brand->name;
-		//echo "<br>cust id = ".$cust_id;
-		//echo "<br>engg id = ".$engineer_id;
-		//echo "<br>contract id = ".$contract_id;
-	
-		$notificationModel = NotificationRules::model()->findAllByAttributes(array('job_status_id'=>$status_id, 'active'=>'1'));
-	
-		if(count($notificationModel)!=0)
+		$servicecall = Servicecall::model()->findByPk($service_id);
+		$setup = Setup::model()->findByPk(1);
+
+		$customer_email = $servicecall->customer->email;
+		$customer_mobile = $servicecall->customer->mobile;
+
+		$engineer_email = $servicecall->engineer->contactDetails->email;
+		$engineer_mobile = $servicecall->engineer->contactDetails->mobile;
+
+		$warranty_provider_email = $servicecall->contract->mainContactDetails->email;
+		$warranty_provider_mobile = $servicecall->contract->mainContactDetails->mobile;
+
+
+		$company_name = $setup->company;
+		$company_email = $setup->email;
+		$company_telephone = $setup->telephone;
+
+
+		$service_reference_number = $servicecall->service_reference_number;
+		$customer_name = $servicecall->customer->title . ' ' . $servicecall->customer->last_name;
+
+		$product = $servicecall->product->brand->name . ' ' . $servicecall->product->productType->name;
+		$engineer_name = $servicecall->engineer->company . ', ' . $servicecall->engineer->fullname;
+		$job_status = $servicecall->jobStatus->name;
+		$warranty_provider_name = $servicecall->contract->name;
+
+		if ($servicecall->enggdiary)
 		{
-			//echo "<br>Rule is present";
-			$serviceDetailsModel = Servicecall::model()->findByPk($service_id);
-				
-			//echo "<br>Service reference no = ".$serviceDetailsModel->service_reference_number;
-			$reference_number = $serviceDetailsModel->service_reference_number;
-			//echo "<br>Fault Desc = ".$serviceDetailsModel->fault_description;
-			$fault_desc = $serviceDetailsModel->fault_description;
-			//echo "<br>Customer Name = ".$serviceDetailsModel->customer->fullname;
-			$customer_name = $serviceDetailsModel->customer->title.' '.$serviceDetailsModel->customer->last_name;
-			//echo "<br>Engineer Name = ".$serviceDetailsModel->engineer->fullname;
-			$engineer_name = $serviceDetailsModel->engineer->company.', '.$serviceDetailsModel->engineer->fullname;
-				
-			$jobStatusModel = JobStatus::model()->findByPk($status_id);
-			//echo "<br>Status id from job model = ".$jobStatusModel->name;
-			$status = $jobStatusModel->name;
-				
-			$subject = 'Service call '.$reference_number.' Status changed to '.$status;
-			//echo "<br>Subject = ".$subject;
-				
-			$body = '<br>  The status of your '.$product_brand.' '.$product_type_name.' servicecall with reference no '.$reference_number.' is changed to '.$status."\n".'Engineer: '.$engineer_name.'<br><br>For any queries related to this call, please contact '.$company_email.'. <br><br>Regards,<br>'.$company_name;
-			//$smsMessage = 'Dear '.$customer_name.', The status of your '.$product_brand.' '.$product_type_name.' servicecall with reference no '.$reference_number.' is changed to '.$status."\n".'Engineer: '.$engineer_name;
-		
-			$smsMessage='Hello '.$customer_name.', The parts for your '.$product_brand.' '.$product_type_name.' are on order and we will contact you to arrange an engineer visit when they arrive.
-				Any queries pls contact info@careysappliancerepairs.co.uk with servicecall reference no. '.$reference_number;
+			$visit_start_time = $setup->formatdatewithtime($servicecall->enggdiary->visit_start_date);
+			$visit_end_time = $setup->formatdatewithtime($servicecall->enggdiary->visit_end_date);
+		}else{
+			$visit_start_time = '';
+			$visit_end_time = '';
+		}
+		$variables = array(
+			'{CUSTOMER_NAME}' => $customer_name,
+			'{SERVICE_REF_NO}' => $service_reference_number,
+			'{PRODUCT}' => $product,
+			'{JOB_STATUS}' => $job_status,
+			'{ENGINEER_NAME}' => $engineer_name,
+			'{WARRANTY_PROVIDER}' => $warranty_provider_name,
+			'{VISIT_START_TIME}' => $visit_start_time,
+			'{VISIT_END_TIME}' => $visit_end_time,
+			'{YOUR_COMPANY_NAME}' => $company_name,
+			'{YOUR_COMPANY_EMAIL}' => $company_email,
+			'{YOUR_COMPANY_TELEPHONE}' => $company_telephone,
+			'{\n}' => '<br>'
 
 
-			foreach($notificationModel as $data)
-			{
-				$customerNotificationCode =$data->customer_notification_code;
-				$engineerNotificationCode =$data->engineer_notification_code;
-				$warrantyProviderNotificationCode =$data->warranty_provider_notification_code;
-				$othersNotificationCode =$data->notify_others;
-	
-				if($customerNotificationCode != 0)
-				{
-					$customerModel = Customer::model()->findByPk($cust_id);
-					$receiver_email_address = $customerModel->email;
-					$telephone = $customerModel->mobile;
-					$name = $customerModel->fullname;
-					$customer_body = 'Dear '.$name.','."<br>".$body;
-	
-					$response = NotificationRules::model()->notifyByEmailAndSms($receiver_email_address, $telephone, $customerNotificationCode, $customer_body, $subject, $smsMessage);
-					//$info.= $this->createMessage($response, 'customer');
-					$info .= NotificationRules::model()->createMessage($response, 'customer'); 
-					//echo "<br>INFO returned from func = ".$info;
-					//return $response;
-	
+		);
+
+		$subject = 'The status of service call #' . $service_reference_number . ' has been updated to  ' . $job_status;
+
+
+		$notificationModel = NotificationRules::model()->findAllByAttributes(array('job_status_id' => $status_id, 'active' => '1'));
+
+		if (count($notificationModel) != 0) {
+
+
+			foreach ($notificationModel as $rule_data) {
+
+				$customerNotificationCode = $rule_data->customer_notification_code;
+				$engineerNotificationCode = $rule_data->engineer_notification_code;
+				$warrantyProviderNotificationCode = $rule_data->warranty_provider_notification_code;
+				$othersNotificationCode = $rule_data->notify_others;
+
+				$email_body = $this->replacevariables($rule_data->email_template, $variables);
+				$sms_body = $this->replacevariables($rule_data->sms_template, $variables);
+
+				if ($customerNotificationCode != 0) {
+					$response = NotificationRules::model()->notifyByEmailAndSms($customer_email, $customer_mobile, $customerNotificationCode, $email_body, $subject, $sms_body, $frequency_type);
+					$info .= NotificationRules::model()->createMessage($response, 'customer');
 				}//end of if of CUSTOMER.
-	
-				if($engineerNotificationCode != 0)
-				{
-					$engineerModel = Engineer::model()->findByPk($engineer_id);
-					$receiver_email_address = $engineerModel->contactDetails->email;
-					//echo "<br>Engineer telephone = ".$engineerModel->contactDetails->mobile;
-					$telephone = $engineerModel->contactDetails->mobile;
-					$name = $engineerModel->fullname;
-					$engineer_body = 'Dear '.$name.','."\n".$body;
-	
-					$response = NotificationRules::model()->notifyByEmailAndSms($receiver_email_address, $telephone, $engineerNotificationCode, $engineer_body, $subject, $smsMessage);
+
+				if ($engineerNotificationCode != 0) {
+					$response = NotificationRules::model()->notifyByEmailAndSms($engineer_email, $engineer_mobile, $engineerNotificationCode, $email_body, $subject, $sms_body, $frequency_type);
 					$info .= NotificationRules::model()->createMessage($response, 'engineer');
+
 				}//end of if of ENGINEER.
-					
-				if($warrantyProviderNotificationCode != 0)
-				{
-					$contractModel = Contract::model()->findByPk($contract_id);
-					$receiver_email_address = $contractModel->mainContactDetails->email;
-					//echo "<br>Warranty Provider telephone = ".$contractModel->mainContactDetails->mobile;
-					$telephone = $contractModel->mainContactDetails->mobile;
-					$warranty_body = 'Dear Recepient,'."\n".$body;
-	
-					$response = NotificationRules::model()->notifyByEmailAndSms($receiver_email_address, $telephone, $warrantyProviderNotificationCode, $warranty_body, $subject, $smsMessage);
-					$info .= NotificationRules::model()->createMessage($response, 'warranty provider');
+
+				if ($warrantyProviderNotificationCode != 0) {
+					$response = NotificationRules::model()->notifyByEmailAndSms($warranty_provider_email, $warranty_provider_mobile, $warrantyProviderNotificationCode, $email_body, $subject, $sms_body, $frequency_type);
+					$info .= NotificationRules::model()->createMessage($response, 'warranty');
+
 				}//end of if of WARRANTY PROVIDER.
-					
-				if($othersNotificationCode != 0)
-				{
-					//echo "<hr>INSIDE Others Notification code IF ELSE BLOCK = ".$othersNotificationCode;
-					//echo "<br>Notification rule id = ".$data->id."<hr>";
-					$notificationContactModel = NotificationContact::model()->findAllByAttributes(array('notification_rule_id'=>$data->id));
-					foreach ($notificationContactModel as $contact)
-					{
-						//echo "<br>Others email address = ".$contact->email;
+
+				if ($othersNotificationCode != 0) {
+
+					$notificationContactModel = NotificationContact::model()->findAllByAttributes(array('notification_rule_id' => $rule_data->id));
+					foreach ($notificationContactModel as $contact) {
+
 						$receiver_email_address = $contact->email;
-						//echo "<br>Others telephone = ".$contact->mobile;
 						$telephone = $contact->mobile;
-						//echo "<br>Other name = ".$contact->person_name;
+
 						$name = $contact->person_name;
-						$others_body = 'Dear '.$name.','."\n".$body;
+						$others_body = 'Dear ' . $name . ', Following Email has been sent <hr>' . "<br>" . $email_body;
 						$other_notification_code = $contact->notification_code_id;
-	
-						$response = NotificationRules::model()->notifyByEmailAndSms($receiver_email_address, $telephone, $other_notification_code, $others_body, $subject, $smsMessage);
+
+						$response = NotificationRules::model()->notifyByEmailAndSms($receiver_email_address, $telephone, $other_notification_code, $others_body, $subject, $sms_body,$frequency_type);
 						$info .= NotificationRules::model()->createMessage($response, 'others');
+
 					}//end of inner foreach($contact).
-						
+
 				}//end of if of OTHERS.
-	
-			}//end of foreach($notificationModel).
-			
-				
+
+			}///end of foreach($notificationModel as $data) {
+
+
 		}//end of count($notificationModel).
 		return $info;
 	}//end of performNotification().
-	
+
 	public function createMessage($notifyStatusArray, $notifiedTo)
 	{
-	
-	
+
+
 		/* SMS API RETURNS 1 ON SUCCESFUL SMS SENT, OR RESTURNS EMPTY STRING.
 		 * EMAIL SUCESSFUL SENT RETURNS 1 ELSE RETURNS 0.
 		* */
 		$msg = '';
 		//echo "<br>SMS response in createMesg func = ".$notifyStatusArray['sms_response'];
-	
-		if($notifyStatusArray['sms_response'] == '1')
-		{
+
+		if ($notifyStatusArray['sms_response'] == '1') {
 			//echo "<br>!!!!!!!!!!!!!!!!!!!!!!!!!!.............. sms sent sucessfully ......!!!!!!!!!";
-			$msg .= "<br><span style='background-color:#C9E0ED; color:#555555;   border-radius:10px 10px 10px 10px; '>SMS has been sent to ".$notifiedTo.". </span>";
-		}
-		elseif($notifyStatusArray['sms_response'] != 'none')
-		{
+			$msg .= "<br><span style='background-color:#C9E0ED; color:#555555;   border-radius:10px 10px 10px 10px; '>SMS has been sent to " . $notifiedTo . ". </span>";
+		} elseif ($notifyStatusArray['sms_response'] != 'none') {
 			//echo "<br> SMS NOT SENT PROPERLY................!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-			$msg = $msg."<br><div style='background-color:#CD0000; color:white;   border-radius:10px 10px 10px 10px; '>Please check your sms settings or make sure the mobile number ".$notifiedTo." is valid. &nbsp;&nbsp;&nbsp;Server Response:<i> ".$notifyStatusArray['sms_response'].".</i></div>";
+			$msg = $msg . "<br><div style='background-color:#CD0000; color:white;   border-radius:10px 10px 10px 10px; '>Please check your sms settings or make sure the mobile number " . $notifiedTo . " is valid. &nbsp;&nbsp;&nbsp;Server Response:<i> " . $notifyStatusArray['sms_response'] . ".</i></div>";
 		}//end of if(sms_response)
-	
-		if($notifyStatusArray['email_response'] == 1)
-		{
+
+		if ($notifyStatusArray['email_response'] == 1) {
 			//echo "<br>Email sent sucessfully ......!!!!!!!!!";
-			$msg = $msg."<br><span style='background-color:#C9E0ED; color:#555555;   border-radius:10px 10px 10px 10px; '>Email has been sent to ".$notifiedTo.". </span>";
-		}
-		elseif($notifyStatusArray['sms_response'] != 'none')
-		{
+			$msg = $msg . "<br><span style='background-color:#C9E0ED; color:#555555;   border-radius:10px 10px 10px 10px; '>Email has been sent to " . $notifiedTo . ". </span>";
+		} elseif ($notifyStatusArray['sms_response'] != 'none') {
 			//echo "<br>Error in sending email, check EMAIL settings.";
-			$msg = $msg."<br><span style='background-color:red; color:#CD0000;   border-radius:10px 10px 10px 10px; '>Error in sending email to ".$notifiedTo.", check EMAIL settings.</span>";
+			$msg = $msg . "<br><span style='background-color:red; color:#CD0000;   border-radius:10px 10px 10px 10px; '>Error in sending email to " . $notifiedTo . ", check EMAIL settings.</span>";
 		}
 		//echo "<br> Message returned for ".$notifiedTo." = ".$msg;
-		
+
 		//return $msg;
 		return "";
-		
-	
+
+
 	}//end of createMessage().
-	
-	
- 
-	
-	
-	
+
+
+	public function replacevariables($message, $variables)
+	{
+
+		$searchArray = array_keys($variables);
+		$replaceArray = array_values($variables);
+		return str_replace($searchArray, $replaceArray, $message);
+
+	}///end of	public function replacevariables
+
+
+
+
+
+
+	public function runtheweeklymonthlynotifications()
+	{
+		$system_msg= "<hr>runtherule called";
+		$allrules=NotificationRules::model()->findAllByAttributes(array('active' => '1'));
+
+		foreach ($allrules as $rule)
+		{
+			$rf=json_decode($rule->frequency);
+
+			$system_msg.= "Scheduled date is ".$rf->next_run;
+
+			$today_string=date('d-M-Y');
+			$system_msg.="<br> Today is ".$today_string;
+
+			$today_int=strtotime($today_string);
+			$scheduled_day_int=strtotime($rf->next_run);
+
+			$system_msg.="<br> Today INT ".$today_int;
+			$system_msg.="<br> sched INT ".$scheduled_day_int;
+
+			if ($today_int==$scheduled_day_int && $rf->performed=="false")
+		 	{
+
+				$system_msg.= "Not Performed yet<br>";
+
+				///Run this rule for all the jobs that are in this status
+				$allservicecalls= Servicecall::model()->findAllByAttributes(array('job_status_id' => $rule->job_status_id));
+				foreach ($allservicecalls as $s)
+				{
+					$system_msg.= "<br>I MA IN FREACH---".$s->id;
+					$this->performNotification($rule->job_status_id, $s->id, $rf->frequency );
+				}///end of foreach ($allservicecalls as $s)
+
+				$rf->performed="true";
+				$rf->last_run=date('l, d-M-Y');
+
+			}///end of 	if ($today_string==$scheduled_day_int && $rf->performed=="false")
+			else
+			{
+				///just check that the performed is set to false and next run date is correct
+
+				if ($rf->frequency!="daily") ///we do not want  to run the daily jobs as they are created on the fly
+
+					$rf=$this->setdatafornextrun($rf);
+
+			}
+
+
+			$rule_performed_update=json_encode($rf);
+			$system_msg.= $rule_performed_update;
+			NotificationRules::updateByPk($rule->id, array('frequency'=>$rule_performed_update));
+
+		}///end of 	foreach ($allrules as $rule)
+		echo  $system_msg;
+	}///end of public function runtheweeklymonthlyrule()
+
+
+	public function setdatafornextrun($schedule)
+	{
+
+		if($schedule->frequency=="daily")
+		{
+			$next_date=strtotime($schedule->next_run);
+		}///edn of 		if($schedule->frequency=="weekly")
+
+
+		if($schedule->frequency=="weekly")
+		{
+			$next_date=strtotime('next '.$schedule->day);
+			$schedule->next_run=date('l, d-M-Y',$next_date);
+		}///edn of 		if($schedule->frequency=="weekly")
+
+
+		if($schedule->frequency=="monthly")
+		{
+			///Today's date
+			$td=date('d');
+			$tm=date('n');
+			$ty=date('Y');
+
+
+			if ($td >= $schedule->day)
+			{
+				///next month
+				if ($tm==12)
+				{
+					$tm=1;
+					$ty=$ty+1;
+				}else {
+					$tm = $tm + 1;
+				}
+			}
+
+			$new_date=$schedule->day.'-'.$this->get_month_name($tm).'-'.$ty;
+			$next_date=strtotime($new_date);
+		}///edn of 		if($schedule->frequency=="weekly")
+
+
+		$schedule->next_run=date('l, d-M-Y',$next_date);
+		echo "NEXT RUN ".$schedule->next_run;
+
+		$schedule->performed="false";
+
+		return $schedule;
+	}///end of 	public function setdatafornextrun($schedule)
+
+
+	public function get_month_name($month)
+	{
+		$months = array(
+			1   =>  'January',
+			2   =>  'February',
+			3   =>  'March',
+			4   =>  'April',
+			5   =>  'May',
+			6   =>  'June',
+			7   =>  'July',
+			8   =>  'August',
+			9   =>  'September',
+			10  =>  'October',
+			11  =>  'November',
+			12  =>  'December'
+		);
+
+    return $months[$month];
+}
+
 }//end of class.

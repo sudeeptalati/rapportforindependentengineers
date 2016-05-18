@@ -333,7 +333,7 @@ class Enggdiary extends CActiveRecord
 		if(count($notificationModel)!=0)
 		{
 			//echo "<br>Rule is present";
-			NotificationRules::model()->performNotification($status_id, $service_id);
+			NotificationRules::model()->performNotification($status_id, $service_id,'daily');
 		}//end of if notification.
 		else
 		{
@@ -378,7 +378,7 @@ class Enggdiary extends CActiveRecord
 		if(count($notificationModel)!=0)
 		{
 			//echo "<br>Rule is present";
-			NotificationRules::model()->performNotification($status_id, $service_id);
+			NotificationRules::model()->performNotification($status_id, $service_id, 'daily');
 		}//end of if notification.
 		else
 		{

@@ -327,7 +327,8 @@ class DefaultController extends Controller
 	
 		if ($json_a['expiry_date']==null || $dd_time<$t_time)
 		{
-			$this->redirect(array('default/paidcustomer'));
+			//$this->redirect(array('default/paidcustomer'));
+			$this->render('index');
 		}
 		else
 		{

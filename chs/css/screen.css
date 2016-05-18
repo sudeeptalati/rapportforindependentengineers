@@ -237,3 +237,296 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
 .clearfix:after, .container:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
 .clearfix, .container {display:block;}
 .clear {clear:both;}
+
+
+
+
+.box {
+    background-color: #D0E9F1;
+    border-radius: 10px;
+    padding: 15px;
+
+}
+
+
+.customerdatabox {
+    background-color: #ECF5FB;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 16px;
+}
+
+.customerheadingbox {
+    background-color: #6FACCF;
+    border-radius: 10px;
+    padding: 5px 5px 5px 55px;
+    color: white;
+}
+
+.customerdatacontent {
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 16px;
+}
+
+.address_contact {
+    /*font-size: 14px;
+    font-style: italic;*/
+    margin: 0px 10px 10px 7px;
+}
+
+.datacontenttitle {
+    font-weight: 300;
+    font-style: normal;
+    font-size: 14px;
+    color: black;
+
+}
+
+.recieveddata {
+    color: #E91E63;
+}
+
+.recieveddata input
+{
+    background: azure;
+    color: #ff9c34;
+}
+
+.notes{
+    font-size: 14px;
+    font-style: italic;
+}
+
+
+.chat_table
+{
+    width: 100%;
+
+    margin: 5px 5px 5px 5px;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+#chat_text{
+    overflow: scroll;
+    height: 300px;
+    overflow-x: hidden;
+    margin: 10px;
+
+}
+#chat_window
+{
+    width: 325px;
+    height: 450px;
+    background: whitesmoke;
+    bottom: 0em;
+    right: 2em;
+    position: fixed;
+    padding: 25px;
+    border-radius: 20px;
+}
+
+
+
+#amica_talkbubble {
+    padding: 10px;
+    width: auto;
+    height: auto;
+    background: white;
+    position: relative;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+#amica_talkbubble:before {
+    content:"";
+    position: absolute;
+    right: 98%;
+    top: 1px;
+    width: 0;
+    height: 0;
+    border-top: 13px solid transparent;
+    border-right: 26px solid white;
+    border-bottom: 13px solid transparent;
+}
+
+
+#me_talkbubble {
+    padding: 10px;
+    width: auto;
+    height: auto;
+    background: #CFD8DC;
+    position: relative;
+    -moz-border-radius:    10px;
+    -webkit-border-radius: 10px;
+    border-radius:         10px;
+}
+#me_talkbubble:before {
+    content:"";
+    position: absolute;
+    left: 98%;
+    top: 1px;
+    width: 0;
+    height: 0;
+    border-top: 13px solid transparent;
+    border-left: 26px solid #CFD8DC;
+    border-bottom: 13px solid transparent;
+}
+div.active {
+    background-color: blue;
+}
+
+
+#system_message {
+    background-color: #A2D8B2;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#jobstatus{
+
+    background-color: #00aa00;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+
+}
+
+.emailbox
+{
+    background-color: #F6F6F6;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+
+}
+
+
+
+.notes_comments_table{
+    width:100%;
+    border-collapse:collapse;
+}
+.notes_comments_table td{
+    padding:7px;
+//border:#4e95f4 1px solid;
+}
+/* provide some minimal visual accomodation for IE8 and below */
+.notes_comments_table tr{
+    background: #b8d1f3;
+}
+/*  Define the background color for all the ODD background rows  */
+.notes_comments_table tr:nth-child(odd){
+    background: #F8F8F8;
+}
+/*  Define the background color for all the EVEN background rows  */
+.notes_comments_table tr:nth-child(even){
+    background: #E5F1F4;
+}
+
+.alert {
+    color: #D0583F;
+    background-color: #FFFBFB;
+    border-bottom: 1px solid #F8C9BB;
+    border-right: 1px solid #F8C9BB;
+}
+
+
+.approved {
+    color: #6CB656;
+    background-color: #FAFDF9;
+    border-bottom: 1px solid #C1CEC1;
+    border-right: 1px solid #C1CEC1;
+    padding: 8px 35px 8px 14px;
+}
+.attention {
+    color: #E1B42F;
+    background-color: #FFFDF6;
+    border-bottom: 1px solid #E4E4D5;
+    border-right: 1px solid #E4E4D5;
+    padding: 8px 35px 8px 14px;
+}
+.camera {
+    color: #55A0B4;
+    background-color: #F6FBFB;
+    border-bottom: 1px solid #C9D5D8;
+    border-right: 1px solid #C9D5D8;
+    padding: 8px 35px 8px 14px;
+}
+.cart {
+    color: #559726;
+    background-color: #FCFCFC;
+    border-bottom: 1px solid #D3D3D3;
+    border-right: 1px solid #D3D3D3;
+    padding: 8px 35px 8px 14px;
+}
+.doc {
+    color: #666666;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E5E5E5;
+    border-right: 1px solid #E5E5E5;
+    padding: 8px 35px 8px 14px;
+}
+.download {
+    color: #666666;
+    background-color: #FCFCFC;
+    border-bottom: 1px solid #D3D3D3;
+    border-right: 1px solid #D3D3D3;
+    padding: 8px 35px 8px 14px;
+}
+.media {
+    color: #8D79A9;
+    background-color: #FBF9FD;
+    border-bottom: 1px solid #DBE1E6;
+    border-right: 1px solid #DBE1E6;
+    padding: 8px 35px 8px 14px;
+}
+.note {
+    color: #B76F38;
+    background-color: #FFFAF6;
+    border-bottom: 1px solid #E6DAD2;
+    border-right: 1px solid #E6DAD2;
+    padding: 8px 35px 8px 14px;
+}
+.notice {
+    color: #6187B3;
+    background-color: #FAFCFD;
+    border-bottom: 1px solid #C7CDDA;
+    border-right: 1px solid #C7CDDA;
+    padding: 8px 35px 8px 14px;
+}
+.quote {
+    color: #727272;
+    background-color: #F3F3F3;
+    border-bottom: 1px solid #D4D4D4;
+    border-right: 1px solid #D4D4D4;
+    padding: 8px 35px 8px 14px;
+}
+.success{
+    color: #468847;
+    padding: 15px;
+    border-radius: 3px;
+    border-bottom: 2px solid #a3d48e;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+    background-image: linear-gradient(to bottom,#d0e9c6,#d0e9c6);
+    background-repeat: repeat-x;
+}
+.error{
+    color: #CC0000;
+    padding: 15px;
+    border-radius: 3px;
+    border-bottom: 2px solid #d4888b;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.08);
+    background-image: linear-gradient(to bottom,#e8c0c2,#e8c0c2);
+    background-repeat: repeat-x;
+}
+
+.grid-view tbody:hover {cursor: pointer}
+
+.oddrow{    background: #E5F1F4; }
+.evenrow {   background: #FFF5D1;  }

@@ -169,7 +169,9 @@ vertical-align:top;
 	'id'=>'servicecall-grid',
 	//'dataProvider'=>Servicecall::model()->search(),
 	'dataProvider'=>Servicecall::model()->latestTenResults(),
-	//'filter'=>Servicecall::model(),
+
+
+		//'filter'=>Servicecall::model(),
 	'columns'=>array(
 		array(	'name'=>'service_reference_number',
 				'value'=>'$data->service_reference_number',

@@ -692,7 +692,34 @@ class Setup extends CActiveRecord
 		return $destination_path;
 
 	}//end of getDestinationPath().
-	
-	
-	
+
+
+	public function formatdate($d)
+	{
+		if ($d != '' || $d != NULL)
+			return date('d-M-Y', $d);
+		else
+			return '';
+	}
+
+	public function formatdatewithtime($d)
+	{
+		if ($d != '' || $d != NULL)
+			return date('d-M-Y h:i A', $d);
+		else
+			return '';
+	}
+
+
+	public function printerrors($errors)
+	{
+		$msg="";
+		foreach ($errors as $e)
+		{
+			$msg.="<br>".$e[0];
+		}
+		return $msg;
+	}///end of print errors
+
+
 }//end of class.

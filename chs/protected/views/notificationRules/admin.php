@@ -4,7 +4,7 @@
 
  
 
-<h1>Manage Notifications</h1>
+<h3>Manage Notifications</h3>
 <div id="submenu">   
 	<li> <?php echo CHtml::link('Manage Notification Rules',array('/notificationRules/admin')); ?></li>
 	<li> <?php echo CHtml::link('Create Notification Rules',array('/notificationRules/create')); ?></li>
@@ -16,6 +16,9 @@
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'notification-rules-grid',
 	'dataProvider'=>$model->search(),
+	'selectableRows'=>1,
+	'selectionChanged'=>'function(id){ location.href = "'.$this->createUrl('update').'/id/"+$.fn.yiiGridView.getSelection(id);}',
+
 	'filter'=>$model,
 	'columns'=>array(
 		//'id',
@@ -27,12 +30,7 @@
 					'filter'=>JobStatus::items('JobStatus'),
 			),
 		//'active',
-		array(
-			'name'=>'active',
-			'value'=>'($data->active == 0) ? "No" : "Yes"',
-				'filter'=>array('1'=>'Yes', '0'=>'No'),
-		),
-		//'customer_notification_code',
+			//'customer_notification_code',
 		array('name'=>'customer_notification','value'=>'$data->customerNotificationCode->notify_by', 'filter'=>false),
 		//'engineer_notification_code',
 		array('name'=>'engineer_notification','value'=>'$data->engineerNotificationCode->notify_by', 'filter'=>false),
@@ -44,11 +42,16 @@
 			'value'=>'($data->notify_others == 0) ? "No" : "Yes"',
 			'filter'=>array('1'=>'Yes', '0'=>'No'),
 		),
-		array(            
-            //'name'=>'custom_column',
-            //call the method 'publishedMessageInGrid' from the controller
-            'value'=>array($this,'publishedMessageInGrid'), 
-        ),
+		'frequency',
+
+		array(
+			'name'=>'active',
+			'header'=>'Enabled',
+			'value'=>'($data->active == 0) ? "No" : "Yes"',
+			'filter'=>array('1'=>'Yes', '0'=>'No'),
+		),
+
+
 		/*
 		'created',
 		'modified',
@@ -56,7 +59,7 @@
 		*/
 		array(
 			'class'=>'CButtonColumn',
-			'template'=>'{view}{update}',
+			'template'=>'{update}',
 		),
 	),
 )); ?>

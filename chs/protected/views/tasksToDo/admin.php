@@ -21,15 +21,25 @@ echo CHtml::link($email_sms_image ,array('/tasksToDo/completeTasks'));
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'tasks-to-do-grid',
 	'dataProvider'=>$model->search(),
+	'selectableRows'=>1,
+	'selectionChanged'=>'function(id){ location.href = "'.$this->createUrl('view').'/id/"+$.fn.yiiGridView.getSelection(id);}',
 	'filter'=>$model,
 	'columns'=>array(
 		//'id',
 		'task',
+		array(
+			'name'=>'frequency_type',
+			 'filter'=>array('daily'=>'Daily','weekly'=>'Weekly', 'monthly'=>'Monthly'),
+		),
 		'status',
 		'msgbody',
 		'subject',
 		'send_to',
-		array( 'name'=>'created', 'value'=>'$data->created==null ? "":date("d-M-Y",$data->created)'),
+
+		array( 'name'=>'created', 'value'=>'$data->created=="" ? "":date("d-M-Y",$data->created)'),
+		array( 'name'=>'scheduled', 'value'=>'$data->scheduled=="" ? "":date("d-M-Y",$data->scheduled)'),
+		array( 'name'=>'executed', 'value'=>'$data->executed=="" ? "":date("d-M-Y",$data->executed)'),
+		array( 'name'=>'finished', 'value'=>'$data->finished=="" ? "":date("d-M-Y",$data->finished)'),
 		/*
 		'created',
 		'scheduled',
@@ -38,7 +48,7 @@ echo CHtml::link($email_sms_image ,array('/tasksToDo/completeTasks'));
 		*/
 		array(
 			'class'=>'CButtonColumn',
-			'template'=>'{view}{delete}',
+			'template'=>'{delete}',
 		),
 	),
 )); ?>

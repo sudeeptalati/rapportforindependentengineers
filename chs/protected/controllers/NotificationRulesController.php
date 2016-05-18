@@ -205,26 +205,18 @@ class NotificationRulesController extends RController
 			$model->warranty_provider_notification_code = $warranty_provider_notification_code;
 			
 			/******** END OF MANIPULATION OF WARRANTY PROVIDER NOTIFICATION CODE ************/
-			
-			
 			if($model->save())
 			{
-				//if($model->notify_others == '1')
-				if(isset($_POST['others_person_details']))
-				{
-					$this->redirect(array('update','id'=>$model->id, 'showDialogue'=>$showDialogue));
-					return ;
-				}//end of redirecting to update
-				else 
-				{
-					$this->redirect(array('view','id'=>$model->id));	
-					return ;
-				}//end of redirect to view.
+				$system_msg="<div class='success'>Successfully saved</div>";
+				$this->redirect(array('update','id'=>$model->id, 'system_msg'=>$system_msg));
 			}//end of outer if(save()).
-			
 			else 
 			{
-				$this->renderPartial('displayNotSaved');
+				$errors=Setup::model()->printerrors($model->getErrors());
+				$system_msg="<div class='error'>Could not saved".$errors."</div>";
+
+
+				$this->redirect(array('create','id'=>$model->id, 'system_msg'=>$system_msg));
 			}//END OF ELSE OF SAVE().
 				
 		}//end of if(issset()).
@@ -379,7 +371,8 @@ class NotificationRulesController extends RController
 			
 			if($model->save())
 			{
-				$this->redirect(array('viewRules','id'=>$model->id));
+				$system_msg="<div class='success'>Successfully saved</div>";
+				$this->redirect(array('update','id'=>$model->id, 'system_msg'=>$system_msg));
 			}//end of if (save())
 	
 		}//end of if(isset()).

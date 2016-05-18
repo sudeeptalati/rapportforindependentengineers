@@ -21,8 +21,12 @@ $('.search-form form').submit(function(){
 
 <?php $gridVar = $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'servicecall-grid',
+
 	'dataProvider'=>$model->search(),
- 	'filter'=>$model,
+	'selectableRows'=>1,
+	'selectionChanged'=>'function(id){ location.href = "'.$this->createUrl('update').'/id/"+$.fn.yiiGridView.getSelection(id);}',
+	'filter'=>$model,
+
 	'columns'=>array(
 		//'id',
 		//'service_reference_number',

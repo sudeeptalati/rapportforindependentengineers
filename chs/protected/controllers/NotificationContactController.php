@@ -59,14 +59,14 @@ class NotificationContactController extends RController
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate($id)
+	public function actionCreate()
 	{
 		$model=new NotificationContact;
 		
 		// Uncomment the following line if AJAX validation is needed
 		//$this->performAjaxValidation($model);
 		 
-		$model->notification_rule_id = $id;
+		//$model->notification_rule_id = $id;
 		
 		if(isset($_POST['NotificationContact']))
 		{
@@ -99,7 +99,7 @@ class NotificationContactController extends RController
 			
 			if($model->save())
 			{
-				$this->redirect(array('/notificationRules/update','id'=>$id));
+				$this->redirect(array('/notificationRules/update','id'=>$model->notification_rule_id));
 				
 			}//end of if(save).
 			

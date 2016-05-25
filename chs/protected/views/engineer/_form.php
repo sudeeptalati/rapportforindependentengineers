@@ -137,6 +137,8 @@ $(document).ready(function(){
 			<?php echo $form->textField($contactDetailsModel,'[1]postcode_s',array('size'=>6, 'maxlength'=>5, 'style'=>'width:2.5em')); ?>
 			<?php echo $form->error($contactDetailsModel,'[1]postcode_s'); ?>
 			<?php echo $form->textField($contactDetailsModel,'[1]postcode_e',array('size'=>6,  'maxlength'=>5, 'style'=>'width:2.5em')); ?>
+			<span style="cursor: pointer" class="fa fa-globe fa-2x" aria-hidden="true" href="" onclick="js:getlatlongofpostcode()"  title="Get Latitudes & Longitudes of Postcode"> </span>
+
 			<?php echo $form->error($contactDetailsModel,'[1]postcode_e'); ?>
 		</td>
 		<td>
@@ -145,7 +147,24 @@ $(document).ready(function(){
 			<?php echo $form->error($contactDetailsModel,'[1]country'); ?>
 		</td>
 	</tr>
-	<tr>
+
+		<tr>
+
+
+ 			<td>
+				<?php echo $form->labelEx($contactDetailsModel,'[1]latitudes'); ?>
+				<?php echo $form->textField($contactDetailsModel,'[1]latitudes',array('rows'=>6, 'cols'=>50)); ?>
+				<?php echo $form->error($contactDetailsModel,'[1]latitudes'); ?>
+			</td>
+			<td>
+				<?php echo $form->labelEx($contactDetailsModel,'[1]longitudes'); ?>
+				<?php echo $form->textField($contactDetailsModel,'[1]longitudes',array('rows'=>6, 'cols'=>50)); ?>
+				<?php echo $form->error($contactDetailsModel,'[1]longitudes'); ?>
+			</td>
+		</tr>
+
+
+		<tr>
 		<td>
 			<?php echo $form->labelEx($contactDetailsModel,'[1]telephone'); ?>
 			<?php echo $form->textField($contactDetailsModel,'[1]telephone',array('rows'=>6, 'cols'=>50)); ?>
@@ -162,8 +181,11 @@ $(document).ready(function(){
 			<?php echo $form->error($contactDetailsModel,'[1]fax'); ?>
 		</td>
 	</tr>
-	
-	<tr>
+
+
+
+		<tr>
+
 		<td>
 			<?php echo $form->labelEx($contactDetailsModel,'[1]email'); ?>
 			<?php echo $form->textField($contactDetailsModel,'[1]email',array('rows'=>6, 'cols'=>50)); ?>
@@ -312,3 +334,39 @@ $(document).ready(function(){
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<script>
+
+	function getlatlongofpostcode()
+	{
+		pcode_s= $('#ContactDetails_1_postcode_s').val();
+		pcode_e= $('#ContactDetails_1_postcode_e').val();
+
+		p_code = pcode_s+""+pcode_e;
+		console.log("http://maps.googleapis.com/maps/api/geocode/json?address=santa+cruz&components=postal_code:"+p_code+"&sensor=false");
+
+		$.ajax({
+			url : "http://maps.googleapis.com/maps/api/geocode/json?address=santa+cruz&components=postal_code:"+p_code+"&sensor=false",
+			method: "POST",
+			success:function(data){
+
+				if (data.status=="OK")
+				{
+					latitude = data.results[0].geometry.location.lat;
+					longitude= data.results[0].geometry.location.lng;
+					//alert("Lat = "+latitude+"- Long = "+longitude);
+					$('#ContactDetails_1_latitudes').val(latitude);
+					$('#ContactDetails_1_longitudes').val(longitude);
+				}
+				else
+					alert("Error in finding co-ordinates. Please check your postcode");
+
+			}
+
+		});
+
+
+
+	}////end of getlatlongofpostcode
+
+</script>

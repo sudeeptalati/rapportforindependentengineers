@@ -6,6 +6,14 @@ $engineer = Engineer::model()->findByPk($engineer_id);
 $enginner_name=$engineer->first_name; 
 $selected_date='';
 
+$engineer_address_latitudes=$engineer->contactDetails->latitudes;
+$engineer_address_longitudes=$engineer->contactDetails->longitudes;
+
+$engineer_address_array=array();
+$engineer_address_array['latitude']=$engineer_address_latitudes;
+$engineer_address_array['longitude']=$engineer_address_longitudes;
+
+
 $customer_address=array();
 $i=1;
 foreach ($route_map_results as $r){
@@ -71,6 +79,8 @@ foreach ($route_map_results as $r){
 //print_r($customer_address);
 
 $customer_address_js_array = json_encode($customer_address);
+$engg_address_js_array = json_encode($engineer_address_array);
+
 //echo "var javascript_array = ". $customer_address_js_array . ";\n";
  
 ?>
@@ -141,7 +151,17 @@ ul {
 	//multidimesion array
 	var todayslocations= new Array();
 	var addresses = <?php echo $customer_address_js_array; ?>;
-		
+
+	var engg_address=<?php echo $engg_address_js_array ?>;
+
+
+	if(engg_address.latitude==null)
+		alert("Co-ordinates of Engineer's address cannot ne found. Please update the latitudes and longitudes field of engineer's postcode");
+
+
+	console.log(engg_address.latitude);
+
+
 	var center = new google.maps.LatLng(54.93022, -4.030);
 	var map = new google.maps.Map(document.getElementById('map'), {
 					  zoom: 6,
@@ -154,8 +174,10 @@ ul {
 	infoWnd = new google.maps.InfoWindow();
 
 	var lastindex=addresses.length-1;
- 	var home_lat_lng=new google.maps.LatLng(52.0555507,1.1238777 );
- 	var firstlatlng = new google.maps.LatLng(addresses[0][1],addresses[0][2] );
+
+	var home_lat_lng=new google.maps.LatLng(engg_address.latitude,engg_address.longitude );
+
+	var firstlatlng = new google.maps.LatLng(addresses[0][1],addresses[0][2] );
 	var lastlatlng = new google.maps.LatLng(addresses[lastindex][1],addresses[lastindex][2] );
 	createlinebetweentwopostcodes(map, home_lat_lng , firstlatlng);
 	createlinebetweentwopostcodes(map, home_lat_lng , lastlatlng);

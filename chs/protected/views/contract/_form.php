@@ -220,7 +220,9 @@ $('.technical-form').toggle();
 			<?php echo $form->error($contactDetailsModel,'postcode_s'); ?>
 			<?php echo $form->textField($contactDetailsModel,'postcode_e',array('size'=>3,'maxlength'=>5,'style'=>'width:2.5em' )); ?>
 			<?php echo $form->error($contactDetailsModel,'postcode_e'); ?>
-		
+			<span style="cursor: pointer" class="fa fa-globe fa-2x" aria-hidden="true" href="" onclick="js:getlatlongofpostcode()"  title="Get Latitudes & Longitudes of Postcode"> </span>
+
+
 		</td>
 		<td>
 			<?php echo $form->labelEx($contactDetailsModel,'country'); ?>
@@ -228,7 +230,25 @@ $('.technical-form').toggle();
 			<?php echo $form->error($contactDetailsModel,'country'); ?>
 		</td>
 	</tr>
-	<tr>
+
+		<tr>
+
+
+			<td>
+				<?php echo $form->labelEx($contactDetailsModel,'latitudes'); ?>
+				<?php echo $form->textField($contactDetailsModel,'latitudes',array('rows'=>6, 'cols'=>50)); ?>
+				<?php echo $form->error($contactDetailsModel,'latitudes'); ?>
+			</td>
+			<td>
+				<?php echo $form->labelEx($contactDetailsModel,'longitudes'); ?>
+				<?php echo $form->textField($contactDetailsModel,'longitudes',array('rows'=>6, 'cols'=>50)); ?>
+				<?php echo $form->error($contactDetailsModel,'longitudes'); ?>
+			</td>
+		</tr>
+
+
+
+		<tr>
 		<td>
 			<?php 
 			if($display_na == 1)
@@ -347,3 +367,40 @@ $('.technical-form').toggle();
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+
+<script>
+
+	function getlatlongofpostcode()
+	{
+		pcode_s= $('#ContactDetails_postcode_s').val();
+		pcode_e= $('#ContactDetails_postcode_e').val();
+
+		p_code = pcode_s+""+pcode_e;
+		console.log("http://maps.googleapis.com/maps/api/geocode/json?address=santa+cruz&components=postal_code:"+p_code+"&sensor=false");
+
+		$.ajax({
+			url : "http://maps.googleapis.com/maps/api/geocode/json?address=santa+cruz&components=postal_code:"+p_code+"&sensor=false",
+			method: "POST",
+			success:function(data){
+
+				if (data.status=="OK")
+				{
+					latitude = data.results[0].geometry.location.lat;
+					longitude= data.results[0].geometry.location.lng;
+					//alert("Lat = "+latitude+"- Long = "+longitude);
+					$('#ContactDetails_latitudes').val(latitude);
+					$('#ContactDetails_longitudes').val(longitude);
+				}
+				else
+					alert("Error in finding co-ordinates. Please check your postcode");
+
+			}
+
+		});
+
+
+
+	}////end of getlatlongofpostcode
+
+</script>

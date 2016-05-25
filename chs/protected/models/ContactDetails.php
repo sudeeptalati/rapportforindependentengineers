@@ -60,7 +60,7 @@ class ContactDetails extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('address_line_1, town,  telephone, email,  postcode_s, postcode_e', 'required'),
+			array('address_line_1, town,  telephone, email,  postcode_s, postcode_e,latitudes, longitudes', 'required'),
 			array('address_line_2, address_line_3, country, latitudes, longitudes, mobile, fax, website', 'safe'),
 			array('email','email'),
 			// The following rule is used by search().

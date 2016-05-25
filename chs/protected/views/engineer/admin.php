@@ -43,23 +43,25 @@
 				),
 	
 		//array('name'=>'vat_reg_number', 'filter'=>false),
-		//'created_by_user_id',
-		array(
-			  'name'=>'user',
-			  'value'=>'$data->createdByUser->username',
-				'filter'=>false
-				),
-		
-		/*
-		'notes',
-		'inactivated_by_user_id',
-		'inactivated_on',
-		'contact_details_id',
-		'delivery_contact_details_id',
 		'created_by_user_id',
-		'created',
-		'modified',
-		*/
+
+
+        array(
+	          'name'=>'created_by_user_id',
+    	      'value'=>'$data->createdByUser->username',
+        	  'filter'=>false
+            ),
+
+	/*
+    'notes',
+    'inactivated_by_user_id',
+    'inactivated_on',
+    'contact_details_id',
+    'delivery_contact_details_id',
+    'created_by_user_id',
+    'created',
+    'modified',
+    */
 		array(
 			'class'=>'CButtonColumn',
 			'template'=>'{view}{update}',

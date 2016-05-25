@@ -1,3 +1,8 @@
+<?php
+$this->layout="column1";
+?>
+
+
 <div class="form">
 
 <?php 
@@ -197,7 +202,7 @@ function draw_calendar($month,$year,$engg_id){
 				
 			$day_content.="<tr><td>";
 			$day_content.="<a href='".$link."'>";
-			$day_content.="".$data->servicecall->customer->last_name."</td><td>".$data->servicecall->customer->postcode_s.$data->servicecall->customer->postcode_e."<span style='color:#5BA0C9; font-size:10px;'><b>(".$data->slots.")</b></span><br>"; ;
+			$day_content.="".$data->servicecall->customer->last_name."<br><span style='color:#000000; font-size:10px;'>".$data->servicecall->customer->postcode."</span><br>"; ;
 			$day_content.="</a>";
 			$day_content.="</td></tr>";
 			 

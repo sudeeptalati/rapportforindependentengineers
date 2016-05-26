@@ -218,11 +218,12 @@ class Servicecall extends CActiveRecord
 			'criteria'=>$criteria,
 			//'pagination'=>false,
 			'sort'=>array(
-							'defaultOrder'=>'service_reference_number DESC',
-							),
+				'defaultOrder'=>'service_reference_number DESC',
+			),
 		));
-		
-		
+
+
+
 	}//end of search().
 	
 	protected function beforeSave()

@@ -5,7 +5,12 @@ class SiteController extends RController
 	/**
 	 * Declares class-based actions.
 	 */
-
+	public function filters()
+	{
+		return array(
+			'rights', // perform access control for CRUD operations
+		);
+	}
 
 	public function actions()
 	{
@@ -144,4 +149,12 @@ class SiteController extends RController
 		*/
 
 	}//end of function backup
+
+	public function actionTest()
+	{
+		echo "I am called";
+		$this->render('test');
+
+	}
+
 }

@@ -33,14 +33,43 @@ $today = date('d-m-Y');
 				<?php echo $current_customer_postcode; ?>
 				</td>
 			</tr>
-			<tr>
-				<td>
-					<b>Engineer:</b> 
-				</td>
-				<td>
-					<?php echo $engineer_name; ?>
-				</td>
-			</tr>
+            <tr>
+                <td>
+                    <b>Engineer:</b>
+                </td>
+                <td>
+                    <?php echo $engineer_name; ?>
+                </td>
+            </tr>
+            <tr><td colspan="2"><hr></td> </tr>
+            <tr>
+                <td>
+                    <b>Additional Notes in Diary:</b>
+                </td>
+                <td>
+
+                    <?php echo CHtml::dropDownList('timeofcall', '',
+                        array(	'Normal Call' => 'Normal Call',
+                            'Morning Call' => 'Morning Call',
+                            'Evening Call' => 'Evening Call',
+                            'First Call' => 'First Call',
+                            'Last Call' => 'Last Call',
+                            'Special Call' => 'Special Call',
+
+                        )
+                    );
+
+
+
+                    ?>
+                    <br>
+                    <?php echo CHtml::textArea('appointment_notes','',array('placeholder'=>'Additional Notes for call',
+                            'style'=>'width:250px;height:100px;'
+
+                        )
+                    ); ?>
+                </td>
+            </tr>
 		</table>
 		
 	</div>
@@ -61,11 +90,53 @@ $today = date('d-m-Y');
 				<td><b>Maximum Number of Servicecalls per day</b></td>
 				<td><?php echo $totalnoofcallsperday; ?> servicecalls</td>
 			</tr>
+            <tr>
+                <td>
+                    <div class="success" id="route_planning_suggestion"></div>
+                </td>
+            </tr>
 		</table>
 			
 	</div>
 </div>
 <br>
+
+
+
+<style>
+
+
+    #map-canvas {
+        height: 25%;
+        width: 25%;
+    }
+    #content-pane {
+        float:right;
+        width:100%;
+        padding-left: 2%;
+    }
+    #outputDiv {
+        font-size: 16px;
+    }
+</style>
+<div id="content-pane">
+
+
+        <br>
+        <div class="note"  id='systemmessage'>
+            <div id='loading' style='display:none'><img src="images/loading.gif" ></div>
+                Please wait, the system is calculating the nearest suitable day</div>
+    <div id="inputs">
+        <p><button type="button" onclick="callme();">Show me Available Days</button></p>
+    </div>
+    <div class="notice" id="outputDiv"></div>
+</div>
+<div id="map-canvas"></div>
+
+
+
+
+<hr>
 <table>
     <tr>
         <?php
@@ -73,24 +144,66 @@ $today = date('d-m-Y');
         $considered_dates = array();
         $selectday_row_dates = array();
 
+
+        ////N	ISO-8601 numeric representation of the day of the week (added in PHP 5.1.0)
+        //1 (for Monday) through 7 (for Sunday)
+        $time=time();
+        $todaysweekday=date('N',$time);
+
+        $weekdaystartday=$time - (86400 * $todaysweekday)+86400;
+
+        $forloopdate_time=$weekdaystartday;
+
+        for ($i=1;$i<=$todaysweekday;$i++)
+        {
+
+            $forloopdate_string = date("d-M-Y l", $forloopdate_time);
+
+            echo '<td  style="vertical-align:top; border: 1px solid black;">';
+            echo '<div style="height:50px;" class="quote"><b>'.$forloopdate_string . '</b></div>';
+
+            if ($i==$todaysweekday)
+            {
+                echo '<div style="height:260px;" class="alert" "><b>TODAY</b></div>';
+
+            }else
+            {
+                echo '<div style="height:260px;" class="notice"><b>PAST DAYS</b></div>';
+            }
+            echo '</td>';
+
+
+            $forloopdate_time=$forloopdate_time+86400;
+        }
+
+
         for ($i = 1; $i <= $no_next_days; $i++) {
-            $forloopdate_time = time() + (86400 * $i);
+
+            $forloopdate_time = $time + (86400 * $i);
             $forloopdate_string = date("d-M-Y l", $forloopdate_time);
             $forloop_day = date("d", $forloopdate_time);
             $forloop_month = date("m", $forloopdate_time);
             $forloop_year = date("Y", $forloopdate_time);
             $forloop_weekday = date("N", $forloopdate_time);
 
-            array_push($selectday_row_dates, date("j-n-Y", $forloopdate_time));
+
+            $td_id=date("j-n-Y", $forloopdate_time);
+            //array_push($selectday_row_dates, date("j-n-Y", $forloopdate_time));
 
 
+            if ($forloop_weekday==1)
+            {
+                echo "</tr><tr>";
 
-            echo '<td style="vertical-align:top; border: 1px solid black;">';
-            echo '<div style="height:50px; background:#EFEFEF"><b>' . $forloopdate_string . '</b></div>';
+            }
+
+
+            echo '<td id="'.$td_id.'" style="vertical-align:top; border: 1px solid black;">';
+            echo '<div style="height:50px;" class="quote"><b>'.$forloopdate_string . '</b></div>';
             //echo '<div style="height:10px; background:#9AFD95"></div>';
-
             if (in_array($forloop_weekday, $workingdaysofweekarray)) {
                 //echo '<br>	<b>NOT HOLIDAY</b>';
+                echo "<div class='approved''>";
                 $forloop_start_date_time = mktime(0, 0, 0, $forloop_month, $forloop_day, $forloop_year); ////hours,minutes,seconds,month,day,year
                 $forloop_end_date_time = mktime(23, 59, 59, $forloop_month, $forloop_day, $forloop_year); ////hours,minutes,seconds,month,day,year
 
@@ -108,7 +221,7 @@ $today = date('d-m-Y');
                     $no_next_days = $no_next_days + 1;
                 } else {
                     $customer_postcodes = array();
-                    echo '<br><div style="height:260px; background: #FFFFFF; ">';
+                    echo '<br><div style="height:260px; ">';
                     foreach ($data as $d) {
                         $diary_customer_postcode = $d->servicecall->customer->postcode;
                         $diary_customer_postcode = strtoupper($diary_customer_postcode);
@@ -123,12 +236,16 @@ $today = date('d-m-Y');
                     //echo '<hr>'.date("j-n-Y", $forloopdate_time);
                     //$days_postcodes_array[$forloopdate_string]=$customer_postcodes;
                 }//end of else if (count($data)>=$totalnoofcallsperday)
+
+                echo '</div>';///end of  echo "<div class='approved''>";
+
             }///end of if in_array
             else {
 
-                echo '<br><div style="height:260px; background: #EFEFEF; "><b>HOLIDAY</b></div>';
+                echo '<div style="height:260px;" class="notice"><b>HOLIDAY</b></div>';
                 $no_next_days = $no_next_days + 1;
             }///end of else of in_array
+
 
             echo '</td>';
         }//end of days forloop_end_date_time
@@ -140,6 +257,7 @@ $today = date('d-m-Y');
         <?php
 //print_r($selectday_row_dates);
 
+        /*
         for ($i = 0; $i < count($selectday_row_dates); $i++) {
 
             echo '<td id=' . $selectday_row_dates[$i] . ' style="vertical-align:top; border: 1px solid black;">';
@@ -147,6 +265,8 @@ $today = date('d-m-Y');
             //echo $selectday_row_dates[$i];
             echo '</td>';
         }
+        */
+
         ?>
     </tr>
 
@@ -165,6 +285,8 @@ $today = date('d-m-Y');
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 
 <script>
+
+
 
 
     var map;
@@ -469,17 +591,36 @@ $today = date('d-m-Y');
 			switch (p)
 			{
 				case 0:
-						document.getElementById(elementid).onclick = selectthefirstavailableday;
-						document.getElementById('outputDiv').innerHTML += '<br> The first  Available Day for Booking is DAY <b>' + availabledatesinddmmyyyy[0] + '</b>	';
-						break;
-				case 1:
-						document.getElementById(elementid).onclick = selectthesecondavailableday;
-						document.getElementById('outputDiv').innerHTML += '<br> The Second Available Day for Booking is DAY <b>' + availabledatesinddmmyyyy[1] + '</b>	';
-						break;
-				case 2:
-						document.getElementById(elementid).onclick = selectthethirdavailableday;
-						document.getElementById('outputDiv').innerHTML += '<br> The Third  Available Day for Booking is DAY <b>' + availabledatesinddmmyyyy[2] + '</b>	';
-						break;
+        			document.getElementById(elementid).onclick = selectthefirstavailableday;
+                    document.getElementById('route_planning_suggestion').innerHTML += 'The 1st Available Day for Booking is  <b>' + availabledatesinddmmyyyy[0] + '</b>	';
+                    firststdaybtn=createabtn();
+                    firststdaybtn.name="firststdaybtn";
+                    firststdaybtn.id="firststdaybtn";
+                    document.getElementById('route_planning_suggestion').appendChild(firststdaybtn);
+                    $("#firststdaybtn").attr("onclick", "selectthefirstavailableday()");
+                    break;
+
+                case 1:
+					document.getElementById(elementid).onclick = selectthesecondavailableday;
+					document.getElementById('route_planning_suggestion').innerHTML += '<br> The 2nd Available Day for Booking is <b>' + availabledatesinddmmyyyy[1] + '</b>	';
+                    seconddaybtn=createabtn();
+                    seconddaybtn.name="seconddaybtn";
+                    seconddaybtn.id="seconddaybtn";
+                    document.getElementById('route_planning_suggestion').appendChild(seconddaybtn);
+                    $("#seconddaybtn").attr("onclick", "selectthesecondavailableday()");
+					break;
+
+                case 2:
+					document.getElementById(elementid).onclick = selectthethirdavailableday;
+					document.getElementById('route_planning_suggestion').innerHTML += '<br> The 3rd Available Day for Booking is <b>' + availabledatesinddmmyyyy[2] + '</b>';
+                    thirddaybtn=createabtn();
+                    thirddaybtn.name="thirddaybtn";
+                    thirddaybtn.id="thirddaybtn";
+                    document.getElementById('route_planning_suggestion').appendChild(thirddaybtn);
+                    $("#thirddaybtn").attr("onclick", "selectthethirdavailableday()");
+
+
+                    break;
 						
 				
 			}//end of switch
@@ -487,6 +628,16 @@ $today = date('d-m-Y');
 			
 		}//for 
 	}
+
+
+    function createabtn()
+    {
+        var btn = document.createElement("input");
+        btn.type = "button";
+        btn.value = "Book";
+        btn.style = "margin:5px";
+        return btn;
+    }
 
 
     function createpreferecncebutton(pref, dateid)
@@ -685,7 +836,12 @@ $today = date('d-m-Y');
     {
         alert('createNewDiaryEntry Called');
 
-        var urlToCreate = '<?php echo Yii::app()->getBaseUrl(); ?>' + '/index.php?r=api/createNewDiaryEntry&start_date=' + dateofappointment + '&engg_id=' + engg_id + '&service_id=' + service_id;
+        timeofcall=document.getElementById('timeofcall').value;
+        appointment_notes=document.getElementById('appointment_notes').value;
+        notes='<b>'+timeofcall+'</b>:'+appointment_notes;
+
+
+        var urlToCreate = '<?php echo Yii::app()->getBaseUrl(); ?>' + '/index.php?r=api/createNewDiaryEntry&start_date=' + dateofappointment + '&engg_id=' + engg_id + '&service_id='+service_id+'&notes='+notes;
         //alert(urlToCreate);
 
 
@@ -734,32 +890,3 @@ $today = date('d-m-Y');
         return false;
     }
 </script>
-<style>
-
-
-    #map-canvas {
-        height: 25%;
-        width: 25%;
-    }
-    #content-pane {
-        float:right;
-        width:100%;
-        padding-left: 2%;
-    }
-    #outputDiv {
-        font-size: 16px;
-    }
-</style>
-<div id="content-pane">
-
-    <div id='loading' style='display:none'><img src="images/loading.gif"  \>
-        <br>
-        <div id='systemmessage'>Please wait, the system is calculating the nearest suitable day</div></div>
-                <div id="inputs">
-                    <p><button type="button" onclick="callme();">Show me Available Days</button></p>
-                </div>
-                <div id="outputDiv"></div>
-                </div>
-                <div id="map-canvas"></div>
-
-

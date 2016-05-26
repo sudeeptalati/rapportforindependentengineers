@@ -108,7 +108,13 @@ class TasksToDo extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			//'pagination'=>false,
+			'sort'=>array(
+				'defaultOrder'=>'created DESC',
+			),
 		));
+
+
 	}//end of search.
 	
 	public function listTasksToDo( $task_id)

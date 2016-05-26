@@ -531,12 +531,12 @@ class EnggdiaryController extends RController
 	
 	public function actionDiary()
 	{
-		/*
+
 		header('Access-Control-Allow-Origin: *');
 		$this->render('diary');
-		*/
+
 		
-		$this->redirect(array('enggdiary/bookingAppointment&id='.$_GET['id'].'&engineer_id='.$_GET['engineer_id']));
+		//$this->redirect(array('enggdiary/bookingAppointment&id='.$_GET['id'].'&engineer_id='.$_GET['engineer_id']));
 	}
 	
 	public function actionMarkrouteongooglemap()

@@ -36,8 +36,6 @@
 
 
 
-
-
  <?php Yii::app()->bootstrap->register(); ?>
  
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
@@ -173,14 +171,16 @@ $baseUrl= Yii::app()->request->baseUrl;
 
 </div><!-- footer -->
 </div><!-- page -->
-
 <!-- Google Address Lookup Start -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCxU9WGQ-qZ0AY7cE_TP5timk7sb2cQZ4&signed_in=true&libraries=places&callback=initAutocomplete"
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCxU9WGQ-qZ0AY7cE_TP5timk7sb2cQZ4&signed_in=true&libraries=places,geometry&callback=initAutocomplete"
 		async defer></script>
 <script src="js/googleaddresslookup.js"></script>
+
 <!-- Google Address Lookup End -->
 
- <?php 
+
+
+<?php
  
 	if (is_dir(Yii::getPathOfAlias('application.modules.oow.assets')))	
 	{

@@ -229,6 +229,7 @@ return array(
 				
 				'authManager'=>array(
 							'class'=>'RDbAuthManager',
+							'defaultRoles'=>array('Guest'),
 							'connectionID'=>'db',
 							'itemTable'=>'authitem',
 							'itemChildTable'=>'authitemchild',

@@ -58,7 +58,7 @@ if(file_exists($filename))
 		For working days as Tuesday to Sunday use 234567<br>
 		</small><br>
 	
-	<b>No. of calls per day</b><br><input type="text" name="totalnoofcallsperday" value=<?php echo $totalnoofcallsperday;?>><br><br>
+	<b>No. of calls per day per Engineer</b><br><input type="text" name="totalnoofcallsperday" value=<?php echo $totalnoofcallsperday;?>><br><br>
 	
 	<b>Average time per call (in hours)</b><br><input type="text" name="averagetimeperservicecall" value=<?php echo $averagetimeperservicecall;?>><br><br>
 	

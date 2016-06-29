@@ -218,9 +218,9 @@ class ServicecallController extends RController
 										$baseUrl=Yii::app()->request->baseUrl;
 										//$this->redirect(array('/enggdiary/bookingAppointment/', 'id'=>$serviceCallModel->id, 'engineer_id'=>$engg_id));
 										$this->redirect(array('/enggdiary/diary/', 'id'=>$serviceCallModel->id, 'engineer_id'=>$engg_id));
-										
-										
-										
+
+
+
 									}//end of if(save).
 									
 								}/////end of outer if().
@@ -278,33 +278,36 @@ class ServicecallController extends RController
 				//echo "<br>id after getting values = ".$current_status_id;
 				$service_id = $model->id;
 				
-				if($previous_status_id != $current_status_id)
-				{
-					//echo "<br>Status Changed....";
 
-
-
-					$internet_connection = '';
-					//**** CHECKING IF CONNECT TO INTERNET IS ENABLED OR NOT ****
-					$advancedModel = AdvanceSettings::model()->findAllByAttributes(array('parameter'=>'internet_connected'));
-					foreach ($advancedModel as $data)
-					{
-						//echo "<br>Value of internet connection = ".$data->value;
-						$internet_connection = $data->value;
-					}
-					
- 					if($internet_connection == 1)
-					{
-						$response = NotificationRules::model()->performNotification($current_status_id, $service_id, 'daily');
-						echo $response;
-					}
-				}//END of IF(status change).
 				
 				
 				if($model->save())
 				{
-					$this->redirect(array('view','id'=>$model->id ));
 					echo "saved";
+
+					if($previous_status_id != $current_status_id)
+					{
+						//echo "<br>Status Changed....";
+
+
+
+						$internet_connection = '';
+						//**** CHECKING IF CONNECT TO INTERNET IS ENABLED OR NOT ****
+						$advancedModel = AdvanceSettings::model()->findAllByAttributes(array('parameter'=>'internet_connected'));
+						foreach ($advancedModel as $data)
+						{
+							//echo "<br>Value of internet connection = ".$data->value;
+							$internet_connection = $data->value;
+						}
+
+						if($internet_connection == 1)
+						{
+							//$response = NotificationRules::model()->performNotification($current_status_id, $service_id, 'daily');
+							$response = NotificationRules::model()->runthedailyweeklymonthlynotifications($service_id, $model->job_status_id);
+							echo $response;
+						}
+					}//END of IF(status change).
+					$this->redirect(array('view','id'=>$model->id ));
 				}
 				else
 				{

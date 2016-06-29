@@ -224,10 +224,8 @@ class ApiController extends RController
     public function actionCreateNewDiaryEntry()
     {
     	//echo "IN CreateNewDiaryEntry action";
-    	 	 
-    	$notes = $_GET['notes'];
-    	
-    	
+
+		$notes = $_GET['notes'];
     	$start_date = $_GET['start_date'];
     	//echo "<hr>START DATE = ".$start_date;
     	//echo "<br>STRTOTIME START DATE = ".strtotime($start_date);
@@ -236,8 +234,34 @@ class ApiController extends RController
     	//echo "<br>ENGG_ID in api contr = ".$engg_id;
     	$service_id = $_GET['service_id'];
     	//echo "<br>SERVICE_ID in api contr = ".$service_id;
-    	
-    	$newEnggDiaryModel = new Enggdiary;
+
+
+		////Check if there is alreday a appointment booked with the service id
+		////if appointmnet is booked then cancel it
+
+
+		$all_events_with_serviceid=Enggdiary::model()->findAllByAttributes(
+			array('servicecall_id'=>$service_id ));
+
+		foreach ($all_events_with_serviceid as $diary_events) {
+
+			echo $diary_events->id;
+
+			Enggdiary::model()->updateByPk($diary_events->id,
+				array(
+					'status'=>'102'
+				)
+			);
+
+
+		}///end of foreach ($all_events_with_serviceid as $diary_events) {
+
+
+
+
+
+
+		$newEnggDiaryModel = new Enggdiary;
     	//echo "<hr>Service id to be saved = ".$service_id;
     	$newEnggDiaryModel->servicecall_id=$service_id;
     	//echo "<br>Engineer id to be saved = ".$engg_id;

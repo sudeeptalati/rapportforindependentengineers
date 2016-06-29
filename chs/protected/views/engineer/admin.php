@@ -31,11 +31,6 @@
 	*/		
 		'company',
 	//'active',
-		array(  'name'=>'active',
-				'header'=>'Active',
-				'value'=>'($data->active == 0)?"No":"Yes"',
-				'filter'=>array('1'=>'Yes', '0'=>'No'),
-			),
 
 		array(	'header' => 'Email',
 		
@@ -51,17 +46,30 @@
     	      'value'=>'$data->createdByUser->username',
         	  'filter'=>false
             ),
+	'color',
+		array(  'name'=>'active',
+			'header'=>'Active',
+			'value'=>'($data->active == 0)?"No":"Yes"',
+			'filter'=>array('1'=>'Yes', '0'=>'No'),
+		),
 
-	/*
-    'notes',
-    'inactivated_by_user_id',
-    'inactivated_on',
-    'contact_details_id',
-    'delivery_contact_details_id',
-    'created_by_user_id',
-    'created',
-    'modified',
-    */
+		array(
+			'name'=>'include_in_diary_route_planning',
+			'value'=>'($data->include_in_diary_route_planning == 0)?"No":"Yes"',
+			'filter'=>array('1'=>'Yes', '0'=>'No'),
+		),
+
+
+		/*
+        'notes',
+        'inactivated_by_user_id',
+        'inactivated_on',
+        'contact_details_id',
+        'delivery_contact_details_id',
+        'created_by_user_id',
+        'created',
+        'modified',
+        */
 		array(
 			'class'=>'CButtonColumn',
 			'template'=>'{view}{update}',

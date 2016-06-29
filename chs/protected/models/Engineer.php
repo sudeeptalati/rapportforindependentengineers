@@ -19,6 +19,8 @@
  * @property string $created
  * @property string $modified
  * @property string $fullname
+ * @property string $color
+ * @property integer include_in_diary_route_planning
  *
  * The followings are the available model relations:
  * @property ContactDetails $deliveryContactDetails
@@ -56,12 +58,12 @@ class Engineer extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('first_name, last_name, active', 'required'),
-            array('active, inactivated_by_user_id, contact_details_id, delivery_contact_details_id, created_by_user_id', 'numerical', 'integerOnly' => true),
-            array('company, vat_reg_number, notes, inactivated_on, modified, fullname', 'safe'),
+            array('include_in_diary_route_planning, first_name, last_name, active, color', 'required'),
+            array('include_in_diary_route_planning, active, inactivated_by_user_id, contact_details_id, delivery_contact_details_id, created_by_user_id', 'numerical', 'integerOnly' => true),
+            array('include_in_diary_route_planning, color, company, vat_reg_number, notes, inactivated_on, modified, fullname', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, first_name, last_name, active, company, vat_reg_number, notes, inactivated_by_user_id, inactivated_on, contact_details_id, delivery_contact_details_id, created_by_user_id, created, modified, fullname', 'safe', 'on' => 'search'),
+            array('id, first_name, last_name, active, company, vat_reg_number, notes, inactivated_by_user_id, inactivated_on, contact_details_id, delivery_contact_details_id, created_by_user_id, created, modified, fullname, include_in_diary_route_planning', 'safe', 'on' => 'search'),
         );
     }
 
@@ -101,6 +103,9 @@ class Engineer extends CActiveRecord {
             'created' => 'Created',
             'modified' => 'Modified',
             'fullname' => 'Engineer Name',
+            'color' => 'Color Code',
+            'include_in_diary_route_planning' => 'Include In Diary & Route Planning',
+
         );
     }
 
@@ -118,6 +123,8 @@ class Engineer extends CActiveRecord {
         $criteria->compare('first_name', $this->first_name, true);
         $criteria->compare('last_name', $this->last_name, true);
         $criteria->compare('active', $this->active);
+        $criteria->compare('include_in_diary_route_planning', $this->include_in_diary_route_planning);
+
         $criteria->compare('company', $this->company, true);
         $criteria->compare('vat_reg_number', $this->vat_reg_number, true);
         $criteria->compare('notes', $this->notes, true);
@@ -313,6 +320,30 @@ class Engineer extends CActiveRecord {
             return $listdata;
             
         }///end of getactiveengineerslist
-        
-        
+
+
+    public function getallactiveengineersarray() {
+
+        return  Engineer::model()->findAll(array('condition' => 'active=1', 'order' => "`company` ASC"));
+
+    }///end of getactiveengineerslist
+
+    public function getallactiveengineerfordiaryandrouteplanning() {
+
+
+        $criteria=new CDbCriteria();
+
+
+        $criteria->addCondition('active=1');
+        $criteria->addCondition('include_in_diary_route_planning=1');
+        $criteria->order = 'fullname ASC';
+
+        return  Engineer::model()->findAll($criteria);
+
+    }///end of getactiveengineerslist
+
+
+
+
+
 }//end of class.

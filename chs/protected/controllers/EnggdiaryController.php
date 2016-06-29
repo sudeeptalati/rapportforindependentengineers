@@ -528,16 +528,43 @@ class EnggdiaryController extends RController
 		*/
 		$this->render('appointIcalender',array('model'=>$model));
 	}//end of AppointIcalender.
-	
+
+
 	public function actionDiary()
 	{
-
 		header('Access-Control-Allow-Origin: *');
 		$this->render('diary');
-
-		
 		//$this->redirect(array('enggdiary/bookingAppointment&id='.$_GET['id'].'&engineer_id='.$_GET['engineer_id']));
 	}
+
+
+	public function actionFindnextappointmentofengg()
+	{
+		header('Access-Control-Allow-Origin: *');
+		$this->render('find_next_appointment_of_engg');
+		//$this->redirect(array('enggdiary/bookingAppointment&id='.$_GET['id'].'&engineer_id='.$_GET['engineer_id']));
+	}
+
+
+
+	public function actionFindnextappointmentfromallengg()
+	{
+		header('Access-Control-Allow-Origin: *');
+		$this->render('find_next_appointment_from_all_engg');
+		//$this->redirect(array('enggdiary/bookingAppointment&id='.$_GET['id'].'&engineer_id='.$_GET['engineer_id']));
+	}
+
+
+	public function actionManuallyappointmentbooking
+	()
+	{
+		header('Access-Control-Allow-Origin: *');
+		$this->render('manuallyappointmentbooking');
+		//$this->redirect(array('enggdiary/bookingAppointment&id='.$_GET['id'].'&engineer_id='.$_GET['engineer_id']));
+	}
+
+
+
 	
 	public function actionMarkrouteongooglemap()
 	{
@@ -616,5 +643,150 @@ class EnggdiaryController extends RController
 		echo 'Bad Request';
 	}///end pf 	public function actionUpdatescheduleindiary()
 
-	
+
+	public function actionFindenggavailableondate()
+	{
+		$json_output = array();
+
+		//echo "actionFindenggavailableondate";
+/*
+                echo $_POST['postcodes'];
+                echo $_POST['dates'];
+*/
+        $postcodes='["Durkar Low Ln, Durkar, Wakefield, West Yorkshire WF4 3BQ, UK","Ridgeway Cres, Sheffield, South Yorkshire S12 2TD, UK","Old Hollings Hill, Guiseley, Leeds, West Yorkshire LS20 8EW, UK","Lower Mickletown, Methley, Leeds, West Yorkshire LS26 9AN, UK","Doncaster Rd, Harlington, Doncaster, South Yorkshire DN5 7JB, UK","Derriman Dr, Sheffield, South Yorkshire S11 9LD, UK"]';
+        $dates='["27-6-2016","29-6-2016","30-6-2016"]';
+
+
+
+		if (isset($_POST['postcodes']) && isset($_POST['dates'])) {
+
+			$postcodes = $_POST['postcodes'];
+			$dates = $_POST['dates'];
+
+//		if (1==1){
+
+			$json_output['status']="OK";
+			$json_output['status_message']="Finding Data";
+
+			$postcodes_json = json_decode($postcodes);
+			$dates_json = json_decode($dates);
+			$datesofenggavailability=array();
+
+			$date_array = array();
+			foreach ($dates_json as $d) {
+				$d;
+
+				$date_array['date'] = $d;
+
+				$day_start = $d . " 00:00:00";
+				$day_end = $d . " 23:59:59";
+
+				$day_start_int = strtotime($day_start);
+				$day_end_int = strtotime($day_end);
+
+
+				$date_array['day_start_int'] = $day_start_int;
+				$date_array['day_end_int'] = $day_end_int;
+
+				$date_array['day_start_str'] = date('d-F-Y H:i:s', $day_start_int);
+				$date_array['day_end_str'] = date('d-F-Y H:i:s', $day_end_int);
+
+				$available_engineers_array = array();
+
+
+				////finding servicecalls on this date
+
+				$servicealls = Enggdiary::model()->getcompletediaryforday($day_start_int, $day_end_int);
+
+				$servicecalls_array = array();
+
+				foreach ($servicealls as $s) {
+					$s_array = array();
+
+					$s_array['diary_id'] = $s->id;
+
+					$s_array['service_id'] = $s->servicecall_id;
+					$s_array['customer'] = $s->servicecall->customer->fullname;
+					$s_array['postcode'] = $s->servicecall->customer->postcode;
+					$s_array['engineer'] = $s->engineer->fullname;
+
+					$s_array['visit_start_date'] = date('d-F-Y H:i:s', $s->visit_start_date);
+					$s_array['visit_end_date'] = date('d-F-Y H:i:s', $s->visit_end_date);
+
+					foreach ($postcodes_json as $p) {
+
+						$supplied_postcode_no_space = preg_replace('/\s+/', '', $p);
+						$s_array['supplied_formatted_postcode'] = $supplied_postcode_no_space;
+
+						$servicecall_postcode_no_space = preg_replace('/\s+/', '', $s->servicecall->customer->postcode);
+						$s_array['customer_formatted_postcode'] = $servicecall_postcode_no_space;
+
+						if (strpos($supplied_postcode_no_space, $servicecall_postcode_no_space) !== false) {
+
+							$available_engg = array();
+							$available_engg['engineer_id'] = $s->engineer->id;
+							$available_engg['engineer_name'] = $s->engineer->fullname;
+
+							if ($this->checkifenggarray_donot_containsengg($available_engineers_array, $available_engg))
+							array_push($available_engineers_array, $available_engg);
+						}
+
+
+					}////end of foreach ($postcodes_json as $p)
+
+
+					array_push($servicecalls_array, $s_array);
+				}///end of 		foreach ($servicealls as $s) {
+
+
+				if (count($available_engineers_array) == 0) {
+					$active_engg = Engineer::model()->getallactiveengineerfordiaryandrouteplanning();
+					foreach ($active_engg as $e) {
+						$available_engg = array();
+						$available_engg['engineer_id'] = $e->id;
+						$available_engg['engineer_name'] = $e->fullname;
+						array_push($available_engineers_array, $available_engg);
+					}///end of foreach ($active_engg as $e)
+				}
+
+				$date_array['available_enggs'] = $available_engineers_array;
+
+				$date_array['servicecalls'] = $servicecalls_array;
+				//echo json_encode($s_array);
+
+				array_push($datesofenggavailability, $date_array);
+
+			}//end of foreach
+
+
+			$json_output['result']=$datesofenggavailability;
+
+		}//end of if (isset($_POST['postcodes']) && isset($_POST['dates']))
+		else
+		{
+			$json_output['status']="INVALID_REQUEST";
+			$json_output['status_message']="Input Data Missing";
+
+		}
+
+		echo json_encode($json_output);
+
+
+	}///end of public function actionFindenggavailableondate()
+
+
+	public function checkifenggarray_donot_containsengg($engg_array, $engg)
+	{
+
+
+		foreach ($engg_array as $item) {
+
+			if ($engg['engineer_id']==$item['engineer_id'])
+				return false;
+		 }
+
+		return true;
+	}//end of public function checkifarraycontainsengg()
+
+
 }//end of class.

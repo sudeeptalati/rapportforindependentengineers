@@ -74,7 +74,7 @@ $(document).ready(function(){
 	</tr>
 	
 	<tr>
-		<td colspan="2"	>
+		<td>
 		<?php echo $form->labelEx($model,'company'); ?>
 		<?php echo $form->textField($model,'company',array('size'=>60)); ?>
 		<?php echo $form->error($model,'company'); ?>
@@ -84,13 +84,37 @@ $(document).ready(function(){
 		<?php echo $form->textField($model,'vat_reg_number',array('rows'=>6, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'vat_reg_number'); ?>
 		</td>
-		
+		<td>
+			<?php echo $form->labelEx($model,'include_in_diary_route_planning'); ?>
+			<?php echo $form->dropDownList($model,'include_in_diary_route_planning', array('1'=>'Yes', '0'=>'No')); ?>
+			<?php echo $form->error($model,'include_in_diary_route_planning'); ?>
+
+		</td>
 	</tr>
 	<tr>
-		<td colspan="3"	>
+		<td>
 		<?php echo $form->labelEx($model,'notes'); ?>
 		<?php echo $form->textArea($model,'notes',array('rows'=>6, 'cols'=>75)); ?>
 		<?php echo $form->error($model,'notes'); ?>
+		</td>
+
+		<td>
+			<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jscolor/jscolor.js', CClientScript::POS_HEAD); ?>
+
+			<?php echo $form->labelEx($model,'color'); ?>
+			<?php //echo $form->textField($model,'html_name',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->hiddenField($model,'color',array('rows'=>6, 'cols'=>50)); ?>
+
+
+			<input rows="6" cols="50" name="color_chooser" id="color_chooser" type="text"  class="color {onImmediateChange:'color_change(this);', pickerPosition:'left'}" onChange="js:color_change()" value="<?php echo $model->color; ?>">
+
+
+		<td>
+			<div id="current_layout" class="color" style="border-radius:15px;  padding:10px; background-color:<?php echo $model->color;?>">
+				Current Layout<br>
+				&nbsp;	&nbsp;	&nbsp;	&nbsp;<b><?php echo $model->fullname ;?></b>
+			</div>
+
 		</td>
 		
 	</tr>
@@ -369,4 +393,14 @@ $(document).ready(function(){
 
 	}////end of getlatlongofpostcode
 
+
+
+
+	function color_change()
+	{
+		color_name=document.getElementById('color_chooser').value;
+		console.log('Color name selected = '+color_name);
+		document.getElementById('current_layout').style.background ="#"+color_name;
+		document.getElementById('Engineer_color').value='#'+color_name;
+	}
 </script>

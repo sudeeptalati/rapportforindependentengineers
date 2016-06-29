@@ -18,6 +18,13 @@ class TasksToDoController extends RController
 		);
 	}
 
+	public function allowedActions()
+	{
+		return 'completeTasks, performTasks, sendbookingnotification';
+	}
+
+
+
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -175,9 +182,9 @@ class TasksToDoController extends RController
 	public function actionCompleteTasks()
 	{
 		//echo "<br>In completeTasks action";
-		NotificationRules::model()->runtheweeklymonthlynotifications();
+		echo NotificationRules::model()->runthedailyweeklymonthlynotifications();
 
-		//$this->render('completeTasks');
+		$this->render('completeTasks');
 		
 	}//end of completeTasks.
 	
@@ -248,25 +255,58 @@ class TasksToDoController extends RController
 	public function actionUpdateTasksLifetime()
 	{
 		//echo "<br>In anothjer view";
-		
-		
-		
 		$this->render('updateTasksLifetime');
 		
 	}//end of actionTasksLifetime.
-	
-	
-	
 
-	
-	
-	
-	
-	
-    
 
-	
-	
-	
-	
+	public function actionSendbookingnotification()
+	{
+		/////Get all jobs for tomorrow from all engineers
+		$system_msg="";
+		$all_active_engg=Engineer::model()->findAll(array('condition' => 'active=1', 'order' => "`fullname` ASC"));
+
+		foreach ($all_active_engg as $engg)
+		{
+			$system_msg.="Engg Id: ".$engg->id."";
+
+			$datetime = new DateTime('tomorrow');
+			$sd=strtotime($datetime->format('d-F-Y 00:00:00'));
+			$ed=strtotime($datetime->format('d-F-Y 23:59:59'));
+
+			$nextdaydiary=Enggdiary::model()->getData($engg->id, $sd, $ed);
+
+
+			foreach ($nextdaydiary as $event)
+			{
+				$system_msg.=" Service Ref#". $event->servicecall->id;
+
+				echo NotificationRules::model()->performNotification($event->servicecall->job_status_id, $event->servicecall->id, "daily");
+
+			}
+
+
+			$system_msg.="<br>";
+		}///end of 		foreach ($all_active_engg as $engg)
+
+		echo $system_msg;
+
+
+
+	}////end of public function actionSendbookingnotification()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }//end of class.

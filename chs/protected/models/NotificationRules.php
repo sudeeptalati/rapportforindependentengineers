@@ -134,7 +134,9 @@ class NotificationRules extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
 		));
-	}//end of search.
+	}
+
+
 
 	protected function beforeSave()
 	{
@@ -591,7 +593,7 @@ class NotificationRules extends CActiveRecord
 
 
 
-	public function runtheweeklymonthlynotifications()
+	public function runthedailyweeklymonthlynotifications($service_id=null, $jobstatus_id=null)
 	{
 		$system_msg= "<hr>runtherule called";
 		$allrules=NotificationRules::model()->findAllByAttributes(array('active' => '1'));
@@ -599,53 +601,99 @@ class NotificationRules extends CActiveRecord
 		foreach ($allrules as $rule)
 		{
 			$rf=json_decode($rule->frequency);
+			//echo $rf->frequency;
 
-			$system_msg.= "Scheduled date is ".$rf->next_run;
 
-			$today_string=date('d-M-Y');
-			$system_msg.="<br> Today is ".$today_string;
 
-			$today_int=strtotime($today_string);
-			$scheduled_day_int=strtotime($rf->next_run);
-
-			$system_msg.="<br> Today INT ".$today_int;
-			$system_msg.="<br> sched INT ".$scheduled_day_int;
-
-			if ($today_int==$scheduled_day_int && $rf->performed=="false")
-		 	{
-
-				$system_msg.= "Not Performed yet<br>";
-
-				///Run this rule for all the jobs that are in this status
-				$allservicecalls= Servicecall::model()->findAllByAttributes(array('job_status_id' => $rule->job_status_id));
-				foreach ($allservicecalls as $s)
-				{
-					$system_msg.= "<br>I MA IN FREACH---".$s->id;
-					$this->performNotification($rule->job_status_id, $s->id, $rf->frequency );
-				}///end of foreach ($allservicecalls as $s)
-
-				$rf->performed="true";
-				$rf->last_run=date('l, d-M-Y');
-
-			}///end of 	if ($today_string==$scheduled_day_int && $rf->performed=="false")
-			else
+			if ($rf->frequency=="daily")
 			{
-				///just check that the performed is set to false and next run date is correct
+				$system_msg.="<br>**********DAILY JOB IS CALLED******jobstatus_id*****".$jobstatus_id;
+				$system_msg.="<br>**********DAILY JOB IS CALLED******service_id*****".$service_id;
 
-				if ($rf->frequency!="daily") ///we do not want  to run the daily jobs as they are created on the fly
+				if ($jobstatus_id==$rule->job_status_id)
+					$this->performNotification($rule->job_status_id, $service_id, $rf->frequency );
 
-					$rf=$this->setdatafornextrun($rf);
+			}///end of if ($rf->frequency=="daily")
 
+			/*
+			switch($rf->frequency)
+			{
+				case "daily":
+					$system_msg.="<br>**********DAILY JOB IS CALLED******service_id*****";
+					break;
+				case "weekly":
+					$system_msg.="<br>**********weekly JOB IS CALLED***********";
+					break;
+				case "monthly":
+					$system_msg.="<br>**********monthly JOB IS CALLED***********";
+					break;
+				default:
+					$system_msg.="<br>**********default JOB IS CALLED***********";
+					break;
 			}
+			*/
 
-
-			$rule_performed_update=json_encode($rf);
-			$system_msg.= $rule_performed_update;
-			NotificationRules::updateByPk($rule->id, array('frequency'=>$rule_performed_update));
+			$system_msg = $this->checkscheduleandrun($rf, $system_msg, $rule);
 
 		}///end of 	foreach ($allrules as $rule)
-		echo  $system_msg;
+		return $system_msg;
 	}///end of public function runtheweeklymonthlyrule()
+
+
+
+
+	/**
+	 * @param $rf
+	 * @param $system_msg
+	 * @param $rule
+	 * @return array
+	 */
+	public function checkscheduleandrun($rf, $system_msg, $rule)
+	{
+		$system_msg .= "Scheduled date is " . $rf->next_run;
+
+		$today_string = date('d-M-Y');
+		$system_msg .= "<br> Today is " . $today_string;
+
+		$today_int = strtotime($today_string);
+		$scheduled_day_int = strtotime($rf->next_run);
+
+		$system_msg .= "<br> Today INT " . $today_int;
+		$system_msg .= "<br> sched INT " . $scheduled_day_int;
+		if ($today_int == $scheduled_day_int && $rf->performed == "false") {
+			$system_msg .= "Not Performed yet<br>";
+			$system_msg .= "<br>RUNNING NOW";
+
+			///Run this rule for all the jobs that are in this status
+			$allservicecalls = Servicecall::model()->findAllByAttributes(array('job_status_id' => $rule->job_status_id));
+			foreach ($allservicecalls as $s) {
+				$system_msg .= "<br>I MA IN FREACH---" . $s->id;
+				$this->performNotification($rule->job_status_id, $s->id, $rf->frequency);
+			}///end of foreach ($allservicecalls as $s)
+
+			$rf->performed = "true";
+			$rf->last_run = date('l, d-M-Y');
+
+		}///end of 	if ($today_string==$scheduled_day_int && $rf->performed=="false")
+		else {
+			///just check that the performed is set to false and next run date is correct
+			$system_msg .= "<br>CAN't RUN TODAY, Setting next Run NOW";
+
+			if ($rf->frequency != "daily") ///we do not want  to run the daily jobs as they are created on the fly
+
+				$rf = $this->setdatafornextrun($rf);
+
+		}
+
+
+		$rule_performed_update = json_encode($rf);
+		$system_msg .= $rule_performed_update;
+		NotificationRules::updateByPk($rule->id, array('frequency' => $rule_performed_update));
+		return  $system_msg;
+	}//end of checkscheduleandrun.
+
+
+
 
 
 	public function setdatafornextrun($schedule)
@@ -690,7 +738,7 @@ class NotificationRules extends CActiveRecord
 
 
 		$schedule->next_run=date('l, d-M-Y',$next_date);
-		echo "NEXT RUN ".$schedule->next_run;
+		//echo "NEXT RUN ".$schedule->next_run;
 
 		$schedule->performed="false";
 

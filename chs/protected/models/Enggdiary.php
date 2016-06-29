@@ -526,7 +526,35 @@ class Enggdiary extends CActiveRecord
 		
 		return $update;
 	}//end of updateappointmentduration($diary_id, $visit_start_date , $visit_end_date)
-	
-	 
+
+	public function getcompletediaryforday($start_date, $end_date)
+	{
+		$postcode_array = array();
+		$criteria=new CDbCriteria();
+		$criteria->addCondition('status!= 102');
+		$criteria->addCondition('visit_start_date BETWEEN :from_date AND :to_date');
+		$criteria->params = array(
+			':from_date' => $start_date,
+			':to_date' => $end_date,
+		);
+		$criteria->order = 'engineer_id DESC';
+
+
+		$diary_day= new CActiveDataProvider(Enggdiary::model(),array(
+			'criteria' => $criteria
+		));
+		$fulldaydiarydata = $diary_day->getData();
+		/*
+        foreach ($diaryData as $data)
+        {
+            //echo "<br>Service id for 1st day = ".$data->servicecall_id;
+            $postcode = $data->servicecall->customer->postcode;
+            //echo "<br>Customer postcode = ".$postcode;
+             array_push($postcode_array, $postcode);
+        }
+        */
+
+		return $fulldaydiarydata;
+	}//end of getData().
     
 }//end of class.

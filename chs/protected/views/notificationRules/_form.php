@@ -22,8 +22,8 @@ if(isset($_GET['system_msg']))
 	<div class="box">
 		<table style="width:100%;   vertical-align: top;">
 			<tr>
-				<td colspan='3'>
-				When job status is changed to
+				<td>
+				<label>When job status is changed to</label>
 				<?php
 						echo $form->dropDownList($model, 'job_status_id', $jobstatuslist ,
 							 array(
@@ -49,12 +49,18 @@ if(isset($_GET['system_msg']))
 						)//end of array
 					);//end of dropDownList.
 				?>
-					<hr>
+
 				</td>
+				<td>
+					<?php echo $form->labelEx($model,'active') ?>
+					<?php echo $form->dropDownList($model, 'active', array('1'=>'Yes','0'=>'No')); ?>
+				</td>
+				<td><?php echo CHtml::submitButton($model->isNewRecord ? 'Set up this New rule' : 'Save the Rule',
+						array('id'=>'form_save_button')); ?></td>
 
 			</tr>
 			<tr>
-				<td><b>Send Notification to</b></td>
+				<td colspan="3"><hr><b>Send Notification to</b></td>
 			</tr>
 
 			<tr>
@@ -371,13 +377,6 @@ if(isset($_GET['system_msg']))
 
 
 
-				<tr>
-					<td  colspan="3">
-						<hr>
-						<?php echo $form->labelEx($model,'active') ?>
-						<?php echo $form->dropDownList($model, 'active', array('1'=>'Yes','0'=>'No')); ?>
-					</td>
-				</tr>
 
 
 

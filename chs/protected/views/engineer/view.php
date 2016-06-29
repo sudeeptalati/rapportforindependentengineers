@@ -21,9 +21,16 @@
 		'first_name',
 		'last_name',
 		//'active',
+
+
 		array(
 			'label'=>'active',
 			'value'=>$model->active ? "Yes" : "No",
+		),
+
+		array(
+			'label'=>'Include In Diary & Route Planning',
+			'value'=>$model->include_in_diary_route_planning ? "Yes" : "No",
 		),
 		'company',
 		'vat_reg_number',
@@ -32,6 +39,7 @@
 		'contactDetails.mobile',
 		'contactDetails.email',
 		'contactDetails.postcode',
+		'color',
 		//'created',
 		array( 'name'=>'created', 'value'=>$model->created==null ? "":date("d-M-Y",$model->created)),
 		//'created_by_user_id',

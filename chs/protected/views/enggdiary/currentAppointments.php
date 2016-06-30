@@ -129,7 +129,7 @@ function isTouchDevice()
 			minTime:'8',
 			maxTime:'18',
 			weekends:true,
-			
+			firstDay:1,
 			
 			eventResize: function(event,dayDelta,minuteDelta,revertFunc) /*EVENT FOR CHANGING ONLY END_DATE*/
 		    {

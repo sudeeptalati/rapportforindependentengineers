@@ -292,7 +292,7 @@ $today = date('d-m-Y');
 
 
                 ///Now we will run the loop for each Engineer
-                $dayheight=$totalnoofcallsperday*35;
+                $dayheight=$totalnoofcallsperday*50;
                 $dayheight=$dayheight.'px';
 
                 $freeenggs_array=array();
@@ -1065,7 +1065,7 @@ $today = date('d-m-Y');
                     success: function (data)
                     {
                         alert('Appointment Created' + data);
-                        //location.href = '<?php echo Yii::app()->getBaseUrl(); ?>' + '/index.php?r=servicecall/view&id=' + service_id;
+                        location.href = '<?php echo Yii::app()->getBaseUrl(); ?>' + '/index.php?r=servicecall/view&id=' + service_id;
                     },
                     error: function ()
                     {

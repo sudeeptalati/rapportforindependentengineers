@@ -17,6 +17,9 @@
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'engineer-grid',
+	'selectableRows'=>1,
+	'selectionChanged'=>'function(id){ location.href = "'.$this->createUrl('update').'/id/"+$.fn.yiiGridView.getSelection(id);}',
+
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(

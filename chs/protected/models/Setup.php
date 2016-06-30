@@ -721,5 +721,37 @@ class Setup extends CActiveRecord
 		return $msg;
 	}///end of print errors
 
+	public function formataddressinhtml($line1, $line2, $line3, $town, $postcode)
+	{
+		$line1 = trim($line1);
+		$line2 = trim($line2);
+		$line3 = trim($line3);
+		$town = trim($town);
+		$postcode = trim($postcode);
+		$address = '';
+
+		if ($line1 != '' || $line1 != NULL) {
+			$address = $address . $line1;
+		}
+
+		if ($line2 != '' || $line2 != NULL) {
+			$address = $address . '<br>' . $line2;
+		}
+
+		if ($line3 != '' || $line3 != NULL) {
+			$address = $address . '<br>' . $line3;
+		}
+
+		if ($town != '' || $town != NULL) {
+			$address = $address . '<br>' . $town;
+		}
+
+		if ($postcode != '' || $postcode != NULL) {
+			$address = $address . '<br>  ' . strtoupper($postcode);
+		}
+
+		return $address;
+
+	}///end of formataddress
 
 }//end of class.

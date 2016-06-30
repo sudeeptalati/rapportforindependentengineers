@@ -24,7 +24,9 @@ if(isset($_POST['diary_parameters_values']))
 		/***** GETTING DATA FROM smsSettingsForm *************/
 
 		$no_next_days = $_POST['no_next_days'];
-		//echo $gateway_username;
+		$plan_days_in_calendar_manual_booking = $_POST['plan_days_in_calendar_manual_booking'];
+
+	//echo $gateway_username;
 		$allowedtraveldistancebetweenpostcodes =  $_POST['allowedtraveldistancebetweenpostcodes'];
 		//echo "<br>".$gateway_password;
 		$totalnoofcallsperday = $_POST['totalnoofcallsperday'];
@@ -39,8 +41,12 @@ if(isset($_POST['diary_parameters_values']))
 			//echo "<br>File is present";
 			$diarydata = file_get_contents($filename);
 			$diaryDecodedData = json_decode($diarydata, true);
-		
+
 			$diaryDecodedData['no_next_days'] = $no_next_days;
+			$diaryDecodedData['plan_days_in_calendar_manual_booking'] = $plan_days_in_calendar_manual_booking;
+
+
+
 			$diaryDecodedData['allowedtraveldistancebetweenpostcodes'] = $allowedtraveldistancebetweenpostcodes;
 			$diaryDecodedData['totalnoofcallsperday'] = $totalnoofcallsperday;
 			$diaryDecodedData['workingdaysofweekstring'] = $workingdaysofweekstring;
@@ -66,8 +72,12 @@ else
 			
 			//echo "<br>";
 			//print_r($smsDecodedData);
-			
+
 			$no_next_days=$diaryDecodedData['no_next_days'] ;
+			$plan_days_in_calendar_manual_booking=$diaryDecodedData['plan_days_in_calendar_manual_booking'] ;
+
+
+
 			$allowedtraveldistancebetweenpostcodes=$diaryDecodedData['allowedtraveldistancebetweenpostcodes'];
 			$totalnoofcallsperday=$diaryDecodedData['totalnoofcallsperday'];
 			$workingdaysofweekstring=$diaryDecodedData['workingdaysofweekstring'] ;
@@ -87,11 +97,18 @@ else
 	
 	
 <!-- ********** DISPLAYING CHANGED DATA ************ -->
-	
+
 	<div class="row">
-		<?php echo "<b>No. of days To be considered for Diary Planning</b><br>";?>
+		<?php echo "<b>Diary Planning Days (No. of days To be considered) </b><br>";?>
 		<?php echo CHtml::textField('',$no_next_days, array('disabled'=>'disabled'));?>
 	</div>
+
+	<div class="row">
+		<?php echo "<b>Manual calendar booking (No. of days To be considered while manual booking)</b><br>";?>
+		<?php echo CHtml::textField('',$plan_days_in_calendar_manual_booking, array('disabled'=>'disabled'));?>
+	</div>
+
+
 	<div class="row">
 		<?php echo "<b>Allowed distance between two postcodes (in Miles)</b><br>";?>
 		<?php echo CHtml::textField('',$allowedtraveldistancebetweenpostcodes, array('disabled'=>'disabled'));?>

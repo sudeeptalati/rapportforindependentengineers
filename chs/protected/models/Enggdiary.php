@@ -453,6 +453,16 @@ class Enggdiary extends CActiveRecord
 		return $no_next_days;
 		//return '5';
 	}//end of getConsiderdays
+
+	public function getdaystoconsiderformanualbooking()
+	{
+		$diaryDecodedData=$this->loaddiaryparameterjsonfile();
+		$plan_days_in_calendar_manual_booking=$diaryDecodedData['plan_days_in_calendar_manual_booking'];
+		return $plan_days_in_calendar_manual_booking;
+		//return '5';
+	}//end of getConsiderdays
+
+
 	
 	public function getAveragetimeperservicecall()
 	{

@@ -26,8 +26,11 @@ if(file_exists($filename))
 	$diaryDecodedData = json_decode($diarydata, true);
 	//echo $filename."<br>";
 	//print_r($diaryDecodedData);
-	
+
 	$no_next_days = $diaryDecodedData['no_next_days'];
+
+	$plan_days_in_calendar_manual_booking = $diaryDecodedData['plan_days_in_calendar_manual_booking'];
+
 	//echo "<br>user name = ".$gateway_username;
 	$allowedtraveldistancebetweenpostcodes = $diaryDecodedData['allowedtraveldistancebetweenpostcodes'];
 	//echo "<br>password = ".$gateway_password;
@@ -46,8 +49,10 @@ if(file_exists($filename))
 
 <form action="<?php echo Yii::app()->createUrl('setup/diaryparametersview')?>" method="post">
 	
-	<b>No. of days To be considered for Diary Planning</b><br><input type="text" name="no_next_days" value=<?php echo $no_next_days;?>><br><br>
-	
+	<b>Diary Planning Days (No. of days To be considered) </b><br><input type="text" name="no_next_days" value=<?php echo $no_next_days;?>><br><br>
+
+	<b>Manual calendar booking (No. of days To be considered while manual booking)</b><br><input type="text" name="plan_days_in_calendar_manual_booking" value=<?php echo $plan_days_in_calendar_manual_booking;?>><br><br>
+
 	<b>Allowed distance between two postcodes (in Miles)</b><br><input type="text" name="allowedtraveldistancebetweenpostcodes" value=<?php echo $allowedtraveldistancebetweenpostcodes;?>><br><br>
 	
 	<b>Working days of week</b><br><input type="text" name="workingdaysofweekstring" value=<?php echo $workingdaysofweekstring;?>>

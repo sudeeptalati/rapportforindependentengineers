@@ -539,6 +539,13 @@ class Enggdiary extends CActiveRecord
 
 	public function getcompletediaryforday($start_date, $end_date)
 	{
+		/*
+				$start_date=1467669600;
+				$end_date=1467755999;
+
+				echo "<hr>Service id for day".date ('d-F-Y h:i:a', $start_date);
+				echo "<br>Service id for day".date ('d-F-Y h:i:a', $end_date);
+		*/
 		$postcode_array = array();
 		$criteria=new CDbCriteria();
 		$criteria->addCondition('status!= 102');
@@ -550,19 +557,19 @@ class Enggdiary extends CActiveRecord
 		$criteria->order = 'engineer_id DESC';
 
 
-		$diary_day= new CActiveDataProvider(Enggdiary::model(),array(
-			'criteria' => $criteria
-		));
-		$fulldaydiarydata = $diary_day->getData();
+
+
+		$fulldaydiarydata =Enggdiary::findAll($criteria);
+
 		/*
-        foreach ($diaryData as $data)
+        foreach ($fulldaydiarydata as $data)
         {
-            //echo "<br>Service id for 1st day = ".$data->servicecall_id;
-            $postcode = $data->servicecall->customer->postcode;
+            echo "<br>Service id for 1st day = ".$data->servicecall_id;
+            echo '----'.$data->servicecall->customer->postcode;
             //echo "<br>Customer postcode = ".$postcode;
-             array_push($postcode_array, $postcode);
+             //array_push($postcode_array, $postcode);
         }
-        */
+		*/
 
 		return $fulldaydiarydata;
 	}//end of getData().

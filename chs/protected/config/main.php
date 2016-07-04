@@ -204,7 +204,7 @@ return array(
 		'application.extensions.yii-mail.*',
 		'application.extensions.yii-zip.*',
 		'application.extensions.yii-RGridView.*',
-		//'application.extensions.*',
+		'application.extensions.*',
 		'application.extensions.bootstrap.*',
 		'bootstrap.helpers.TbHtml',
 		'application.modules.gomobile.models.*',

@@ -655,7 +655,7 @@ $today = date('d-m-Y');
         recievd_distances = [];
         for (var m = 0; m < temp_googlerecieveddistance_array.length; m++)
         {
-            console.log('Recieved Distances ' + temp_googlerecieveddistance_array[m] + 'from customer postcodes  ' + temp_googlerecieveddistance_array[m]);
+            console.log('Recieved Distances ' + temp_googlerecieveddistance_array[m] + 'from customer postcodes  ' + temp_googlerecievedpc_array[m]);
 
             if (temp_googlerecieveddistance_array[m] > allowedtraveldistancebetweenpostcodes)
             {
@@ -1018,7 +1018,7 @@ $today = date('d-m-Y');
              div.style.display = 'block';
              }
              */
-        }, 1000);
+        }, 3000);
     }
 
     function indexOfSmallest(a) {

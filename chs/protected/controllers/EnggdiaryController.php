@@ -648,14 +648,17 @@ class EnggdiaryController extends RController
 	{
 		$json_output = array();
 
+		$totalnoofcallsperday = Enggdiary::model()->getTotalnoofcallsperday();
+
 		//echo "actionFindenggavailableondate";
 /*
                 echo $_POST['postcodes'];
                 echo $_POST['dates'];
 */
-        $postcodes='["Durkar Low Ln, Durkar, Wakefield, West Yorkshire WF4 3BQ, UK","Ridgeway Cres, Sheffield, South Yorkshire S12 2TD, UK","Old Hollings Hill, Guiseley, Leeds, West Yorkshire LS20 8EW, UK","Lower Mickletown, Methley, Leeds, West Yorkshire LS26 9AN, UK","Doncaster Rd, Harlington, Doncaster, South Yorkshire DN5 7JB, UK","Derriman Dr, Sheffield, South Yorkshire S11 9LD, UK"]';
-        $dates='["27-6-2016","29-6-2016","30-6-2016"]';
-
+        $postcodes='["William Harris Way, Colchester, Essex CO2 8WJ, UK","Landermere Rd, Thorpe-le-Soken, Clacton-on-Sea, Essex CO16 0LL, UK","Melbourne Rd, Clacton-on-Sea, Essex CO15 3HY, UK","Audries Estate, Walton on the Naze, Essex CO14 8TB, UK","Artillery Dr, Harwich, Essex CO12 5FG, UK","St John\'s Rd, Clacton-on-Sea, Essex CO16 8BS, UK","Church Ln, Brantham, Manningtree, Suffolk CO11 1QD, UK","Great Bentley, Colchester, Essex CO7 8PP, UK","Manor Rd, Wivenhoe, Colchester, Essex CO7 9LL, UK"]';
+        $dates='["5-7-2016","6-7-2016","7-7-2016"]';
+		//echo $postcodes;
+		//echo $dates;
 
 
 		if (isset($_POST['postcodes']) && isset($_POST['dates'])) {
@@ -699,6 +702,7 @@ class EnggdiaryController extends RController
 				$servicealls = Enggdiary::model()->getcompletediaryforday($day_start_int, $day_end_int);
 
 				$servicecalls_array = array();
+				//echo '<hr>'.$date_array['day_start_str'];
 
 				foreach ($servicealls as $s) {
 					$s_array = array();
@@ -713,8 +717,10 @@ class EnggdiaryController extends RController
 					$s_array['visit_start_date'] = date('d-F-Y H:i:s', $s->visit_start_date);
 					$s_array['visit_end_date'] = date('d-F-Y H:i:s', $s->visit_end_date);
 
-					foreach ($postcodes_json as $p) {
+					//echo '<br>+-------------------SERVICEPC------'.$s->servicecall_id;
 
+					foreach ($postcodes_json as $p) {
+						//echo '<br>'.$p;
 						$supplied_postcode_no_space = preg_replace('/\s+/', '', $p);
 						$s_array['supplied_formatted_postcode'] = $supplied_postcode_no_space;
 
@@ -723,12 +729,18 @@ class EnggdiaryController extends RController
 
 						if (strpos($supplied_postcode_no_space, $servicecall_postcode_no_space) !== false) {
 
+
+
 							$available_engg = array();
 							$available_engg['engineer_id'] = $s->engineer->id;
 							$available_engg['engineer_name'] = $s->engineer->fullname;
 
 							if ($this->checkifenggarray_donot_containsengg($available_engineers_array, $available_engg))
-							array_push($available_engineers_array, $available_engg);
+							{
+								//var_dump($available_engg);
+								array_push($available_engineers_array, $available_engg);
+
+							}
 						}
 
 

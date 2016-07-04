@@ -4,9 +4,13 @@
 <?php $setupmodel = Setup::model(); ?>
 <?php $productModel = Product::model(); ?>
 
-
-
 <?php
+
+if ($model->engg_diary_id!=NULL || $model->engg_diary_id!='' )
+    $appointment_exists=true;
+else
+    $appointment_exists=false;
+
 //CALCULATING VALID UNTILL.
 
 $php_warranty_date = $model->product->warranty_date;
@@ -156,7 +160,11 @@ if (!empty ($php_warranty_date)) {
                                     <?php echo $address; ?>
                                 </div>
 
-                                <table style="width:20%">
+                                <table>
+                                    <tr>
+                                        <th style="width: 10%"></th>
+                                        <th style="width: 90%"></th>
+                                    </tr>
                                     <tr>
                                         <td><span class="fa fa-mobile"></span></td>
                                         <td>
@@ -489,18 +497,17 @@ if (!empty ($php_warranty_date)) {
                                 <?php echo CHtml::link('<div class="fa fa-road" ></div> Book another visit', array('enggdiary/findnextappointmentfromallengg/', 'servicecall_id'=>$model->id, 'engineer_id'=>$model->engineer_id));?>
                             </td>
                         </tr>
+
+                    <?php if($appointment_exists): ?>
                         <tr>
                             <td>
                                 <div class="fa fa-calendar fa-2x title" title="Appointment">
                                 </div>
                             </td>
-                            <td><?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?></td>
+                            <td><?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?>
+                            </td>
                             <td>
-
-                                <?php echo CHtml::link('<div class="fa fa-share"></div> Move this appointment', array('enggdiary/viewFullDiary/', 'engg_id'=>$model->engineer_id));
-                                ?>
-
-
+                                <?php echo CHtml::link('<div class="fa fa-share"></div> Move this appointment', array('enggdiary/viewFullDiary/', 'engg_id'=>$model->engineer_id)); ?>
                             </td>
                         </tr>
                         <tr>
@@ -517,9 +524,10 @@ if (!empty ($php_warranty_date)) {
 
                         <tr>
                             <td colspan="3">
-                                <h5>Previous Appointments</h5>
                                 <?php $all_appointments=Enggdiary::model()->getappointmentsbyserviceid($model->id);?>
                                 <?php if (count($all_appointments)>1): ?>
+                                    <h5>Previous Appointments</h5>
+
                                     <table>
                                         <tr>
                                             <th class="datacontenttitle">Visit Date</th>
@@ -545,6 +553,8 @@ if (!empty ($php_warranty_date)) {
                                 <?php endif; ///end of if (count($all_appointments)>1):?>
                             </td>
                         </tr>
+                   <?php endif; ///if($appointment_exists): ?>
+
                     </table>
                 </div><!-- end of  <div class="contentbox"> -->
             </div><!-- end of <div class="engineerbox contentbox"> -->

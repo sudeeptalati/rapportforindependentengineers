@@ -2,6 +2,7 @@
 <?php 
 $displayResults=$results->getData();
 $customerResults=$customer_results->getData();
+$setupModel=Setup::model();
 /*
 echo "<br>";
 echo "Fault Description: ".$row['fault_description']."	   ";
@@ -102,14 +103,19 @@ vertical-align:top;
 		</td>
 		
 		<td>
-			<form method="get" action="http://maps.google.com/maps/" target="_blank">
-					<input type="hidden"   name="q" size="10"
-				 	maxlength="255" value= "<?php echo $data->customer->postcode;?>" />
-					<input type ="image" src="<?php echo Yii::app()->baseUrl.'/images/googlemaps.png';?>" title="See on Google Map" width='30' 'height'='30' />
-					<span style="margin-left:-8px;">
-					<?php echo $data->customer->postcode;?>
-					</span>	
-			</form>
+			<?php
+				$address=$setupModel->formataddressinhtml($data->customer->address_line_1,$data->customer->address_line_2,$data->customer->address_line_3,$data->customer->town, $data->customer->postcode);
+				$g_map_url="https://www.google.co.uk/maps?q=".strip_tags($address);
+				?>
+
+			<a href="<?php echo $g_map_url; ?>" target="_blank">
+				<div class="fa fa-globe fa-2x"></div><br>	</a>
+				<?php echo $address; ?>
+
+
+
+
+
 		</td>
 		
 		<?php 
@@ -181,7 +187,7 @@ vertical-align:top;
 				<?php echo CHtml::link($service->service_reference_number, array('servicecall/view', 'id'=>$service->id));?>
 				<?php 
 					 
-					echo '<br><div style="background-color:'.$service->jobStatus->html_name.';width: 100%; border-radius: 5px;text-align: center;">'.$service->jobStatus->name.'</div>'	;
+					echo '<div>'.$service->jobStatus->html_name.'</div>'	;
 					
 					if($service->job_status_id >100)
 					{

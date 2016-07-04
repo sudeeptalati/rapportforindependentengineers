@@ -190,7 +190,7 @@ function draw_calendar($month,$year,$engg_id){
 			$print_link="index.php?r=servicecall/PrintAllJobsForDay&engg_id=".$engg_id."&date=".$current_date;
 			$day_summary_link="index.php?r=enggdiary/dailysummary&engineer_id=".$engg_id."&summary_date=".$current_date;
 			$markrouteongooglemap="index.php?r=enggdiary/markrouteongooglemap&engineer_id=".$engg_id."&route_date=".$current_date;
-			$optimiseroutebygoogleapi="index.php?r=enggdiary/optimiseroutebygoogleapi&engineer_id=".$engg_id."&route_date=".$current_date.'&planroute=1';
+			$optimiseroutebygoogleapi="index.php?r=enggdiary/optimiseroutebygoogleapi&engineer_id=".$engg_id."&route_date=".$current_date.'&planroute=0';
 			
 			
 			$count_records=0;
@@ -213,10 +213,11 @@ function draw_calendar($month,$year,$engg_id){
 			{
 				
 				$day_content.="<tr><td colspan='2'><hr>";
-				$day_content.="<a onClick=\"javascript: return confirm('This will update your diary. Are you sure you want to continue  ?');\"  href='".$optimiseroutebygoogleapi."'  target='_blank' ><b>Plan my Route</b> <a><br><br>";
-				$day_content.="<a href='".$print_link."'  target='_blank' ><b>Print All Jobs</b> <a><br><br>";
-				$day_content.="<a href='".$day_summary_link."'  target='_blank' ><b>Daily Summary</b> <a><br><br>";
-				$day_content.="<a href='".$markrouteongooglemap."'  target='_blank' ><b>Google Map Route</b> <a><br><br>";
+				//$day_content.="<a onClick=\"javascript: return confirm('This will update your diary. Are you sure you want to continue  ?');\"  href='".$optimiseroutebygoogleapi."'  target='_blank' ><b>Plan my Route</b> <a><br><br>";
+				$day_content.="<a href='".$optimiseroutebygoogleapi."'  target='_blank' ><h5><div class='fa fa-road'></div> Plan Route</h5><a>";
+				$day_content.="<a href='".$print_link."'  target='_blank' ><h5> <div class='fa fa-print'></div> Print All</h5><a>";
+				$day_content.="<a href='".$day_summary_link."'  target='_blank' ><h5> <div class='fa fa-file-text-o'></div> Summary</h5><a>";
+				//$day_content.="<a href='".$markrouteongooglemap."'  target='_blank' ><b>Google Map Route</b> <a><br><br>";
 				
 				$day_content.="</td></tr>";
 			}

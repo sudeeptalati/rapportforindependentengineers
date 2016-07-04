@@ -1,13 +1,10 @@
-
-
-
-
 <?php
 		
 $waypointdata=array();
 $selected_date_int='';
- $GLOBALS['foobar']='';
- 
+$GLOBALS['foobar']='';
+$setupModel=Setup::model();
+
  
 //foreach ($route_map_results as $r){
 
@@ -15,8 +12,11 @@ for($i=0;$i<count($route_map_results);$i++){
 	$r=$route_map_results[$i];
 	
 	$servicecall=Servicecall::model()->findByPk($r->servicecall_id);
+
+	$fulladd=$setupModel->formataddressinhtml($servicecall->customer->address_line_1,$servicecall->customer->address_line_2,$servicecall->customer->address_line_3,$servicecall->customer->town,$servicecall->customer->postcode);
+	/*
 	$fulladd='';
- 
+
 	if ($servicecall->customer->address_line_1!='' && $servicecall->customer->address_line_1 !=null)
 		$fulladd=$fulladd.$servicecall->customer->address_line_1;	
 
@@ -31,8 +31,10 @@ for($i=0;$i<count($route_map_results);$i++){
 
 	if ($servicecall->customer->postcode!='' && $servicecall->customer->postcode !=null)
 		$fulladd=$fulladd.','.$servicecall->customer->postcode;		
-		
+
+	*/
 	//echo '<br>'.$fulladd;
+
 	$servicecalls_summary_array=array( 'current_route_order'=>$i,'new_route_order'=>'','diary_id'=>$r->id,'customer_postcode'=>$servicecall->customer->postcode);
 	
 	$selected_date_int=$r->visit_start_date;
@@ -163,8 +165,9 @@ function optimiseroute($waypoint_postcodes_and_diaryid, $origin_address,  $desti
 	$starttime=mktime(9,0,0,$s_month,$s_day,$s_year);
 	$slot=1;
 	$start_hour=9;///slot of each call
-	
-	
+
+
+	$avg_time_per_call= Enggdiary::model()->getAveragetimeperservicecall();
 	/*
 	echo '<table border=1>';
 	echo '<tr>';
@@ -192,7 +195,7 @@ function optimiseroute($waypoint_postcodes_and_diaryid, $origin_address,  $desti
 		
 		$diary_id=$new_route_array[$i]['diary_id'];
 		$visit_start_date=$appointment_time;
-		$visit_end_date=$appointment_time+(60*45);;
+		$visit_end_date=$appointment_time+(60*$avg_time_per_call);
 		
 		$update_diary=Enggdiary::model()->updateappointmentduration($diary_id, $visit_start_date , $visit_end_date);
 		

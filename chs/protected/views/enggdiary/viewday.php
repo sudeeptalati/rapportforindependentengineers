@@ -157,7 +157,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
     // additional javascript options for the dialog plugin
     'options'=>array(
         'title'=>'Route Map',
-        'autoOpen'=>false,
+        'autoOpen'=>true,
         'modal'=>false,
 		'width'=>800,
 		'height'=>1000,

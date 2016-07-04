@@ -563,7 +563,7 @@ class Setup extends CActiveRecord
 
 	function curl_file_get_contents_by_sslurl($httpsurl)
 	{
-		define('DS', DIRECTORY_SEPARATOR); 
+		define('DS', DIRECTORY_SEPARATOR);
 		$ch = curl_init();
 		// set URL and other appropriate options
 		curl_setopt($ch, CURLOPT_URL, $httpsurl);

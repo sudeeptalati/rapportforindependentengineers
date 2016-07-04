@@ -130,7 +130,7 @@ else
 	</div>
 	
 	<div class="row">
-		<?php echo "<b>Average time per call (in hours)</b><br>";?>
+		<?php echo "<b>Average time per call (in minutes)</b><br>";?>
 		<?php echo CHtml::textField('',$averagetimeperservicecall, array('disabled'=>'disabled'));?>
 	</div>
 	

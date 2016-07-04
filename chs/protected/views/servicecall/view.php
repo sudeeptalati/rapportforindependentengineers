@@ -6,10 +6,10 @@
 
 <?php
 
-if ($model->engg_diary_id!=NULL || $model->engg_diary_id!='' )
-    $appointment_exists=true;
+if ($model->engg_diary_id != NULL || $model->engg_diary_id != '')
+    $appointment_exists = true;
 else
-    $appointment_exists=false;
+    $appointment_exists = false;
 
 //CALCULATING VALID UNTILL.
 
@@ -95,7 +95,7 @@ if (!empty ($php_warranty_date)) {
                              style="background-color:<?php echo $model->jobStatus->backgroundcolor; ?> ">
 
                             <?php
-                            echo CHtml::link(CHtml::image('images/icons/edit.png', 'Change', array('width' => '20px')),
+                            echo CHtml::link($editicom,
                                 '#', array(
                                     'onclick' => '$("#change-jobstatus-dialog").dialog("open"); return false;',
                                 ));
@@ -339,12 +339,24 @@ if (!empty ($php_warranty_date)) {
                         </tr>
                         <tr>
                             <td colspan="4">
+                                <?php
+                                $searchterm = '';
+                                $searchterm .= ' ' . $model->product->brand->name;
+                                $searchterm .= ' ' . $model->product->productType->name;
+                                $searchterm .= ' ' . $model->product->model_number;
+                                $searchterm .= ' ' . $model->fault_description;
+                                ?>
+                                <?php $google_fault_url = "https://www.google.co.uk/search?q=" . $searchterm; ?>
+
+
                                 <div class="fa fa-file-text-o fa-2x" aria-hidden="true"></div>
-                                <span
-                                    class="datacontenttitle"><?php echo $model->getAttributeLabel('fault_description'); ?></span>
+                                <span class="datacontenttitle"><?php echo $model->getAttributeLabel('fault_description'); ?></span>
+
                                 <br>
                                 <?php echo $model->fault_description; ?>
-
+                                <a href="<?php echo $google_fault_url; ?>" target="_blank">
+                                    <div title="Google This Fault" class="fa fa-globe fa-2x"></div>
+                                </a>
                             </td>
                         </tr>
                     </table>
@@ -444,10 +456,10 @@ if (!empty ($php_warranty_date)) {
 
                     <div class="workcarriedout">
 
-                        <h4>
+                        <div class="datacontenttitle">
                             <div class="fa fa-briefcase fa-2x"></div>
                             <?php echo $model->getAttributeLabel('work_carried_out'); ?>
-                        </h4>
+                        </div>
                         <div class="contentbox">
                             <?php echo $model->work_carried_out; ?>
                         </div>
@@ -494,66 +506,70 @@ if (!empty ($php_warranty_date)) {
                             </td>
                             <td><?php echo $model->engineer->fullname; ?></td>
                             <td>
-                                <?php echo CHtml::link('<div class="fa fa-road" ></div> Book another visit', array('enggdiary/findnextappointmentfromallengg/', 'servicecall_id'=>$model->id, 'engineer_id'=>$model->engineer_id));?>
+                                <?php echo CHtml::link('<div class="fa fa-road" ></div> Book another visit', array('enggdiary/findnextappointmentfromallengg/', 'servicecall_id' => $model->id, 'engineer_id' => $model->engineer_id)); ?>
                             </td>
                         </tr>
 
-                    <?php if($appointment_exists): ?>
-                        <tr>
-                            <td>
-                                <div class="fa fa-calendar fa-2x title" title="Appointment">
-                                </div>
-                            </td>
-                            <td><?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?>
-                            </td>
-                            <td>
-                                <?php echo CHtml::link('<div class="fa fa-share"></div> Move this appointment', array('enggdiary/viewFullDiary/', 'engg_id'=>$model->engineer_id)); ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="fa fa-envelope-o fa-2x title" title="Appointment">
-                                </div>
-                            </td>
-                            <td><?php echo $model->enggdiary->notes; ?></td>
-                            <td>
+                        <?php if ($appointment_exists): ?>
+                            <tr>
+                                <td>
+                                    <div class="fa fa-calendar fa-2x title" title="Appointment">
+                                    </div>
+                                </td>
+                                <td><?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?>
+                                </td>
+                                <td>
+                                    <?php echo CHtml::link('<div class="fa fa-share"></div> Move this appointment', array('enggdiary/viewFullDiary/', 'engg_id' => $model->engineer_id)); ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="fa fa-envelope-o fa-2x title" title="Appointment">
+                                    </div>
+                                </td>
+                                <td><?php echo $model->enggdiary->notes; ?></td>
+                                <td>
 
-                                <?php echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit', array('/enggdiary/update/', 'id'=>$model->engg_diary_id)); ?>
-                            </td>
-                        </tr>
+                                    <?php echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit', array('/enggdiary/update/', 'id' => $model->engg_diary_id)); ?>
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td colspan="3">
-                                <?php $all_appointments=Enggdiary::model()->getappointmentsbyserviceid($model->id);?>
-                                <?php if (count($all_appointments)>1): ?>
-                                    <h5>Previous Appointments</h5>
+                            <tr>
+                                <td colspan="3">
+                                    <?php $all_appointments = Enggdiary::model()->getappointmentsbyserviceid($model->id); ?>
+                                    <?php if (count($all_appointments) > 1): ?>
+                                        <h5>Previous Appointments</h5>
 
-                                    <table>
-                                        <tr>
-                                            <th class="datacontenttitle">Visit Date</th>
-                                            <th class="datacontenttitle">Notes</th>
-                                        </tr>
-
-                                    <?php foreach ($all_appointments as $a): ?>
-
-                                        <?php if ($a->id!=$model->engg_diary_id): ?>
+                                        <table>
                                             <tr>
-                                                <td>
-                                                    <?php echo $setupmodel->formatdatewithtime($a->visit_start_date); ?>
-                                                    -
-                                                    <?php echo date('H:i A', $a->visit_end_date); ?>
-                                                </td>
-                                                <td><?php echo $a->notes; ?> </td>
+                                                <th class="datacontenttitle">Engineer</th>
+                                                <th class="datacontenttitle">Visit Date</th>
+                                                <th class="datacontenttitle">Notes</th>
                                             </tr>
-                                        <?php endif;///end of if ($a->id!=$model->engg_diary_id): ?>
 
-                                    <?php endforeach; ?>
-                                    </table>
+                                            <?php foreach ($all_appointments as $a): ?>
 
-                                <?php endif; ///end of if (count($all_appointments)>1):?>
-                            </td>
-                        </tr>
-                   <?php endif; ///if($appointment_exists): ?>
+                                                <?php if ($a->id != $model->engg_diary_id): ?>
+                                                    <tr>
+                                                        <td><?php echo $a->engineer->fullname; ?> </td>
+
+                                                        <td>
+
+                                                            <?php echo $setupmodel->formatdatewithtime($a->visit_start_date); ?>
+                                                            -
+                                                            <?php echo date('H:i A', $a->visit_end_date); ?>
+                                                        </td>
+                                                        <td><?php echo $a->notes; ?> </td>
+                                                    </tr>
+                                                <?php endif;///end of if ($a->id!=$model->engg_diary_id): ?>
+
+                                            <?php endforeach; ?>
+                                        </table>
+
+                                    <?php endif; ///end of if (count($all_appointments)>1):?>
+                                </td>
+                            </tr>
+                        <?php endif; ///if($appointment_exists): ?>
 
                     </table>
                 </div><!-- end of  <div class="contentbox"> -->
@@ -570,7 +586,7 @@ if (!empty ($php_warranty_date)) {
                              style="background-color:<?php echo $model->jobStatus->backgroundcolor; ?> ">
 
                             <?php
-                            echo CHtml::link(CHtml::image('images/icons/edit.png', 'Change', array('width' => '20px')),
+                            echo CHtml::link($editicom,
                                 '#', array(
                                     'onclick' => '$("#change-jobstatus-dialog").dialog("open"); return false;',
                                 ));
@@ -599,7 +615,7 @@ if (!empty ($php_warranty_date)) {
                     <td>
                         <?php
 
-                        $editicom = '<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>';
+
                         if ($model->job_status_id > 100) {
                             if (UserModule::isAdmin())
                                 echo CHtml::link($editicom, array('update', 'id' => $model->id), array('onclick' => 'return false;', 'style' => 'color:gray;')) . "&nbsp;&nbsp;	<small>(Call is Closed)</small>";

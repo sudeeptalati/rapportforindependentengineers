@@ -1,796 +1,637 @@
-           
-<?php include('servicecall_sidemenu.php'); ?>   
+<?php include('servicecall_sidemenu.php'); ?>
+<?php $baseUrl = Yii::app()->baseUrl; ?>
+<?php $isAdmin = UserModule::isAdmin(); ?>
+<?php $setupmodel = Setup::model(); ?>
+<?php $productModel = Product::model(); ?>
 
-<?php 
 
-$baseUrl = Yii::app()->baseUrl; 
- 
+
+<?php
+//CALCULATING VALID UNTILL.
+
+$php_warranty_date = $model->product->warranty_date;
+$php_waranty_months = $model->product->warranty_for_months;
+$res = '';
+if (!empty ($php_warranty_date)) {
+    $warranty_until = strtotime(date("Y-M-d", $php_warranty_date) . " +" . $php_waranty_months . " month");
+    $res = date('d-M-Y', $warranty_until);
+} else {
+    $warranty_until = '';
+}
 ?>
- 
 
-<link type="text/css" href="<?php echo $baseUrl;?>/css/dialoguebox/smoothness/jquery-ui-1.8.23.custom.css" rel="Stylesheet" />	
-<script type="text/javascript" src="<?php echo $baseUrl;?>/js/dialoguebox/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="<?php echo $baseUrl;?>/js/dialoguebox/jquery-ui-1.8.23.custom.min.js"></script>
-	
-
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'servicecall-updateServicecall-form',
-	'enableAjaxValidation'=>false,
-)); ?>
-
-	<?php 
-		$service_id=$_GET['id'];
-		//echo "STR TO TIME :".strtotime($model->job_payment_date)."<br>";
-		//echo "CONVERTED DATE FROM STR TO TIME :".date('d-M-y', strtotime($model->job_payment_date));
-		//echo "SERVICE ID FROM URL :".$service_id;
-		//echo "ID FROM MODEL :".$model->id;
-		$customerModel=Customer::model()->findByPk($model->customer_id);
-		$productModel=Product::model()->findByPk($model->product_id);
-		$brandModel=Brand::model()->findByPk($productModel->brand_id);
-		//$productTypeModel=ProductType::model()->findByPk($productModel->product_type_id);
-		$productType = $productModel->productType->name;
-		$productTypeModel = ProductType::model()->findByPk($productModel->product_type_id);
-		
-		$contractModel=Contract::model()->findByPk($model->contract_id);
-		$contractName=$contractModel->name;
-		$contractTypeModel=ContractType::model()->findByPk($contractModel->contract_type_id);
-		$engineerModel=Engineer::model()->findByPk($model->engineer_id);
-		$engineerName=$engineerModel->fullname;
-		$enggDiaryModel=Enggdiary::model()->findByPk($model->engg_diary_id);
-		
-		//address of customer.
-		$str1=$customerModel->address_line_1." ".$customerModel->address_line_2." ".$customerModel->address_line_3."\n";
-		$str2=$customerModel->town."\n";
-		$str3=$customerModel->postcode;
-		$address=$str1." ".$str2." ".$str3;
-		
-		
-		
-		
-		//CALCULATING VALID UNTILL.
-	
-		$php_warranty_date=$productModel->warranty_date;
-		$php_waranty_months=$productModel->warranty_for_months;
-		$res='';
-		if (!empty ($php_warranty_date))
-		{
-		$warranty_until= strtotime(date("Y-M-d", $php_warranty_date) . " +".$php_waranty_months." month");
-		$res=date('d-M-Y', $warranty_until);
-		//echo $res;							
-		}
-	?>
-	
 
 <table>
-	
-	<tr>
-		<td><b><a href="javascript: history.go(-1)">Back</a></b></td>
-		<td style="text-align:right"><b>
-				<?php
-				if($model->job_status_id > 100)
-				{
-					echo CHtml::link('Edit',array('update','id'=>$model->id), array('onclick'=>'return false;','style'=>'color:gray;'))."&nbsp;&nbsp;	<small>(Call is Closed)</small>";
-					//echo "<br>here";
-				} 	
-				else
-					echo CHtml::link('Edit',array('update','id'=>$model->id)); 
-				
-				?>
-				
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<?php 
-					$previewImgUrl = Yii::app()->request->baseUrl.'/images/pdf.gif';
-					$previewImg = CHtml::image($previewImgUrl, 'Preview', array('width'=>35, 'height'=>35, 'title'=>'Preview in Pdf'));
-				?>
-				<?php 	
-// 						echo CHtml::link('Preview',array('Preview',
-// 											'id'=>$model->id), array('target'=>'_blank')
-// 										);
-						echo CHtml::link($previewImg, array('Preview','id'=>$model->id), array('target'=>'_blank'));
-										
-				?>
-				
-			</b>
-		 <b>
-			<?php 
-					$htmlImgUrl = Yii::app()->request->baseUrl.'/images/html_file.png';
-					$htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width'=>35, 'height'=>35, 'title'=>'Preview in HTML'));
-			?>
-			<?php 
-// 				echo CHtml::link('HTML',array('htmlPreview',
-// 						'id'=>$model->id), array('target'=>'_blank')
-// 				);
-				echo CHtml::link($htmlImg, array('htmlPreview','id'=>$model->id), array('target'=>'_blank'));
-				
-			?>
-			 
-			</b>
-			
-			<b>
-			<?php 
-					$mobileImgUrl = Yii::app()->request->baseUrl.'/images/mobile.png';
-					$mobileImg = CHtml::image($mobileImgUrl, 'sendToMobile', array('width'=>35, 'height'=>35, 'title'=>'Send to Mobile'));
-  
- 
-					echo CHtml::link($mobileImg,  array('/gomobile/default/sendsingleservicecalltoserver','id'=>$model->id) , array('target'=>'_blank'));
-				
-			?>
-			 
-			</b>
-			
-		</td>
-	</tr>
-	
-	<!-- NOTIFICATION DIV COMMENTED FOR TESTING 
-	<tr>
-	<td  colspan="2">
-	<div class=notification><?php //echo $notification_message; ?></div>
-	</td>
-	</tr>  
-	-->
-	
+    <tr>
+        <td colspan="2" style="text-align:center">
+            <h2>Servicecall</h2>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:left;width:50%">
+            <a href="javascript: history.go(-1)"><i class="fa fa-arrow-left fa-2x"></i></a>
+        </td>
 
-	<tr><td colspan="2" style="text-align:center">
-		<h2>Service Call Details</h2>
-		</td>
-	</tr>
-		<tr>
-		<th><b>Job Status : </b> 
-		<h6 style="color:maroon"><?php echo $model->jobStatus->name; ?></h6></th>
-		<th >Service Ref. No.# <h1 style="color:green"><?php echo $model->service_reference_number;?></h1></th>
-		
-	</tr>
-	
-	
-	
-	
-	
-	
-	<tr>
-		<td>
-		<?php
-				$viewFaultDate='';
-				if (!empty($model->fault_date))
-				{
-					
-				
-				$viewFaultDate=date('d-M-Y', $model->fault_date);?>
-		<?php echo $form->labelEx($model,'fault_date'); ?>
-		<br>
-		<?php echo CHtml::textField('',$viewFaultDate,array('disabled'=>'disabled'));
-				}//end of if empty
-		?>
-		<br>
-		<?php echo $form->labelEx($model,'fault_code'); ?>
-		<br>
-		<?php echo $form->textField($model,'fault_code',array('disabled'=>'disabled')); ?>
-		<br>
-		<?php echo $form->labelEx($model,'fault_description'); ?>
-		<br>
-		<?php echo $form->textArea($model,'fault_description',array('rows'=>4, 'cols'=>40, 'disabled'=>'disabled')); ?>
-	</td>
-	<td style="vertical-align:top;">
-	
-		<table><tr><td>
-			<br><?php echo "<b>Appointment</b><br><br>";?>
-			<b><i><?php 	echo  $model->engineer->fullname;?></i></b>
-		<?php 	 
-				//echo $form->labelEx($enggDiaryModel,'visit_start_date').'<br>';	
-				 if (!empty($enggDiaryModel->visit_start_date)){
-						echo '<br>'.date('d-M-y h:i:s A', $enggDiaryModel->visit_start_date);
-						echo '&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('Change Appointment', array('enggdiary/viewFullDiary/', 'engg_id'=>$model->engineer_id));
- 						echo '<br>'.$enggDiaryModel->notes;
- 						echo '&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('Update', array('/enggdiary/update/', 'id'=>$enggDiaryModel->id));
-						echo '<br><br>';
- 						
- 				}
-		?>
-		<?php 
-//			if(!empty($enggDiaryModel->visit_start_date))
-//			{
-//				$enggDiaryModel->visit_start_date=date('d-M-y', $enggDiaryModel->visit_start_date);
-//			}
-		?>
-		 
-		<?php //echo $form->textField($enggDiaryModel,'visit_start_date', array('disabled'=>'disabled')); ?>
-				
-				
-		</td><td>
-		
-		<?php //echo $form->DropDownList($model, 'engineer_id', $productModel->getAllCompanyNames	(), array('disabled'=>'disabled')); ?>
-		
-	<?php
-			$imgurl = Yii::app()->request->baseUrl.'/images/calendar.gif';
-			$imghtml = CHtml::image($imgurl,'Add to Calendar',array('width'=>25, 'height'=>25, 'title'=>'Add to Outlook or iCal' )); 
-			echo CHtml::link($imghtml, array('Enggdiary/appointIcalender','service_id'=>$model->id));
-		?></td>
-		</tr>
-		<tr><td>
-		<?php echo $form->labelEx($model,'insurer_reference_number'); ?>
-<!--		<br>-->
-		<?php echo $form->textField($model,'insurer_reference_number', array('disabled'=>'disabled')); ?>
-		
-		<br>
-		
-		<?php $model->contract_id=$productModel->contract->id; ?>
-		<?php echo $form->labelEx($model,'contract_id'); ?>
-		
-		<?php echo CHtml::activeDropDownList($model,'contract_id', $model->getAllContract(),array('disabled'=>'disabled')); ?>
-		</td></tr></table>
-	</td>
-	</tr>
-		
-	
-	
-	
-	
-	<tr><td colspan="2" style="text-align:center"><h2>Technician Report</h2></td></tr>
-	<tr>
-		<td>
-			<?php echo $form->labelEx($model,'work_carried_out'); ?>
-			<?php echo $form->textArea($model,'work_carried_out', array('rows'=>4, 'cols'=>'30',  'disabled'=>'disabled')); ?>
-			</td>
-			<td>
-			<?php echo $form->labelEx($model,'notes'); ?><br>
-			<?php echo $form->textArea($model,'notes',array('rows'=>4, 'cols'=>33, 'disabled'=>'disabled')); ?>	
-				</td>
-			</tr>
-			<tr>
-			<td>
-			
-			
-			<?php echo $form->labelEx($model,'spares_used_status_id'); ?>
-			<?php echo $form->dropDownList($model, 'spares_used_status_id', array('0'=>'No', '1'=>'Yes'),array('disabled'=>'disabled')); ?><br>
-			<?php 
-				if($model->spares_used_status_id == 1)
-				{
-					//echo "Spares used";
-					$sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id'=> $model->id));
-					?>
-					<table style="width:75%;">
-						<tr><th>Item</th>
-							<th>Quantity</th>
-							<th>Unit Price</th>
-							<th>Total</th>
-						</tr>
-					<?php 					
-					foreach ($sparesModel as $data)
-					{
-						?>
-						<tr>
-						<td><?php echo $data->item_name; ?></td>
-						<td><?php echo $data->quantity; ?></td>
-						<td><?php echo $data->unit_price; ?></td>
-						<td><?php echo $data->total_price; ?></td>
-						</tr>
-						<?php 
-						
-					
-					}//end of foreach of spares().
-				
-					?> </table><?php 
-				
-				}//end of if($spares_used == 1).	
-			
-			?>
-		<table>
-				<tr><td>
-					<?php echo $form->labelEx($model,'total_cost'); ?>
-					</td>
-					<td>
-					<?php echo $form->textField($model,'total_cost',array('disabled'=>'disabled')); ?>
-					</td>
-				</tr>
-				<tr><td>
-					<?php echo $form->labelEx($model,'vat_on_total'); ?>
-					</td>
-					<td>
-					<?php echo $form->textField($model,'vat_on_total', array('disabled'=>'disabled')); ?>
-					</td>
-				</tr>
-				<tr>
-					<td>
-					<?php echo $form->labelEx($model,'net_cost'); ?>
-					</td>
-					<td>
-					<?php echo $form->textField($model,'net_cost', array('disabled'=>'disabled')); ?>
-					</td>
-				</tr>
-				<tr>
-					<td>
-					<?php
-						if(!empty($model->job_finished_date))
-						{
-							$model->job_finished_date=date('d-M-y',$model->job_finished_date);
-						}
-					?>
-					<?php echo $form->labelEx($model,'job_finished_date'); ?>
-					</td>
-					<td>
-					<?php echo $form->textField($model,'job_finished_date', array('disabled'=>'disabled')); ?>
-					</td>
-				</tr>
-				<tr>
-					<td>
-					<?php
-						if(!empty($model->job_payment_date))
-						{
-							$model->job_payment_date=date('d-M-y',$model->job_payment_date);
-						}
-					?>
-					<?php echo $form->labelEx($model,'job_payment_date'); ?>
-					</td>
-					<td>
-					<?php echo $form->textField($model,'job_payment_date', array('disabled'=>'disabled'));?>
-					</td>
-				</tr>
-			</table>
-			
- 		</td>
-		<td style="vertical-align: top;">
-			<br>
-			
-			
-			<?php echo $form->labelEx($model,'comments'); ?><small>&nbsp;&nbsp;&nbsp;(not visible on call sheet)</small><br>
-			<?php echo $form->textArea($model,'comments',array('rows'=>4, 'cols'=>33, 'disabled'=>'disabled')); ?>	
-			<br>
-			
-			<?php echo $form->labelEx($model,'work_summary'); ?>
-			<?php echo $form->textArea($model,'work_summary',array('rows'=>3, 'cols'=>33, 'disabled'=>'disabled')); ?>	
-			
-			
-		</td>
-		
-	</tr>
-<tr><td colspan="2" style="text-align:left">
-		<h4>GoMobile Log</h4>
-		<table style='width:100%'>
-		<tr>
-			<th style='width:25%'>Activity Date</th>
-			<th>Status</th>	
-			<th>Comments</th>
-		</tr>
-		
-		<?php
-		
-			$gomobile_server_url=Gmservicecalls::model()->getserverurl();
-			$gmservicecallslogs=Gmservicecalls::model()->findAllByAttributes(array('servicecall_id'=> $model->id), array('order'=>'created ASC'));
-			
-			foreach ($gmservicecallslogs as $gmservice)
-			{
-			echo '<tr><td><br></td><tr>';
-			echo '<tr style="background: #EAEAEA;" >';
-				echo '<td>'.date ('l, j-F-Y  h:i:s A',$gmservice->created).'</td>';
-				
-				echo '<td>'.$gmservice->server_status->name.'</td>';
-				echo '<td>';
-				if ($gmservice->server_status_id!='5')
-				{
-					echo $gmservice->comments;
-				}
-				else{ /////HERE WE WILLD DECODE JSON Comments
-					?>
-					 
-					
-					<div style='background: #EAEAEA;padding: 10px;border-radius: 15px;'>
-					<?php
-					$data=json_decode($gmservice->comments);
-					$wd=json_decode($data->work_carried_out);
-					$img=json_decode($data->images);
-					
-					echo '<b>Work Carried Out :</b><pre>'. $wd->workdone.'</pre>';
-					echo '<b>Report Findings  :</b><pre>'.$wd->report_findings.'</pre>';
-					echo '<br><b>Parts Used:</b>';
-					echo '<pre>';
-						
-					if (count($wd->parts)==0)
-					{
-						echo '<b>NO Spares Parts Reported as Being used in the Service</b>';
-					}else{
-					
-						echo "<table style='width:25%'><tr><th>Item</th><th>Qty</th></tr>";
-						foreach ($wd->parts as $parts)
-						{
-							echo '<tr>';
-							echo '<td>'.$parts->partused."</td>";
-							echo '<td>'.$parts->quantity."</td>";
-							echo '</tr>';
-						}
-						echo '</table>';
-					}///end of else if (count($wd->parts)==0)
-					
-					echo '</pre>';
-					
-					
-					if ($img->product!='NOIMAGE' || $img->findings!='NOIMAGE' )
-					{
-					?>
-				 				
-						<table style='width:75%'>
-							<tr>
-								<td><b>Product Image</b></td>
-								<td><b>Findings Image</b></td>
-							</tr>
-							<tr>
-								<td>
-									<?php 
-										if ($img->product!='NOIMAGE')
-										{	$img_url=$gomobile_server_url.'imagesfrommobile/'.$img->product;
-											echo '<img name="productimage" id="productimage"  src='.$img_url.' height="50px" width="50px">';
-											?>
-											<div class="productimagediv">
-												  <img src='<?php echo $img_url;?>' alt="Product Image" />
-											</div>
-											<?php											
-										}///END OF if ($img->product!='NOIMAGE') 
-									?>
-								</td>
-								<td>
-									<?php  
-										if ($img->findings!='NOIMAGE')
-										{	$img_url=$gomobile_server_url.'imagesfrommobile/'.$img->findings;
-											//echo '<a href='.$img_url.' target=_blank><img src='.$img_url.' height="50px" width="50px"></a>';
-											echo '<img name="findingimage" id="findingimage"  src='.$img_url.' height="50px" width="50px">';
-											?>
-											<div class="findingimagediv">
-												  <img src='<?php echo $img_url;?>' alt="Finding Image" />
-											</div>
-											<?php											
-										}///END OF if ($img->findings!='NOIMAGE')
-									?>
-									
- 
+        <td style="text-align:right; width:30%">
+
+            <table>
+                <tr>
+                    <td>
+                        <?php
+
+                        $editicom = '<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>';
+                        if ($model->job_status_id > 100) {
+                            if (UserModule::isAdmin())
+                                echo CHtml::link($editicom, array('update', 'id' => $model->id), array('onclick' => 'return false;', 'style' => 'color:gray;')) . "&nbsp;&nbsp;	<small>(Call is Closed)</small>";
+                            //echo "<br>here";
+                        } else
+                            echo CHtml::link($editicom, array('update', 'id' => $model->id), array('title' => 'Edit'));
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $previewImgUrl = Yii::app()->request->baseUrl . '/images/pdf.gif';
+                        $previewImg = CHtml::image($previewImgUrl, 'Preview', array('width' => 35, 'height' => 35, 'title' => 'Preview in Pdf'));
+                        echo CHtml::link($previewImg, array('Preview', 'id' => $model->id), array('target' => '_blank'));
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $htmlImgUrl = Yii::app()->request->baseUrl . '/images/html_file.png';
+                        $htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Preview in HTML'));
+                        echo CHtml::link($htmlImg, array('htmlPreview', 'id' => $model->id), array('target' => '_blank'));
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $htmlImgUrl = Yii::app()->request->baseUrl . '/images/invoice.png';
+                        $htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Invoice'));
+                        echo CHtml::link($htmlImg, array('htmlPreview', 'id' => $model->id), array('target' => '_blank'));
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $mobileImgUrl = Yii::app()->request->baseUrl . '/images/mobile.png';
+                        $mobileImg = CHtml::image($mobileImgUrl, 'sendToMobile', array('width' => 35, 'height' => 35, 'title' => 'Send to Mobile'));
+                        echo CHtml::link($mobileImg, array('/gomobile/default/sendsingleservicecalltoserver', 'id' => $model->id), array('target' => '_blank'));
+                        ?>
+                    </td>
+
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <th style="width:50%; padding:20px;">
+            <table>
+                <tr>
+                    <td>
+                        <div class="contentbox"
+                             style="background-color:<?php echo $model->jobStatus->backgroundcolor; ?> ">
+
+                            <?php
+                            echo CHtml::link(CHtml::image('images/icons/edit.png', 'Change', array('width' => '20px')),
+                                '#', array(
+                                    'onclick' => '$("#change-jobstatus-dialog").dialog("open"); return false;',
+                                ));
+                            ?>
 
 
-
-								</td>
-							</tr>
-						</table>
-					<?php
-					}///end of if ($img->product!='NOIMAGE' || $img->findings!='NOIMAGE' )
-					?>
-					
-					</div>
-			 
-					<?php
-				}///end of else ($gmservice->server_status_id!='5') ie if data is recieved from the server
-				
-				
-				
-				echo '</td>';
-			echo '</tr>';
-	
-			}//end of foreach ($gmservicecallslogs 
-	 
-		?>
-		</table>
-		</td>	
-	</tr>
-	
-	
-	
-	
-	<tr><td colspan="2" style="text-align:center">
-	<h3>Previous Service Calls </h3>
-	</td></tr>
-	<tr><td colspan="2" style="text-align:center">
-	<table><tr>
-    	<th>Service Ref#</th>
-		<th>Product</th>
-    	<th>Reported Date</th>
-    	<th>Fault Description</th>
-    	<th>Engineer Visited</th>
-    	<th>Visit Date</th>
-    	<th>Job Status</th>
-    	</tr>
-    	<?php $previousCall = $model->previousCall($model->customer_id);
-    	foreach ($previousCall as $data)
-    	{
-			if ($data->service_reference_number!=$model->service_reference_number)//////since we want to skip the current service call
-			{
-    		$enggdiaryModel=Enggdiary::model()->findByPk($data->engg_diary_id);
-		?>
-		<tr>
-    		<td><?php echo CHtml::link($data->service_reference_number, array('view', 'id'=>$data->id));?></td>
-    		<td><?php echo "<b>".$data->product->productType->name."<b>";?></td>
-    		<td><?php
-    				if(!empty($data->fault_date)) 
-    					echo date('d-M-Y', $data->fault_date);
-    			?>
-    		</td>
-    		<td><?php echo $data->fault_description;?></td>
-    		<td><?php echo $data->engineer->company.', '.$data->engineer->fullname;?></td>
-    		<td><?php
-    				if(!empty($enggdiaryModel->visit_start_date)) 
-    					echo date('d-M-Y',$enggdiaryModel->visit_start_date);?>
-    		</td>
-    		<td style="color:maroon"><?php echo $data->jobStatus->name;?></td>
-    		</tr>
-		<?php
-			}///end of if
-
-		}//end of foreach().?>
-    	</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<h4>Customer Details</h4>
-			<small><?php echo CHtml::link('Edit Details',array('Customer/openDialog','customer_id'=>$customerModel->id, 'product_id'=>$productModel->id));?></small>
-		</td>
-		<td>
-			<h4>Product Details</h4>
-			<small><?php echo CHtml::link('Edit Details',array('Product/updateProduct','id'=>$productModel->id));?></small>
-		</td>
-	</tr>
-	
-	<tr>
-		<td>
-			<?php echo $form->labelEx($customerModel,'fullname'); ?>
-			<br>
-			<?php echo $form->textField($customerModel,'fullname', array('disabled'=>'disabled')); ?>
-			<?php echo $form->error($customerModel,'fullname'); ?>
-			<br><br>
-			<?php echo "<br>Address";?>
-
-			<!-- *********** GOOGLE MAP DISPLAY ***************** -->
-			
-			 
-			
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"  type="text/javascript"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"  type="text/javascript"></script>
-
-<style>
-    .gBubble
-    {
-        color:black;
-        font-family:Tahoma, Geneva, sans-serif;
-        font-size:12px;    
-    }
-    .mapBox{
-		background-image:url(<?php echo $baseUrl."/images/maps.png"; ?>);
-		background-repeat:no-repeat;
-		background-size: 30px;
-		background-position: initial;
-		width:177px;
-		background-color: #C9E0ED;
-   }
-   
-   	div.findingimagediv, div.productimagediv
-	{
-    	display: none;
-	}
-	
-	
-	 
-</style>
-<script>
-    var map;
-    var coords = new Object();
-    var markersArray = [];
-    coords.lat = 44.856051;
-    coords.lng = -93.242539;
-    
-    $(document).ready(function() 
-    {
-    
-        GetLocation();
-        $( "#map_container" ).dialog({
-            autoOpen:false,
-            width: 555,
-            height: 400,
-            resizeStop: function(event, ui) {google.maps.event.trigger(map, 'resize')  },
-            open: function(event, ui) {google.maps.event.trigger(map, 'resize'); }      
-        });  
-
-        $( "#showMap" ).click(function() {           
-            $( "#map_container" ).dialog( "open" );
-            map.setCenter(new google.maps.LatLng(coords.lat, coords.lng), 10);
-            return false;
-        });    
-        $(  "input:submit,input:button, a, button", "#controls" ).button();
-        initialize();
-        plotPoint(coords.lat,coords.lng,'Mall of America','<span class="gBubble"><b>Mall of America</b><br>60 East Brodway<br>Bloomington, MN 55425</span>');
+                            <?php
+                            $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+                                'id' => 'change-jobstatus-dialog',
+                                // additional javascript options for the dialog plugin
+                                'options' => array(
+                                    'title' => 'Change Status',
+                                    'autoOpen' => false,
+                                    'resizable' => false,
+                                    'modal' => 'true',
+                                ),
+                            ));
+                            $this->renderPartial('changejobstatusonly');
+                            $this->endWidget('zii.widgets.jui.CJuiDialog');
+                            // the link that may open the dialog
+                            ?>
 
 
-		//////End of maps. 
-		
-		 $("td").css("  vertical-align", "top");
-		///Images Dialogue
-		$( "#productimage" ).click(function() { 
- 			$('div.productimagediv').dialog({
- 				width: 'auto',
-            	height: 'auto',
-            	title:'Hit escape key to exit'
- 			});
-		}); 
+                            <?php echo $model->jobStatus->name; ?>
 
 
-		$( "#findingimage" ).click(function() { 
- 			$('div.findingimagediv').dialog({
- 				width: 'auto',
-            	height: 'auto',
-            	title:'Hit escape key to exit'
+                        </div>
 
- 			});
-		}); 
-		///End of Images Dialogue
-
-    });///end of document ready function
-
-    
+                    </td>
+                </tr>
+            </table>
 
 
-    function plotPoint(srcLat,srcLon,title,popUpContent,markerIcon)
-    {
-            var myLatlng = new google.maps.LatLng(srcLat, srcLon);            
-            var marker = new google.maps.Marker({
-                  position: myLatlng, 
-                  map: map, 
-                  title:title,
-                  icon: markerIcon
-              });
-              markersArray.push(marker);
-            var infowindow = new google.maps.InfoWindow({
-                content: popUpContent
-            });
-              google.maps.event.addListener(marker, 'click', function() {
-              infowindow.open(map,marker);
-            });                                          
-    }
-    function initialize() 
-    {      
-    
-        var latlng = new google.maps.LatLng(coords.lat, coords.lng);
-        var myOptions = {
-          zoom: 10,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-       map = new google.maps.Map(document.getElementById("map_canvas"),  myOptions);                         
-    }
-    
-    
-    
-    function GetLocation() {
-            var geocoder = new google.maps.Geocoder();
-            var address = document.getElementById("Address").value;
-            geocoder.geocode({ 'address': address }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    var latitude = results[0].geometry.location.lat();
-                    var longitude = results[0].geometry.location.lng();
-                    console.log("Latitude: " + latitude + "\nLongitude: " + longitude);
-					coords.lat=latitude;
-				    coords.lng = longitude;
-				    initialize();
-				    plotPoint(coords.lat,coords.lng,'Customer Loctaion','<b>'+document.getElementById("Customer_fullname").value+'</b></br>'+document.getElementById("Address").value);
-                  
-                } else {
-                    alert("Postcode cooredinates Request failed.")
-                }
-            });
-        };
-        
-
-        
-                
-</script>
-
- 
- 
+        </th>
+        <th>
+            <h1 style="color:green;text-align: right;"><?php echo $model->service_reference_number; ?></h1>
+        </th>
+    </tr>
 
 
+    <tr>
+        <td colspan="2">
+            <div class="customerbox contentbox">
+                <div class="customerheadingbox headingbox">Customer</div>
+                <div class="contentbox">
 
- 
+                    <table>
+                        <tr>
+                            <td style="width: 50%">
+                                <?php echo $model->customer->fullname; ?>
 
- 
-    <div id="map_container" title="Location Map">    
-        <div id="map_canvas" style="width:100%;height:100%;"></div>
-    </div>
-    
-    <div id="controls">
-	  <input type="button" name="showMap" value="Show On Map" id="showMap"  class="mapBox" />
-         	
-    </div>    
-			<!-- *********** END OF GOOGLE MAP DISPLAY ***************** -->
+                                <div class="address">
+                                    <?php
+                                    $line1 = $model->customer->address_line_1;
+                                    $line2 = $model->customer->address_line_2;
+                                    $line3 = $model->customer->address_line_3;
+                                    $town = $model->customer->town;
+                                    $postcode = $model->customer->postcode;
+                                    $address = $setupmodel->formataddressinhtml($line1, $line2, $line3, $town, $postcode);
 
-	<?php echo CHtml::textArea('Address', $address,  array('rows'=>4, 'cols'=>30,'disabled'=>'disabled')); ?>
-			 
-		  	<br>
-		  	<?php echo $form->labelEx($customerModel,'telephone'); ?>
-			<br>
-			<?php echo $form->textField($customerModel,'telephone',array('disabled'=>'disabled')); ?>
-			<?php echo $form->textField($customerModel,'mobile',array('disabled'=>'disabled')); ?>
-			<br>
-			<?php echo $form->labelEx($customerModel,'email'); ?>
-			<br>
-			<?php echo $form->textField($customerModel,'email',array('disabled'=>'disabled')); ?>
-			<br>
-			<?php echo $form->labelEx($customerModel,'notes'); ?>
-			<br>
-			<?php echo $form->textArea($customerModel,'notes',array('disabled'=>'disabled', 'rows'=>4, 'cols'=>40)); ?>
-		</td>
-		<td style="vertical-align:top;">
-			<table>
-			<tr>
-				<td style="vertical-align:top;">
-					<?php echo $form->labelEx($brandModel,'name'); ?><br>
-					<?php echo $form->textField($brandModel,'name', array('disabled'=>'disabled')); ?>
-					
-					<?php echo $form->labelEx($productTypeModel ,'name'); ?><br>
-					<?php echo $form->textField($productTypeModel,'name', array('disabled'=>'disabled')); ?>
-					
-					<?php //echo CHtml::textField('',$productType, array('disabled'=>'disabled')); ?>
-					
-					<br>
-					<?php echo $form->labelEx($productModel,'model_number'); ?><br>
-					<?php echo $form->textField($productModel,'model_number',array('disabled'=>'disabled')); ?>
-					<br>
-					<?php echo $form->labelEx($productModel,'serial_number'); ?><br>
-					<?php echo $form->textField($productModel,'serial_number',array('disabled'=>'disabled')); ?>
-					<br>
-					<?php echo $form->labelEx($productModel,'enr_number'); ?><br>
-					<?php echo $form->textField($productModel,'enr_number',array('disabled'=>'disabled')); ?>
-				</td>
-				<td style="vertical-align:top;">
-					<?php echo $form->labelEx($productModel,'purchased_from'); ?><br>
-					<?php echo $form->textField($productModel,'purchased_from', array('disabled'=>'disabled')); ?>
-					<br>
-					<?php $viewPurchaseDate='';
-							if(!empty($productModel->purchase_date)){
-								$viewPurchaseDate=date('d-M-y', $productModel->purchase_date);
-							}
-						?>
-					<?php echo $form->labelEx($productModel,'purchase_date'); ?><br>
-					<?php echo CHtml::textField('',$viewPurchaseDate,  array('disabled'=>'disabled')); ?>
-					<br>
-					<?php 	//$viewWarrantyDate='';
-							if (!empty($productModel->warranty_date))
-							{
-							$productModel->warranty_date=date('d-M-y', $productModel->warranty_date);
-							}
-							?>
-					<?php echo $form->labelEx($productModel,'warranty_date'); ?><br>
-					<?php //echo CHtml::textField('',$viewWarrantyDate,  array('disabled'=>'disabled')); ?>
-					<?php echo $form->textField($productModel, 'warranty_date', array('disabled'=>'disabled'));?>
-					
-					<?php echo $form->labelEx($productModel,'warranty_until'); ?><br>
-					<?php 
-						echo CHtml::textField('Warranty Date',$res,  array('disabled'=>'disabled'));
-					?>
-					<br>
-					<?php echo $form->labelEx($productModel,'fnr_number'); ?><br>
-					<?php echo $form->textField($productModel,'fnr_number',array('disabled'=>'disabled')); ?>
-					
-				</td>
-				</tr>
-				<tr>
-					<td>
-						<?php 
-							if($productModel->discontinued == 0)
-								$discontinued_value = 'No';
-							else 
-								$discontinued_value = 'Yes';
-						?>
-						<?php echo $form->labelEx($productModel,'discontinued'); ?><br>
-						<?php //echo $form->textField($productModel,'discontinued',array('disabled'=>'disabled')); ?>
-						<?php echo CHtml::textField('', $discontinued_value, array('disabled'=>'disabled'));?>
-					</td>
-					<td colspan="2">
-						<?php echo $form->labelEx($productModel,'notes'); ?><br>
-						<?php echo $form->textArea($productModel,'notes',array('disabled'=>'disabled', 'rows'=>4, 'cols'=>20)); ?>
-					</td>
-				</tr>
-				</table><!-- end of product table -->
-			</td>
-		</tr>
+                                    ?>
+                                    <?php echo $address; ?>
+                                </div>
 
-		
-		
-	
-	
-	
+                                <table style="width:20%">
+                                    <tr>
+                                        <td><span class="fa fa-mobile"></span></td>
+                                        <td>
+                                            <?php echo $model->customer->mobile; ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="fa fa-mobile"></span></td>
+                                        <td>
+                                            <?php echo $model->customer->fax; ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="fa fa-phone"></span></td>
+                                        <td>
+                                            <?php echo $model->customer->telephone; ?>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div class="fa fa-sticky-note-o fa-2x" aria-hidden="true" title="Customer Notes"></div>
+                                &nbsp;&nbsp;&nbsp;
+                                <?php echo $model->customer->notes; ?>
+
+
+                            </td>
+                            <td style="width: 50%; text-align: right;">
+
+
+                                <a target="_blank"
+                                   href="https://www.google.co.uk/maps?q=<?php echo strip_tags($address); ?>">
+                                    <span class="fa fa-map-o fa-2x" aria-hidden="true"></span></a>
+                                <br>
+                                <div class="googlemapdiv" style="display:block; float: right;">
+                                    <?php $this->renderPartial('postcodeongooglemap', array('address' => $address)); ?>
+                                </div><!-- googlemapdiv -->
+
+                            </td>
+                        </tr>
+                    </table>
+                </div><!-- End of <div class="contentbox"> -->
+            </div><!-- end of <div class="customerbox contentbox"> -->
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div class="productbox contentbox">
+                <div class="productheadingbox headingbox">Product</div>
+                <div class="contentbox">
+                    <table style="width: 100%">
+
+                        <tr>
+                            <th style="width: 25%"></th>
+                            <th style="width: 25%"></th>
+                            <th style="width: 25%"></th>
+                            <th style="width: 25%"></th>
+                        </tr>
+                        <tr>
+                            <td><span class="datacontenttitle">Brand</span>
+                            <td><?php echo '' . $model->product->brand->name; ?></td>
+                            <td><span class="datacontenttitle">Product Type</span>
+                            <td><?php echo '' . $model->product->productType->name; ?></td>
+                        </tr>
+                        <tr>
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('model_number'); ?></span>
+                            <td><?php echo '' . $model->product->model_number; ?></td>
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('serial_number'); ?></span>
+                            <td><?php echo '' . $model->product->serial_number; ?></td>
+                        </tr>
+
+                        <tr>
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('enr_number'); ?></span>
+                            <td><?php echo '' . $model->product->enr_number; ?></td>
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('production_code'); ?></span>
+                            <td><?php echo '' . $model->product->production_code; ?></td>
+                        </tr>
+
+                        <tr>
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('purchased_from'); ?></span>
+                            <td><?php echo '' . $model->product->purchased_from; ?></td>
+
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('purchase_date'); ?></span>
+                            <td><?php echo Setup::model()->formatdate($model->product->purchase_date); ?></td>
+                        </tr>
+                        <tr>
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('warranty_date'); ?></span>
+                            <td><?php echo Setup::model()->formatdate($model->product->warranty_date); ?></td>
+
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('warranty_until'); ?></span>
+                            <td><?php echo $res; ?></td>
+                        </tr>
+                        <tr>
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('discontinued'); ?></span>
+                            </td>
+                            <td><?php
+                                if ($model->product->discontinued == 0)
+                                    echo 'No';
+                                else
+                                    echo 'Yes';
+                                ?>
+                            </td>
+                            <td><span
+                                    class="datacontenttitle"><?php echo $productModel->getAttributeLabel('fnr_number'); ?></span>
+                            <td><?php echo '' . $model->product->fnr_number; ?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div title="Product Notes" class="fa fa-sticky-note-o fa-2x" aria-hidden="true"></div>
+                                &nbsp;&nbsp;&nbsp;
+                                <?php echo $model->product->notes; ?>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+            </div><!-- end of <div class="productbox contentbox"> -->
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div class="servicebox contentbox">
+                <div class="serviceheadingbox headingbox">Servicecall</div>
+                <div class="contentbox">
+                    <table>
+                        <tr>
+                            <th style="width: 25%"></th>
+                            <th style="width: 25%"></th>
+                            <th style="width: 25%"></th>
+                            <th style="width: 25%"></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div
+                                    class="datacontenttitle"><?php echo $model->getAttributeLabel('fault_date'); ?></div>
+                            </td>
+                            <td>
+                                <?php echo $setupmodel->formatdate($model->fault_date); ?>
+                            </td>
+                            <td>
+                                <div
+                                    class="datacontenttitle"><?php echo $model->getAttributeLabel('contract_id'); ?></div>
+                            </td>
+                            <td>
+                                <?php echo $model->contract->name; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div
+                                    class="datacontenttitle"><?php echo $model->getAttributeLabel('fault_code'); ?></div>
+                            </td>
+                            <td>
+                                <?php echo $model->fault_code; ?>
+                            </td>
+                            <td>
+                                <div
+                                    class="datacontenttitle"><?php echo $model->getAttributeLabel('insurer_reference_number'); ?></div>
+                            </td>
+                            <td>
+                                <?php echo $model->insurer_reference_number; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="fa fa-file-text-o fa-2x" aria-hidden="true"></div>
+                                <span
+                                    class="datacontenttitle"><?php echo $model->getAttributeLabel('fault_description'); ?></span>
+                                <br>
+                                <?php echo $model->fault_description; ?>
+
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%;">
+                        <?php
+                        if ($model->spares_used_status_id == 1) {
+                            ?>
+
+                            <?php //echo "Spares used";
+                            $sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id' => $model->id));
+                            ?>
+
+                            <tr>
+                                <th colspan="5"><h4>Spares</h4></th>
+                            </tr>
+                            <tr>
+                                <th><span class="datacontenttitle">Item</span></th>
+                                <th><span class="datacontenttitle">Part Number</span></th>
+                                <th><span class="datacontenttitle">Quantity</span></th>
+                                <th><span class="datacontenttitle">Unit Price</span></th>
+                                <th><span class="datacontenttitle">Total Price</span></th>
+                            </tr>
+                            <!--
+                            <tr>
+                                <td colspan='8'>
+                                    <hr>
+                                </td>
+                            </tr>
+                            -->
+                            <?php foreach ($sparesModel as $data) { ?>
+                                <tr>
+                                    <td><?php echo $data->item_name; ?></td>
+                                    <td><?php echo $data->part_number; ?></td>
+
+                                    <td><?php echo $data->quantity; ?></td>
+                                    <td><?php echo $data->unit_price; ?></td>
+                                    <td><?php echo $data->total_price; ?></td>
+
+                                </tr>
+                            <?php }//end of foreach of spares()?>
+
+
+                            <tr>
+                                <td colspan="3"></td>
+                                <td><span
+                                        class="datacontenttitle"><?php echo $model->getAttributeLabel('total_cost'); ?></span>
+                                </td>
+                                <td><b><?php echo $model->total_cost; ?></b></td>
+                            </tr>
+
+                        <?php }//end of if($spares_used == 1).?>
+
+                    </table>
+
+                    <?php $previousCall = $model->previousCall($model->customer_id); ?>
+                    <?php if (count($previousCall) != 1): ?>
+
+                        <div class="contentbox">
+                            <h4>Previous Service Details </h4>
+                        </div>
+                        <div class="customerdatabox">
+                            <table>
+                                <tr>
+                                    <th><span class="datacontenttitle">Service Ref#</span></th>
+                                    <th><span class="datacontenttitle">Product</span></th>
+                                    <th><span class="datacontenttitle">Reported Date</span></th>
+                                    <th><span class="datacontenttitle">Fault Description</span></th>
+                                    <th><span class="datacontenttitle">Engineer Visited</span></th>
+                                    <th><span class="datacontenttitle">Job Status</span></th>
+                                </tr>
+
+                                <?php
+
+
+                                foreach ($previousCall as $data) {
+                                    if ($data->service_reference_number != $model->service_reference_number)//////since we want to skip the current service call
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo CHtml::link($data->service_reference_number, array('view', 'id' => $data->id)); ?></td>
+                                            <td><?php echo "<b>" . $data->product->productType->name . "<b>"; ?></td>
+                                            <td><?php
+                                                if (!empty($data->fault_date))
+                                                    echo date('d-M-Y', $data->fault_date);
+                                                ?>
+                                            </td>
+                                            <td><?php echo $data->fault_description; ?></td>
+                                            <td><?php echo $data->engineer->company . ', ' . $data->engineer->fullname; ?></td>
+                                            <td style="color:maroon"><?php echo $data->jobStatus->name; ?></td>
+                                        </tr>
+                                        <?php
+                                    }///end of if
+                                }//end of foreach().?>
+                            </table>
+                        </div>
+                    <?php endif; ////end of if (count($previousCall>0)): ?>
+
+                    <div class="workcarriedout">
+
+                        <h4>
+                            <div class="fa fa-briefcase fa-2x"></div>
+                            <?php echo $model->getAttributeLabel('work_carried_out'); ?>
+                        </h4>
+                        <div class="contentbox">
+                            <?php echo $model->work_carried_out; ?>
+                        </div>
+
+                        <div class="datacontenttitle">
+                            <?php echo $model->getAttributeLabel('notes'); ?>
+                        </div>
+                        <div class="contentbox">
+                            <?php echo $model->notes; ?>
+                        </div>
+
+                        <div class="datacontenttitle">
+                            <?php echo $model->getAttributeLabel('comments'); ?>
+                        </div>
+                        <div class="contentbox">
+                            <?php echo $model->comments; ?>
+                        </div>
+
+
+                    </div><!-- end of <div class="workcarriedout">-->
+
+
+                </div><!-- end of <div class="contentbox"> -->
+
+            </div><!--  <div class="servicebox contentbox">-->
+
+
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div class="engineerbox contentbox">
+                <div class="enginnerheadingbox headingbox">Engineer</div>
+                <div class="contentbox">
+                    <table>
+                        <tr>
+                            <th style="width:5%"></th>
+                            <th style="width:35%"></th>
+                            <th style="width:60%"></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="fa fa-wrench fa-2x"></div>
+                            </td>
+                            <td><?php echo $model->engineer->fullname; ?></td>
+                            <td>
+                                <?php echo CHtml::link('<div class="fa fa-road" ></div> Book another visit', array('enggdiary/findnextappointmentfromallengg/', 'servicecall_id'=>$model->id, 'engineer_id'=>$model->engineer_id));?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="fa fa-calendar fa-2x title" title="Appointment">
+                                </div>
+                            </td>
+                            <td><?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?></td>
+                            <td>
+
+                                <?php echo CHtml::link('<div class="fa fa-share"></div> Move this appointment', array('enggdiary/viewFullDiary/', 'engg_id'=>$model->engineer_id));
+                                ?>
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="fa fa-envelope-o fa-2x title" title="Appointment">
+                                </div>
+                            </td>
+                            <td><?php echo $model->enggdiary->notes; ?></td>
+                            <td>
+
+                                <?php echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit', array('/enggdiary/update/', 'id'=>$model->engg_diary_id)); ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3">
+                                <h5>Previous Appointments</h5>
+                                <?php $all_appointments=Enggdiary::model()->getappointmentsbyserviceid($model->id);?>
+                                <?php if (count($all_appointments)>1): ?>
+                                    <table>
+                                        <tr>
+                                            <th class="datacontenttitle">Visit Date</th>
+                                            <th class="datacontenttitle">Notes</th>
+                                        </tr>
+
+                                    <?php foreach ($all_appointments as $a): ?>
+
+                                        <?php if ($a->id!=$model->engg_diary_id): ?>
+                                            <tr>
+                                                <td>
+                                                    <?php echo $setupmodel->formatdatewithtime($a->visit_start_date); ?>
+                                                    -
+                                                    <?php echo date('H:i A', $a->visit_end_date); ?>
+                                                </td>
+                                                <td><?php echo $a->notes; ?> </td>
+                                            </tr>
+                                        <?php endif;///end of if ($a->id!=$model->engg_diary_id): ?>
+
+                                    <?php endforeach; ?>
+                                    </table>
+
+                                <?php endif; ///end of if (count($all_appointments)>1):?>
+                            </td>
+                        </tr>
+                    </table>
+                </div><!-- end of  <div class="contentbox"> -->
+            </div><!-- end of <div class="engineerbox contentbox"> -->
+        </td>
+    </tr>
+
+    <tr>
+        <th style="width:50%; padding:20px;">
+            <table>
+                <tr>
+                    <td>
+                        <div class="contentbox"
+                             style="background-color:<?php echo $model->jobStatus->backgroundcolor; ?> ">
+
+                            <?php
+                            echo CHtml::link(CHtml::image('images/icons/edit.png', 'Change', array('width' => '20px')),
+                                '#', array(
+                                    'onclick' => '$("#change-jobstatus-dialog").dialog("open"); return false;',
+                                ));
+                            ?>
+                            <?php echo $model->jobStatus->name; ?>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+        </th>
+        <th>
+            <h1 style="color:green;text-align: right;"><?php echo $model->service_reference_number; ?></h1>
+        </th>
+    </tr>
+
+    <tr>
+        <td style="text-align:left;width:50%">
+            <a href="javascript: history.go(-1)"><i class="fa fa-arrow-left fa-2x"></i></a>
+        </td>
+
+        <td style="text-align:right; width:30%">
+
+            <table>
+                <tr>
+                    <td>
+                        <?php
+
+                        $editicom = '<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>';
+                        if ($model->job_status_id > 100) {
+                            if (UserModule::isAdmin())
+                                echo CHtml::link($editicom, array('update', 'id' => $model->id), array('onclick' => 'return false;', 'style' => 'color:gray;')) . "&nbsp;&nbsp;	<small>(Call is Closed)</small>";
+                            //echo "<br>here";
+                        } else
+                            echo CHtml::link($editicom, array('update', 'id' => $model->id), array('title' => 'Edit'));
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $previewImgUrl = Yii::app()->request->baseUrl . '/images/pdf.gif';
+                        $previewImg = CHtml::image($previewImgUrl, 'Preview', array('width' => 35, 'height' => 35, 'title' => 'Preview in Pdf'));
+                        echo CHtml::link($previewImg, array('Preview', 'id' => $model->id), array('target' => '_blank'));
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $htmlImgUrl = Yii::app()->request->baseUrl . '/images/html_file.png';
+                        $htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Preview in HTML'));
+                        echo CHtml::link($htmlImg, array('htmlPreview', 'id' => $model->id), array('target' => '_blank'));
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $htmlImgUrl = Yii::app()->request->baseUrl . '/images/invoice.png';
+                        $htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Invoice'));
+                        echo CHtml::link($htmlImg, array('htmlPreview', 'id' => $model->id), array('target' => '_blank'));
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $mobileImgUrl = Yii::app()->request->baseUrl . '/images/mobile.png';
+                        $mobileImg = CHtml::image($mobileImgUrl, 'sendToMobile', array('width' => 35, 'height' => 35, 'title' => 'Send to Mobile'));
+                        echo CHtml::link($mobileImg, array('/gomobile/default/sendsingleservicecalltoserver', 'id' => $model->id), array('target' => '_blank'));
+                        ?>
+                    </td>
+
+                </tr>
+            </table>
+        </td>
+    </tr>
 </table>
-<?php $this->endWidget(); ?>
+
+
 

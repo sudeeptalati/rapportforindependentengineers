@@ -14,6 +14,7 @@
  * @property integer $dashboard_display
  * @property integer $dropdown_display
  * @property string $html_name
+ * @property string $backgroundcolor
  *
  * The followings are the available model relations:
  * @property User $updatedByUser
@@ -48,7 +49,7 @@ class JobStatus extends CActiveRecord
 		return array(
 			array('name, published, view_order', 'required'),
 			array('published, view_order, updated_by_user_id', 'numerical', 'integerOnly'=>true),
-			array('dashboard_display,information, updated, html_name', 'safe'),
+			array('dashboard_display,information, updated, html_name, backgroundcolor', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, information, published, view_order, updated_by_user_id, updated, dashboard_display', 'safe', 'on'=>'search'),
@@ -85,7 +86,9 @@ class JobStatus extends CActiveRecord
 			'dashboard_display' => 'Display on Dashboard',
 			'dropdown_display' => 'Display in Dropdown',
 			'html_name' => 'Color on Dashboard',
-		
+			'backgroundcolor' => 'Background Color Dashboard',
+
+
 		);
 	}
 
@@ -93,12 +96,12 @@ class JobStatus extends CActiveRecord
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	public function search()
 	{
 		// Warning: Please modify the following code to remove attributes that
@@ -120,24 +123,24 @@ class JobStatus extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			//'order'=>'view_order ASC',
-			
+
 		));
 	}
-	
-	
-	
+
+
+
 	public function publishedStatus()
 	{
 		return JobStatus::model()->findAllByAttributes(array('published'=>1 ));/*WE will only display the published Status*/
 	}
-	
-	
-	
+
+
+
 	//************ FUNCTION TO CREATE DROPDOWN FILTER WITH ONLY PUBLISHED STATUS IN ADMIN VIEW ****************
-	
-	
+
+
 	private static $_published_items=array();
-	
+
 	/**
 	 * Returns the items for the specified type.
 	 * @param string item type (e.g. 'PostStatus').
@@ -178,27 +181,27 @@ class JobStatus extends CActiveRecord
 		foreach($models as $model)
 			self::$_published_items[$type][$model->id]=$model->name;
 	}
-	
+
 	//************ END OF FUNCTION TO CREATE DROPDOWN FILTER IN ADMIN VIEW ****************
-	
+
 	//************ FUNCTION TO CREATE DROPDOWN FILTER WITH  IN ADMIN VIEW, WITH ALL STATTUS FOR NOTIFICATION ADMIN ****************
-	
+
 	private static $_items=array();
-	
+
 	/**
 	 * Returns the items for the specified type.
 	 * @param string item type (e.g. 'PostStatus').
 	 * @return array item names indexed by item code. The items are order by their position values.
 	 * An empty array is returned if the item type does not exist.
-	*/
-	
+	 */
+
 	public static function items($type)
 	{
 		if(!isset(self::$_items[$type]))
 			self::loadItems($type);
 		return self::$_items[$type];
 	}
-	
+
 	/**
 	 * Returns the item name for the specified type and code.
 	 * @param string the item type (e.g. 'PostStatus').
@@ -211,7 +214,7 @@ class JobStatus extends CActiveRecord
 			self::loadItems($type);
 		return isset(self::$_items[$type][$code]) ? self::$_items[$type][$code] : false;
 	}
-	
+
 	/**
 	 * Loads the lookup items for the specified type from the database.
 	 * @param string the item type
@@ -220,57 +223,59 @@ class JobStatus extends CActiveRecord
 	{
 		self::$_items[$type]=array();
 		$models=self::model()->findAll(array(
-				//'condition'=>'published=1',
-				'order'=>'view_order ASC',
+			//'condition'=>'published=1',
+			'order'=>'view_order ASC',
 		));
 		foreach($models as $model)
 			self::$_items[$type][$model->id]=$model->name;
 	}
-	
+
 	//************ FUNCTION TO CREATE DROPDOWN FILTER WITH IN ADMIN VIEW ****************
-	
-	
+
+
 	protected function beforeSave()
-    {
-    	if(parent::beforeSave())
-        {
-        	$this->updated=time();
-        	//$this->updated_by_user_id=Yii::app()->user->id;
-            return true;
-            
-        }//end of if(parent())
-    }//end of beforeSave().
-    
-    public function getAllStatuses()
-    {
-    	//echo "<br>Func called<hr>";
+	{
+		if(parent::beforeSave())
+		{
+			$this->updated=time();
+
+			$this->html_name='<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:'.$this->backgroundcolor.'" >'.$this->name.'</div>';
+			//Using class did'nt worked as css are loaded later
+			//$this->html_name='<div class="system_message" >'.$this->name.'</div>';
+
+
+			return true;
+
+		}//end of if(parent())
+	}//end of beforeSave().
+
+	public function getAllStatuses()
+	{
+		//echo "<br>Func called<hr>";
 		$job_status_array = array();
-    	
+
 //     	$job_status_array = CHtml::listData(JobStatus::model()->findAll(array
 //     	('condition'=> "not exists (select 'id' from notification_rules where notification_rules.job_status_id = t.id)")
 //     	), 'id','name');
 
 		//print_r($final_array);
-    	
-    	//return $job_status_array;
-		
+
+		//return $job_status_array;
+
 		return CHtml::listData(JobStatus::model()->findAll(), 'id', 'name');
-    	  
-    }//end of getAllStatuses.
-    
-    public function getAllPublishedListdata()
-    {
-    	
-    	$publishedStatus=JobStatus::model()->findAll(array(
-    					'condition'=>'published=1',
-    					'order'=>'view_order ASC',
-    				)
-    	);
-    	
-    	//$publishedStatus = JobStatus::model()->findAllByAttributes(array('published'=>1 ));
-    	return CHtml::listData($publishedStatus, 'id', 'name');
-    	
-    	
-    }//end of getAllPublishedListdata. 
-	
+
+	}//end of getAllStatuses.
+
+	public function getAllPublishedListdata($type='name')
+	{
+		$publishedStatus=JobStatus::model()->findAll(array(
+				'condition'=>'published=1',
+				'order'=>'view_order ASC',
+			)
+		);
+		//$publishedStatus = JobStatus::model()->findAllByAttributes(array('published'=>1 ));
+		return CHtml::listData($publishedStatus, 'id', $type);
+
+	}//end of getAllPublishedListdata.
+
 }//end of class.

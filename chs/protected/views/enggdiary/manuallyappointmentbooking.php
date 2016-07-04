@@ -98,6 +98,7 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
             <i class="fa fa-arrows" aria-hidden="true"></i></div>
         <div class="contentbox engineerbox">
 
+            <div class="datacontenttitle"><span class="fa fa-wrench"></span> Engineer <h5><?php echo $servicecallmodel->engineer->fullname;?></h5> </div>
 
 
         Additional Notes<br>
@@ -193,7 +194,7 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
             $forloopdate_string = date("d-M-Y l", $forloopdate_time);
 
             echo '<td  style="height:1px;vertical-align:top; border: 1px solid black;">';
-            echo '<div style="height:50px;" class="quote"><b>' . $forloopdate_string . '</b></div>';
+            echo '<div style="height:50px;" class="quote">' . $forloopdate_string . '</div>';
 
             if ($i == $todaysweekday) {
                 echo '<div style="height:85%;" class="alert" "><b>TODAY</b></div>';
@@ -244,7 +245,7 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
 
 
             echo '<td id="' . $td_id . '" style="height:1px; vertical-align:top; border: 1px solid black;">';
-            echo '<div style="height:50px;" class="quote"><b>' . $forloopdate_string . '</b></div>';
+            echo '<div style="height:50px;" class="quote">' . $forloopdate_string . '</div>';
             //echo '<div style="height:10px; background:#9AFD95"></div>';
             if (in_array($forloop_weekday, $workingdaysofweekarray)) {
 

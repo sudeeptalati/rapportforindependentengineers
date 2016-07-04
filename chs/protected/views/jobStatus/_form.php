@@ -1,6 +1,5 @@
 <div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
+ <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'job-status-form',
 	'enableAjaxValidation'=>false,
 )); ?>
@@ -11,7 +10,7 @@
 		color_name=document.getElementById('color_chooser').value;
 		console.log('Color name selected = '+color_name);
 		document.getElementById('current_layout').style.background ="#"+color_name;
-		document.getElementById('JobStatus_html_name').value='#'+color_name;
+		document.getElementById('JobStatus_backgroundcolor').value='#'+color_name;
 	}
 	</script>
 	
@@ -59,12 +58,12 @@
 	<div class="row" >
 		<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jscolor/jscolor.js', CClientScript::POS_HEAD); ?>
  
-		<?php echo $form->labelEx($model,'html_name'); ?>
+		<?php echo $form->labelEx($model,'backgroundcolor'); ?>
 		<?php //echo $form->textField($model,'html_name',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->hiddenField($model,'html_name',array('rows'=>6, 'cols'=>50)); ?>
+		<?php echo $form->hiddenField($model,'backgroundcolor',array('rows'=>6, 'cols'=>50)); ?>
 		
 		
-		<input rows="6" cols="50" name="color_chooser" id="color_chooser" type="text"  class="color {onImmediateChange:'color_change(this);', pickerPosition:'left'}" onChange="js:color_change()" value="<?php echo $model->html_name; ?>">
+		<input rows="6" cols="50" name="color_chooser" id="color_chooser" type="text"  class="color {onImmediateChange:'color_change(this);', pickerPosition:'left'}" onChange="js:color_change()" value="<?php echo $model->backgroundcolor; ?>">
 		
 		 
 		
@@ -73,7 +72,7 @@
 //		echo CHtml::activeTextField($model,'html_name',array('ajax' =>
 //															array('background-color':'#ffccff')
 //															));?>
-		<?php echo $form->error($model,'html_name'); ?>
+		<?php echo $form->error($model,'backgroundcolor'); ?>
 		 
 		<br>
 		
@@ -85,9 +84,9 @@
 			<tr>
 				<td >
 				
-				<div id="current_layout" class="color" style="border-radius:15px;  padding:10px; background-color:<?php echo $model->html_name;?>">
+				<div id="current_layout" class="color" style="border-radius:15px;  padding:10px; background-color:<?php echo $model->backgroundcolor;?>">
 				Current Layout<br>
-				&nbsp;	&nbsp;	&nbsp;	&nbsp;<b><?php echo $model->name ;?></b>
+				<b><?php echo $model->name ;?></b>
 				</div>
 				</td>
 			</tr>

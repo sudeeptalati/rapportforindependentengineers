@@ -93,8 +93,6 @@ $baseUrl= Yii::app()->request->baseUrl;
 				array('label'=>'Reports', 'url'=>array('/reports/displayDropdown')),
 				
 				//array('label'=>'Contract', 'url'=>array('/contract/admin')),
-				
-					
 				//array('label'=>'Config', 'url'=>array('/config/1')),
 				array('label'=>'SetUp', 'url'=>array('/setup/view&id=1')),
 				array('label'=>'BackUp', 'url'=>array('/site/backup'), 'visible'=>!Yii::app()->user->isGuest),

@@ -208,6 +208,7 @@ return array(
 		'application.extensions.bootstrap.*',
 		'bootstrap.helpers.TbHtml',
 		'application.modules.gomobile.models.*',
+		'application.modules.user.*',
 		'application.modules.user.models.*',
         'application.modules.user.components.*',
         'application.modules.rights.*',

@@ -217,7 +217,7 @@ class ServicecallController extends RController
 										$engg_id=$serviceCallModel->engineer_id; 
 										$baseUrl=Yii::app()->request->baseUrl;
 										//$this->redirect(array('/enggdiary/bookingAppointment/', 'id'=>$serviceCallModel->id, 'engineer_id'=>$engg_id));
-										$this->redirect(array('/enggdiary/diary/', 'id'=>$serviceCallModel->id, 'engineer_id'=>$engg_id));
+										$this->redirect(array('/enggdiary/findnextappointmentfromallengg/', 'servicecall_id'=>$serviceCallModel->id));
 
 
 
@@ -714,7 +714,27 @@ class ServicecallController extends RController
 		
 	}//end of actionDisplayMap
 
+	public function actionChangejobstatusonly()
+	{
 
-	
-	
+		if(isset($_POST['Servicecall']))
+		{
+
+			$updated_job_status_id=$_POST['Servicecall']['job_status_id'];
+			$id=$_POST['Servicecall']['id'];
+			$redirect_url=$_POST['Servicecall']['successfulredirectto'];
+			$r=Servicecall::model()->updatejobstatusbyservicecallid($id,$updated_job_status_id);
+			////Update engineer by PK
+			if ($r==1)
+				//redirect
+				$this->redirect(array($redirect_url));
+			else
+				echo 'cannot update Job Status in servicecall. Please contact support';
+
+		}
+		$this->renderPartial('changeEngineerOnly');
+	}//end of ChangeEngineerOnly.
+
+
+
 }//end of class.

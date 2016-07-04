@@ -174,42 +174,42 @@ class JobStatusController extends RController
 			Yii::app()->end();
 		}
 	}
-	
+
 	public function actionOrder()
-    {
-             //ajax draggable sorter cggridview
+	{
+		//ajax draggable sorter cggridview
 
-             // Handle the POST request data submission
-        	if (isset($_POST['Order']))
-        	{
-            	// Since we converted the Javascript array to a string,
-                // convert the string back to a PHP array
-                $models = explode(',', $_POST['Order']);
+		// Handle the POST request data submission
+		if (isset($_POST['Order']))
+		{
+			// Since we converted the Javascript array to a string,
+			// convert the string back to a PHP array
+			$models = explode(',', $_POST['Order']);
 
-                for ($i = 0; $i < sizeof($models); $i++)
-                {
-                    if ($model = JobStatus::model()->findbyPk($models[$i]))
-                    {
-                        $model->dashboard_prority_order = $i;
+			for ($i = 0; $i < sizeof($models); $i++)
+			{
+				if ($model = JobStatus::model()->findbyPk($models[$i]))
+				{
+					$model->dashboard_prority_order = $i;
 
-                        $model->save();
-                    }
-                }///end of for loop
-              $ansver = array('msg'=>'Dashboard Priority order Set successfully.');
-              //echo CJSON::encode($ansver);
-              $this->renderPartial('jsonoutput',array(
-              		'ansver'=>$ansver,
-              ));
-              
-                
-			}///end of isset if POST
-        
-    }///end of public function action order
-    
-    public function actionDropdownorder()
-    {
-    	
-    	$model=new JobStatus('search');
+					$model->save();
+				}
+			}///end of for loop
+			$ansver = array('msg'=>'Dashboard Priority order Set successfully.');
+			//echo CJSON::encode($ansver);
+			$this->renderPartial('jsonoutput',array(
+				'ansver'=>$ansver,
+			));
+
+
+		}///end of isset if POST
+
+	}///end of public function action order
+
+	public function actionDropdownorder()
+	{
+
+		$model=new JobStatus('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['JobStatus']))
 			$model->attributes=$_GET['JobStatus'];
@@ -217,49 +217,49 @@ class JobStatusController extends RController
 		$this->render('dropdownorder',array(
 			'model'=>$model,
 		));
-    }//end of actionDropdownorder().
+	}//end of actionDropdownorder().
 
 	public function actionOrderdropdown()
-    {
-             //ajax draggable sorter cggridview
+	{
+		//ajax draggable sorter cggridview
 
-             // Handle the POST request data submission
-        	if (isset($_POST['Order']))
-        	{
-        		
-            	// Since we converted the Javascript array to a string,
-                // convert the string back to a PHP array
-                $models = explode(',', $_POST['Order']);
+		// Handle the POST request data submission
+		if (isset($_POST['Order']))
+		{
 
-                for ($i = 0; $i < sizeof($models); $i++)
-                {
-                	
-                    if ($model = JobStatus::model()->findbyPk($models[$i]))
-                    {
-                    	
-                        $model->view_order = $i;
-                        //echo $models[$i][0]."....";
-						$model->save();
-						///$this->redirect(array('enggdiary/currentAppointments'));
-						
-                    }
-                }///end of for loop
-              $ansver = array('msg'=>'Dropdown Ordered Successfully');
-              
-              $this->renderPartial('jsonoutput',array(
-              		'ansver'=>$ansver,
-              ));
-              
-              
-			}///end of isset if POST
-        
-    }///end of public function action order    
+			// Since we converted the Javascript array to a string,
+			// convert the string back to a PHP array
+			$models = explode(',', $_POST['Order']);
 
-    
-    public function actionDashboardorder()
-    {
-    	
-    	$model=new JobStatus('search');
+			for ($i = 0; $i < sizeof($models); $i++)
+			{
+
+				if ($model = JobStatus::model()->findbyPk($models[$i]))
+				{
+
+					$model->view_order = $i;
+					//echo $models[$i][0]."....";
+					$model->save();
+					///$this->redirect(array('enggdiary/currentAppointments'));
+
+				}
+			}///end of for loop
+			$ansver = array('msg'=>'Dropdown Ordered Successfully');
+
+			$this->renderPartial('jsonoutput',array(
+				'ansver'=>$ansver,
+			));
+
+
+		}///end of isset if POST
+
+	}///end of public function action order
+
+
+	public function actionDashboardorder()
+	{
+
+		$model=new JobStatus('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['JobStatus']))
 			$model->attributes=$_GET['JobStatus'];
@@ -267,7 +267,7 @@ class JobStatusController extends RController
 		$this->render('dashboardorder',array(
 			'model'=>$model,
 		));
-    }//end of actionDropdownorder().
+	}//end of actionDropdownorder().
 
- 
+
 }//end of class.

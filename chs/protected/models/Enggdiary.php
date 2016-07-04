@@ -566,5 +566,16 @@ class Enggdiary extends CActiveRecord
 
 		return $fulldaydiarydata;
 	}//end of getData().
+
+
+
+
+	public function getappointmentsbyserviceid($servicecall_id)
+	{
+		return Enggdiary::model()->findAllByAttributes(array('servicecall_id'=>$servicecall_id));
+	}///end of public function getappointmentsbyserviceid($service_id)
+
+
+
     
 }//end of class.

@@ -245,7 +245,7 @@ class ApiController extends RController
 
 		foreach ($all_events_with_serviceid as $diary_events) {
 
-			echo $diary_events->id;
+			//echo $diary_events->id;
 
 			Enggdiary::model()->updateByPk($diary_events->id,
 				array(
@@ -282,7 +282,7 @@ class ApiController extends RController
 										
 			if(count($notificationModel)!=0)
 			{
-				echo "<br>Rule is present";
+				//echo "<br>Rule is present";
 			
 				try 
 				{

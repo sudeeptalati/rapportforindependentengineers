@@ -1,4 +1,4 @@
-<?php	
+<?php
 $this->layout = 'main';
 
 $servicecall_id = $_GET['servicecall_id'];
@@ -7,7 +7,9 @@ $servicecallmodel = Servicecall::model()->findbyPK(array('id' => $servicecall_id
 $current_customer_postcode = $servicecallmodel->customer->postcode;
 $engineer_name = $servicecallmodel->engineer->fullname;
 $servicecallmodel = Servicecall::model()->findbyPK(array('id' => $servicecall_id));
+
 $model = Enggdiary::model();
+$setupmodel=Setup::model();
 //$no_next_days = 10;
 $no_next_days = $model->getconsiderdaysforslotavailabity();
 $allowedtraveldistancebetweenpostcodes = $model->gettraveldistanceallowedbetweenpostcodes();
@@ -26,33 +28,61 @@ $today = date('d-m-Y');
 ?>
 <br>
 <div>
-	<div style='width:25%; float:left;'>
-		<table>
-			<tr>
-				<td>
-					<b>Customer PostCode:</b> 
-				</td>
-				<td>
-				<?php echo $current_customer_postcode; ?>
-				</td>
-			</tr>
-            <tr>
-                <td>
-                    <b>Engineer:</b>
-                </td>
-                <td>
-                    <?php echo $engineer_name; ?>
-                </td>
-            </tr>
-            <tr><td colspan="2"><hr></td> </tr>
-            <tr>
-                <td>
-                    <b>Additional Notes in Diary:</b>
-                </td>
-                <td>
+	<div style='width:50%; float:left;'>
+
+
+
+        <div class="boxframe customerbox" style='width: 90%;float:left;'>
+            <div class="headingbox customerheadingbox">Customer</div>
+            <div class="contentbox">
+                <div class="title">
+                    <?php echo $servicecallmodel->customer->fullname; ?>
+
+                    <div class="address">
+                        <?php
+                        $line1 = $servicecallmodel->customer->address_line_1;
+                        $line2 = $servicecallmodel->customer->address_line_2;
+                        $line3 = $servicecallmodel->customer->address_line_3;
+                        $town = $servicecallmodel->customer->town;
+                        $postcode = $servicecallmodel->customer->postcode;
+
+                        ?>
+                        <?php echo $setupmodel->formataddressinhtml($line1, $line2, $line3, $town, $postcode); ?>
+                    </div>
+                </div>
+            </div><!-- end of content box-->
+
+            <div class="containerbox productbox">
+                <div class="headingbox productheadingbox">Product</div>
+                <div class="contentbox">
+                    <div class="title">
+                        <?php echo $servicecallmodel->product->brand->name; ?>
+                        <?php echo $servicecallmodel->product->productType->name; ?>
+                    </div>
+                </div>
+            </div><!-- end of     <div class="containerbox productbox"> -->
+
+            <div class="containerbox servicebox">
+                <div class="headingbox serviceheadingbox">Service</div>
+                <div class="contentbox">
+                    <div class="title">
+                        <?php echo $servicecallmodel->fault_description; ?>
+                    </div>
+                </div>
+            </div><!-- end of     <div class="containerbox productbox"> -->
+
+            <div id="engineerbox" class="beauty containerbox engineerbox"  >
+                <div class="headingbox enginnerheadingbox">Appointment</div>
+                <div class="contentbox engineerbox">
+
+
+                    <div class="datacontenttitle"><span class="fa fa-wrench"></span> Engineer <h5><?php echo $servicecallmodel->engineer->fullname;?></h5> </div>
+
+
+                    Additional Notes<br>
 
                     <?php echo CHtml::dropDownList('timeofcall', '',
-                        array(	'Normal Call' => 'Normal Call',
+                        array('Normal Call' => 'Normal Call',
                             'Morning Call' => 'Morning Call',
                             'Evening Call' => 'Evening Call',
                             'First Call' => 'First Call',
@@ -63,43 +93,42 @@ $today = date('d-m-Y');
                     );
 
 
-
                     ?>
                     <br>
-                    <?php echo CHtml::textArea('appointment_notes','',array('placeholder'=>'Additional Notes for call',
-                            'style'=>'width:250px;height:100px;'
+                    <?php echo CHtml::textArea('appointment_notes', '', array('placeholder' => 'Additional Notes for call',
+                            'style' => 'width:250px;height:100px;'
 
                         )
                     ); ?>
-                </td>
-            </tr>
-		</table>
-		
-	</div>
+                </div>
+            </div><!-- end of class="containerbox engineerbox" -->
 
-	<div style='width:50%;float:right'>
-		<b>Based on parameters</b>
-		<br>
-		<table>
-			<tr>
-				<td><b>Days Considered for Planning</b></td>
-				<td><?php echo $no_next_days; ?> days</td>
-			</tr>
-			<tr>
-				<td><b>Maximum Travel Distance Between Two postcodes</b></td>
-				<td><?php echo $allowedtraveldistancebetweenpostcodes; ?> miles</td>
-			</tr>
-			<tr>
-				<td><b>Maximum Number of Servicecalls per day Per Engineer</b></td>
-				<td><?php echo $totalnoofcallsperday; ?> servicecalls</td>
-			</tr>
-            <tr>
-                <td colspan="2">
-                    <div class="success" id="route_planning_suggestion">
 
-                        <div id="manual_booking"  style="border-bottom: solid #fff;margin-bottom:24px;">
+        </div>
+    </div>
 
-                            <table>
+    <div style='width:50%;float:right'>
+        <div class="boxframe success">
+            <table>
+                <tr>
+                    <td><b>Days Considered for Planning</b></td>
+                    <td><?php echo $no_next_days; ?> days</td>
+                </tr>
+                <tr>
+                    <td><b>Maximum Travel Distance Between Two postcodes</b></td>
+                    <td><?php echo $allowedtraveldistancebetweenpostcodes; ?> miles</td>
+                </tr>
+                <tr>
+                    <td><b>Maximum Number of Servicecalls per day Per Engineer</b></td>
+                    <td><?php echo $totalnoofcallsperday; ?> servicecalls</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div id="route_planning_suggestion">
+
+                            <div id="manual_booking" style="border-bottom: solid #fff;margin-bottom:24px;">
+
+                                <table>
                                     <tr>
                                         <td>
                                             <?php
@@ -117,7 +146,8 @@ $today = date('d-m-Y');
                                             </div>
                                         </td>
                                         <td>
-                                             <div class="infotooltip"><h4>Empty Days &nbsp;&nbsp;<i class="fa fa-info-circle" aria-hidden="true"></i></h4>
+                                            <div class="infotooltip"><h4>Empty Days &nbsp;&nbsp;<i
+                                                        class="fa fa-info-circle" aria-hidden="true"></i></h4>
 
                                                  <span class="infotooltiptext">
 
@@ -125,44 +155,44 @@ $today = date('d-m-Y');
 
 
                                                 </span>
-                                                 <div class="loading">
-                                                     <div class="fa fa-spinner fa-spin fa-3x fa-fw" ></div>
-                                                 </div>
+                                                <div class="loading">
+                                                    <div class="fa fa-spinner fa-spin fa-3x fa-fw"></div>
+                                                </div>
                                             </div>
 
                                             <div id="fullfreedaysofengg"></div>
 
                                         </td>
                                     </tr>
-                            </table>
+                                </table>
 
 
-                        </div><!-- end of Manual Booking Div-->
+                            </div><!-- end of Manual Booking Div-->
 
 
-
-                        <div class="infotooltip"><h4>Suggested Dates &nbsp;&nbsp;<i class="fa fa-info-circle" aria-hidden="true"></i></h4>
+                            <div class="infotooltip"><h4>Suggested Dates &nbsp;&nbsp;<i class="fa fa-info-circle"
+                                                                                        aria-hidden="true"></i></h4>
                             <span class="infotooltiptext">
                             The suggested dates are calculated based on above parameters like Days Considered for Planning, Maximum Travel Distance Between Two postcodes & Maximum Number of Servicecalls per day Per Engineer.
                              However, you can also manually overwrite the diary from the above link of Book Manually or Empty Days.
 
                             </span>
-                            <div class="loading">
-                                <div class="fa fa-spinner fa-spin fa-3x fa-fw" ></div>
+                                <div class="loading">
+                                    <div class="fa fa-spinner fa-spin fa-3x fa-fw"></div>
+                                </div>
                             </div>
-                        </div>
 
 
+                            <div id="firstprefdiv"></div>
+                            <div id="secondprefdiv"></div>
+                            <div id="thirdprefdiv"></div>
+                        </div><!--End of Success Div-->
+                    </td>
+                </tr>
+            </table>
 
-                        <div id="firstprefdiv"></div>
-                        <div id="secondprefdiv"></div>
-                        <div id="thirdprefdiv"></div>
-                    </div><!--End of Success Div-->
-                </td>
-            </tr>
-    	</table>
-			
-	</div>
+        </div><!-- End of  <div class="contentbox">-->
+    </div><!--End of <div style='width:50%;float:right'> -->
 </div>
 <br>
 
@@ -235,16 +265,16 @@ $today = date('d-m-Y');
 
             $forloopdate_string = date("d-M-Y l", $forloopdate_time);
 
-            echo '<td  style="vertical-align:top; border: 1px solid black;">';
-            echo '<div style="height:50px;" class="quote"><b>'.$forloopdate_string . '</b></div>';
+            echo '<td  style="height:1px;vertical-align:top; border: 1px solid black;">';
+            echo '<div style="height:50px;" class="quote">'.$forloopdate_string . '</div>';
 
             if ($i==$todaysweekday)
             {
-                echo '<div style="height:260px;" class="alert" "><b>TODAY</b></div>';
+                echo '<div style="height:85%;" class="alert" "><b>TODAY</b></div>';
 
             }else
             {
-                echo '<div style="height:260px;" class="notice"><b>PAST DAYS</b></div>';
+                echo '<div style="height:85%;" class="notice"><b>PAST DAYS</b></div>';
             }
             echo '</td>';
 
@@ -261,7 +291,7 @@ $today = date('d-m-Y');
             $forloop_month = date("m", $forloopdate_time);
             $forloop_year = date("Y", $forloopdate_time);
             $forloop_weekday = date("N", $forloopdate_time);
-
+            $freeenggs_array=array();
 
 
 
@@ -276,8 +306,8 @@ $today = date('d-m-Y');
             }
 
 
-            echo '<td id="'.$td_id.'" style="vertical-align:top; border: 1px solid black;">';
-            echo '<div style="height:50px;" class="quote"><b>'.$forloopdate_string . '</b></div>';
+            echo '<td id="'.$td_id.'" style="height:1px;vertical-align:top; border: 1px solid black;">';
+            echo '<div style="height:50px;" class="quote">'.$forloopdate_string . '</div>';
             //echo '<div style="height:10px; background:#9AFD95"></div>';
             if (in_array($forloop_weekday, $workingdaysofweekarray)) {
 
@@ -295,11 +325,11 @@ $today = date('d-m-Y');
                 $dayheight=$totalnoofcallsperday*50;
                 $dayheight=$dayheight.'px';
 
-                $freeenggs_array=array();
+
                 foreach ( $allactiveenggs as $ae)
                 {
 
-                    echo '<br><div style="border-radius:10px; padding:0 0 2px 10px; height:'.$dayheight.'; background:'.$ae->color.'; "><br>';
+                    echo '<br><div style="border-radius:10px; padding:0 0 2px 10px; height:85%; background:'.$ae->color.'; "><br>';
 
                     $engineer_id=$ae->id;
                     $data = Enggdiary::model()->getData($engineer_id, $forloop_start_date_time, $forloop_end_date_time);
@@ -358,12 +388,13 @@ $today = date('d-m-Y');
             }///end of if in_array
             else {
 
-                echo '<div style="height:260px;" class="notice"><b>HOLIDAY</b></div>';
+                echo '<div style="height:85%;" class="notice"><b>HOLIDAY</b></div>';
                 $no_next_days = $no_next_days + 1;
             }///end of else of in_array
 
             //echo 'TOTAL FREE ENGGS.'.count($freeenggs_array);
             echo '</td>';
+
 
             if (count($freeenggs_array)>0 && in_array($forloop_weekday, $workingdaysofweekarray)) {
 
@@ -377,6 +408,7 @@ $today = date('d-m-Y');
 
                 }
             }
+
         }//end of days forloop_end_date_time
         ?>
     </tr>
@@ -422,6 +454,8 @@ $today = date('d-m-Y');
 
     var recievd_postcodes = [];
     var recievd_distances = [];
+
+    var nearest_postcodes_jsonstr="";
     var recievd_time = [];
     var autotimer;
     var engg_id ='';
@@ -612,7 +646,7 @@ $today = date('d-m-Y');
          */
 
         console.log('----------------------FILTERING DISTANCE NOW---------------------------------');
-        console.log('Recieved Distances from customer postcodes  ' + recievd_distances);
+        //console.log('Recieved Distances from customer postcodes  ' + recievd_distances);
 
 
         temp_googlerecievedpc_array = recievd_postcodes;
@@ -629,22 +663,6 @@ $today = date('d-m-Y');
                 pc_to_be_deleted = temp_googlerecievedpc_array[m];
                 var pc_to_be_deleted_index = recievd_postcodes.indexOf(pc_to_be_deleted);
 
-                /*
-                 recievd_postcodes.splice(pc_to_be_deleted_index, 1);
-                 recievd_distances.splice(pc_to_be_deleted_index, 1);
-                 */
-                /*
-                 for (var m=0;m<recievd_distances.length;m++)
-                 {
-                 console.log('Recieved Distances '+recievd_distances[m]+'from customer postcodes  '+recievd_postcodes[m]);
-
-
-                 if (recievd_distances[m]>allowedtraveldistancebetweenpostcodes)
-                 {
-
-                 recievd_postcodes.splice(m, 1);
-                 recievd_distances.splice(m, 1);
-                 */
             }
             else
             {
@@ -657,8 +675,16 @@ $today = date('d-m-Y');
 
         }//end of for`
 
-        console.log('filtered Recieved Distances' + recievd_distances);
+
         console.log('filtered Recieved POSTCODES' + recievd_postcodes);
+        console.log('filtered Recieved Distances' + recievd_distances);
+
+        nearest_postcodes_jsonstr=JSON.stringify(recievd_postcodes);
+        console.log('nearest_postcodes_jsonstr ' + nearest_postcodes_jsonstr);
+
+
+
+
 
     }//filterdatabydistancebetweentwopostcodes()
 
@@ -675,7 +701,8 @@ $today = date('d-m-Y');
 			//nearestdate=adddaystodate(day_count+1); ///since day starts with 0
             //getting index of neartestday
             nearestdate = considered_dates[day_count]; ///since day starts with 0
-            console.log('I AM IN RECEIEVD POSTCODELENGTH >0 Day Count'+day_count, engg_id, service_id, nearestdate);
+            console.log('I AM IN RECEIEVD POSTCODELENGTH > 0 Day Count :'+day_count);
+            console.log("engg_id"+engg_id+" -- "+service_id+"  Nearest date:"+ nearestdate);
             if (arraycontains(availabledatesinddmmyyyy, nearestdate) == true)
             {
                 recievd_postcodes.splice(p, 1);
@@ -818,7 +845,8 @@ $today = date('d-m-Y');
         //document.getElementById(dateid).style.background='#99FFCC';
         document.getElementById(dateid).appendChild(preferencebutton);
          */
-        document.getElementById(dateid).style.background = '#66FF66';
+        //document.getElementById(dateid).style.background = '#dbffcc';
+        document.getElementById(dateid).className='success';
         stoploadingsign();
         //document.getElementById('loading').style.display = 'none';
 
@@ -1045,7 +1073,7 @@ $today = date('d-m-Y');
 
     function createNewDiaryEntry(dateofappointment, new_engineer_id)
     {
-        alert('createNewDiaryEntry Called');
+
 
         timeofcall=document.getElementById('timeofcall').value;
         appointment_notes=document.getElementById('appointment_notes').value;
@@ -1110,7 +1138,7 @@ $today = date('d-m-Y');
         console.log("----------------------findengineerinthatpostcode----------------------");
 
 
-        console.log("Nearrst postcodes"+temp_googlerecievedpc_array);
+        console.log("Nearrst postcodes in nearest_postcodes_jsonstr"+nearest_postcodes_jsonstr);
 
 
         enggavailabledates=[];
@@ -1120,7 +1148,7 @@ $today = date('d-m-Y');
 
 
         var availabledates_options_jsonstr = JSON.stringify(enggavailabledates);
-        var nearest_postcodes_jsonstr = JSON.stringify(temp_googlerecievedpc_array);
+
 
         console.log("Nearrst dates"+availabledates_options_jsonstr);
         console.log("Nearrst postcode"+nearest_postcodes_jsonstr);

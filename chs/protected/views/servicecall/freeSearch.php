@@ -254,7 +254,7 @@ $allStatus = JobStatus::model()->findAll( array(
 														);
 					if(count($result)>0)
 					{?>
-						<tr style="background:<?php echo $data->html_name;?>;">
+					<tr style="background:<?php echo $data->backgroundcolor;?>;">
 						<td style="border-radius:15px;  padding:10px;">
 						<span style="margin-left:20px;margin-top:10px;  ">
 						<?php 

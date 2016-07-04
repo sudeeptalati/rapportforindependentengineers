@@ -1,6 +1,6 @@
 <?php 
 
-$service_id = $_GET['service_id'];
+$service_id = $_GET['id'];
 
 $servicecallModel = Servicecall::model()->findByPk($service_id);
 

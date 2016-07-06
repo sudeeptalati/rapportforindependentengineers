@@ -52,7 +52,15 @@ echo $engineer->first_name; ?></h2>
 			}
 			
 			echo "<td style='border: 1px solid DARKSEAGREEN; '>".$servicecall->customer->fullname."</td>";
-			echo "<td style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->customer->postcode."</td>";
+			echo "<td style='border: 1px solid DARKSEAGREEN; '> ";
+						$line1 = $servicecall->customer->address_line_1;
+                        $line2 = $servicecall->customer->address_line_2;
+                        $line3 = $servicecall->customer->address_line_3;
+                        $town = $servicecall->customer->town;
+                        $postcode = $servicecall->customer->postcode;
+                        $address = Setup::model()->formataddressinhtml($line1, $line2, $line3, $town, $postcode);
+				echo $address;
+			echo "</td>";
 			echo "<td style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->contract->name."</td>";
 			echo "<td style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->customer->mobile;
 			echo "<br> <style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->customer->telephone."</td>";

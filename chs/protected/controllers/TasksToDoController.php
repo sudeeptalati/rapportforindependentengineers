@@ -268,7 +268,7 @@ class TasksToDoController extends RController
 
 		foreach ($all_active_engg as $engg)
 		{
-			$system_msg.="Engg Id: ".$engg->id."";
+			$system_msg.="<hr>Engg Id: ".$engg->fullname."";
 
 			$datetime = new DateTime('tomorrow');
 			$sd=strtotime($datetime->format('d-F-Y 00:00:00'));

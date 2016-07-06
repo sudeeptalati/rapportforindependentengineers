@@ -1396,3 +1396,23 @@ div.active {
     text-align: center;
     letter-spacing: 2px;
 }
+
+
+.servicetoolbar{
+    /*background-color: #aadffd;*/
+    background-color: #fffed0;
+    padding: 5px 20px;
+    border-radius: 10px;
+    height: 8em;
+}
+.servicebottomfloattoolbar{
+    background-color: #fffed0;
+    padding: 5px 20px;
+    border-radius: 10px;
+    position: fixed;
+    bottom: 1em;
+    right: 25%;
+    left: 25%;
+    margin-bottom: -5px;
+    height: 4em;
+}

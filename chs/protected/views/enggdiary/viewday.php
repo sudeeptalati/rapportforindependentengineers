@@ -133,8 +133,8 @@ $(document).ready(function() {
 										'route_date'=>$selected_date_str,
 										'planroute'=>'1'), 
 								array( 'class'=>'fa fa-road fa-3x',
-								 		'title'=>'Revert To Google Optimised Route Order',
-								 		'onclick'=>'javascript: return confirm("This will update your diary. Are you sure you want to continue  ?");'
+								 		'title'=>'Google Optimised Route',
+								 		'onclick'=>'javascript: return confirm("This will overwrite your diary. Are you sure you want to continue  ?");'
 								));
 								
 								
@@ -157,7 +157,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
     // additional javascript options for the dialog plugin
     'options'=>array(
         'title'=>'Route Map',
-        'autoOpen'=>true,
+        'autoOpen'=>false,
         'modal'=>false,
 		'width'=>800,
 		'height'=>1000,

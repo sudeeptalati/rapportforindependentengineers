@@ -751,6 +751,7 @@ class EnggdiaryController extends RController
 				}///end of 		foreach ($servicealls as $s) {
 
 
+				//because we are considering only 3 dates if any day has no engg, we can fill it up
 				if (count($available_engineers_array) == 0) {
 					$active_engg = Engineer::model()->getallactiveengineerfordiaryandrouteplanning();
 					foreach ($active_engg as $e) {
@@ -760,6 +761,7 @@ class EnggdiaryController extends RController
 						array_push($available_engineers_array, $available_engg);
 					}///end of foreach ($active_engg as $e)
 				}
+
 
 				$date_array['available_enggs'] = $available_engineers_array;
 
@@ -799,6 +801,30 @@ class EnggdiaryController extends RController
 
 		return true;
 	}//end of public function checkifarraycontainsengg()
+
+
+
+	public function actionEditnotesonly()
+	{
+
+		if (isset($_POST['Enggdiary'])) {
+
+			$id= $_POST['Enggdiary']['id'];
+			$notes = $_POST['Enggdiary']['notes'];
+
+			$r = Enggdiary::model()->updateByPk($id,array('notes' =>$notes));
+
+			////Update engineer by PK
+			if ($r == 1) {
+				$new_diary_model=$this->loadModel($id);
+				//redirect
+				$this->redirect(array('/servicecall/view', 'id'=>$new_diary_model->servicecall_id, '#'=>'enginnerbox'));
+			} else
+				echo 'cannot update Job Status in servicecall. Please contact support';
+
+		}
+		$this->renderPartial('editnotesonly');
+	}//end of ChangeEngineerOnly.
 
 
 }//end of class.

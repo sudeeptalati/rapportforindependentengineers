@@ -38,17 +38,53 @@ $today = date('d-m-Y');
                 <div class="title">
                     <?php echo $servicecallmodel->customer->fullname; ?>
 
-                    <div class="address">
-                        <?php
-                        $line1 = $servicecallmodel->customer->address_line_1;
-                        $line2 = $servicecallmodel->customer->address_line_2;
-                        $line3 = $servicecallmodel->customer->address_line_3;
-                        $town = $servicecallmodel->customer->town;
-                        $postcode = $servicecallmodel->customer->postcode;
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="address">
+                                    <?php
+                                    $line1 = $servicecallmodel->customer->address_line_1;
+                                    $line2 = $servicecallmodel->customer->address_line_2;
+                                    $line3 = $servicecallmodel->customer->address_line_3;
+                                    $town = $servicecallmodel->customer->town;
+                                    $postcode = $servicecallmodel->customer->postcode;
 
-                        ?>
-                        <?php echo $setupmodel->formataddressinhtml($line1, $line2, $line3, $town, $postcode); ?>
-                    </div>
+                                    ?>
+                                    <?php echo $setupmodel->formataddressinhtml($line1, $line2, $line3, $town, $postcode); ?>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+
+                                    <table>
+                                        <tr>
+                                            <th style="width: 10%"></th>
+                                            <th style="width: 90%"></th>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="fa fa-mobile"></span></td>
+                                            <td>
+                                                <?php echo $servicecallmodel->customer->mobile; ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="fa fa-mobile"></span></td>
+                                            <td>
+                                                <?php echo $servicecallmodel->customer->fax; ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="fa fa-phone"></span></td>
+                                            <td>
+                                                <?php echo $servicecallmodel->customer->telephone; ?>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
                 </div>
             </div><!-- end of content box-->
 
@@ -63,7 +99,15 @@ $today = date('d-m-Y');
             </div><!-- end of     <div class="containerbox productbox"> -->
 
             <div class="containerbox servicebox">
-                <div class="headingbox serviceheadingbox">Service</div>
+                <div class="headingbox serviceheadingbox">
+                    Service
+                    <div style="float: right">
+                        <?php
+                        $linktext='<div class="fa fa-edit"></div>#'.$servicecallmodel->service_reference_number;
+                        echo CHtml::link($linktext,array('/servicecall/view', 'id'=>$servicecallmodel->id), array('style'=>'color:white'));
+                        ?>
+                    </div>
+                </div>
                 <div class="contentbox">
                     <div class="title">
                         <?php echo $servicecallmodel->fault_description; ?>
@@ -381,8 +425,12 @@ $today = date('d-m-Y');
                 echo '</div>';///end of  echo "<div class='approved''>";
                 //$no_next_days = $no_next_days + 1;
 
-                array_push($days_postcodes_array, $customer_postcodes);
-                array_push($considered_dates, date("j-n-Y", $forloopdate_time));
+                ///We will ignore the days if customer postcodes are not there
+                if (count($customer_postcodes)>0)
+                {
+                    array_push($days_postcodes_array, $customer_postcodes);
+                    array_push($considered_dates, date("j-n-Y", $forloopdate_time));
+                }
 
 
             }///end of if in_array
@@ -543,7 +591,7 @@ $today = date('d-m-Y');
 		{
 
 				//document.getElementById('systemmessage')='<b>System cannot find any suitable dates, Please book the call manually</b>'
-				document.getElementById('outputDiv').innerHTML += '<br><b>System cannot find any suitable dates, Please book the call manually from the above link.</b>';
+				document.getElementById('outputDiv').innerHTML += '<br><b>System cannot find any more suitable dates, You can also book the call manually</b>';
 				//document.getElementById('loading').style.display = 'none';
                 ///stoploadingsign();
 				//document.getElementById('systemmessage').style.display = 'block';

@@ -1,10 +1,11 @@
-<?php 
-   $mtime = microtime(); 
-   $mtime = explode(" ",$mtime); 
-   $mtime = $mtime[1] + $mtime[0]; 
-   $starttime = $mtime; 
-;?> 
+<?php
+if ($model->engg_diary_id != NULL || $model->engg_diary_id != '')
+	$appointment_exists = true;
+else
+	$appointment_exists = false;
 
+;?>
+<?php $setupmodel = Setup::model(); ?>
 <style type="text/css">
 td
 {
@@ -204,55 +205,89 @@ vertical-align:top;
 		</td>
 		<td>
 
-		<?php echo "<b>Current Appointment</b><br>";?>
-			<br>
-			<b><i><?php 	echo  $model->engineer->fullname;?></i></b>
-				<?php 	 
-				//echo $form->labelEx($enggDiaryModel,'visit_start_date').'<br>';	
-				 if (!empty($enggDiaryModel->visit_start_date)){
-						echo '<br>'.date('d-M-y h:i:s A', $enggDiaryModel->visit_start_date);
-						echo '&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('Change Appointment', array('enggdiary/viewFullDiary/', 'engg_id'=>$model->engineer_id));
- 						echo '<br>'.$enggDiaryModel->notes;
- 						echo '&nbsp;&nbsp;&nbsp;&nbsp;'.CHtml::link('Update', array('/enggdiary/update/', 'id'=>$enggDiaryModel->id));
-						echo '<br><br>'.CHtml::link('Book Appointment for another visit', array('enggdiary/diary/', 'id'=>$model->id, 'engineer_id'=>$model->engineer_id));
-						echo '<br><br><hr>';
- 						
- 				}
+			<div class="engineerbox contentbox">
+				<div class="enginnerheadingbox headingbox">Engineer</div>
+				<div class="contentbox">
+					<table>
+						<tr>
+							<th style="width:5%"></th>
+							<th style="width:35%"></th>
+							<th style="width:60%"></th>
+						</tr>
+						<tr>
+							<td>
+								<div class="fa fa-wrench fa-2x"></div>
+							</td>
+							<td><?php echo $model->engineer->fullname; ?></td>
+							<td>
+								<?php echo CHtml::link('<div class="fa fa-road" ></div> Book visit', array('enggdiary/findnextappointmentfromallengg/', 'servicecall_id' => $model->id, 'engineer_id' => $model->engineer_id)); ?>
+							</td>
+						</tr>
 
-				?>
-			<!-- ******* code for image link to change appointment ******* -->
-			<?php 
-				$imgurl = Yii::app()->request->baseUrl.'/images/engineer_diary.gif';
-				$imghtml = CHtml::image($imgurl,'Engineer Appointment',array('width'=>25, 'height'=>25, 'title'=>'Engineer Appointment' )); 
-				//echo CHtml::link($imghtml, array('Enggdiary/iCalLink','id'=>$model->id));
-			?>
-			<!-- ****************** end of code. ******************** -->
-			
-			<?php echo $form->labelEx($model,'engineer_id'); ?>
-			 
-			<?php echo $form->textField($engineerModel, 'company', array('disabled'=>'disabled'));?>
-			<?php echo $form->error($model,'engineer_id'); ?>
-			<?php echo CHtml::link('Change Engineer', array('servicecall/changeEngineerOnly/', 'service_id'=>$model->id));
-					?>
-			<br>
-			<?php if(empty($model->engg_diary_id))
-				  {	
-				  	echo CHtml::link($imghtml, array('enggdiary/create/', 'id'=>$model->id, 'engineer_id'=>$model->engineer_id));
-					echo CHtml::link('Create Appointment', array('enggdiary/diary/', 'id'=>$model->id, 'engineer_id'=>$model->engineer_id));
-					echo "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-					
-				  }
-				  else 
-				  {
-				  	echo CHtml::link($imghtml, array('enggdiary/changeAppointment/', 'service_id'=>$model->id, 'engineer_id'=>$model->engineer_id, 'enggdiary_id'=>$model->engg_diary_id));
-				  	//echo CHtml::link('Change Engineer or Appointment', array('enggdiary/changeAppointment/', 'serviceId'=>$model->id, 'engineerId'=>$model->engineer_id, 'enggdiary_id'=>$model->engg_diary_id));				  	
-				  	echo CHtml::link('Change Appointment', array('enggdiary/viewFullDiary/', 'engg_id'=>$model->engineer_id));
-				  	//echo CHtml::link('Change Appointment', array('enggdiary/bookingAppointment/', 'id'=>$model->id, 'engineer_id'=>$model->engineer_id));
-				  	echo "<br>";
-					echo CHtml::link('Book Appointment for another visit', array('enggdiary/diary/', 'id'=>$model->id, 'engineer_id'=>$model->engineer_id));
-				  }
-			?>
-			
+						<?php if ($appointment_exists): ?>
+							<tr>
+								<td>
+									<div class="fa fa-calendar fa-2x title" title="Appointment">
+									</div>
+								</td>
+								<td><?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?>
+								</td>
+								<td>
+									<?php echo CHtml::link('<div class="fa fa-share"></div> Move appointment', array('enggdiary/viewFullDiary/', 'engg_id' => $model->engineer_id)); ?>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="fa fa-envelope-o fa-2x title" title="Appointment">
+									</div>
+								</td>
+								<td><?php echo $model->enggdiary->notes; ?></td>
+								<td>
+
+									<?php echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit', array('/enggdiary/update/', 'id' => $model->engg_diary_id)); ?>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="3">
+									<?php $all_appointments = Enggdiary::model()->getappointmentsbyserviceid($model->id); ?>
+									<?php if (count($all_appointments) > 1): ?>
+										<h5>Previous Appointments</h5>
+
+										<table>
+											<tr>
+												<th class="datacontenttitle">Engineer</th>
+												<th class="datacontenttitle">Visit Date</th>
+												<th class="datacontenttitle">Notes</th>
+											</tr>
+
+											<?php foreach ($all_appointments as $a): ?>
+
+												<?php if ($a->id != $model->engg_diary_id): ?>
+													<tr>
+														<td><?php echo $a->engineer->fullname; ?> </td>
+
+														<td>
+
+															<?php echo $setupmodel->formatdatewithtime($a->visit_start_date); ?>
+															-
+															<?php echo date('H:i A', $a->visit_end_date); ?>
+														</td>
+														<td><?php echo $a->notes; ?> </td>
+													</tr>
+												<?php endif;///end of if ($a->id!=$model->engg_diary_id): ?>
+
+											<?php endforeach; ?>
+										</table>
+
+									<?php endif; ///end of if (count($all_appointments)>1):?>
+								</td>
+							</tr>
+						<?php endif; ///if($appointment_exists): ?>
+
+					</table>
+				</div><!-- end of  <div class="contentbox"> -->
+			</div><!-- end of <div class="engineerbox contentbox"> -->
 				
 			<?php //echo CHtml::link('Change the Engineer or Appointment', array('enggdiary/changeAppointment/', 'serviceId'=>$model->id, 'engineerId'=>$model->engineer_id, 'enggdiary_id'=>$model->engg_diary_id)); ?>
 			
@@ -963,11 +998,3 @@ if (!empty($_GET['cloud_id']) || !empty($_GET['master_id']))
 	
 	</div><!-- form -->
 	
-<?php  
-   $mtime = microtime(); 
-   $mtime = explode(" ",$mtime); 
-   $mtime = $mtime[1] + $mtime[0]; 
-   $endtime = $mtime; 
-   $totaltime = ($endtime - $starttime); 
-   //echo "This page was created in ".$totaltime." seconds"; 
-;?>

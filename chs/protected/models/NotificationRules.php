@@ -455,7 +455,7 @@ class NotificationRules extends CActiveRecord
 		$customer_name = $servicecall->customer->title . ' ' . $servicecall->customer->last_name;
 
 		$product = $servicecall->product->brand->name . ' ' . $servicecall->product->productType->name;
-		$engineer_name = $servicecall->engineer->company . ', ' . $servicecall->engineer->fullname;
+		$engineer_name = $servicecall->engineer->fullname;
 		$job_status = $servicecall->jobStatus->name;
 		$warranty_provider_name = $servicecall->contract->name;
 
@@ -487,7 +487,7 @@ class NotificationRules extends CActiveRecord
 		$subject = 'The status of service call #' . $service_reference_number . ' has been updated to  ' . $job_status;
 
 
-		$notificationModel = NotificationRules::model()->findAllByAttributes(array('job_status_id' => $status_id, 'active' => '1'));
+		$notificationModel = NotificationRules::model()->findAllByAttributes(array('job_status_id' => $status_id));
 
 		if (count($notificationModel) != 0) {
 

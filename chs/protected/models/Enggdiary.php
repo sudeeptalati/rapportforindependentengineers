@@ -192,29 +192,13 @@ class Enggdiary extends CActiveRecord
     protected function afterSave()
     {
     	$serviceModel=Servicecall::model()->findByPk($this->servicecall_id);
-    	if($serviceModel->job_status_id == '1')
-    	{
-    		$serviceUpdateModel=Servicecall::model()->updateByPk($serviceModel->id,
+
+		Servicecall::model()->updateByPk($serviceModel->id,
     												array(
     												'engg_diary_id'=>$this->id,
-    												'job_status_id'=>'3'
+    												'job_status_id'=>'3'///that means status is changed to booked
     												));
-    	}//end of if, changing status of servicecall to booked and saving engg_diary_id.
-    	/*
-    	elseif($serviceModel->job_status_id == '2')
-    	{
-    		$serviceUpdateModel=Servicecall::model()->updateByPk($serviceModel->id,
-    												array(
-    												'engg_diary_id'=>$this->id,
-    												));
-    	}//end of else, this was not changing engg_diary_id when app was booked for another visit.
-    	*/   			
-    	else
-    	{
-    		$serviceUpdateModel=Servicecall::model()->updateByPk($serviceModel->id,
-    				array('engg_diary_id'=>$this->id)
-    				);
-    	}//end of else, saving engg_diary_id in servicecall table.							
+
     }//end of afterSave().
     
     public function fetchDiaryDetails($engg_id,$date )

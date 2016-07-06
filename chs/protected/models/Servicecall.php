@@ -133,7 +133,7 @@ class Servicecall extends CActiveRecord
             'net_cost' => 'Net Cost',
             'job_payment_date' => 'Job Payment Date',
             'job_finished_date' => 'Job Finished Date',
-            'notes' => 'BER Authority No. / Invoice No. / Notes / Booking Time ',
+            'notes' => 'BER Authority No. / Test Results / Booking Time , etc',
             'created_by_user_id' => 'Created By User',
             'created' => 'Created',
             'modified' => 'Modified',

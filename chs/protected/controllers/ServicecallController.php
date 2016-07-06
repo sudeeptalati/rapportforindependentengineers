@@ -98,7 +98,7 @@ class ServicecallController extends RController
 
     }//end of HTML Preview.
 
-public function actionHtmlPreview($id)
+    public function actionHtmlPreview($id)
     {
 
         //echo "<br>Id in HTML Preview = ".$id;
@@ -109,7 +109,42 @@ public function actionHtmlPreview($id)
 
     }//end of create.
 
-/**
+    public function actionInvoice($id)
+    {
+
+        //echo "<br>Id in HTML Preview = ".$id;
+        $model = $this->loadModel($id);
+        $setupModel = Setup::model()->findByPk(1);
+        //$config= Config::model()->findByPk(1);
+        //$this->renderPartial('invoice', array('model' => $model, 'company_details' => $setupModel));
+		      //mPDF, **** accessing mpdf directly from vendors *******
+        Yii::import('application.vendors.*');
+        require_once('mpdf/mpdf.php');
+        ///Create an instance of the class:
+        $mpdf = new mPDF();
+
+
+        $model = $this->loadModel($id);
+        $setupModel = Setup::model()->findByPk(1);
+        //$config= Config::model()->findByPk(1);
+
+        $service_ref_no = $model->service_reference_number;
+        $customer_name = $model->customer->fullname;
+        $model_number = $model->product->model_number;
+        $warranty = $model->contract->name;
+        $filename = $service_ref_no . ' ' . $customer_name . ' ' . $model_number . ' ' . $warranty . '.pdf';
+
+        $mpdf->WriteHTML($this->renderPartial('invoice', array('model' => $model, 'company_details' => $setupModel), true));
+
+        ///Output a PDF file:
+        $mpdf->Output($filename, 'I');
+    }//end of create.
+
+
+
+
+
+    /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
@@ -310,7 +345,8 @@ public function actionHtmlPreview($id)
         }/////end of if( $model->job_status_id < 100 )
         else {
             //$this->redirect(array('view', array('id'=>$model->id, 'notify_response'=>$response)));
-            $this->redirect(array('view', 'id' => $model->id));
+            if (!UserModule::isAdmin())
+                $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('updateServicecall', array('model' => $model));
@@ -671,10 +707,10 @@ public function actionAddProduct($cust_id)
     }//end of ChangeEngineerOnly.
 
 
-    public function donotificationtasks($service_id, $status_id)
+    public function donotificationtasks($service_id, $job_status_id)
     {
-        $response = NotificationRules::model()->performNotification($status_id, $service_id, 'daily');
 
+        $response = NotificationRules::model()->runthedailyweeklymonthlynotifications($service_id, $job_status_id);
         return $response;
 
     }///end of public function donotificationtasks()

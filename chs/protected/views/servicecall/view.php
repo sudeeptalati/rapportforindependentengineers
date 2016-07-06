@@ -29,29 +29,11 @@ if (!empty ($php_warranty_date)) {
     <tr>
         <td colspan="2" style="text-align:center">
             <h2>Servicecall</h2>
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align:left;width:50%">
-            <a href="javascript: history.go(-1)"><i class="fa fa-arrow-left fa-2x"></i></a>
-        </td>
-
-        <td style="text-align:right; width:30%">
+            <div class="servicetoolbar">
 
             <table>
                 <tr>
-                    <td>
-                        <?php
 
-                        $editicom = '<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>';
-                        if ($model->job_status_id > 100) {
-                            if (UserModule::isAdmin())
-                                echo CHtml::link($editicom, array('update', 'id' => $model->id), array('onclick' => 'return false;', 'style' => 'color:gray;')) . "&nbsp;&nbsp;	<small>(Call is Closed)</small>";
-                            //echo "<br>here";
-                        } else
-                            echo CHtml::link($editicom, array('update', 'id' => $model->id), array('title' => 'Edit'));
-                        ?>
-                    </td>
                     <td>
                         <?php
                         $previewImgUrl = Yii::app()->request->baseUrl . '/images/pdf.gif';
@@ -68,9 +50,9 @@ if (!empty ($php_warranty_date)) {
                     </td>
                     <td>
                         <?php
-                        $htmlImgUrl = Yii::app()->request->baseUrl . '/images/invoice.png';
-                        $htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Invoice'));
-                        echo CHtml::link($htmlImg, array('htmlPreview', 'id' => $model->id), array('target' => '_blank'));
+                        $invoiceImgUrl = Yii::app()->request->baseUrl . '/images/invoice.png';
+                        $invoice = CHtml::image($invoiceImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Invoice'));
+                        echo CHtml::link($invoice, array('invoice', 'id' => $model->id), array('target' => '_blank'));
                         ?>
                     </td>
                     <td>
@@ -80,60 +62,71 @@ if (!empty ($php_warranty_date)) {
                         echo CHtml::link($mobileImg, array('/gomobile/default/sendsingleservicecalltoserver', 'id' => $model->id), array('target' => '_blank'));
                         ?>
                     </td>
+                    <td>
+                        <?php
 
+                        $editicom = '<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>';
+                        if ($model->job_status_id > 100) {
+                            if (UserModule::isAdmin())
+                                echo CHtml::link($editicom, array('update', 'id' => $model->id), array( 'style' => 'color:gray;')) . "&nbsp;&nbsp;	<small>(Call is Closed)</small>";
+                            //echo "<br>here";
+                        } else
+                            echo CHtml::link($editicom, array('update', 'id' => $model->id), array('title' => 'Edit'));
+                        ?>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="contentbox"
+                                         style="background-color:<?php echo $model->jobStatus->backgroundcolor; ?> ">
+
+                                        <?php
+                                        echo CHtml::link($editicom,
+                                            '#', array(
+                                                'onclick' => '$("#change-jobstatus-dialog").dialog("open"); return false;',
+                                            ));
+                                        ?>
+
+
+                                        <?php
+                                        $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+                                            'id' => 'change-jobstatus-dialog',
+                                            // additional javascript options for the dialog plugin
+                                            'options' => array(
+                                                'title' => 'Change Status',
+                                                'autoOpen' => false,
+                                                'resizable' => false,
+                                                'modal' => 'true',
+                                            ),
+                                        ));
+                                        $this->renderPartial('changejobstatusonly');
+                                        $this->endWidget('zii.widgets.jui.CJuiDialog');
+                                        // the link that may open the dialog
+                                        ?>
+
+
+                                        <?php echo $model->jobStatus->name; ?>
+
+
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td colspan="2"><h1 style="color:green;text-align: right;">#<?php echo $model->service_reference_number; ?></h1></td>
                 </tr>
             </table>
         </td>
+
+        </div>
+        </td>
     </tr>
 
-    <tr>
-        <th style="width:50%; padding:20px;">
-            <table>
-                <tr>
-                    <td>
-                        <div class="contentbox"
-                             style="background-color:<?php echo $model->jobStatus->backgroundcolor; ?> ">
-
-                            <?php
-                            echo CHtml::link($editicom,
-                                '#', array(
-                                    'onclick' => '$("#change-jobstatus-dialog").dialog("open"); return false;',
-                                ));
-                            ?>
-
-
-                            <?php
-                            $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-                                'id' => 'change-jobstatus-dialog',
-                                // additional javascript options for the dialog plugin
-                                'options' => array(
-                                    'title' => 'Change Status',
-                                    'autoOpen' => false,
-                                    'resizable' => false,
-                                    'modal' => 'true',
-                                ),
-                            ));
-                            $this->renderPartial('changejobstatusonly');
-                            $this->endWidget('zii.widgets.jui.CJuiDialog');
-                            // the link that may open the dialog
-                            ?>
-
-
-                            <?php echo $model->jobStatus->name; ?>
-
-
-                        </div>
-
-                    </td>
-                </tr>
-            </table>
-
-
-        </th>
-        <th>
-            <h1 style="color:green;text-align: right;"><?php echo $model->service_reference_number; ?></h1>
-        </th>
-    </tr>
 
 
     <tr>
@@ -491,35 +484,51 @@ if (!empty ($php_warranty_date)) {
     </tr>
     <tr>
         <td colspan="2">
-            <div class="engineerbox contentbox">
+            <div id="enginnerbox" class="engineerbox contentbox">
                 <div class="enginnerheadingbox headingbox">Engineer</div>
                 <div class="contentbox">
                     <table>
                         <tr>
-                            <th style="width:5%"></th>
-                            <th style="width:35%"></th>
-                            <th style="width:60%"></th>
+                            <th style="width:10%"></th>
+                            <th style="width:30%"></th>
+                            <th style="width:40%"></th>
                         </tr>
+
                         <tr>
                             <td>
-                                <div class="fa fa-wrench fa-2x"></div>
+                                <div title="Customer" class="fa fa-user fa-2x"></div>
+                            </td>
+                            <td>
+                                <?php echo $model->customer->fullname; ?>,
+                                <?php echo $model->customer->postcode; ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div title="Engineer"  class="fa fa-wrench fa-2x"></div>
                             </td>
                             <td><?php echo $model->engineer->fullname; ?></td>
                             <td>
-                                <?php echo CHtml::link('<div class="fa fa-road" ></div> Book another visit', array('enggdiary/findnextappointmentfromallengg/', 'servicecall_id' => $model->id, 'engineer_id' => $model->engineer_id)); ?>
+                                <?php echo CHtml::link('<div class="fa fa-road" ></div> Book visit', array('enggdiary/findnextappointmentfromallengg/', 'servicecall_id' => $model->id, 'engineer_id' => $model->engineer_id)); ?>
                             </td>
                         </tr>
 
                         <?php if ($appointment_exists): ?>
                             <tr>
                                 <td>
-                                    <div class="fa fa-calendar fa-2x title" title="Appointment">
+                                    <div>
+                                        <?php echo CHtml::link('<span title="Show/Hide" class="fa fa-calendar fa-2x"></span>','#',array('class'=>'dayview-button')); ?>
+
                                     </div>
                                 </td>
-                                <td><?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?>
+                                <td>
+                                    <?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?>
+                                    <br>
+                                    <?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_end_date); ?>
                                 </td>
                                 <td>
-                                    <?php echo CHtml::link('<div class="fa fa-share"></div> Move this appointment', array('enggdiary/viewFullDiary/', 'engg_id' => $model->engineer_id)); ?>
+                                    <?php echo CHtml::link('<div class="fa fa-share"></div> Move appointment', array('enggdiary/viewFullDiary/', 'engg_id' => $model->engineer_id)); ?>
                                 </td>
                             </tr>
                             <tr>
@@ -527,10 +536,37 @@ if (!empty ($php_warranty_date)) {
                                     <div class="fa fa-envelope-o fa-2x title" title="Appointment">
                                     </div>
                                 </td>
-                                <td><?php echo $model->enggdiary->notes; ?></td>
+                                <td>
+                                    <?php echo $model->enggdiary->notes; ?>
+                                </td>
                                 <td>
 
-                                    <?php echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit', array('/enggdiary/update/', 'id' => $model->engg_diary_id)); ?>
+                                    <?php
+                                    echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit',
+                                        '#', array(
+                                            'onclick' => '$("#edit-diarynotes-dialog").dialog("open"); return false;',
+                                        ));
+                                    ?>
+
+
+                                    <?php
+                                    $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+                                        'id' => 'edit-diarynotes-dialog',
+                                        // additional javascript options for the dialog plugin
+                                        'options' => array(
+                                            'title' => 'Edit Diary Notes',
+                                            'autoOpen' => false,
+                                            'resizable' => false,
+                                            'modal' => 'true',
+                                        ),
+                                    ));
+                                    $this->renderPartial('/enggdiary/editnotesonly');
+
+                                    $this->endWidget('zii.widgets.jui.CJuiDialog');
+                                    // the link that may open the dialog
+                                    ?>
+
+                                    <?php //echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit', array('/enggdiary/update/', 'id' => $model->engg_diary_id)); ?>
                                 </td>
                             </tr>
 
@@ -573,91 +609,118 @@ if (!empty ($php_warranty_date)) {
 
                     </table>
                 </div><!-- end of  <div class="contentbox"> -->
+
             </div><!-- end of <div class="engineerbox contentbox"> -->
+
+            <?php if($appointment_exists): ?>
+            <?php
+            Yii::app()->clientScript->registerScript('search', "
+                    $('.dayview-button').click(function(){
+                        $('.dayview').toggle();
+                         return false;
+                    });
+                    ");
+            ?>
+
+            <?php echo CHtml::link('<span title="Hide" style="float: right" id="mbtn" class="fa fa-minus-square-o fa-2x"></span>','#',array('class'=>'dayview-button')); ?>
+
+            <div class="dayview" style="display:block">
+
+                <small>If moving the appointment, <a href="#enginnerbox" onclick="window.location.reload(true);">refresh</a> the page to reflect the changes</small>
+
+                <?php
+                $route_date_string=date('Y-m-d',$model->enggdiary->visit_start_date);
+                $this->renderPartial('/enggdiary/viewday',array( 'engineer_id'=>$model->engineer_id , 'selected_date_str'=>$route_date_string));
+                ?>
+            </div>
+
+            <?php endif; ///if($appointment_exists): ?>
+
+
         </td>
     </tr>
 
     <tr>
-        <th style="width:50%; padding:20px;">
-            <table>
-                <tr>
-                    <td>
-                        <div class="contentbox"
-                             style="background-color:<?php echo $model->jobStatus->backgroundcolor; ?> ">
 
-                            <?php
-                            echo CHtml::link($editicom,
-                                '#', array(
-                                    'onclick' => '$("#change-jobstatus-dialog").dialog("open"); return false;',
-                                ));
-                            ?>
-                            <?php echo $model->jobStatus->name; ?>
-                        </div>
+        <td colspan="2">
+            <div class="servicebottomfloattoolbar"  >
+                <table>
+                    <tr>
+                        <td>
+                            <div class="contentbox"
+                                 style="background-color:<?php echo $model->jobStatus->backgroundcolor; ?> ">
 
-                    </td>
-                </tr>
-            </table>
-        </th>
-        <th>
-            <h1 style="color:green;text-align: right;"><?php echo $model->service_reference_number; ?></h1>
-        </th>
-    </tr>
+                                <?php
+                                echo CHtml::link($editicom,
+                                    '#', array(
+                                        'onclick' => '$("#change-jobstatus-dialog").dialog("open"); return false;',
+                                    ));
+                                ?>
+                                <?php echo $model->jobStatus->name; ?>
+                            </div>
+                        </td>
 
-    <tr>
-        <td style="text-align:left;width:50%">
-            <a href="javascript: history.go(-1)"><i class="fa fa-arrow-left fa-2x"></i></a>
-        </td>
+                                    <td>
+                                        <a href="javascript: history.go(-1)"><i class="fa fa-arrow-left fa-2x"></i></a>
+                                    </td>
 
-        <td style="text-align:right; width:30%">
+                                    <td>
+                                        <?php
+                                        $previewImgUrl = Yii::app()->request->baseUrl . '/images/pdf.gif';
+                                        $previewImg = CHtml::image($previewImgUrl, 'Preview', array('width' => 35, 'height' => 35, 'title' => 'Preview in Pdf'));
+                                        echo CHtml::link($previewImg, array('Preview', 'id' => $model->id), array('target' => '_blank'));
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $htmlImgUrl = Yii::app()->request->baseUrl . '/images/html_file.png';
+                                        $htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Preview in HTML'));
+                                        echo CHtml::link($htmlImg, array('htmlPreview', 'id' => $model->id), array('target' => '_blank'));
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $htmlImgUrl = Yii::app()->request->baseUrl . '/images/invoice.png';
+                                        $htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Invoice'));
+                                        echo CHtml::link($htmlImg, array('htmlPreview', 'id' => $model->id), array('target' => '_blank'));
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $mobileImgUrl = Yii::app()->request->baseUrl . '/images/mobile.png';
+                                        $mobileImg = CHtml::image($mobileImgUrl, 'sendToMobile', array('width' => 35, 'height' => 35, 'title' => 'Send to Mobile'));
+                                        echo CHtml::link($mobileImg, array('/gomobile/default/sendsingleservicecalltoserver', 'id' => $model->id), array('target' => '_blank'));
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
 
-            <table>
-                <tr>
-                    <td>
-                        <?php
+
+                                        if ($model->job_status_id > 100) {
+                                            if (UserModule::isAdmin())
+                                                echo CHtml::link($editicom, array('update', 'id' => $model->id), array('style' => 'color:gray;')) . "<small>(Call is Closed)</small>";
+                                            //echo "<br>here";
+                                        } else
+                                            echo CHtml::link($editicom, array('update', 'id' => $model->id), array('title' => 'Edit'));
+                                        ?>
+                                    </td>
+
+                        <td>
+                            <h1 style="color:green;text-align: right;">#<?php echo $model->service_reference_number; ?></h1>
+                        </td>
 
 
-                        if ($model->job_status_id > 100) {
-                            if (UserModule::isAdmin())
-                                echo CHtml::link($editicom, array('update', 'id' => $model->id), array('onclick' => 'return false;', 'style' => 'color:gray;')) . "&nbsp;&nbsp;	<small>(Call is Closed)</small>";
-                            //echo "<br>here";
-                        } else
-                            echo CHtml::link($editicom, array('update', 'id' => $model->id), array('title' => 'Edit'));
-                        ?>
-                    </td>
-                    <td>
-                        <?php
-                        $previewImgUrl = Yii::app()->request->baseUrl . '/images/pdf.gif';
-                        $previewImg = CHtml::image($previewImgUrl, 'Preview', array('width' => 35, 'height' => 35, 'title' => 'Preview in Pdf'));
-                        echo CHtml::link($previewImg, array('Preview', 'id' => $model->id), array('target' => '_blank'));
-                        ?>
-                    </td>
-                    <td>
-                        <?php
-                        $htmlImgUrl = Yii::app()->request->baseUrl . '/images/html_file.png';
-                        $htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Preview in HTML'));
-                        echo CHtml::link($htmlImg, array('htmlPreview', 'id' => $model->id), array('target' => '_blank'));
-                        ?>
-                    </td>
-                    <td>
-                        <?php
-                        $htmlImgUrl = Yii::app()->request->baseUrl . '/images/invoice.png';
-                        $htmlImg = CHtml::image($htmlImgUrl, 'htmlPreview', array('width' => 35, 'height' => 35, 'title' => 'Invoice'));
-                        echo CHtml::link($htmlImg, array('htmlPreview', 'id' => $model->id), array('target' => '_blank'));
-                        ?>
-                    </td>
-                    <td>
-                        <?php
-                        $mobileImgUrl = Yii::app()->request->baseUrl . '/images/mobile.png';
-                        $mobileImg = CHtml::image($mobileImgUrl, 'sendToMobile', array('width' => 35, 'height' => 35, 'title' => 'Send to Mobile'));
-                        echo CHtml::link($mobileImg, array('/gomobile/default/sendsingleservicecalltoserver', 'id' => $model->id), array('target' => '_blank'));
-                        ?>
-                    </td>
+                    </tr>
+                </table>
 
-                </tr>
-            </table>
+            </div>
         </td>
     </tr>
+
 </table>
 
 
+<script>
 
+
+</script>

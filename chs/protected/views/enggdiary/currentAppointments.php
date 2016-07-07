@@ -58,8 +58,7 @@ if(isset($_POST['show_all']))
 	
 	//$model = Enggdiary::model();
 	//$engg_id=$model->engineer_id;
- 	$data=CHtml::listData(Engineer::model()->findAll(array('order'=>"fullname ASC")), 'id', 'fullname','company');
- 	
+	$data=Engineer::model()->getactiveengineerslist();
 	
 	echo "<b>Change Engineer&nbsp;&nbsp;&nbsp;</b>";
 	//echo CHtml::dropDownList('','engineer_id',$data);

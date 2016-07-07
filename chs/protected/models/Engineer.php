@@ -180,7 +180,12 @@ class Engineer extends CActiveRecord {
      */
     private static function loadItems($type) {
         self::$_items[$type] = array();
-        $models = self::model()->findAll(array('order' => "`fullname` ASC"));
+
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'active = 1';
+        $criteria->order = 'fullname ASC';
+        //$models = self::model()->findAll(array('order' => "`fullname` ASC"));
+        $models = self::model()->findAll($criteria);
         //$models=self::model()->findAll(array('order'=>'company ASC'));
         foreach ($models as $model)
             self::$_items[$type][$model->id] = $model->fullname;

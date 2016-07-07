@@ -399,53 +399,25 @@ if (!empty ($php_warranty_date)) {
                                 </td>
                                 <td><b><?php echo $model->total_cost; ?></b></td>
                             </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td><span
+                                        class="datacontenttitle"><?php echo $model->getAttributeLabel('vat_on_total'); ?></span>
+                                </td>
+                                <td><b><?php echo $model->vat_on_total; ?></b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td><span
+                                        class="datacontenttitle"><?php echo $model->getAttributeLabel('net_cost'); ?></span>
+                                </td>
+                                <td><b><?php echo $model->net_cost; ?></b></td>
+                            </tr>
 
                         <?php }//end of if($spares_used == 1).?>
 
                     </table>
 
-                    <?php $previousCall = $model->previousCall($model->customer_id); ?>
-                    <?php if (count($previousCall) != 1): ?>
-
-                        <div class="contentbox">
-                            <h4>Previous Service Details </h4>
-                        </div>
-                        <div class="customerdatabox">
-                            <table>
-                                <tr>
-                                    <th><span class="datacontenttitle">Service Ref#</span></th>
-                                    <th><span class="datacontenttitle">Product</span></th>
-                                    <th><span class="datacontenttitle">Reported Date</span></th>
-                                    <th><span class="datacontenttitle">Fault Description</span></th>
-                                    <th><span class="datacontenttitle">Engineer Visited</span></th>
-                                    <th><span class="datacontenttitle">Job Status</span></th>
-                                </tr>
-
-                                <?php
-
-
-                                foreach ($previousCall as $data) {
-                                    if ($data->service_reference_number != $model->service_reference_number)//////since we want to skip the current service call
-                                    {
-                                        ?>
-                                        <tr>
-                                            <td><?php echo CHtml::link($data->service_reference_number, array('view', 'id' => $data->id)); ?></td>
-                                            <td><?php echo "<b>" . $data->product->productType->name . "<b>"; ?></td>
-                                            <td><?php
-                                                if (!empty($data->fault_date))
-                                                    echo date('d-M-Y', $data->fault_date);
-                                                ?>
-                                            </td>
-                                            <td><?php echo $data->fault_description; ?></td>
-                                            <td><?php echo $data->engineer->company . ', ' . $data->engineer->fullname; ?></td>
-                                            <td style="color:maroon"><?php echo $data->jobStatus->name; ?></td>
-                                        </tr>
-                                        <?php
-                                    }///end of if
-                                }//end of foreach().?>
-                            </table>
-                        </div>
-                    <?php endif; ////end of if (count($previousCall>0)): ?>
 
                     <div class="workcarriedout">
 
@@ -471,11 +443,79 @@ if (!empty ($php_warranty_date)) {
                             <?php echo $model->comments; ?>
                         </div>
 
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="datacontenttitle">
+                                        <?php echo $model->getAttributeLabel('job_finished_date'); ?>
+                                    </div>
+                                    <?php echo $setupmodel->formatdate($model->job_finished_date); ?>
+                                </td>
+                                <td>
+                                    <div class="datacontenttitle">
+                                        <?php echo $model->getAttributeLabel('job_payment_date'); ?>
+                                    </div>
+                                    <?php echo $setupmodel->formatdate($model->job_payment_date); ?>
+                                </td>
+                                <td>
+                                    <div class="datacontenttitle">
+                                        <?php echo $model->getAttributeLabel('work_summary'); ?>
+                                    </div>
+                                    <?php echo $model->work_summary; ?>
+                                </td>
+
+                            </tr>
+                        </table>
+
 
                     </div><!-- end of <div class="workcarriedout">-->
 
 
                 </div><!-- end of <div class="contentbox"> -->
+
+
+                <?php $previousCall = $model->previousCall($model->customer_id); ?>
+                <?php if (count($previousCall) != 1): ?>
+
+                    <div class="contentbox">
+                        <h4>Previous Service Details </h4>
+                    </div>
+                    <div class="customerdatabox">
+                        <table>
+                            <tr>
+                                <th><span class="datacontenttitle">Service Ref#</span></th>
+                                <th><span class="datacontenttitle">Product</span></th>
+                                <th><span class="datacontenttitle">Reported Date</span></th>
+                                <th><span class="datacontenttitle">Fault Description</span></th>
+                                <th><span class="datacontenttitle">Engineer Visited</span></th>
+                                <th><span class="datacontenttitle">Job Status</span></th>
+                            </tr>
+
+                            <?php
+
+
+                            foreach ($previousCall as $data) {
+                                if ($data->service_reference_number != $model->service_reference_number)//////since we want to skip the current service call
+                                {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo CHtml::link($data->service_reference_number, array('view', 'id' => $data->id)); ?></td>
+                                        <td><?php echo "<b>" . $data->product->productType->name . "<b>"; ?></td>
+                                        <td><?php
+                                            if (!empty($data->fault_date))
+                                                echo date('d-M-Y', $data->fault_date);
+                                            ?>
+                                        </td>
+                                        <td><?php echo $data->fault_description; ?></td>
+                                        <td><?php echo $data->engineer->fullname; ?></td>
+                                        <td style="color:maroon"><?php echo $data->jobStatus->name; ?></td>
+                                    </tr>
+                                    <?php
+                                }///end of if
+                            }//end of foreach().?>
+                        </table>
+                    </div>
+                <?php endif; ////end of if (count($previousCall>0)): ?>
 
             </div><!--  <div class="servicebox contentbox">-->
 

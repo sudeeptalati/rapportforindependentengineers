@@ -182,7 +182,7 @@ class TasksToDoController extends RController
 	public function actionCompleteTasks()
 	{
 		//echo "<br>In completeTasks action";
-		echo NotificationRules::model()->runthedailyweeklymonthlynotifications();
+			NotificationRules::model()->runthedailyweeklymonthlynotifications();
 
 		$this->render('completeTasks');
 		

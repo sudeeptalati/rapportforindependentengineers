@@ -254,77 +254,69 @@ class NotificationRules extends CActiveRecord
 		switch ($notificaionCode) {
 			case 1:
 				//echo "<br>Send email";
+				$this->_prepareemail($receiver_email_address, $body, $subject, $frequency_type);
 
-				//************ ADDING TASK TO TASKS TO DO TABLE *******
-				$tasksModel = new TasksToDo();
-				$tasksModel->task = 'email';
-				$tasksModel->status = 'pending';
-				$tasksModel->msgbody = $body;
-				$tasksModel->subject = $subject;
-				$tasksModel->send_to = $receiver_email_address;
-				$tasksModel->created = time();
-				$tasksModel->frequency_type = $frequency_type;
-
-				$tasksModel->save();
-				//******** END OF ADDING TASK TO TASKS TO DO TABLE *******
-
-
-				break;
 
 			case 2:
 				//echo "<br>Send SMS";
-
-				//************ ADDING TASK TO TASKS TO DO TABLE *******
-				$tasksModel = new TasksToDo();
-				$tasksModel->task = 'sms';
-				$tasksModel->status = 'pending';
-				$tasksModel->msgbody = $smsMessage;
-				$tasksModel->send_to = $telephone;
-				$tasksModel->created = time();
-				$tasksModel->frequency_type = $frequency_type;
-
-				$tasksModel->save();
-				//******** END OF ADDING TASK TO TASKS TO DO TABLE *******
-
-
+				$this->_preparesms($smsMessage, $telephone, $frequency_type);
 				break;
-
 
 			case 3:
 				///echo "<br>Send email and SMS also";
-
-				//************ ADDING EMAIL TASK TO TASKS TO DO TABLE *******
-				$tasksModel = new TasksToDo();
-				$tasksModel->task = 'email';
-				$tasksModel->status = 'pending';
-				$tasksModel->msgbody = $body;
-				$tasksModel->subject = $subject;
-				$tasksModel->send_to = $receiver_email_address;
-				$tasksModel->created = time();
-				$tasksModel->frequency_type = $frequency_type;
-
-				$tasksModel->save();
-				//******** END OF ADDING EMAIL TASK TO TASKS TO DO TABLE *******
-
-				//************ ADDING SMS TASK TO TASKS TO DO TABLE *******
-				$tasksModel = new TasksToDo();
-				$tasksModel->task = 'sms';
-				$tasksModel->status = 'pending';
-				$tasksModel->msgbody = $smsMessage;
-				$tasksModel->send_to = $telephone;
-				$tasksModel->created = time();
-				$tasksModel->frequency_type = $frequency_type;
-
-				$tasksModel->save();
-				//******** END OF ADDING SMS TASK TO TASKS TO DO TABLE *******
-
-
-
+				$this->_preparesms($smsMessage, $telephone, $frequency_type);
+				$this->_prepareemail($receiver_email_address, $body, $subject, $frequency_type);
 				break;
 
 		}//end of switch().
 
 	}//end of sendCustomerEmailAndSms().
+
+
+
+	public function _preparesms($smsMessage, $telephone, $frequency_type)
+	{
+		$telephone=trim($telephone);
+		if ($telephone!='' || $telephone!=NULL)
+		{
+			$tasksModel = new TasksToDo();
+			$tasksModel->task = 'sms';
+			$tasksModel->status = 'pending';
+			$tasksModel->msgbody = $smsMessage;
+			$tasksModel->send_to = $telephone;
+			$tasksModel->created = time();
+			$tasksModel->frequency_type = $frequency_type;
+		}
+
+	}///end of 	public function _prepareemail($receiver_email_address, $body, $subject, $frequency_type)
+
+
+
+
+	public function _prepareemail($receiver_email_address, $body, $subject, $frequency_type)
+	{
+		$receiver_email_address=trim($receiver_email_address);
+		if ($receiver_email_address!='' || $receiver_email_address!=NULL)
+		{
+			$tasksModel = new TasksToDo();
+			$tasksModel->task = 'email';
+			$tasksModel->status = 'pending';
+			$tasksModel->msgbody = $body;
+			$tasksModel->subject = $subject;
+			$tasksModel->send_to = $receiver_email_address;
+			$tasksModel->created = time();
+			$tasksModel->frequency_type = $frequency_type;
+			$tasksModel->save();
+		}
+
+	}///end of 	public function _prepareemail($receiver_email_address, $body, $subject, $frequency_type)
+
+
+
+
+
+
+
 
 
 	public function sendEmail($reciever_email_address, $body, $subject)

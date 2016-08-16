@@ -279,6 +279,8 @@ class NotificationRules extends CActiveRecord
 		$telephone=trim($telephone);
 		if ($telephone!='' || $telephone!=NULL)
 		{
+			$smsMessage=strip_tags($smsMessage);
+
 			$tasksModel = new TasksToDo();
 			$tasksModel->task = 'sms';
 			$tasksModel->status = 'pending';
@@ -286,6 +288,7 @@ class NotificationRules extends CActiveRecord
 			$tasksModel->send_to = $telephone;
 			$tasksModel->created = time();
 			$tasksModel->frequency_type = $frequency_type;
+			$tasksModel->save();
 		}
 
 	}///end of 	public function _prepareemail($receiver_email_address, $body, $subject, $frequency_type)
@@ -453,12 +456,17 @@ class NotificationRules extends CActiveRecord
 
 		if ($servicecall->enggdiary)
 		{
-			$visit_start_time = $setup->formatdatewithtime($servicecall->enggdiary->visit_start_date);
-			$visit_end_time = $setup->formatdatewithtime($servicecall->enggdiary->visit_end_date);
+			$date_of_visit = $setup->formatdate($servicecall->enggdiary->visit_start_date);
+			$visit_start_time = $setup->formatonlytime($servicecall->enggdiary->visit_start_date);
+			//$visit_end_time = $setup->formatdatewithtime($servicecall->enggdiary->visit_end_date);
+			$visit_end_time = $setup->formatonlytime($servicecall->enggdiary->visit_end_date);
 		}else{
 			$visit_start_time = '';
 			$visit_end_time = '';
+			$date_of_visit ='';
 		}
+
+
 		$variables = array(
 			'{CUSTOMER_NAME}' => $customer_name,
 			'{SERVICE_REF_NO}' => $service_reference_number,
@@ -466,14 +474,13 @@ class NotificationRules extends CActiveRecord
 			'{JOB_STATUS}' => $job_status,
 			'{ENGINEER_NAME}' => $engineer_name,
 			'{WARRANTY_PROVIDER}' => $warranty_provider_name,
+			'{DATE_OF_VISIT}' => $date_of_visit,
 			'{VISIT_START_TIME}' => $visit_start_time,
 			'{VISIT_END_TIME}' => $visit_end_time,
 			'{YOUR_COMPANY_NAME}' => $company_name,
 			'{YOUR_COMPANY_EMAIL}' => $company_email,
 			'{YOUR_COMPANY_TELEPHONE}' => $company_telephone,
 			'{\n}' => '<br>'
-
-
 		);
 
 		$subject = 'The status of service call #' . $service_reference_number . ' has been updated to  ' . $job_status;

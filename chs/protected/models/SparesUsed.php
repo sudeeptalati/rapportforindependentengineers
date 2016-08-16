@@ -51,7 +51,7 @@ class SparesUsed extends CActiveRecord
 			array('master_item_id, servicecall_id, item_name, quantity', 'required'),
 			array('master_item_id, servicecall_id, quantity', 'numerical', 'integerOnly'=>true),
 			array('unit_price, total_price', 'numerical'),
-			array('date_ordered, modified, notes', 'safe'),
+			array('part_number, date_ordered, modified, notes', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, master_item_id, servicecall_id, item_name, part_number, unit_price, quantity, total_price, date_ordered, created, modified', 'safe', 'on'=>'search'),
@@ -120,44 +120,48 @@ class SparesUsed extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-	
+
+
+
+
+
 	protected function beforeSave()
-    {
-    	if(parent::beforeSave())
-        {
-        	if($this->isNewRecord)  // Creating new record 
-            {
-            	$this->total_price = $this->unit_price*$this->quantity;
-        		$this->created_by_user=Yii::app()->user->id;
-        		$this->created=time();
-    			return true;
-            }
-            else
-            {
-            	$this->modified=time();
-                return true;
-            }
-        }
-    }//end of beforeSave().
-    
-    public function initialize()
-    {
-    	//echo "<hr>Initialize is called";
-    	
-    	//$filename = '../jsonTest.json';
-    	$filename = '../jsondata.json';
+	{
+		if(parent::beforeSave())
+		{
+			if($this->isNewRecord)  // Creating new record
+			{
+				$this->total_price = $this->unit_price*$this->quantity;
+				$this->created_by_user=Yii::app()->user->id;
+				$this->created=time();
+				return true;
+			}
+			else
+			{
+				$this->modified=time();
+				return true;
+			}
+		}
+	}//end of beforeSave().
+
+	public function initialize()
+	{
+		//echo "<hr>Initialize is called";
+
+		//$filename = '../jsonTest.json';
+		$filename = '../jsondata.json';
 		$fh = fopen($filename, 'w');
 		$beginStr = '{ "results": [';
 		fwrite($fh, $beginStr);
 		fclose($fh);
-    	
-    }//end of initialize.
-    
-    public function addData($param)
-    {
-    	//echo "<hr>AddData is called, Adding data to file";
-    	
-    	$filename = '../jsondata.json';
+
+	}//end of initialize.
+
+	public function addData($param)
+	{
+		//echo "<hr>AddData is called, Adding data to file";
+
+		$filename = '../jsondata.json';
 //    	$filename = '../test.php';
 //		$fh = fopen($filename, 'r');
 //		$sData = fread($fh, filesize($filename));
@@ -169,169 +173,169 @@ class SparesUsed extends CActiveRecord
 		fwrite($fh1, json_encode($param));
 		fwrite($fh1, $str);
 		fclose($fh1);
-		
-		
-    }//end of addData.
 
-    
-    public function finalize()
-    {
-    	
-    	$today = date("FjYhisA");
-    	//echo $today;
-    	
-    	//echo "<hr> Finalize is called";
-    	//$finalStr = ']}';
-    	$closingStr = '],';
-    	$status = '"status":0}';
-		
+
+	}//end of addData.
+
+
+	public function finalize()
+	{
+
+		$today = date("FjYhisA");
+		//echo $today;
+
+		//echo "<hr> Finalize is called";
+		//$finalStr = ']}';
+		$closingStr = '],';
+		$status = '"status":0}';
+
 		$filename = '../jsondata.json';
-		
+
 		$fh = fopen($filename, 'r+');
 		$stat = fstat($fh);
 		$trunkdata = ftruncate($fh, $stat['size']-1);
 		//echo "<hr>".$trunkdata;
-		fclose($fh); 
-		
+		fclose($fh);
+
 		$fh = fopen($filename, 'a');
 		fwrite($fh, $closingStr);
 		fwrite($fh, $status);
 		fclose($fh);
-    	
-    	$oldname = '../jsondata.json';
-    	//echo "<hr> path ".$oldname."<hr>";
-    	$name = 'jsondataold.json';
-    	$newname = '../'.$today.$name;
-    	//echo $newname;
-    	$uploadfileName = $today.$name;
-    	
-    	if(file_exists($oldname))
-    	{
-    		//echo "<hr>php file is present";
-    		rename($oldname, $newname);
-    		//echo "<hr> file is renamed";
 
-    		$sparesModel = SparesUsed::model()->initialize();
-    		//echo "<hr> new file is created by initialize method";
-    		
-    		$uploadModel = SparesUsed::model()->uploadFile($uploadfileName);
-    		
-    	}
-    	else
-    	{
-    		//echo "<hr>file not present";
-    	}	
-    		
-    	
-    		
-    }//end of finalize.
-    
-    public function uploadFile($newname)
-    {
-    	//echo "Upload files function called<hr>";
-    	
-    	//echo "New name = ".$newname."<br>";
-    	
-    	$ftpsettingModel = FtpSettings::model()->findByPk(1);
-    	
-    	$server = $ftpsettingModel->url;
-    	//echo "server = ".$server."<br>";
-    	$ftp_user_name = $ftpsettingModel->ftp_username;
-    	//echo "user name = ".$ftp_user_name."<br>";
-    	$ftp_user_pass = $ftpsettingModel->ftp_password;
-    	//echo "password = ".$ftp_user_pass."<br>";
-    	
-    	
-    	$local_file = '../'.$newname;
+		$oldname = '../jsondata.json';
+		//echo "<hr> path ".$oldname."<hr>";
+		$name = 'jsondataold.json';
+		$newname = '../'.$today.$name;
+		//echo $newname;
+		$uploadfileName = $today.$name;
+
+		if(file_exists($oldname))
+		{
+			//echo "<hr>php file is present";
+			rename($oldname, $newname);
+			//echo "<hr> file is renamed";
+
+			$sparesModel = SparesUsed::model()->initialize();
+			//echo "<hr> new file is created by initialize method";
+
+			$uploadModel = SparesUsed::model()->uploadFile($uploadfileName);
+
+		}
+		else
+		{
+			//echo "<hr>file not present";
+		}
+
+
+
+	}//end of finalize.
+
+	public function uploadFile($newname)
+	{
+		//echo "Upload files function called<hr>";
+
+		//echo "New name = ".$newname."<br>";
+
+		$ftpsettingModel = FtpSettings::model()->findByPk(1);
+
+		$server = $ftpsettingModel->url;
+		//echo "server = ".$server."<br>";
+		$ftp_user_name = $ftpsettingModel->ftp_username;
+		//echo "user name = ".$ftp_user_name."<br>";
+		$ftp_user_pass = $ftpsettingModel->ftp_password;
+		//echo "password = ".$ftp_user_pass."<br>";
+
+
+		$local_file = '../'.$newname;
 		//$ftp_path = '/home/acerserver/jsonData.json';
 		$ftp_path = '/rapportsoftware.co.uk/html.spares/newfiles/'.$newname;
-	    	
+
 		// set up basic connection
 		$conn_id = ftp_connect($server);
-		
+
 		if(!$conn_id)
 		{
 			//echo "Connection attemp failed<hr>";
 		}
-		else 
+		else
 		{
 			//echo "Connection established<hr>";
 		}
-		
+
 		// login with username and password
 		$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
-		
+
 		if(!$login_result)
 		{
 			//echo "Login failure<hr>";
 		}
-		else 
+		else
 		{
 			//echo "Login is success<hr>";
 		}
-		
-		// upload a file
-		if (ftp_put($conn_id, $ftp_path, $local_file, FTP_ASCII)) 
-		{
-		 	//echo "successfully uploaded $local_file\n";
-		}
-		else 
-		{
-		 	//echo "There was a problem while uploading $local_file\n";
-		}
-		
-		
-		
-		//echo ftp_chmod($conn_id, 0777, $ftp_path) ? "CHMOD successful!" : 'Error';
-		
-		// close the connection
-		ftp_close($conn_id);
 
-	
-    	
-    	/****** ALTERNATIVE METHOD ****************
-    	
-	    // connect to FTP server (port 21)
-		$connection = ftp_connect($server, 21) or die ("Cannot connect to host");
-	
-		$login = ftp_login($connection, $ftp_user_name, $ftp_user_pass);
-		
-		if (!$connection || !$login) 
-		{ 
-			die('Connection attempt failed!');
-			echo "<hr>"; 
-		}
-		else 
+		// upload a file
+		if (ftp_put($conn_id, $ftp_path, $local_file, FTP_ASCII))
 		{
-			echo "Connection success<hr>";
-		}
-		
-		$local_file = '../jsonDataOld.json';
-		$ftp_path = '/var/www/jsonData.json';
-		
-		if(file_exists($ftp_path))
-		{
-			echo "File present to upload<hr>";
+			//echo "successfully uploaded $local_file\n";
 		}
 		else
 		{
-			echo "File not found<hr>";
+			//echo "There was a problem while uploading $local_file\n";
 		}
-		
+
+
+
+		//echo ftp_chmod($conn_id, 0777, $ftp_path) ? "CHMOD successful!" : 'Error';
+
+		// close the connection
+		ftp_close($conn_id);
+
+
+
+		/****** ALTERNATIVE METHOD ****************
+
+		// connect to FTP server (port 21)
+		$connection = ftp_connect($server, 21) or die ("Cannot connect to host");
+
+		$login = ftp_login($connection, $ftp_user_name, $ftp_user_pass);
+
+		if (!$connection || !$login) 
+		{ 
+		die('Connection attempt failed!');
+		echo "<hr>";
+		}
+		else 
+		{
+		echo "Connection success<hr>";
+		}
+
+		$local_file = '../jsonDataOld.json';
+		$ftp_path = '/var/www/jsonData.json';
+
+		if(file_exists($ftp_path))
+		{
+		echo "File present to upload<hr>";
+		}
+		else
+		{
+		echo "File not found<hr>";
+		}
+
 		//$upload = ftp_put($connection, $ftp_path, $local_file, FTP_ASCII);
 		//$upload = ftp_put($connection, $ftp_path, $local_file, FTP_BINARY);
-		
-//    	if (!$upload)
-//    	{
-//    		echo 'FTP upload failed!<hr>'; 
-//    	}
-		
+
+		//    	if (!$upload)
+		//    	{
+		//    		echo 'FTP upload failed!<hr>';
+		//    	}
+
 		ftp_close($connection);
-		
-		*/
-			
-    	
-    }//end of uploadFile().
-    
+
+		 */
+
+
+	}//end of uploadFile().
+
 
 }//end of class.

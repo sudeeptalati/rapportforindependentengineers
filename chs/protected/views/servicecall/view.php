@@ -84,8 +84,10 @@ if (!empty ($php_warranty_date)) {
                                     <div class="contentbox"
                                          style="background-color:<?php echo $model->jobStatus->backgroundcolor; ?> ">
 
+
                                         <?php
-                                        echo CHtml::link($editicom,
+                                        $jobstatus_editbtn='<h4 style="color:white;" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  '.$model->jobStatus->name.'</h4>';
+                                        echo CHtml::link($jobstatus_editbtn,
                                             '#', array(
                                                 'onclick' => '$("#change-jobstatus-dialog").dialog("open"); return false;',
                                             ));
@@ -109,7 +111,7 @@ if (!empty ($php_warranty_date)) {
                                         ?>
 
 
-                                        <?php echo $model->jobStatus->name; ?>
+
 
 
                                     </div>
@@ -346,21 +348,29 @@ if (!empty ($php_warranty_date)) {
                                 <span class="datacontenttitle"><?php echo $model->getAttributeLabel('fault_description'); ?></span>
 
                                 <br>
-                                <?php echo $model->fault_description; ?>
+
                                 <a href="<?php echo $google_fault_url; ?>" target="_blank">
-                                    <div title="Google This Fault" class="fa fa-globe fa-2x"></div>
+                                    <div title="Google This Fault" class="fa fa-google fa-2x"></div>
                                 </a>
+                                <?php echo $model->fault_description; ?>
                             </td>
                         </tr>
                     </table>
                     <table style="width:100%;">
                         <?php
-                        if ($model->spares_used_status_id == 1) {
-                            ?>
 
-                            <?php //echo "Spares used";
-                            $sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id' => $model->id));
-                            ?>
+                        $sparesicon = '<h3 style="float:right;">Add Spares <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                                        <i class="fa fa-wrench" aria-hidden="true"></i></h3>';
+
+
+                        echo CHtml::link($sparesicon,
+                            '#', array(
+                                'onclick' => '$("#add-spares-dialog").dialog("open"); return false;',
+                            ));?>
+                        <?php $sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id' => $model->id)); ?>
+
+                        <?php if (count($sparesModel)>0) : ?>
+
 
                             <tr>
                                 <th colspan="5"><h4>Spares</h4></th>
@@ -372,13 +382,7 @@ if (!empty ($php_warranty_date)) {
                                 <th><span class="datacontenttitle">Unit Price</span></th>
                                 <th><span class="datacontenttitle">Total Price</span></th>
                             </tr>
-                            <!--
-                            <tr>
-                                <td colspan='8'>
-                                    <hr>
-                                </td>
-                            </tr>
-                            -->
+
                             <?php foreach ($sparesModel as $data) { ?>
                                 <tr>
                                     <td><?php echo $data->item_name; ?></td>
@@ -387,6 +391,7 @@ if (!empty ($php_warranty_date)) {
                                     <td><?php echo $data->quantity; ?></td>
                                     <td><?php echo $data->unit_price; ?></td>
                                     <td><?php echo $data->total_price; ?></td>
+                                    <td><?php echo CHtml::link('Delete', array('sparesUsed/delete', 'id'=>$data->id, 'servicecall_id'=>$model->id));?></td>
 
                                 </tr>
                             <?php }//end of foreach of spares()?>
@@ -413,9 +418,7 @@ if (!empty ($php_warranty_date)) {
                                 </td>
                                 <td><b><?php echo $model->net_cost; ?></b></td>
                             </tr>
-
-                        <?php }//end of if($spares_used == 1).?>
-
+                        <?php endif; //end of if (count($sparesModel)>0) : ?>
                     </table>
 
 
@@ -760,7 +763,31 @@ if (!empty ($php_warranty_date)) {
 </table>
 
 
-<script>
+<!-- Becuase it contains form, it has to be created seprately-->
+<?php
 
 
-</script>
+
+if(isset($_GET['sparesdialog']))
+    $showsparesdialog=$_GET['sparesdialog'];
+else
+    $showsparesdialog=false;
+
+
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id' => 'add-spares-dialog',
+    // additional javascript options for the dialog plugin
+    'options' => array(
+        'title' => 'Add Spares',
+        'width'=> '800px',
+        'autoOpen' => $showsparesdialog	,
+        'resizable' => true,
+        'modal' => 'true',
+    ),
+));
+$newsparesmodel=new SparesUsed;
+$this->renderPartial('/sparesUsed/searchandadd',array('service_id'=>$model->id));
+//$this->renderPartial('/sparesUsed/_form',array('model'=>$newsparesmodel,'service_id'=>$model->id));
+$this->endWidget('zii.widgets.jui.CJuiDialog');
+// the link that may open the dialog
+?>

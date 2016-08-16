@@ -710,6 +710,15 @@ class Setup extends CActiveRecord
 			return '';
 	}
 
+	public function formatonlytime($d)
+	{
+		if ($d != '' || $d != NULL)
+			return date('H:i A', $d);
+		else
+			return '';
+	}
+
+
 
 	public function printerrors($errors)
 	{

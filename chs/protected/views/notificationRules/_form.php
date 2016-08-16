@@ -347,22 +347,25 @@ if(isset($_GET['system_msg']))
 									<td>{WARRANTY_PROVIDER}</td><td>Warranty / Contract Name</td>
 								</tr>
 								<tr class="oddrow">
-									<td>{VISIT_START_TIME}</td><td>Appointment Start Time</td>
+									<td>{DATE_OF_VISIT}</td><td>Appointment Date</td>
 								</tr>
 								<tr class="evenrow">
+									<td>{VISIT_START_TIME}</td><td>Appointment Start Time</td>
+								</tr>
+								<tr class="oddrow">
 									<td>{VISIT_END_TIME}</td><td>Appointment End Time</td>
 								</tr>
 
-								<tr class="oddrow">
+								<tr class="evenrow">
 									<td>{YOUR_COMPANY_NAME}</td><td>Your Company Name </td>
 								</tr>
-								<tr class="evenrow">
+								<tr class="oddrow">
 									<td>{YOUR_COMPANY_EMAIL}</td><td>Your Company Email</td>
 								</tr>
-								<tr class="oddrow">
+								<tr class="evenrow">
 									<td>{YOUR_COMPANY_TELEPHONE}</td><td>Your Company Telephone</td>
 								</tr>
-								<tr class="evenrow">
+								<tr class="oddrow">
 									<td>{\n}</td><td>For Starting a new line</td>
 								</tr>
 							</table>

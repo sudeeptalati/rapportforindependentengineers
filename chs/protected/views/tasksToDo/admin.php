@@ -49,10 +49,10 @@ echo CHtml::link($email_sms_image ,array('/tasksToDo/completeTasks'));
 		'subject',
 		'send_to',
 
-		array( 'name'=>'created', 'value'=>'$data->created=="" ? "":date("d-M-Y h:i:s",$data->created)'),
-		array( 'name'=>'scheduled', 'value'=>'$data->scheduled=="" ? "":date("d-M-Y h:i:s",$data->scheduled)'),
-		array( 'name'=>'executed', 'value'=>'$data->executed=="" ? "":date("d-M-Y h:i:s",$data->executed)'),
-		array( 'name'=>'finished', 'value'=>'$data->finished=="" ? "":date("d-M-Y h:i:s",$data->finished)'),
+		array( 'name'=>'created', 'value'=>'$data->created=="" ? "":date("d-M-Y H:i:s",$data->created)'),
+		array( 'name'=>'scheduled', 'value'=>'$data->scheduled=="" ? "":date("d-M-Y H:i:s",$data->scheduled)'),
+		array( 'name'=>'executed', 'value'=>'$data->executed=="" ? "":date("d-M-Y H:i:s",$data->executed)'),
+		array( 'name'=>'finished', 'value'=>'$data->finished=="" ? "":date("d-M-Y H:i:s",$data->finished)'),
 		/*
 		'created',
 		'scheduled',

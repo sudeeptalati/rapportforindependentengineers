@@ -1371,7 +1371,7 @@ div.active {
 }
 
 .servicebox {
-    background-color: #c0e4ea;
+    background-color: #e0f2f5;
 }
 .serviceheadingbox {
     background-color: #5399a5;
@@ -1411,8 +1411,9 @@ div.active {
     border-radius: 10px;
     position: fixed;
     bottom: 1em;
-    right: 25%;
-    left: 25%;
-    margin-bottom: -5px;
+    right: 1%;
+    left: 1%;
+    margin-bottom: -20px;
     height: 4em;
+    z-index: 1;
 }

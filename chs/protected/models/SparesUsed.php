@@ -15,6 +15,7 @@
  * @property string $date_ordered
  * @property string $created
  * @property string $modified
+ * @property string $used
  * @property string $notes
  *
  * The followings are the available model relations:
@@ -48,13 +49,13 @@ class SparesUsed extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('master_item_id, servicecall_id, item_name, quantity', 'required'),
+			array('used, master_item_id, servicecall_id, item_name, quantity', 'required'),
 			array('master_item_id, servicecall_id, quantity', 'numerical', 'integerOnly'=>true),
-			array('unit_price, total_price', 'numerical'),
-			array('part_number, date_ordered, modified, notes', 'safe'),
+			array('used, unit_price, total_price', 'numerical'),
+			array('used, notes, part_number, date_ordered, modified, notes', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, master_item_id, servicecall_id, item_name, part_number, unit_price, quantity, total_price, date_ordered, created, modified', 'safe', 'on'=>'search'),
+			array('id, used, notes, master_item_id, servicecall_id, item_name, part_number, unit_price, quantity, total_price, date_ordered, created, modified', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,6 +89,7 @@ class SparesUsed extends CActiveRecord
 			'date_ordered' => 'Date Ordered',
 			'created' => 'Created',
 			'modified' => 'Modified',
+			'used' => 'Used',
 			'notes' => 'Notes'
 		);
 	}
@@ -114,6 +116,7 @@ class SparesUsed extends CActiveRecord
 		$criteria->compare('date_ordered',$this->date_ordered,true);
 		$criteria->compare('created',$this->created,true);
 		$criteria->compare('modified',$this->modified,true);
+		$criteria->compare('used',$this->used);
 		$criteria->compare('notes',$this->notes,true);
 
 		return new CActiveDataProvider($this, array(

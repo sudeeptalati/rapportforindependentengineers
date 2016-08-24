@@ -493,6 +493,8 @@ class NotificationRules extends CActiveRecord
 
 			foreach ($notificationModel as $rule_data) {
 
+				echo "<h1>I M IN RULE</h1>".$status_id;
+
 				$customerNotificationCode = $rule_data->customer_notification_code;
 				$engineerNotificationCode = $rule_data->engineer_notification_code;
 				$warrantyProviderNotificationCode = $rule_data->warranty_provider_notification_code;

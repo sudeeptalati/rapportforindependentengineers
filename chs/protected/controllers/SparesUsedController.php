@@ -111,13 +111,10 @@ class SparesUsedController extends RController
         if(isset($_POST['SparesUsed']))
         {
             $model->attributes=$_POST['SparesUsed'];
-
-
-
-
-
             if($model->save())
             {
+                $this->updatesparestotal($model->servicecall_id);
+
                 if ($this->updatemasteritem($model)==true)
                     $this->redirect(array('servicecall/view','id'=>$model->servicecall_id,'sparesdialog'=>'true'));
             }
@@ -225,6 +222,7 @@ class SparesUsedController extends RController
 
         $this->loadModel($id)->delete();
         $service_id = $_GET['servicecall_id'];
+        $this->updatesparestotal($service_id);
 
         //$this->redirect(array('/servicecall/update/'.$service_id));
         $this->redirect(array('servicecall/view&id='.$service_id.'#spares_details'));
@@ -498,6 +496,56 @@ Phone Number(Direct Dial): 01563-557152|&nbsp;&nbsp;&nbsp;&nbsp;|FAX: 0845 250 8
 
 
 
+
+    public function actionUpdateSpares()
+    {
+
+        $spares_id = $_GET['spares_id'];
+        $service_id = $_GET['servicecall_id'];
+
+        $model=$this->loadModel($spares_id);
+
+        if(isset($_POST['SparesUsed']))
+        {
+            $model->attributes=$_POST['SparesUsed'];
+            $model->total_price = $model->quantity*$model->unit_price;
+
+            echo "<br>Total price = ".$model->total_price;
+
+            if($model->save())
+            {
+                //echo "<br>Spares saved";
+                $this->updatesparestotal($service_id);
+                $this->redirect(array('servicecall/view&id='.$service_id.'#sparesbox'));
+            }
+            else
+            {
+                echo "<br>Not saved";
+            }
+        }//end of isset.
+
+        $this->render('updateSpares',array('model'=>$model));
+
+
+    }//end of actionUpdateSpares
+
+
+
+    public function updatesparestotal($service_id)
+    {
+        $allspares=SparesUsed::model()->findAllByAttributes(array('servicecall_id' => $service_id));
+        echo "updatesparestotal";
+        $total_spares_cost=0;
+        foreach ($allspares as $s)
+        {
+            echo "<br>".$s->item_name;
+            $total_spares_cost=$total_spares_cost+$s->total_price;
+        }
+
+        echo '<br>'.$total_spares_cost;
+        Servicecall::model()->updateByPk($service_id, array('total_cost'=>$total_spares_cost));
+
+    }///end of public function updatesparestotal($service_id);
 
 
 

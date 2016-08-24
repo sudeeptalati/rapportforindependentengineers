@@ -703,6 +703,8 @@ if (!empty($_GET['cloud_id']) || !empty($_GET['master_id']))
 					array_push($works_array, 'CALL AVOIDANCE CC');
 					array_push($works_array, 'CUSTOMER CHARGED');
 					array_push($works_array, 'NOT KNOWN');
+				array_push($works_array, 'WRITTEN OFF - BER ');
+
 				?>
 				<?php 	echo $form->dropDownList($model,'work_summary', array_combine($works_array,$works_array)); ?>
 				
@@ -997,4 +999,15 @@ if (!empty($_GET['cloud_id']) || !empty($_GET['master_id']))
 	<?php $this->endWidget(); ?>
 	
 	</div><!-- form -->
-	
+
+
+<script>
+	$('#Servicecall_notes').keyup(function() {
+		var value = $(this).val().replace(/\n/g, '<br/>');
+		console.log("This is "+value);
+		$("#Servicecall_notes").val(value);
+
+	});
+
+
+</script>

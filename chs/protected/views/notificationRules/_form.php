@@ -54,7 +54,7 @@ if(isset($_GET['system_msg']))
 				<td>
 					<?php echo $form->labelEx($model,'active') ?>
 					<?php echo $form->dropDownList($model, 'active', array('1'=>'Yes','0'=>'No')); ?><br>
-					<small>For Booked Job Status, keep rule as inactive as Cron jobs automatically activates this rule</small>
+					<small>For Scheduled Job Status, keep rule as inactive as Cron jobs automatically activates this rule</small>
 				</td>
 				<td><?php echo CHtml::submitButton($model->isNewRecord ? 'Set up this New rule' : 'Save the Rule',
 						array('id'=>'form_save_button')); ?></td>

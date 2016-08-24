@@ -5,61 +5,61 @@ $this->layout="column1";
 
 <div class="form">
 
-<?php 
+	<?php
 	//echo $model->engineer_id;
 	$baseUrl=Yii::app()->request->baseUrl;
-	$changeEnggUrl=$baseUrl.'/index.php?r=enggdiary/changeEngineer';		
+	$changeEnggUrl=$baseUrl.'/index.php?r=enggdiary/changeEngineer#today';
 
 	$enggdiaryform=$this->beginWidget('CActiveForm', array(
-	'id'=>'enggdiary-changeEngineer-form',
-	'enableAjaxValidation'=>false,
-	'action'=>$changeEnggUrl,
-	'method'=>'post'
-	
-)); ?>
-<?php 
-	
+		'id'=>'enggdiary-changeEngineer-form',
+		'enableAjaxValidation'=>false,
+		'action'=>$changeEnggUrl,
+		'method'=>'post'
+
+	)); ?>
+	<?php
+
 	$engg_id=$model->engineer_id;
- 	$data=Engineer::model()->getactiveengineerslist();
- 	echo "<b>Select Engineer&nbsp;&nbsp;&nbsp;</b>";
+	$data=Engineer::model()->getactiveengineerslist();
+	echo "<b>Select Engineer&nbsp;&nbsp;&nbsp;</b>";
 	echo $enggdiaryform->DropDownList($model, 'engineer_id', $data );
 	echo "&nbsp;&nbsp;".CHtml::submitButton('Change');
-	
-?>
-<?php $this->endWidget(); ?>
+
+	?>
+	<?php $this->endWidget(); ?>
 </div><!-- ENd of form -->
-	
+
 <style type="text/css">
-/* calendar */
-td{vertical-align:top;}
-table.calendar		{ border-left:1px solid #999; }
-tr.calendar-row	{  }
-td.calendar-day	{ min-height:80px; font-size:11px; position:relative; } * html div.calendar-day { height:80px; }
-td.calendar-day:hover	{ background:#eceff5; }
-td.calendar-day-np	{ background:#eee; min-height:80px; } * html div.calendar-day-np { height:80px; }
-td.calendar-day-head { background:#ccc; font-weight:bold; text-align:center; width:120px; padding:5px; border-bottom:1px solid #999; border-top:1px solid #999; border-right:1px solid #999; }
-div.day-number		{ background:#999; padding:5px; color:#fff; font-weight:bold; float:right; margin:-5px -5px 0 0; width:20px; text-align:center; }
-/* shared */
-td.calendar-day, td.calendar-day-np { width:120px; padding:5px; border-bottom:1px solid #999; border-right:1px solid #999; }
+	/* calendar */
+	td{vertical-align:top;}
+	table.calendar		{ border-left:1px solid #999; }
+	tr.calendar-row	{  }
+	td.calendar-day	{ min-height:80px; font-size:11px; position:relative; } * html div.calendar-day { height:80px; }
+	td.calendar-day:hover	{ background:#eceff5; }
+	td.calendar-day-np	{ background:#eee; min-height:80px; } * html div.calendar-day-np { height:80px; }
+	td.calendar-day-head { background:#ccc; font-weight:bold; text-align:center; width:120px; padding:5px; border-bottom:1px solid #999; border-top:1px solid #999; border-right:1px solid #999; }
+	div.day-number		{ background:#999; padding:5px; color:#fff; font-weight:bold; float:right; margin:-5px -5px 0 0; width:20px; text-align:center; }
+	/* shared */
+	td.calendar-day, td.calendar-day-np { width:120px; padding:5px; border-bottom:1px solid #999; border-right:1px solid #999; }
 
 
 </style>
-	<?php 
-	///Engineer Calender
-	
-	/* date settings */
-	
+<?php
+///Engineer Calender
+
+/* date settings */
+
 if ( (isset($_GET['month'])) && (isset($_GET['year'])))
 {
-$month = (int) ($_GET['month'] ? $_GET['month'] : date('n'));
-$year = (int)  ($_GET['year'] ? $_GET['year'] : date('Y'));
+	$month = (int) ($_GET['month'] ? $_GET['month'] : date('n'));
+	$year = (int)  ($_GET['year'] ? $_GET['year'] : date('Y'));
 }
 else
 {
-$month=date('n');
-$year=date('Y');
+	$month=date('n');
+	$year=date('Y');
 
-	
+
 }
 
 
@@ -100,7 +100,7 @@ $action_url='';
 //$controls = '<table><tr><td>'..'<form method="get" action='.$action_url.' >'.$select_month_control.$select_year_control.'&nbsp;<input type="submit" name="submit" value="Change" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$previous_month_link.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$next_month_link.' </form>';
 $controls = '<table><tr><td>'.$previous_month_link.'</td><td><form method="get" action='.$action_url.' >'.$action_hidden_f.$select_month_control.$select_year_control.$hidden_fields.'&nbsp;<input type="submit" name="submit" value="Change" /></form></td><td>'.$next_month_link.'</td></tr></table>';
 
-//echo $controls;	
+//echo $controls;
 
 
 
@@ -127,8 +127,8 @@ if($engg_id)
 
 /* draws a calendar */
 function draw_calendar($month,$year,$engg_id){
-	
-	
+
+
 	/* draw table */
 	$calendar = '<table cellpadding="0" cellspacing="0" class="calendar">';
 
@@ -151,79 +151,79 @@ function draw_calendar($month,$year,$engg_id){
 		$calendar.= '<td class="calendar-day-np">&nbsp;</td>';
 		$days_in_this_week++;
 	endfor;
-	
+
 	$week_start_date= '';/* VARIABLE CREATED TO STORE WEEK START DATE */
-	$week_end_date= '';/* VARIABLE CREATED TO STORE WEEK END DATE */ 
-	
+	$week_end_date= '';/* VARIABLE CREATED TO STORE WEEK END DATE */
+
 	/* keep going with days.... */
 	for($list_day = 1; $list_day <= $days_in_month; $list_day++):
-		
-			$todays_date=date('j-n-Y');
-			$current_date='';
-			$current_date=$list_day.'-'.$month.'-'.$year;
-			
-			if ($todays_date==$current_date)
-			{
-			$calendar.= '<td class="calendar-day" style="background-color:#CCFF99;" >';
-				
-			}else
-			{			
+
+		$todays_date=date('j-n-Y');
+		$current_date='';
+		$current_date=$list_day.'-'.$month.'-'.$year;
+
+		if ($todays_date==$current_date)
+		{
+			$calendar.= '<td class="calendar-day" style="background-color:#CCFF99;" id="today">';
+
+		}else
+		{
 			$calendar.= '<td class="calendar-day">';
-			}
-			
-			
-			$day_content='';
-			
-			//$day_content.= "<br>".$todays_date;
-			/* add in the day number */
-			$calendar.= '<div class="day-number">'.$list_day.'</div>';
+		}
 
-			/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
 
-			//$day_content.= "<br>".$current_date;
-			$mysql_date=strtotime($current_date);
-			
-			$results=Enggdiary::model()->fetchDiaryDetails($engg_id,$mysql_date);			
-			
-			//$day_content.= "<br>".$engg_id."-".$mysql_date;
+		$day_content='';
 
-			$print_link="index.php?r=servicecall/PrintAllJobsForDay&engg_id=".$engg_id."&date=".$current_date;
-			$day_summary_link="index.php?r=enggdiary/dailysummary&engineer_id=".$engg_id."&summary_date=".$current_date;
-			$markrouteongooglemap="index.php?r=enggdiary/markrouteongooglemap&engineer_id=".$engg_id."&route_date=".$current_date;
-			$optimiseroutebygoogleapi="index.php?r=enggdiary/optimiseroutebygoogleapi&engineer_id=".$engg_id."&route_date=".$current_date.'&planroute=0';
-			
-			
-			$count_records=0;
-			$day_content.="<table>";
-			foreach($results as $data)
-			{
-			
+		//$day_content.= "<br>".$todays_date;
+		/* add in the day number */
+		$calendar.= '<div class="day-number">'.$list_day.'</div>';
+
+		/** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
+
+		//$day_content.= "<br>".$current_date;
+		$mysql_date=strtotime($current_date);
+
+		$results=Enggdiary::model()->fetchDiaryDetails($engg_id,$mysql_date);
+
+		//$day_content.= "<br>".$engg_id."-".$mysql_date;
+
+		$print_link="index.php?r=servicecall/PrintAllJobsForDay&engg_id=".$engg_id."&date=".$current_date;
+		$day_summary_link="index.php?r=enggdiary/dailysummary&engineer_id=".$engg_id."&summary_date=".$current_date;
+		$markrouteongooglemap="index.php?r=enggdiary/markrouteongooglemap&engineer_id=".$engg_id."&route_date=".$current_date;
+		$optimiseroutebygoogleapi="index.php?r=enggdiary/optimiseroutebygoogleapi&engineer_id=".$engg_id."&route_date=".$current_date.'&planroute=0';
+
+
+		$count_records=0;
+		$day_content.="<table>";
+		foreach($results as $data)
+		{
+
 			$link= Yii::app()->getBaseUrl()."/index.php?r=servicecall/view&id=".$data->servicecall_id;
-				
+
 			$day_content.="<tr><td>";
 			$day_content.="<a href='".$link."'>";
 			$day_content.="".$data->servicecall->customer->last_name."<br><span style='color:#000000; font-size:10px;'>".$data->servicecall->customer->postcode."</span><br>"; ;
 			$day_content.="</a>";
 			$day_content.="</td></tr>";
-			 
+
 			$count_records++;
-			
-			}//end of foreach().
-			if ($count_records>0)
-			{
-				
-				$day_content.="<tr><td colspan='2'><hr>";
-				//$day_content.="<a onClick=\"javascript: return confirm('This will update your diary. Are you sure you want to continue  ?');\"  href='".$optimiseroutebygoogleapi."'  target='_blank' ><b>Plan my Route</b> <a><br><br>";
-				$day_content.="<a href='".$optimiseroutebygoogleapi."'  target='_blank' ><h5><div class='fa fa-road'></div> Plan Route</h5><a>";
-				$day_content.="<a href='".$print_link."'  target='_blank' ><h5> <div class='fa fa-print'></div> Print All</h5><a>";
-				$day_content.="<a href='".$day_summary_link."'  target='_blank' ><h5> <div class='fa fa-file-text-o'></div> Summary</h5><a>";
-				//$day_content.="<a href='".$markrouteongooglemap."'  target='_blank' ><b>Google Map Route</b> <a><br><br>";
-				
-				$day_content.="</td></tr>";
-			}
-			$day_content.="</table>";
-			$calendar.= str_repeat('<p>'.$day_content.'</p>',1);
-			
+
+		}//end of foreach().
+		if ($count_records>0)
+		{
+
+			$day_content.="<tr><td colspan='2'><hr>";
+			//$day_content.="<a onClick=\"javascript: return confirm('This will update your diary. Are you sure you want to continue  ?');\"  href='".$optimiseroutebygoogleapi."'  target='_blank' ><b>Plan my Route</b> <a><br><br>";
+			$day_content.="<a href='".$optimiseroutebygoogleapi."'  target='_blank' ><h5><div class='fa fa-road'></div> Plan Route</h5><a>";
+			$day_content.="<a href='".$print_link."'  target='_blank' ><h5> <div class='fa fa-print'></div> Print All</h5><a>";
+			$day_content.="<a href='".$day_summary_link."'  target='_blank' ><h5> <div class='fa fa-file-text-o'></div> Summary</h5><a>";
+			//$day_content.="<a href='".$markrouteongooglemap."'  target='_blank' ><b>Google Map Route</b> <a><br><br>";
+
+			$day_content.="</td></tr>";
+		}
+		$day_content.="</table>";
+		$calendar.= str_repeat('<p>'.$day_content.'</p>',1);
+
 		$calendar.= '</td>';
 		/*MY CODE TO GET URL*/
 		if($day_counter=='0')
@@ -245,17 +245,17 @@ function draw_calendar($month,$year,$engg_id){
 			$url=$baseUrl.'/index.php?r=enggdiary/weeklyReport&engg_id='.$engg_id.'&start_date='.$week_start_date.'&end_date='.$week_end_date;
 			$calendar.= '<td> <a href="'.$url.'">Weekly Report</a>       <td></tr>';
 			if(($day_counter+1) != $days_in_month):
-				
+
 				$calendar.= '<tr class="calendar-row">';
 				//echo "here";
 			endif;
-				
+
 			$running_day = -1;
 			$days_in_this_week = 0;
 			//$weekEndDate=$current_date;
-			
-			
-			
+
+
+
 		endif;
 		$days_in_this_week++; $running_day++; $day_counter++;
 	endfor;
@@ -266,12 +266,12 @@ function draw_calendar($month,$year,$engg_id){
 		for($x = 1; $x <= (8 - $days_in_this_week); $x++):
 			$calendar.= '<td class="calendar-day-np">&nbsp;</td>';
 		endfor;
-		
+
 //		echo "current date".$current_date;/* GIVES MONTH END DATE */
 //		echo "week start of month end :".$week_start_date;
 		$url=$baseUrl.'/index.php?r=enggdiary/weeklyReport&engg_id='.$engg_id.'&start_date='.$week_start_date.'&end_date='.$current_date;
 		$calendar.= '<td> <a href="'.$url.'">Weekly Report</a><td>';
-		
+
 	endif;
 	//echo $day_counter;/* GIVES NO OF DAYS IN MONTH. */
 	/* final row */
@@ -279,7 +279,7 @@ function draw_calendar($month,$year,$engg_id){
 
 	/* end the table */
 	$calendar.= '</table>';
-	
+
 	/* all done, return result */
 	return $calendar;
 }
@@ -289,7 +289,7 @@ function draw_calendar($month,$year,$engg_id){
 //echo draw_calendar(7,2009);
 
 
-	
-	
-	?>
+
+
+?>
 	

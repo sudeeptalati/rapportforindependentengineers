@@ -409,6 +409,7 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'demo.co.uk',
+		'google_maps_api_key'=>'AIzaSyBCxU9WGQ-qZ0AY7cE_TP5timk7sb2cQZ4',
 		'company_name'=>'DEMO',
 		'company_address'=>'Demo',
 		'company_contact_details'=>'Telephone:00000000 Fax:00000000 E-mail:demo.co.uk',

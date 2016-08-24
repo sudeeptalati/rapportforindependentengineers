@@ -40,38 +40,78 @@ $service_id=$_GET['id'];///this is when called from servicecall page
 
 
         <div class="success contentbox">
-            <table >
+            <table>
+                <tr>
+                    <th style="width:33%;"></th>
+                    <th style="width:33%;"></th>
+                    <th style="width:33%;"></th>
+                </tr>
                 <tr>
                     <td colspan="3">
                         <?php echo $sparesform->labelEx($sparesmodel, 'item_name'); ?>
-                        <?php echo $sparesform->textArea($sparesmodel, 'item_name', array('style'=>'width:70%;', 'rows' => 2, 'cols' => 20)); ?>
+                        <?php echo $sparesform->textField($sparesmodel, 'item_name', array('style'=>'width:100%')); ?>
                         <?php echo $sparesform->error($sparesmodel, 'item_name'); ?>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="2">
                         <?php echo $sparesform->labelEx($sparesmodel, 'part_number'); ?>
-                        <?php echo $sparesform->textField($sparesmodel, 'part_number', array('style'=>'width:60%;')); ?>
+                        <?php echo $sparesform->textField($sparesmodel, 'part_number', array('style'=>'width:70%;')); ?>
                         <?php echo $sparesform->error($sparesmodel, 'part_number'); ?>
+
+
+                        <table style="margin-bottom:0px; ">
+                            <tr>
+                                <th style="width:33%;height: 1px;"></th>
+                                <th style="width:33%;height: 1px;"></th>
+                                <th style="width:33%;height: 1px;"></th>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <?php echo $sparesform->labelEx($sparesmodel, 'quantity'); ?>
+                                    <?php echo $sparesform->textField($sparesmodel, 'quantity', array('style'=>'width:80%;')); ?>
+                                    <?php echo $sparesform->error($sparesmodel, 'quantity'); ?>
+                                </td>
+                                <td>
+                                    <?php echo $sparesform->labelEx($sparesmodel, 'unit_price'); ?>
+                                    <?php echo $sparesform->textField($sparesmodel, 'unit_price',array('style'=>'width:80%;', 'placeholder'=>'Please put quantity ')); ?>
+                                    <?php echo $sparesform->error($sparesmodel, 'unit_price'); ?>
+                                </td>
+
+                                <td>
+                                    <?php echo $sparesform->labelEx($sparesmodel, 'total_price'); ?>
+                                    <?php echo $sparesform->textField($sparesmodel, 'total_price',array('style'=>'width:80%;','readonly'=>'readonly')); ?>
+                                    <?php echo $sparesform->error($sparesmodel, 'total_price'); ?>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <table style="width: 100px;margin-bottom:0px; ">
+                                        <tr>
+                                            <td>
+                                                <?php echo $sparesform->labelEx($sparesmodel, 'used'); ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $sparesform->checkBox($sparesmodel,'used'); ?>
+                                                <?php echo $sparesform->error($sparesmodel, 'used'); ?>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                    <td>
+                        <?php echo $sparesform->labelEx($sparesmodel, 'notes'); ?>
+                        <?php echo $sparesform->textArea($sparesmodel, 'notes', array('style'=>'width:100%; height:100px;')); ?>
+                        <?php echo $sparesform->error($sparesmodel, 'notes'); ?>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <?php echo $sparesform->labelEx($sparesmodel, 'quantity'); ?>
-                        <?php echo $sparesform->textField($sparesmodel, 'quantity', array('style'=>'width:50%;')); ?>
-                        <?php echo $sparesform->error($sparesmodel, 'quantity'); ?>
-                    </td>
-                    <td>
-                        <?php echo $sparesform->labelEx($sparesmodel, 'unit_price'); ?>
-                        <?php echo $sparesform->textField($sparesmodel, 'unit_price',array('style'=>'width:50%;', 'placeholder'=>'Please put quantity ')); ?>
-                        <?php echo $sparesform->error($sparesmodel, 'unit_price'); ?>
-                    </td>
 
-                    <td>
-                        <?php echo $sparesform->labelEx($sparesmodel, 'total_price'); ?>
-                        <?php echo $sparesform->textField($sparesmodel, 'total_price',array('readonly'=>'readonly')); ?>
-                        <?php echo $sparesform->error($sparesmodel, 'total_price'); ?>
-                    </td>
                 </tr>
 
                 <tr>
@@ -79,7 +119,7 @@ $service_id=$_GET['id'];///this is when called from servicecall page
 
                         <div id="submiterror" class="error" style="display: none;"></div>
                         <div id="submitsparesformbtn" style="display: none;">
-                            <?php echo CHtml::submitButton($sparesmodel->isNewRecord ? 'Add' : 'Save', array(' onsubmit="return false"')); ?>
+                            <?php echo CHtml::submitButton($sparesmodel->isNewRecord ? 'Add' : 'Save', array(' onsubmit="return false"', 'class'=>'btn btn-info', 'style'=>'width:100%;')); ?>
                         </div>
                     </td>
                 </tr>
@@ -101,7 +141,7 @@ $service_id=$_GET['id'];///this is when called from servicecall page
     </table>
     <div>
         <h4>Item not in list?</h4>
-        <h5 title="New Item" style="margin:20px;color:#0088cc;cursor: pointer;" onclick="additemnotinlist()"> Add <i class="fa fa-plus-square" aria-hidden="true"></i></h5>
+        <h3 title="New Item" style="margin:20px;color:#0088cc;cursor: pointer;" onclick="additemnotinlist()"> Add <i class="fa fa-plus-square" aria-hidden="true"></i></h3>
     </div>
 
 </div>

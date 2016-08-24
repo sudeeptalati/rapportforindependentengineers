@@ -32,10 +32,20 @@ backgroundcolor	TEXT
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Columns Added in TABLE spares_used
+
+notes TEXT
+used Integer
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE "master_items" ("id" INTEGER PRIMARY KEY NOT NULL ,"part_number" TEXT,"name" TEXT ,"description" TEXT,"barcode" TEXT,"category_id" INTEGER,"active" INTEGER NOT NULL DEFAULT (1) ,"image_url" TEXT,"sale_price" FLOAT,"created" DATETIME NOT NULL ,"modified" DATETIME);
 
+INSERT INTO "job_status" ("id","name","information","published","view_order","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('21','Scheduled','This is a system status scheduled. This status is automatically changed one day before the job is about to be executed','1','12','12','','1',NULL,'')
 
-INSERT INTO master_items (id,part_number,name,description,barcode,category_id,active,image_url,sale_price,created,modified) VALUES ('1','1006863','Charcoalfilter mod.fwu 50','Charcoalfilter mod.fwu 50','1006863','0','1','','0.0','1329569531','1329569531');
+ INSERT INTO master_items (id,part_number,name,description,barcode,category_id,active,image_url,sale_price,created,modified) VALUES ('1','1006863','Charcoalfilter mod.fwu 50','Charcoalfilter mod.fwu 50','1006863','0','1','','0.0','1329569531','1329569531');
 INSERT INTO master_items (id,part_number,name,description,barcode,category_id,active,image_url,sale_price,created,modified) VALUES ('2','1006864','Charcoalfilter mod.FWU 60','','','0','1','','0.0','1329569531','1329569531');
 INSERT INTO master_items (id,part_number,name,description,barcode,category_id,active,image_url,sale_price,created,modified) VALUES ('3','1006923','Grease filter  ft 60','','','0','1','','0.0','1329569531','1329569531');
 INSERT INTO master_items (id,part_number,name,description,barcode,category_id,active,image_url,sale_price,created,modified) VALUES ('4','1006924','Lamp cover','','','0','1','','0.0','1329569531','1329569531');

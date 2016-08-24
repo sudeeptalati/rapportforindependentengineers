@@ -1,5 +1,8 @@
 <?php
 
+
+ob_start(); // to prevent the error cannot modify header information
+date_default_timezone_set('Europe/London');
  
 // change the following paths if necessary
 $yii=dirname(__FILE__).'/../framework/yii.php';

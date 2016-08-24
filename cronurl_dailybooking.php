@@ -18,7 +18,9 @@ if ($task=='completetasks')
 */
 
 
-$rooturl="http://84.9.30.62:255/careys/yii/chs/";
+//$rooturl="http://84.9.30.62:255/careys/yii/chs/";
+
+$rooturl="http://localhost/rapport/forengineers/rapportforindependentengineers/chs/";
 
 triggerurl($rooturl."index.php?r=tasksToDo/sendbookingnotification");
  

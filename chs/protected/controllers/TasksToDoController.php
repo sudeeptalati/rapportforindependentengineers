@@ -280,8 +280,10 @@ class TasksToDoController extends RController
 			foreach ($nextdaydiary as $event)
 			{
 				$system_msg.=" Service Ref#". $event->servicecall->id;
+				$scheduled_job_status='21';
+				echo "SERVICECALLUPDATE-".Servicecall::model()->updatejobstatusbyservicecallid($event->servicecall->id,$scheduled_job_status);
 
-				echo NotificationRules::model()->performNotification($event->servicecall->job_status_id, $event->servicecall->id, "daily");
+				echo NotificationRules::model()->performNotification($scheduled_job_status, $event->servicecall->id, "daily");
 
 			}
 

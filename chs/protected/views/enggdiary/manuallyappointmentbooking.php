@@ -12,9 +12,12 @@
         cursor: pointer;
     }
 </style>
+<!-- JQUERY -->
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+
 <script>
     $(function () {
         $(".beauty").draggable();
@@ -233,12 +236,16 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
 
         $forloopdate_time = $weekdaystartday;
 
-        for ($i = 1; $i <= $todaysweekday; $i++) {
+        for ($i = 1; $i < $todaysweekday; $i++) {
 
             $forloopdate_string = date("d-M-Y l", $forloopdate_time);
+            $forloop_day = date("d", $forloopdate_time);
+            $forloop_weekday_string = date("l", $forloopdate_time);
 
             echo '<td  style="height:1px;vertical-align:top; border: 1px solid black;">';
-            echo '<div style="height:50px;" class="quote">' . $forloopdate_string . '</div>';
+            //echo '<div style="height:50px;" class="quote">' . $forloopdate_string . '</div>';
+            echo '<div class="quote"><span style="font-size: 26px ">'.$forloop_day.'</span><br><span style="font-size: 18px ">'.$forloop_weekday_string.'</h5></div>';
+
 
             if ($i == $todaysweekday) {
                 echo '<div style="height:85%;" class="alert" "><b>TODAY</b></div>';
@@ -253,7 +260,7 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
         }
 
 
-        for ($i = 1; $i <= $daystoconsiderformanualbooking; $i++) {
+        for ($i = 0; $i <= $daystoconsiderformanualbooking; $i++) {
 
             $forloopdate_time = $time + (86400 * $i);
             $forloopdate_string = date("d-M-Y l", $forloopdate_time);
@@ -261,10 +268,14 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
             $forloop_month = date("m", $forloopdate_time);
             $forloop_year = date("Y", $forloopdate_time);
             $forloop_weekday = date("N", $forloopdate_time);
+            $forloop_weekday_string = date("l", $forloopdate_time);
+
 
 
             $td_id = date("j-n-Y", $forloopdate_time);
             //array_push($selectday_row_dates, date("j-n-Y", $forloopdate_time));
+
+            $today_string = date("d-M-Y l");
 
 
             if ($forloop_weekday == 1) {
@@ -273,6 +284,7 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
             }
 
             if ($forloop_day == 1) {
+
 
                 echo "</tr><tr><td colspan='7'><div class='success' style='text-align: center;font-size: 24px;font-weight: 400;letter-spacing: 4px;'>" . date('F Y', $forloopdate_time) . "</div></td>";
 
@@ -289,7 +301,25 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
 
 
             echo '<td id="' . $td_id . '" style="height:1px; vertical-align:top; border: 1px solid black;">';
-            echo '<div style="height:50px;" class="quote">' . $forloopdate_string . '</div>';
+
+            /*
+            if ($today_string ==$forloopdate_string)
+                echo '<div style="height:50px;" class="alert">Today '.date('d, l', $forloopdate_time).'</div>';
+            else
+                echo '<div style="height:50px;" class="quote">'. $forloopdate_string.'</div>';
+            */
+
+
+            if ($today_string ==$forloopdate_string)
+                //echo '<div style="height:50px;" class="alert">Today '.date('d, l', $forloopdate_time).'</div>';
+                //echo '<div class="alert"><span>'.$forloop_weekday_string.'</span>&nbsp;&nbsp;&nbsp;<span>'.$forloop_day.'</h5></div>';
+                echo '<div class="alert"><span style="font-size: 26px ">'. $forloop_day.'</span><br><span style="font-size: 18px ">'.$forloop_weekday_string.'</span><h4>Today</h4></div>';
+            else
+                //echo '<div style="height:50px;" class="quote">'. $forloopdate_string.'</div>';
+                echo '<div class="quote"><span style="font-size: 26px ">'.$forloop_day.'</span><br><span style="font-size: 18px ">'.$forloop_weekday_string.'</span></div>';
+
+
+
             //echo '<div style="height:10px; background:#9AFD95"></div>';
             if (in_array($forloop_weekday, $workingdaysofweekarray)) {
 

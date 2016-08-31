@@ -41,16 +41,6 @@ vertical-align:top;
 //-->
 </style>
 
-<p align="right">
-     <?php //echo CHtml::link('New Customer Service', array('servicecall/create'));
-       		$service_img_url = Yii::app()->request->baseUrl.'/images/service.gif';
-			$service_img_html = CHtml::image($service_img_url,'Raise Service Call',array('width'=>30,'height'=>30, 'title'=>'Raise Service Call')); 
-
-			?>
-		
-       <?php echo CHtml::link('New Customer Service', array('servicecall/create')); ?>
-       <?php echo CHtml::link($service_img_html, array('Servicecall/create'));?>	
-       </p>
 
 
 <!-- ************ DISPLAYING DATA FROM SERVICECALL SEARCH RESULTS *********************** -->
@@ -58,7 +48,7 @@ vertical-align:top;
 <table style="border-radius:15px;">
 	<tr style="background: #B7D6E7;">
 		<th style="width:7em;">Customer Name</th>
-		<th style="width:7em;">Postcode</th>
+		<th style="width:7em;">Address  </th>
 		<th style="width:10em;">Product</th>
 		<th style="width:10em;">Servicecalls</th>
 		
@@ -108,10 +98,13 @@ vertical-align:top;
 				$g_map_url="https://www.google.co.uk/maps?q=".strip_tags($address);
 				?>
 
+			<div class="alert">
+				<div style="float: right;" class="fa fa-map-marker fa-2x" aria-hidden="true"></div>
 			<a href="<?php echo $g_map_url; ?>" target="_blank">
-				<div class="fa fa-globe fa-2x"></div><br>	</a>
 				<?php echo $address; ?>
+					</a>
 
+			</div>
 
 
 

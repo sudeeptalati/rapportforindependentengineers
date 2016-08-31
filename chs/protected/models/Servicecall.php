@@ -147,7 +147,7 @@ class Servicecall extends CActiveRecord
         );
     }
 
-/**
+    /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
@@ -335,7 +335,7 @@ class Servicecall extends CActiveRecord
         return parent::model($className);
     }//end of getStatus().
 
-public function curl_file_get_contents($request)
+    public function curl_file_get_contents($request)
     {
         $curl_req = curl_init($request);
 
@@ -493,7 +493,7 @@ public function curl_file_get_contents($request)
 
     }///end of functn curl File get contents.
 
-public function updateengineerbyservicecallid($id, $engineer_id)
+    public function updateengineerbyservicecallid($id, $engineer_id)
     {
         $model = $this->loadmodel($id);
         $servicecall_update = Servicecall::model()->updateByPk($id,
@@ -511,26 +511,64 @@ public function updateengineerbyservicecallid($id, $engineer_id)
 
     }//end of latestTenResults().
 
-        public function loadmodel($id)
+    public function loadmodel($id)
     {
         $model = Servicecall::model()->findByPk($id);
         return $model;
     }//end of enggJobReport().
 
-public function updatejobstatusbyservicecallid($id, $job_status_id)
+    public function updatejobstatusbyservicecallid($id, $job_status_id)
     {
         $model = $this->loadmodel($id);
         $servicecall_update = Servicecall::model()->updateByPk($id,
             array(
                 'job_status_id' => $job_status_id
             ));
-
+        $this->updateactivitylog($id);
 
         return $servicecall_update;
 
     }////end of public function updateengineer($id, $engineer_id)
 
-protected function beforeSave()
+
+    public function updateactivitylog($id)
+    {
+        ////Make sure Activity log is set to 0 before using this
+        ////UPDATE 'servicecall' SET "activity_log"='' WHERE 1
+
+        $model = $this->loadmodel($id);
+
+        $activity_log = trim($model->activity_log);
+
+        if ($activity_log == '') {
+            $activity_log_array = array();
+        }///end of if ($activity_log=='')
+        else {
+            $activity_log_array = json_decode($activity_log, true);
+        }/////end of else ($activity_log=='')
+
+        $log = array();
+        $log['time'] = Setup::model()->getdatetime();
+        $log['jobstatus'] = $model->jobStatus->html_name;
+        $log['engineer'] = $model->engineer->company . ', ' . $model->engineer->fullname;
+        $log['user'] = Yii::app()->user->name;
+
+
+        array_push($activity_log_array, $log);
+
+
+        Servicecall::model()->updateByPk($id,
+            array(
+                'activity_log' => json_encode($activity_log_array),
+
+            ));
+
+        //return "hello ";
+
+
+    }//end of public function writeactivitylog($this->activity_log);
+
+    protected function beforeSave()
     {
 
         $setupModel = Setup::model()->findByPk(1);
@@ -555,7 +593,6 @@ protected function beforeSave()
             {
                 $this->created_by_user_id = Yii::app()->user->id;
                 $this->created = time();
-                $this->activity_log = "Service status is changed to booked by " . $this->createdByUser->username . " on " . date('d-M-Y', time()) . ".\n";
 
                 //SETTING SERVICE REFERENCE NUMBER.
                 $count_sql = "SELECT COUNT(*) FROM servicecall";
@@ -585,8 +622,9 @@ protected function beforeSave()
             /********* THIS BIT IS CALLED DURING UPDATE *********/
             else {
                 $current_user = Yii::app()->user->name;
-                $this->activity_log .= "\n Status is changed to " . $this->jobStatus->name . " by " . $current_user . " on " . date('d-M-Y', time()) . ".\n";
                 $this->modified = time();
+                $this->comments = Setup::model()->updatenotesorcomments($this->comments, $this, 'comments');
+
                 return true;
             }
 
@@ -594,7 +632,7 @@ protected function beforeSave()
 
     }////end of public function updateengineer($id, $engineer_id)
 
-protected function afterSave()
+    protected function afterSave()
     {
         //echo "<br>AFTER SAVE OF SERVICECALL CALLED";
         $productUpdateModel = Customer::model()->updateByPk($this->product_id,

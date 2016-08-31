@@ -1,5 +1,15 @@
 <?php //$this->layout = 'main'; ?>
 <?php include('servicecall_sidemenu.php'); ?>
+
+<?php
+if (isset ($_GET['postcode']))
+    $url_postcode=$_GET['postcode'];
+else
+    $url_postcode='';
+
+?>
+
+
 <div class="contentbox">
 
 
@@ -104,7 +114,7 @@
                             <td colspan="2">
                                 <hr>
                                 <div id="locationField">
-                                    <input id="autocomplete" placeholder="Start typing complete address or postcode"
+                                    <input id="autocomplete" placeholder="Start typing complete address or postcode" value="<?php echo $url_postcode; ?>"
                                            onFocus="geolocate()" type="text" style="width:100%"/>
                                 </div>
                             </td>
@@ -315,32 +325,28 @@
                             </td>
                         </tr>
 
-                        <tr>
-                            <td colspan="2">
-                                <?php echo $form->labelEx($productModel, 'notes'); ?>
-                                <?php echo $form->textArea($productModel, 'notes', array('style' => 'width:100%; height:100px')); ?>
-                                <?php echo $form->error($productModel, 'notes'); ?>
-                            </td>
-                        </tr>
+
 
                         <tr>
 
-                            <!--
+
 		<td>
 			<?php echo $form->labelEx($productModel, 'fnr_number'); ?>
 			<?php echo $form->textField($productModel, 'fnr_number', array('size' => 30)); ?>
 			<?php echo $form->error($productModel, 'fnr_number'); ?>
 		</td>
-		-->
+
                             <td>
                             </td>
 
                         </tr>
-                        <!--
+
 	<tr><td colspan="3"><br><b><i>Warranty Details</i></b></td></tr>
 	<tr>
 			<td>
-				
+				 <?php echo $form->labelEx($productModel, 'contract_id'); ?>
+                <?php echo CHtml::activeDropDownList($productModel, 'contract_id', $productModel->getAllContract()); ?>
+                <?php echo $form->error($productModel, 'contract_id'); ?>
 		</td>
 		<td>			
 			<?php echo $form->labelEx($productModel, 'warranty_date'); ?>
@@ -452,7 +458,7 @@
 		<?php echo $form->error($productModel, 'notes'); ?>
 		</td>
 	 </tr>
-	 -->
+
 
                     </table><!-- END OF TABLE OF PRODUCT -->
                     </div>

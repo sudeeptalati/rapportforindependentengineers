@@ -24,7 +24,7 @@ $('.search-form form').submit(function(){
 
 	'dataProvider'=>$model->search(),
 	'selectableRows'=>1,
-	'selectionChanged'=>'function(id){ location.href = "'.$this->createUrl('update').'/id/"+$.fn.yiiGridView.getSelection(id);}',
+	'selectionChanged'=>'function(id){ location.href = "'.$this->createUrl('view').'/id/"+$.fn.yiiGridView.getSelection(id);}',
 	'filter'=>$model,
 
 	'columns'=>array(

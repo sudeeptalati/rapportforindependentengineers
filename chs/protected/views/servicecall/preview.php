@@ -415,9 +415,12 @@ $this->layout = false;
                 <?php //for ($i=1;$i<7;$i++){?>
 
                 <?php
-                if ($model->spares_used_status_id == 1) {
+
+                $sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id' => $model->id));
+
+                if (count($sparesModel ) > 0) {
                     echo "<br>Spares are used";
-                    $sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id' => $model->id));
+
                     foreach ($sparesModel as $data) {
                         //echo "<br>".$data->id."&nbsp;&nbsp;&nbsp;";
 // 		echo "Quantity = ".$data->quantity;
@@ -493,13 +496,7 @@ $this->layout = false;
 
 <table style="width:100%">
     <tr>
-        <td>Date of first Visit</td>
-        <td>Date of Completion</td>
-        <td>Engineer's Signature</td>
-        <td>Customer's Signature</td>
-    </tr>
-    <tr>
-        <td style="border-bottom: 1px solid sienna;">
+        <td>Date of first Visit
             <?php
             $allvisits = Enggdiary::model()->findAllByAttributes(array('servicecall_id' => $model->id));
             foreach ($allvisits as $v) {
@@ -508,16 +505,20 @@ $this->layout = false;
 
             ?>
         </td>
-        <td style="border-bottom: 1px solid sienna;">
-            <?php
+        <td>Date of Completion
+            <br><?php
             if (!empty($model->job_finished_date))
                 echo date('d-M-Y', $model->job_finished_date);
             ?>
         </td>
-        <td style="border-bottom: 1px solid sienna;">
-        </td>
-        <td style="border-bottom: 1px solid sienna;">
-        </td>
+        <td>Engineer's Signature</td>
+        <td>Customer's Signature</td>
+    </tr>
+    <tr>
+        <td style="border-bottom: 1px solid sienna;"></td>
+        <td style="border-bottom: 1px solid sienna;"></td>
+        <td style="border-bottom: 1px solid sienna;"></td>
+        <td style="border-bottom: 1px solid sienna;"></td>
 
     </tr>
 

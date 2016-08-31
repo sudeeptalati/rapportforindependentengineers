@@ -38,7 +38,9 @@ if(file_exists($filename))
 	//echo "<br>password = ".$gateway_password;
 	$gateway_apikey = $smsDecodedData['gateway_apikey'];
 	//echo "<br>Api key = ".$gateway_apikey;
-	
+	$gateway_sender_id = $smsDecodedData['gateway_sender_id'];
+	//echo "<br>$gateway_sender_id key = ".$gateway_sender_id;
+
 }
 
 
@@ -55,9 +57,13 @@ Before using this service, you need to have account with Third Party Service Cli
 	<b>User Name</b><br><input type="text" name="gateway_username" value=<?php echo $gateway_username;?>><br><br>
 	
 	<b>Password</b><br><input type="text" name="gateway_password" required="required" value=<?php echo $gateway_password;?>><br><br>
-	
+
 	<b>Api Key</b><br><input type="text" name="gateway_apikey" value=<?php echo $gateway_apikey;?>><br><br>
-	
+
+	<b>Sender ID</b><br><input type="text" name="gateway_sender_id" value=<?php echo $gateway_sender_id;?>><br><br>
+
+
+
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="smsgateway_setting_values"  type="submit" style="width:100px">
 	
 </form>	

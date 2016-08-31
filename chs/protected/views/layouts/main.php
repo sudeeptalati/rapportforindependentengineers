@@ -1,11 +1,9 @@
-
 <?php
 $mtime = microtime();
 $mtime = explode(" ",$mtime);
 $mtime = $mtime[1] + $mtime[0];
 $starttime = $mtime;
 ;?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -31,6 +29,20 @@ $starttime = $mtime;
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/fullcalendar/fullcalendar.print.css" />
 
 
+	<!-- Moment JS for formatting date-->
+
+	<script type="application/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/momentjs/moment.js"></script>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+	<!-- PIKADAY CALENDAR-->
+
+	<link rel="stylesheet" type="text/css"
+		  href="<?php echo Yii::app()->request->baseUrl; ?>/js/pikaday/css/pikaday.css"/>
+
+	<script type="application/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/pikaday/pikaday.js"></script>
+
+
+
 	<!-- FONT AWESOME-->
 
 	<script src="https://use.fortawesome.com/a8e251d4.js"></script>
@@ -38,13 +50,7 @@ $starttime = $mtime;
 
 
 
-	<!-- Google Services Start -->
 
-	<?php
-	$google_maps_api_key=Yii::app()->params['google_maps_api_key'];
-	//echo CHtml::scriptFile("https://maps.googleapis.com/maps/api/js?key=$google_maps_api_key");
-	//echo CHtml::scriptFile("https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js");
-	?>
 
 	<?php Yii::app()->bootstrap->register(); ?>
 
@@ -164,6 +170,10 @@ $baseUrl= Yii::app()->request->baseUrl;
 		)); ?><!-- breadcrumbs -->
 	<?php endif?>
 
+
+
+
+
 	<?php echo $content; ?>
 
 	<div id="footer">
@@ -183,11 +193,25 @@ $baseUrl= Yii::app()->request->baseUrl;
 </div><!-- page -->
 
 
-<!-- Google Address Lookup Start -->
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBCxU9WGQ-qZ0AY7cE_TP5timk7sb2cQZ4&signed_in=true&libraries=places,geometry&callback=initAutocomplete"
-		async defer></script>
+<!-- Google Services Start -->
+<?php $google_maps_api_key=Yii::app()->params['google_maps_api_key'];?>
 <script src="js/googleaddresslookup.js"></script>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=<?php echo $google_maps_api_key; ?>&signed_in=true&libraries=places,geometry&callback=initAutocomplete"
+		async defer></script>
+
+
+
+
+
+
+
+<?php //echo CHtml::scriptFile("https://maps.googleapis.com/maps/api/js?key=".$google_maps_api_key); ?>
 <!-- Google ServicesEnd -->
+
+
+
+
 
 <?php
 

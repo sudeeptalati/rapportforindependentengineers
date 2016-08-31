@@ -543,7 +543,23 @@ Phone Number(Direct Dial): 01563-557152|&nbsp;&nbsp;&nbsp;&nbsp;|FAX: 0845 250 8
         }
 
         echo '<br>'.$total_spares_cost;
-        Servicecall::model()->updateByPk($service_id, array('total_cost'=>$total_spares_cost));
+        $vat_percentage = Yii::app()->params['vat_percentage'];
+
+        $vat_on_total=$total_spares_cost*$vat_percentage/100;
+
+        $net_cost=$vat_on_total+$total_spares_cost;
+
+        $net_cost=Yii::app()->numberFormatter->formatCurrency($net_cost, '');
+        $vat_on_total=Yii::app()->numberFormatter->formatCurrency($vat_on_total, '');
+        $total_spares_cost=Yii::app()->numberFormatter->formatCurrency($total_spares_cost, '');
+
+
+        Servicecall::model()->updateByPk($service_id, array(
+            'total_cost'=>$total_spares_cost,
+            'vat_on_total'=>$vat_on_total,
+            'net_cost'=>$net_cost,
+        ));
+
 
     }///end of public function updatesparestotal($service_id);
 

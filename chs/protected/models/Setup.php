@@ -763,4 +763,168 @@ class Setup extends CActiveRecord
 
 	}///end of formataddress
 
+
+
+	public function getdate()
+	{
+		return date('d-M-Y');
+	}
+
+	public function getdatetime()
+	{
+		return date('d-M-Y h:i A');
+	}
+
+
+	public function addmonthstodate($date, $months)
+	{
+
+		if ($date != '' || $date != NULL || $months != '' || $months != NULL) {
+			$warranty_until = strtotime(date("Y-M-d", $date) . " +" . $months . " month");
+			return date('d-M-Y', $warranty_until);
+		} else
+			return 'Parameters missing';
+
+	}///end of     public function addmonthstodate($date,$months)
+
+	public function updatenotesorcomments($text, $model, $attribute)
+	{
+
+		//echo '<br> Recieved Text- '.$text;
+		//echo '<br> Recieved $attribute- '.$attribute;
+
+		$return_values='';
+
+		$text = trim($text);
+		$existingvaluesinmodel = $model->findByPk($model->id);
+
+		if (!empty($text)) {
+			//echo '<hr> Not empty Text';
+
+			$return_array = json_decode($existingvaluesinmodel->$attribute, true);
+
+			//var_dump($return_array);
+
+			////If old notes are not in JSON format, we will archive old notes
+			if ($return_array == NULL) {
+				//echo '<br> Null Array for existing ';
+				$return_array = json_decode($this->initiatetimestampnotesorcomments(),true);
+				$notes = $this->preparethetextfortimestampnotes($existingvaluesinmodel->$attribute);
+				array_push($return_array['timestampednotes'], $notes);
+
+			}
+
+			$notes=$this->preparethetextfortimestampnotes($text);
+			array_push($return_array['timestampednotes'], $notes);
+			$return_values= json_encode($return_array);
+
+		}//end of if (!empty($text))
+		else {
+			$return_values= $existingvaluesinmodel->$attribute;
+		}
+
+		// $return_values='OLD NOTES';
+		return $return_values;
+
+
+
+	}///end of 	public function initiatetimestampnotesorcomments()
+
+
+	public function initiatetimestampnotesorcomments($text=null)
+	{
+		//initiating the timestamp notes
+		$timestampnotes = array();
+		$timestampnotes['timestampednotes'] = array();
+
+		$text=trim($text);
+		if (!empty($text))
+		{
+			$note_array=$this->preparethetextfortimestampnotes($text);
+			array_push($timestampnotes['timestampednotes'], $note_array);
+		}
+		return json_encode($timestampnotes);
+	}///end of  function updatenotesorcomments($text, $model,$attribute)
+
+
+	public function printjsonnotesorcommentsinhtml($text)
+	{
+
+		//echo $text . '<hr>';
+		$json_notes = json_decode($text,true);
+		$returnhtml = '';
+		///var_dump($json_notes);
+
+		if ($json_notes!=NULL) {
+			$allnotesarray = $json_notes['timestampednotes'];
+			if (count($allnotesarray) > 0) {
+				$returnhtml = '<table class="notes_comments_table" ><tr><th>Date/Time</th><th>User</th><th>Notes</th></tr>';
+
+				//$allnotesarray = array_reverse($allnotesarray, true);
+
+				foreach ($allnotesarray as $jn) {
+					$returnhtml .= '<tr>';
+					$returnhtml .= '<td>' . $jn['date'] . '</td>';
+					$returnhtml .= '<td>' . $jn['person'] . '</td>';
+					$returnhtml .= '<td>' . $jn['note'] . '</td>';
+					$returnhtml .= '</tr>';
+				}//end of foreach
+				$returnhtml .= '</table>';
+			}////end of if count 0
+
+		}///end of if if ($json_notes)
+		else {
+			$returnhtml = $text;
+		}
+
+		return $returnhtml;
+
+
+	}////end of public function printjsonnotesorcomments
+
+
+	protected function preparethetextfortimestampnotes($text)
+	{
+		$notes = array();
+		$notes['date'] = date('l jS \of F Y h:i:s A');
+		$notes['person'] = Yii::app()->user->name;;
+		$notes['note'] = $text;
+		return $notes;
+	}
+
+
+	public function getloggedinuseremail()
+	{
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		return $user->email;
+	}///end of 	public function getloggedinuseremail
+
+	public function getloggedinuserfullname()
+	{
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		return $user->email;
+	}
+
+
+	public function savemodel($model)
+	{
+		if ($model->save()) {
+
+			return true;
+		}
+		else{
+
+			$error_msg='<h4>Error in Saving</h4>';
+			$errors=$model->getErrors();
+			foreach ($errors as $key=>$value)
+				$error_msg.="<br>".$value[0];
+
+			//$this->redirect(array('servicecall/view', 'id' => $servicecall_id, 'error_msg='=>$error_msg));
+			return $error_msg.'<hr>';
+		}
+
+	}///end of public function savemodel($model)
+
+
+
 }//end of class.

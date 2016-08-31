@@ -26,7 +26,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	//	'id',
 		//'name',
 		array(	'name'=>'name',
-				'value' => 'CHtml::link($data->name, array("jobstatus/update&id=".$data->id))',
+				'value' => 'CHtml::link($data->name, array("jobStatus/update&id=".$data->id))',
 		 		'type'=>'raw',
         ),
 		
@@ -50,10 +50,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'filter'=>array('1'=>'Yes','0'=>'No'),
 	
     	),
-    	
-    	
-    	
-    
+
+
+
+		array(	'name'=>'html_name',
+
+			'type'=>'raw',
+		),
 		/*
 		
 		'updated_by_user_id',

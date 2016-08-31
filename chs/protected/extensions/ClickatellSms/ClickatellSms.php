@@ -20,6 +20,8 @@ class ClickatellSms extends CApplicationComponent {
     /** @var mixed Mobile phone no to send the SMS to. It can be an array with more numbers. */
     public $to;
 
+    public $from_sender_id;
+
     /** @var string The message to be send */
     public $message;
 
@@ -83,6 +85,8 @@ class ClickatellSms extends CApplicationComponent {
             'text' => urlencode($this->message),
             'callback' => (int) $this->callbackLevel,
             'session_id' => $this->getSession(),
+            'from' => urlencode($this->from_sender_id),
+
         );
         if ($this->smsId) {
             $params += array('cliMsgId' => $this->smsId);

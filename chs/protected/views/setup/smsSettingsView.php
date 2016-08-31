@@ -37,6 +37,9 @@ $filename = $root.'/config/smsgateway_settings.json';
 		//echo "<br>".$gateway_password;
 		$gateway_apikey = $_POST['gateway_apikey'];
 		//echo "<br>Api key = ".$gateway_apikey;
+		$gateway_sender_id = $_POST['gateway_sender_id'];
+		//echo "<br>sender_id key = ".$sender_id;
+
 		/***** END OF GETTING DATA FROM smsSettingsForm *************/
 		
 		if(file_exists($filename))
@@ -48,7 +51,9 @@ $filename = $root.'/config/smsgateway_settings.json';
 			$smsDecodedData['gateway_username'] = $gateway_username;
 			$smsDecodedData['gateway_password'] = $gateway_password;
 			$smsDecodedData['gateway_apikey'] = $gateway_apikey;
-		
+			$smsDecodedData['gateway_sender_id'] = $gateway_sender_id;
+
+
 			$fh = fopen($filename, 'w');
 			fwrite($fh, json_encode($smsDecodedData));
 			fclose($fh);
@@ -73,7 +78,10 @@ $filename = $root.'/config/smsgateway_settings.json';
 			//echo "<br>password = ".$gateway_password;
 			$gateway_apikey = $smsDecodedData['gateway_apikey'];
 			//echo "<br>Api key = ".$gateway_apikey;
-			
+
+			$gateway_sender_id = $smsDecodedData['gateway_sender_id'];
+			//echo "<br>$gateway_sender_id key = ".$gateway_sender_id;
+
 		}//end of if(file_exists()).
 		else
 			echo "SMS Settings file is not found";
@@ -121,12 +129,17 @@ if(file_exists($filename))
 		<?php echo "<b>Password</b><br>";?>
 		<?php echo CHtml::textField('',$gateway_password, array('disabled'=>'disabled'));?>
 	</div>
-	
+
 	<div class="row">
 		<?php echo "<b>Api Key</b><br>";?>
 		<?php echo CHtml::textField('',$gateway_apikey, array('disabled'=>'disabled'));?>
 	</div>
-	
+
+	<div class="row">
+		<?php echo "<b>Sender Id</b><br>";?>
+		<?php echo CHtml::textField('',$gateway_sender_id, array('disabled'=>'disabled'));?>
+	</div>
+
 	<div class="row" >
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHtml::button('Edit', array('submit' => array('setup/smsSettingsForm'))); ?>
 	</div>

@@ -106,11 +106,10 @@ $engg_address_js_array = json_encode($engineer_address_array);
 	</tr>
 </table>
 
+<!-- Google Services Start -->
 <?php $google_maps_api_key=Yii::app()->params['google_maps_api_key'];?>
-
 <?php echo CHtml::scriptFile("https://maps.googleapis.com/maps/api/js?key=".$google_maps_api_key); ?>
-
-
+<!-- Google ServicesEnd -->
 	
 <style>
 #map {

@@ -31,6 +31,10 @@ $(document).ready(function() {
  
 $("#faq_search_input").keyup(function()
 {
+
+	appendurlnewcustomerurl($(this).val());
+
+
 	var faq_search_input = $(this).val();
 	var dataString = 'keyword='+ faq_search_input;
 	 
@@ -68,6 +72,19 @@ $("#faq_search_input").keyup(function()
 	return false;
 });//end of keyup function.
 });//end of ready function.
+
+
+
+
+  function appendurlnewcustomerurl(postcode)
+  {
+	  newurl='index.php?r=Servicecall/create&postcode='+postcode;
+	  console.log(newurl);
+	  document.getElementById("newcustomer").href=newurl;
+  }
+
+
+
 </script>
 
  
@@ -83,7 +100,10 @@ $current_url=$baseUrl."/index.php?r=".$model_name;
 //$customer_id = 77;
 //echo "Search   :".$current_url."<br>";
 ?>
-
+	   <div style='float:right;'>
+		   <?php $service_img_html = CHtml::image('images/service.gif','Raise Service Call',array('title'=>'Raise New Service Call')); ?>
+		   <?php echo CHtml::link($service_img_html, array('Servicecall/create'), array('id'=>'newcustomer'));?>
+	   </div>
 <input type="hidden" id="current_url" value="<?php echo $current_url;?>"/> 
         <!-- if YOU WANT TO SEND ADDITIONAL HIDDEN VARIABLES-->
 <!--        <input type="hidden" id="ref_id" value="<?php //echo $reference_id ;?>"/> -->
@@ -97,16 +117,9 @@ $current_url=$baseUrl."/index.php?r=".$model_name;
                 <!-- The Searchbox Ends  Here  -->
         <div id="searchresultdata" class="faq-articles"> </div>
      </div>
-     <p align="right">
-     <?php //echo CHtml::link('New Customer Service', array('servicecall/create'));
-       		$service_img_url = Yii::app()->request->baseUrl.'/images/service.gif';
-			$service_img_html = CHtml::image($service_img_url,'Raise Service Call',array('width'=>30,'height'=>30, 'title'=>'Raise Service Call')); 
 
-			?>
-		
-       <?php echo CHtml::link('New Customer Service', array('servicecall/create')); ?>
-       <?php echo CHtml::link($service_img_html, array('Servicecall/create'));?>	
-       </p>
+
+
         <br>
   <br>
   

@@ -225,7 +225,7 @@ dd {
 }
 
 table {
-    margin-bottom: 1.4em;
+    /*margin-bottom: 1.4em;*/
     width: 100%;
 }
 
@@ -1403,7 +1403,7 @@ div.active {
     background-color: #fffed0;
     padding: 5px 20px;
     border-radius: 10px;
-    height: 8em;
+    /*height: 8em;*/
 }
 .servicebottomfloattoolbar{
     background-color: #fffed0;

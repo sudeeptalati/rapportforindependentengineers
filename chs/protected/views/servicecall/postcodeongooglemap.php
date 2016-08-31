@@ -8,7 +8,7 @@
 ?>
 
 
-<body onload="initialize()">
+<body onload="showpostcodeonmap()">
 <input id="address" type="hidden" value="<?php echo $address;?>">
 <!--
 <div>
@@ -21,7 +21,7 @@
 <script>
     var geocoder;
     var map;
-    function initialize() {
+    function showpostcodeonmap() {
         geocoder = new google.maps.Geocoder();
         var latlng = new google.maps.LatLng(-34.397, 150.644);
         var mapOptions = {

@@ -352,6 +352,68 @@ class ServicecallController extends RController
         $this->render('updateServicecall', array('model' => $model));
     }
 
+
+
+
+
+
+
+    public function actionUpdateservicecalldialog()
+    {
+        echo "called";
+        $error_msg='';
+        if (isset($_POST['Servicecall'])) {
+
+            $servicecall_id=$_GET['servicecall_id'];
+            $service_model=Servicecall::model()->findByPk($servicecall_id);
+
+            $service_model->attributes = $_POST['Servicecall'];
+
+            /*
+            var_dump($_POST['Product']);
+            var_dump($product_model);
+            */
+
+
+
+
+
+
+            if ($service_model->save()) {
+                echo "Svaed";
+                $this->redirect(array('servicecall/view&id='.$servicecall_id.'#servicebox'));
+            }
+            else{
+                echo "getErrors";
+                $errors=$service_model->getErrors();
+                $error_msg='<h5>Servicecall Details Not Updated</h5>';
+                foreach ($errors as $key=>$value)
+                    $error_msg.="<br>".$value[0];
+
+
+                //$this->redirect(array('servicecall/view', 'id' => $servicecall_id, 'error_msg='=>$error_msg));
+                $this->redirect(array('servicecall/view&id='.$servicecall_id.'&error_msg='.$error_msg.''));
+            }
+
+
+
+
+        }
+        $model=$this->loadModel($id);
+
+        $this->render('updateservicecalldialog', array('model' => $model));
+
+
+    }///end of 	public function actionUpdateservicecalldialog()
+
+
+
+
+
+
+
+
+
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -705,6 +767,46 @@ public function actionAddProduct($cust_id)
         }
         $this->renderPartial('changeEngineerOnly');
     }//end of ChangeEngineerOnly.
+
+
+    public function  actionAddcommnetsinservicecall()
+    {
+        if (isset($_POST['Servicecall'])) {
+
+            $servicecall_id=$_GET['servicecall_id'];
+            $service_model=Servicecall::model()->findByPk($servicecall_id);
+
+            $service_model->attributes = $_POST['Servicecall'];
+
+            $comments= Setup::model()->updatenotesorcomments($service_model->comments , $service_model, 'comments');
+
+            $servicecall_update = Servicecall::model()->updateByPk($servicecall_id,
+                array(
+                    'comments' => $comments,
+
+                ));
+
+            if ($servicecall_update) {
+                echo "Servicecall Comments Saved";
+                $this->redirect(array('servicecall/view', 'id' => $servicecall_id));
+            }
+            else{
+                echo "Servicecall Comments  getErrors";
+                $errors=$service_model->getErrors();
+                $error_msg='<h5>Servicecall Comments Not Updated</h5>';
+                foreach ($errors as $key=>$value)
+                    $error_msg.="<br>".$value[0];
+
+
+                //$this->redirect(array('servicecall/view', 'id' => $servicecall_id, 'error_msg='=>$error_msg));
+                $this->redirect(array('servicecall/view&id='.$servicecall_id.'&error_msg='.$error_msg.'#productbox'));
+            }
+
+        }
+
+    }////end of public function addcommnetsinservicecall()
+
+
 
 
     public function donotificationtasks($service_id, $job_status_id)

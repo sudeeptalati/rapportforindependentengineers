@@ -169,6 +169,8 @@
 		//echo "<br>password = ".$gateway_password;
 		$gateway_apikey = $smsDecodedData['gateway_apikey'];
 		//echo "<br>Api key = ".$gateway_apikey;
+
+		$gateway_sender_id= $smsDecodedData['gateway_sender_id'];
 	
 	}
 	else
@@ -259,6 +261,10 @@ return array(
 						'clickatell_password'=>$gateway_password,
 						//'clickatell_apikey'=>'3406681',
 						'clickatell_apikey'=>$gateway_apikey,
+
+						'from_sender_id'=>$gateway_sender_id,
+
+
 						'debug' => false,
 						'https' => false,
 						
@@ -413,7 +419,8 @@ return array(
 		'company_name'=>'DEMO',
 		'company_address'=>'Demo',
 		'company_contact_details'=>'Telephone:00000000 Fax:00000000 E-mail:demo.co.uk',
-		'vat_in_percentage'=>'',	
+		'vat_in_percentage'=>'',
+		'vat_percentage'=>'20',
 		'software_version'=>'12',	
 		'smtp_host'=>$smtp_host,
 		'smtp_username'=>$smtp_username,

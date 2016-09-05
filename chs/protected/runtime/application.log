@@ -3777,3 +3777,66 @@ Stack trace:
 #16 {main}
 REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/view&id=4121
 ---
+2016/09/01 12:33:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested page does not exist.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php:70
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php(57): ServicecallController->loadModel('4121')
+#1 [internal function]: ServicecallController->actionView('4121')
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(ServicecallController), Array)
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(ServicecallController), Object(ReflectionMethod), Array)
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): CFilter->filter(Object(CFilterChain))
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): RController->filterRights(Object(CFilterChain))
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('view')
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('servicecall/vie...')
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#16 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/view&id=4121
+---
+2016/09/05 11:02:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested page does not exist.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php:70
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php(57): ServicecallController->loadModel('4121')
+#1 [internal function]: ServicecallController->actionView('4121')
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(ServicecallController), Array)
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(ServicecallController), Object(ReflectionMethod), Array)
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): CFilter->filter(Object(CFilterChain))
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): RController->filterRights(Object(CFilterChain))
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('view')
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('servicecall/vie...')
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#16 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/view&id=4121
+---
+2016/09/05 11:24:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested page does not exist.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php:70
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php(57): ServicecallController->loadModel('4121')
+#1 [internal function]: ServicecallController->actionView('4121')
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(ServicecallController), Array)
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(ServicecallController), Object(ReflectionMethod), Array)
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): CFilter->filter(Object(CFilterChain))
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): RController->filterRights(Object(CFilterChain))
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('view')
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('servicecall/vie...')
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#16 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/view&id=4121
+---

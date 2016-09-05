@@ -236,5 +236,11 @@
         });
 
 
+    $('#Servicecall_notes').keyup(function() {
+        var value = $(this).val().replace(/\n/g, '<br/>');
+        console.log("This is "+value);
+        $("#Servicecall_notes").val(value);
+
+    });
 </script>
 

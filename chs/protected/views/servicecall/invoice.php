@@ -408,10 +408,11 @@ $this->layout=false;
                 <?php //for ($i=1;$i<7;$i++){?>
 
                 <?php
-                if($model->spares_used_status_id == 1)
+
+                echo "<br>Spares are used";
+                $sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id'=> $model->id));
+                if(count($sparesModel )>0)
                 {
-                    echo "<br>Spares are used";
-                    $sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id'=> $model->id));
                     foreach ($sparesModel as $data)
                     {
                         //echo "<br>".$data->id."&nbsp;&nbsp;&nbsp;";
@@ -425,7 +426,11 @@ $this->layout=false;
                             <td style="border-right:1px solid black; border-left:1px solid black;"><?php echo $data->quantity; ?></td>
                             <td style="border-right:1px solid black;"><?php echo $data->part_number; ?></td>
                             <td style="border-right:1px solid black;"><?php echo $data->item_name; ?></td>
-                            <td style="border-right:1px solid black;"><br></td>
+                            <td style="border-right:1px solid black;">
+                                <?php if ($data->used == 1): ?>
+                                    <span>✔</span>
+                                <?php endif; ?>
+                            </td>
                             <td style="border-right:1px solid black;"><br></td>
                             <td style="border-right:1px solid black;"><?php echo $data->unit_price; ?></td>
                             <td style="border-right:1px solid black;"><?php echo $data->total_price; ?></td>

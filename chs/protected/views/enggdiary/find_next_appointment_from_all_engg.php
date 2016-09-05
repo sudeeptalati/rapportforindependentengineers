@@ -181,13 +181,15 @@ $today = date('d-m-Y');
                                             $url = $baseUrl . "/index.php?r=enggdiary/manuallyappointmentbooking&servicecall_id=" . $servicecall_id;
                                             ?>
 
-                                            <div>
-                                                <a href="<?php echo $url ?>">Book manually</a>
-                                                <br>
-                                                <a href="<?php echo $url ?>">
-                                                    <i class="fa fa-calendar fa-3x"></i>
-                                                </a>
-                                            </div>
+                                            <h4>
+                                                <div id="bookmanually-div" style="">
+                                                    <a href="<?php echo $url ?>">Book manually</a>
+                                                    <br>
+                                                    <a href="<?php echo $url ?>">
+                                                        <i class="fa fa-calendar fa-3x"></i>
+                                                    </a>
+                                                </div>
+                                            </h4>
                                         </td>
                                         <td>
                                             <div class="infotooltip"><h4>Empty Days &nbsp;&nbsp;<i
@@ -199,9 +201,6 @@ $today = date('d-m-Y');
 
 
                                                 </span>
-                                                <div class="loading">
-                                                    <div class="fa fa-spinner fa-spin fa-3x fa-fw"></div>
-                                                </div>
                                             </div>
 
                                             <div id="fullfreedaysofengg"></div>
@@ -213,23 +212,24 @@ $today = date('d-m-Y');
 
                             </div><!-- end of Manual Booking Div-->
 
+                            <div id="suggesteddates-div">
+                                <div class="infotooltip"><h4>Suggested Dates &nbsp;&nbsp;<i class="fa fa-info-circle"
+                                                                                            aria-hidden="true"></i></h4>
+                                <span class="infotooltiptext">
+                                The suggested dates are calculated based on above parameters like Days Considered for Planning, Maximum Travel Distance Between Two postcodes & Maximum Number of Servicecalls per day Per Engineer.
+                                 However, you can also manually overwrite the diary from the above link of Book Manually or Empty Days.
 
-                            <div class="infotooltip"><h4>Suggested Dates &nbsp;&nbsp;<i class="fa fa-info-circle"
-                                                                                        aria-hidden="true"></i></h4>
-                            <span class="infotooltiptext">
-                            The suggested dates are calculated based on above parameters like Days Considered for Planning, Maximum Travel Distance Between Two postcodes & Maximum Number of Servicecalls per day Per Engineer.
-                             However, you can also manually overwrite the diary from the above link of Book Manually or Empty Days.
-
-                            </span>
-                                <div class="loading">
-                                    <div class="fa fa-spinner fa-spin fa-3x fa-fw"></div>
+                                </span>
+                                    <div class="loading">
+                                        <div class="fa fa-spinner fa-spin fa-3x fa-fw"></div>
+                                    </div>
                                 </div>
-                            </div>
 
 
-                            <div id="firstprefdiv"></div>
-                            <div id="secondprefdiv"></div>
-                            <div id="thirdprefdiv"></div>
+                                <div id="firstprefdiv"></div>
+                                <div id="secondprefdiv"></div>
+                                <div id="thirdprefdiv"></div>
+                            </div><!-- end of  <div id="suggesteddates-div"> -->
                         </div><!--End of Success Div-->
                     </td>
                 </tr>
@@ -484,7 +484,7 @@ $today = date('d-m-Y');
 
     var map;
     var geocoder;
-    var bounds = new google.maps.LatLngBounds();
+    //var bounds = new google.maps.LatLngBounds();
     var markersArray = [];
     var x = 0;
     var considerdays =<?php echo $no_next_days; ?>;
@@ -525,10 +525,16 @@ $today = date('d-m-Y');
 
 
     function initialize() {
+
+        createfullfreedayssection();
+
+
         var opts = {
-            center: new google.maps.LatLng(55.6414923, -4.5296094),
+            //center: new google.maps.LatLng(55.6414923, -4.5296094),
             zoom: 10
         };
+
+
         map = new google.maps.Map(document.getElementById('map-canvas'), opts);
         geocoder = new google.maps.Geocoder();
     }
@@ -591,9 +597,9 @@ $today = date('d-m-Y');
 		{
 
 				//document.getElementById('systemmessage')='<b>System cannot find any suitable dates, Please book the call manually</b>'
-				document.getElementById('outputDiv').innerHTML += '<br><b>System cannot find any more suitable dates, You can also book the call manually</b>';
-				//document.getElementById('loading').style.display = 'none';
-                ///stoploadingsign();
+
+                //document.getElementById('loading').style.display = 'none';
+                stoploadingsign();
 				//document.getElementById('systemmessage').style.display = 'block';
 
 		}
@@ -1023,8 +1029,8 @@ $today = date('d-m-Y');
         }
         geocoder.geocode({'address': location}, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                bounds.extend(results[0].geometry.location);
-                map.fitBounds(bounds);
+                //bounds.extend(results[0].geometry.location);
+                //map.fitBounds(bounds);
                 var marker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location,
@@ -1032,7 +1038,7 @@ $today = date('d-m-Y');
                 });
                 markersArray.push(marker);
             } else {
-                alert('Geocode was not successful for the following reason: '
+                console.log('Geocode was not successful for the following reason: '
                         + status);
             }
         });
@@ -1229,7 +1235,7 @@ $today = date('d-m-Y');
                 if (json_output.status=="OK") {
                     console.log("Status is OK");
                     createandupdateengineerdropdown(json_output);
-                    createfullfreedayssection();
+                    updateOutputdivlast();
 
 
                 }else
@@ -1265,24 +1271,34 @@ $today = date('d-m-Y');
 
             available_enggs=res.available_enggs;
             a_date=res.date;
+
+            if (a_date !== null)
+            {
             console.log("Now updating enggs--------"+a_date);
 
             selectid=i+"dropdownengg";
 
-            console.log("Select Id"+selectid);
+            console.log("Select Id   :  "+selectid);
 
-            var enggselect = document.getElementById(selectid);
 
-            for ( var key in available_enggs) {
+                var enggselect = document.getElementById(selectid);
 
-                engg = available_enggs[key];
 
-                console.log(engg.engineer_name);
-                console.log(engg.engineer_id);
-                enggselect.options[enggselect.options.length] = new Option(engg.engineer_name,engg.engineer_id);
+                for ( var key in available_enggs) {
 
-            }
+                    engg = available_enggs[key];
 
+                    console.log(engg.engineer_name);
+                    console.log(engg.engineer_id);
+
+                    console.log(enggselect);
+
+                    if (enggselect!=null)
+                        enggselect.options[enggselect.options.length] = new Option(engg.engineer_name,engg.engineer_id);
+
+                }
+
+            }///end of if  if (a_date !== null)
 
         }//end of  for (var i=0;i<available_enggs.length().i++)
 
@@ -1415,6 +1431,7 @@ $today = date('d-m-Y');
         console.log("stoploadingsign Called ");
         var loadinddivs = document.getElementsByClassName("loading");
 
+
         console.log(loadinddivs);
         for (var l=0;l<loadinddivs.length;l++ )
         {
@@ -1424,7 +1441,14 @@ $today = date('d-m-Y');
 
     }///end of function stoploadingsign()
 
+    function updateOutputdivlast()
+    {
+        document.getElementById('outputDiv').innerHTML += '<br><br>'+document.getElementById('suggesteddates-div').innerHTML;
+        document.getElementById('outputDiv').innerHTML += '<hr>'+document.getElementById('manual_booking').innerHTML;
+        document.getElementById('outputDiv').innerHTML += '<hr>If there are no suggested dates. It could be because of :<br><ul><li>An unidentified postcode or typo error in postcodes</li><li> Travelling distance is more than the Maximum Travel Distance Between Two postcodes</li></ul>';
 
+    }
 
 
 </script>
+

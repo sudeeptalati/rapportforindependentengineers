@@ -730,6 +730,15 @@ class Setup extends CActiveRecord
 		return $msg;
 	}///end of print errors
 
+
+
+	public function formataddress($line1, $line2, $line3, $town, $postcode)
+	{
+		$address_html=$this->formataddressinhtml($line1, $line2, $line3, $town, $postcode);
+		$address = str_replace("<br>", " ", $address_html);
+		return $address;
+
+	}
 	public function formataddressinhtml($line1, $line2, $line3, $town, $postcode)
 	{
 		$line1 = trim($line1);

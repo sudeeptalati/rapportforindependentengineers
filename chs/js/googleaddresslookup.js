@@ -6,99 +6,83 @@
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
 
-var placeSearch, autocomplete;
-var componentForm = {
-    street_number: 'short_name',
-    route: 'long_name',
-    locality: 'long_name',
-    administrative_area_level_1: 'short_name',
-    country: 'long_name',
-    postal_code: 'short_name'
-};
-
 
 
 var valuesinform={
     street_number: 'Customer_address_line_1',
     route: 'Customer_address_line_2',
-    locality: 'Customer_town',
-    administrative_area_level_1: null,
+    locality: 'Customer_address_line_3',
+    postal_town: 'Customer_town',
+    administrative_area_level_2: null, //this is county like east ayrshire
+    administrative_area_level_1: null, //this is like Scotland, England
     country: 'Customer_country',
     postal_code: 'Customer_postcode'
 }
 
-function initAutocomplete() {
-    // Create the autocomplete object, restricting the search to geographical
-    // location types.
-    if (document.getElementById('autocomplete'))
-    {    autocomplete = new google.maps.places.Autocomplete(
-        /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
-        {types: ['geocode']});
+$( "#autocomplete" ).keyup(function() {
+    console.log( "autocomplete for .keyup() called." );
+    geolocate();
+});
 
-    // When the user selects an address from the dropdown, populate the address
-    // fields in the form.
-    autocomplete.addListener('place_changed', fillInAddress);
-    }
-}
+// A $( document ).ready() block.
+$( document ).ready(function() {
+    geolocate();
+});
 
-// [START region_fillform]
-function fillInAddress() {
-    // Get the place details from the autocomplete object.
-    var place = autocomplete.getPlace();
-
-
-    for (var component in componentForm) {
-
-        if (valuesinform[component]) {
-            document.getElementById(valuesinform[component]).value = '';
-            document.getElementById(valuesinform[component]).disabled = false;
-        }
-
-
-    }
-
-
-    // Get each component of the address from the place details
-    // and fill the corresponding field on the form.
-
-    for (var i = 0; i < place.address_components.length; i++) {
-        var addressType = place.address_components[i].types[0];
-
-        if (componentForm[addressType]) {
-
-            //console.log(addressType);
-            var val = place.address_components[i][componentForm[addressType]];
-            ///document.getElementById(addressType).value = val;
-
-            //console.log('ID VALUE IN FORM'+valuesinform[addressType])
-            if (valuesinform[addressType])
-                document.getElementById(valuesinform[addressType]).value = val;
-        }
-    }
-
-
-}
-// [END region_fillform]
-
-// [START region_geolocation]
-// Bias the autocomplete object to the user's geographical location,
-// as supplied by the browser's 'navigator.geolocation' object.
 function geolocate() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var geolocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-            var circle = new google.maps.Circle({
-                center: geolocation,
-                radius: position.coords.accuracy
+    google_maps_api_key=$( "#google_maps_api_key").val();
+    address_keyword=$( "#autocomplete").val();
+
+
+
+    if (checkifelementexists(address_keyword))
+    {
+
+        address_keyword=address_keyword.replace( /\s/g, "")
+
+        if (address_keyword.length>3)
+        {
+            address_lookup_url="https://maps.googleapis.com/maps/api/geocode/json?address="+address_keyword+"&components=country:UK&key="+google_maps_api_key;
+
+            console.log(address_lookup_url);
+            $.get( address_lookup_url, function( data ) {
+                //$( ".result" ).html( data );
+                formatdatatoaddress(data)
+
             });
-            autocomplete.setBounds(circle.getBounds());
-        });
+
+        }///end of if (address_keyword.length>3)
+
+    }//end of     if (address_keyword!==null || address_keyword!=='' )
+
+}///end of geolocate
+
+
+
+function formatdatatoaddress(address_data_obj)
+{
+    //console.log(address_data_obj.results[0].address_components[0].long_name);
+    //console.log(address_data_obj.results[0].address_components[0].types[0]);
+
+    address_components=address_data_obj.results[0].address_components;
+
+    for (var i=0;i<address_components.length;i++)
+    {
+        //console.log(address_components[i]);
+        castaddressinfields( address_components[i]);
     }
-}
-// [END region_geolocation]
+
+}///end of formatdatatoaddress(address_datastring)
+
+
+function castaddressinfields( addresscomponent)
+{
+
+    area_type=addresscomponent.types[0];
+    $("#"+valuesinform[area_type]).val(addresscomponent.long_name);
+
+}///end of function castaddressinfields( addresscomponent)
+
 
 //Disable return Key from Submitting the form
 function stopRKey(evt) {
@@ -108,3 +92,18 @@ function stopRKey(evt) {
 }
 
 document.onkeypress = stopRKey;
+
+function checkifelementexists(element)
+{
+    if( typeof element !== 'undefined' ) {
+        // myVar could get resolved and it's defined
+        //console.log(element+' is defined');
+        return true;
+    }else
+    {
+        //console.log(element+' is undefined');
+        return false;
+    }
+
+}///end of function checkifelementexists()
+

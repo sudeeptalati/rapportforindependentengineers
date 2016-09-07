@@ -37,9 +37,9 @@ $servicecallmodel = Servicecall::model()->findbyPK(array('id' => $servicecall_id
 
 
 $model = Enggdiary::model();
-$setupmodel=Setup::model();
+$setupmodel = Setup::model();
 
-$daystoconsiderformanualbooking =$model->getdaystoconsiderformanualbooking();
+$daystoconsiderformanualbooking = $model->getdaystoconsiderformanualbooking();
 
 $workingdaysofweekstring = $model->getworkingdaysinweek();
 $workingdaysofweekarray = str_split($workingdaysofweekstring);
@@ -54,7 +54,7 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
 
 <div class="boxframe customerbox" style='width:40%; float:left;'>
     <div class="headingbox customerheadingbox">Customer</div>
-        <div class="contentbox">
+    <div class="contentbox">
         <div class="title">
             <?php echo $servicecallmodel->customer->fullname; ?>
 
@@ -123,8 +123,8 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
             Service
             <div style="float: right">
                 <?php
-                $linktext='<div class="fa fa-edit"></div>#'.$servicecallmodel->service_reference_number;
-                echo CHtml::link($linktext,array('/servicecall/view', 'id'=>$servicecallmodel->id), array('style'=>'color:white'));
+                $linktext = '<div class="fa fa-edit"></div>#' . $servicecallmodel->service_reference_number;
+                echo CHtml::link($linktext, array('/servicecall/view', 'id' => $servicecallmodel->id), array('style' => 'color:white'));
                 ?>
             </div>
         </div>
@@ -136,57 +136,133 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
     </div><!-- end of     <div class="containerbox productbox"> -->
 
 
-
-
-
-
-    <div id="engineerbox" class="beauty containerbox engineerbox" style="cursor: move;" title="You can drag and move this window">
+    <div id="engineerbox" class="beauty containerbox engineerbox" style="cursor: move;"
+         title="You can drag and move this window">
         <div class="headingbox enginnerheadingbox">Appointment
             <i class="fa fa-arrows" aria-hidden="true"></i></div>
         <div class="contentbox engineerbox">
 
-            <div class="datacontenttitle"><span class="fa fa-wrench"></span> Engineer <h5><?php echo $servicecallmodel->engineer->fullname;?></h5> </div>
+            <h5>
+                <i class="ukwfa ukwfa-engineer-repair fa-2x"></i>
+                <span class="datacontenttitle" >Last visited by </span>-
+                <span><?php echo $servicecallmodel->engineer->fullname; ?></span>
+            </h5>
+
+            <h3 style="margin:20px;">
+                <span class="fa fa-clock-o" aria-hidden="true"></span>
+                <span id="appointment-time"></span>
+            </h3>
+
+            <?php
+            $timeofcallarray = Enggdiary::model()->timeofcalls();
+            echo CHtml::dropDownList('timeofcall', '', $timeofcallarray);
+            ?>
 
 
-        Additional Notes<br>
+            <br>
+            Slots
+            <?php echo CHtml::dropDownList('slots', '8', array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10'), array('style' => 'width:50px;')); ?>
+            <span id="callduration"></span>
 
-        <?php echo CHtml::dropDownList('timeofcall', '',
-            array('Normal Call' => 'Normal Call',
-                'Morning Call' => 'Morning Call',
-                'Evening Call' => 'Evening Call',
-                'First Call' => 'First Call',
-                'Last Call' => 'Last Call',
-                'Special Call' => 'Special Call',
+            <small>1 slot = 30 minutes</small>
+            <br>
 
-            )
-        );
+            <script>
+
+                printappointment();
+
+                $("#slots").change(function () {
+                    printappointment();
+                });
+
+                $("#timeofcall").change(function () {
+                    printappointment();
+                });
 
 
-        ?>
-        <br>
-        <?php echo CHtml::textArea('appointment_notes', '', array('placeholder' => 'Additional Notes for call',
-                'style' => 'width:250px;height:100px;'
+                function printappointment() {
+                    slots = $("#slots").val();
+                    calldurationminutes = slots * 30;
 
-            )
-        ); ?>
+                    if (slots < 2) {
+                        $("#callduration").html(calldurationminutes + ' minutes');
+                    }
+                    else {
+                        calldurationhours = slots / 2;
+                        $("#callduration").html(calldurationhours + ' hours');
+                    }
+
+
+                    //appointment-time
+                    timofcall = $("#timeofcall").val();
+
+
+                    if (timofcall.includes("Anytime") || timofcall.includes("Morning")) {
+                        var m = moment("2010-10-20 09:00", "YYYY-MM-DD HH:mm");
+                        m.add(calldurationminutes, 'minutes').minutes(); // 6
+                        endtimestring = m.format("hh:mm a");
+                        $("#appointment-time").html('09:00 am - ' + endtimestring);
+                    }
+
+                    if (timofcall.includes("Afternoon")) {
+                        var m = moment("2010-10-20 14:00", "YYYY-MM-DD HH:mm");
+                        m.add(calldurationminutes, 'minutes').minutes(); // 6
+                        endtimestring = m.format("hh:mm a");
+                        $("#appointment-time").html('02:00 pm - ' + endtimestring);
+                    }
+
+                    if (timofcall.includes("Evening")) {
+                        var m = moment("2010-10-20 17:00", "YYYY-MM-DD HH:mm");
+                        m.add(calldurationminutes, 'minutes').minutes(); // 6
+                        endtimestring = m.format("hh:mm a");
+                        $("#appointment-time").html('05:00 pm - ' + endtimestring);
+                    }
+
+                    if (timofcall.includes("First")) {
+                        var m = moment("2010-10-20 08:00", "YYYY-MM-DD HH:mm");
+                        m.add(calldurationminutes, 'minutes').minutes(); // 6
+                        endtimestring = m.format("hh:mm a");
+                        $("#appointment-time").html('08:00 am - ' + endtimestring);
+                    }
+
+                    if (timofcall.includes("Last")) {
+                        var m = moment("2010-10-20 18:00", "YYYY-MM-DD HH:mm");
+                        m.add(calldurationminutes, 'minutes').minutes(); // 6
+                        endtimestring = m.format("hh:mm a");
+                        $("#appointment-time").html('06:00 pm - ' + endtimestring);
+                    }
+
+
+
+                    if (timofcall.includes("Call")) {
+                        $("#appointment-time").html('');
+                    }
+
+
+
+                }///end of function printappointment()
+
+
+            </script>
+
+
+            <br>
+
+            <?php echo CHtml::textArea('appointment_notes', '', array('placeholder' => 'Additional Notes for call',
+                    'style' => 'width:250px;height:100px;'
+
+                )
+            ); ?>
         </div>
     </div><!-- end of class="containerbox engineerbox" -->
 
-    </div><!-- end of Boxframe -->
-
-
-
-
-
-
-
-
+</div><!-- end of Boxframe -->
 
 
 <div id="beauty" class="beauty">
     <div class="info headingbox" style=" border-radius: 10px;cursor: move;"
          title="You can move this window anywhere on screen. Simply click the mouse and move it across the screen. Thus, you can show/hide the engineers.">
-      Engineers  <i class="fa fa-arrows" aria-hidden="true"></i>
+        Engineers <i class="fa fa-arrows" aria-hidden="true"></i>
     </div>
 
     <div style='cursor:pointer;width: 300px;top: 250px;right: 50px;'>
@@ -205,8 +281,6 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
         </table>
     </div>
 </div>
-
-
 
 
 <table>
@@ -244,7 +318,7 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
 
             echo '<td  style="height:1px;vertical-align:top; border: 1px solid black;">';
             //echo '<div style="height:50px;" class="quote">' . $forloopdate_string . '</div>';
-            echo '<div class="quote"><span style="font-size: 26px ">'.$forloop_day.'</span><br><span style="font-size: 18px ">'.$forloop_weekday_string.'</h5></div>';
+            echo '<div class="quote"><span style="font-size: 26px ">' . $forloop_day . '</span><br><span style="font-size: 18px ">' . $forloop_weekday_string . '</h5></div>';
 
 
             if ($i == $todaysweekday) {
@@ -269,7 +343,6 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
             $forloop_year = date("Y", $forloopdate_time);
             $forloop_weekday = date("N", $forloopdate_time);
             $forloop_weekday_string = date("l", $forloopdate_time);
-
 
 
             $td_id = date("j-n-Y", $forloopdate_time);
@@ -310,14 +383,13 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
             */
 
 
-            if ($today_string ==$forloopdate_string)
+            if ($today_string == $forloopdate_string)
                 //echo '<div style="height:50px;" class="alert">Today '.date('d, l', $forloopdate_time).'</div>';
                 //echo '<div class="alert"><span>'.$forloop_weekday_string.'</span>&nbsp;&nbsp;&nbsp;<span>'.$forloop_day.'</h5></div>';
-                echo '<div class="alert"><span style="font-size: 26px ">'. $forloop_day.'</span><br><span style="font-size: 18px ">'.$forloop_weekday_string.'</span><h4>Today</h4></div>';
+                echo '<div class="alert"><span style="font-size: 26px ">' . $forloop_day . '</span><br><span style="font-size: 18px ">' . $forloop_weekday_string . '</span><h4>Today</h4></div>';
             else
                 //echo '<div style="height:50px;" class="quote">'. $forloopdate_string.'</div>';
-                echo '<div class="quote"><span style="font-size: 26px ">'.$forloop_day.'</span><br><span style="font-size: 18px ">'.$forloop_weekday_string.'</span></div>';
-
+                echo '<div class="quote"><span style="font-size: 26px ">' . $forloop_day . '</span><br><span style="font-size: 18px ">' . $forloop_weekday_string . '</span></div>';
 
 
             //echo '<div style="height:10px; background:#9AFD95"></div>';
@@ -436,12 +508,15 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
 
         service_id =<?php echo $servicecall_id; ?>;
         timeofcall = document.getElementById('timeofcall').value;
+        slots = document.getElementById('slots').value;
+
+
         appointment_notes = document.getElementById('appointment_notes').value;
-        notes = '<b>' + timeofcall + '</b>:' + appointment_notes;
+        notes = '<b>' + timeofcall + '</b><br>' + appointment_notes;
         console.log('notes' + notes);
 
 
-        var urlToCreate = '<?php echo Yii::app()->getBaseUrl(); ?>' + '/index.php?r=api/createNewDiaryEntry&start_date=' + dateofappointment + '&engg_id=' + new_engineer_id + '&service_id=' + service_id + '&notes=' + notes;
+        var urlToCreate = '<?php echo Yii::app()->getBaseUrl(); ?>' + '/index.php?r=api/createNewDiaryEntry&start_date=' + dateofappointment + '&engg_id=' + new_engineer_id +  '&slots=' + slots + '&service_id=' + service_id + '&notes=' + notes;
         console.log(urlToCreate);
 
         msg = "Are you sure you want to book appointment on " + dateofappointment + " for " + new_engineer_name;
@@ -457,7 +532,7 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
                 modal: true,
                 success: function (data) {
                     alert('Appointment Created' + data);
-                    location.href = '<?php echo Yii::app()->getBaseUrl(); ?>' + '/index.php?r=servicecall/view&id=' + service_id;
+                    location.href = '<?php echo Yii::app()->getBaseUrl(); ?>' + '/index.php?r=servicecall/view&id=' + service_id+'#enginnerbox';
                 },
                 error: function () {
                     alert("ERROR");

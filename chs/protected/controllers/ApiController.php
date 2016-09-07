@@ -235,6 +235,7 @@ class ApiController extends RController
     	$service_id = $_GET['service_id'];
     	//echo "<br>SERVICE_ID in api contr = ".$service_id;
 
+		$slots = $_GET['slots'];
 
 		////Check if there is alreday a appointment booked with the service id
 		////if appointmnet is booked then cancel it
@@ -270,7 +271,7 @@ class ApiController extends RController
 		$status_id = $newEnggDiaryModel->status;
 		//echo "<br>Visit satrt date to be saved = ".$start_date;
 		$newEnggDiaryModel->visit_start_date=$start_date;
-		$newEnggDiaryModel->slots = '2';
+		$newEnggDiaryModel->slots = $slots;
 		$newEnggDiaryModel->notes = $notes;
 		
 		$saved = $newEnggDiaryModel->save();

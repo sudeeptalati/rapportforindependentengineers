@@ -517,6 +517,24 @@ class Servicecall extends CActiveRecord
         return $model;
     }//end of enggJobReport().
 
+
+
+
+
+    public function changeengineerbyservicecallid($id, $engineer_id)
+    {
+        $servicecall_update = Servicecall::model()->updateByPk($id,
+            array(
+                'engineer_id' => $engineer_id,
+
+            ));
+
+        $this->updateactivitylog($id);
+
+        return $servicecall_update;
+
+    }////end of public function updateengineer($id, $engineer_id)
+
     public function updatejobstatusbyservicecallid($id, $job_status_id)
     {
         $model = $this->loadmodel($id);

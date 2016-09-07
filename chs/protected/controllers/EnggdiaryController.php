@@ -827,4 +827,22 @@ class EnggdiaryController extends RController
 	}//end of ChangeEngineerOnly.
 
 
+	public function actionCancelappointment()
+	{
+
+		$diary_id=$_GET['diary_id'];
+		$model=$this->loadModel($diary_id);
+
+		$c=Enggdiary::model()->cancelappointment($model);
+
+
+		if ($c==1)
+			$this->redirect(array('/servicecall/view', 'id'=>$model->servicecall_id, '#'=>'enginnerbox'));
+		 else
+			echo 'cannot update Job Status in servicecall. Please contact support';
+
+
+	}/////enf of 	public function actionCancelappointment()
+
+
 }//end of class.

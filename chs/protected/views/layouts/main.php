@@ -44,6 +44,8 @@ $starttime = $mtime;
 
 
 	<!-- FONT AWESOME-->
+	<script src="https://use.fortawesome.com/860d66d0.js"></script>
+
 
 	<script src="https://use.fortawesome.com/a8e251d4.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -193,20 +195,10 @@ $baseUrl= Yii::app()->request->baseUrl;
 </div><!-- page -->
 
 
-<!-- Google Services Start -->
+<!-- Google postcode lookup Services Start -->
 <?php $google_maps_api_key=Yii::app()->params['google_maps_api_key'];?>
+<input id="google_maps_api_key" type="hidden" value="<?php echo $google_maps_api_key;?>" />
 <script src="js/googleaddresslookup.js"></script>
-
-<script src="http://maps.googleapis.com/maps/api/js?key=<?php echo $google_maps_api_key; ?>&signed_in=true&libraries=places,geometry&callback=initAutocomplete"
-		async defer></script>
-
-
-
-
-
-
-
-<?php //echo CHtml::scriptFile("https://maps.googleapis.com/maps/api/js?key=".$google_maps_api_key); ?>
 <!-- Google ServicesEnd -->
 
 

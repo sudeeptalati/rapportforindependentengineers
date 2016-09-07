@@ -160,7 +160,7 @@ class Enggdiary extends CActiveRecord
 			$new_date = date("d-m-Y H:i:s", strtotime('+1080 minutes', $phpdate));
 			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 6 PM ******/
 		}
-		else ///it means it is morning or anytime call
+		else ///it means it is morning or anytime call or special call
 		{
 			//echo 'This is a moring call';
 			/****** ADDING MINUTES TO START DATE TO MAKE IT 9 AM ******/

@@ -11,11 +11,11 @@
 
 $editicom = '<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>';
 
-
-if ($model->engg_diary_id != NULL || $model->engg_diary_id != '')
-    $appointment_exists = true;
-else
+//echo $model->enggdiary->status;
+if ($model->engg_diary_id == NULL || $model->engg_diary_id == '' )
     $appointment_exists = false;
+else
+    $appointment_exists = true;
 
 //CALCULATING VALID UNTILL.
 
@@ -441,7 +441,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     <span class="fa fa-map-o fa-2x" aria-hidden="true"></span></a>
                                 <br>
                                 <div class="googlemapdiv" style="display:block; float: right;">
-                                    <?php $this->renderPartial('postcodeongooglemap', array('address' => $address)); ?>
+                                    <?php $this->renderPartial('postcodeongooglemap', array('address' => $address, 'postcode'=>$model->customer->postcode)); ?>
                                 </div><!-- googlemapdiv -->
 
                             </td>
@@ -500,9 +500,26 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                         </tr>
                         <tr>
                             <td><span class="datacontenttitle">Brand</span>
-                            <td><?php echo '' . $model->product->brand->name; ?></td>
+                            <td>
+
+                                <?php echo $model->product->brand->name; ?>
+                                <br>
+                                <?php $brandname=strtolower($model->product->brand->name); ?>
+                                <?php $brandname=preg_replace('/\s+/', '', $brandname); ?>
+                                 <i class="ukw-logo-fa ukw-logo-fa-<?php echo $brandname;?> fa-4x"></i>
+
+
+                            </td>
                             <td><span class="datacontenttitle">Product Type</span>
-                            <td><?php echo '' . $model->product->productType->name; ?></td>
+                            <td>
+                                <?php echo '' . $model->product->productType->name; ?>
+                                <br>
+                                <?php $producttypename=strtolower($model->product->productType->name); ?>
+                                <?php $producttypename=preg_replace('/\s+/', '', $producttypename); ?>
+
+                                <i class="ukwfa ukwfa-<?php echo $producttypename;?> fa-4x"></i>
+
+                            </td>
                         </tr>
                         <tr>
                             <td><span
@@ -910,7 +927,10 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
     <tr>
         <td colspan="2">
             <div id="enginnerbox" class="engineerbox contentbox">
-                <div class="enginnerheadingbox headingbox">Engineer</div>
+                <div class="enginnerheadingbox headingbox">
+                    <i class="ukwfa ukwfa-engineer-repair"></i>
+                    Engineer
+                </div>
                 <div class="contentbox">
                     <table>
                         <tr>
@@ -927,6 +947,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                 <?php echo $model->customer->fullname; ?>,
                                 <?php echo $model->customer->postcode; ?>
                             </td>
+                            <td>
+                                <?php echo CHtml::link('<div class="fa fa-road" ></div> Book visit', array('enggdiary/findnextappointmentfromallengg/', 'servicecall_id' => $model->id, 'engineer_id' => $model->engineer_id)); ?>
+                            </td>
                         </tr>
 
                         <tr>
@@ -935,12 +958,42 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                             </td>
                             <td><?php echo $model->engineer->fullname; ?></td>
                             <td>
-                                <?php echo CHtml::link('<div class="fa fa-road" ></div> Book visit', array('enggdiary/findnextappointmentfromallengg/', 'servicecall_id' => $model->id, 'engineer_id' => $model->engineer_id)); ?>
+
+
+
+                                <?php
+                                echo CHtml::link('<div class="ukwfa ukwfa-recall"></div> Change Engineer',
+                                    '#', array(
+                                        'onclick' => '$("#change-engineer-dialog").dialog("open"); return false;',
+                                    ));
+                                ?>
+
+
+                                <?php
+                                $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+                                    'id' => 'change-engineer-dialog',
+                                    // additional javascript options for the dialog plugin
+                                    'options' => array(
+                                        'title' => 'Change Engineer Only',
+                                        'autoOpen' => false,
+                                        'resizable' => false,
+                                        'modal' => 'true',
+                                    ),
+                                ));
+                                $this->renderPartial('changeEngineeronly');
+
+                                $this->endWidget('zii.widgets.jui.CJuiDialog');
+                                // the link that may open the dialog
+                                ?>
+
+
+
+
                             </td>
                         </tr>
 
                         <?php if ($appointment_exists): ?>
-                            <tr>
+                         <tr>
                                 <td>
                                     <div>
                                         <?php echo CHtml::link('<span title="Show/Hide" class="fa fa-calendar fa-2x"></span>', '#', array('class' => 'dayview-button')); ?>
@@ -948,12 +1001,32 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     </div>
                                 </td>
                                 <td>
+                                    <?php
+                                    if ($model->enggdiary->status=='3')
+                                        $appointment_fontcolor='inherit';
+                                    else
+                                        $appointment_fontcolor='#cccbcb';
+                                    ?>
+
+                                    <div style="color:<?php echo $appointment_fontcolor;?>">
                                     <?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?>
                                     <br>
+
                                     <?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_end_date); ?>
+                                    </div>
                                 </td>
                                 <td>
+
+                                   <?php if ($model->enggdiary->status=='3'): ?>
+
+                                    <?php echo CHtml::link('<div class="fa fa-times"></div> Cancel appointment',"#", array("submit"=>array('enggdiary/cancelappointment/', 'diary_id'=>$model->engg_diary_id), 'confirm' => 'Are you sure you want to cancel the appointment?')); ?>
+                                    &nbsp;&nbsp;
                                     <?php echo CHtml::link('<div class="fa fa-share"></div> Move appointment', array('enggdiary/viewFullDiary/', 'engg_id' => $model->engineer_id)); ?>
+
+                                    <?php endif; ////if ($appointment_exists): ?>
+
+
+
                                 </td>
                             </tr>
                             <tr>
@@ -965,6 +1038,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     <?php echo $model->enggdiary->notes; ?>
                                 </td>
                                 <td>
+                                    <?php if ($model->enggdiary->status=='3'):  ?>
 
                                     <?php
                                     echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit',
@@ -991,7 +1065,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     // the link that may open the dialog
                                     ?>
 
-                                    <?php //echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit', array('/enggdiary/update/', 'id' => $model->engg_diary_id)); ?>
+                                    <?php  endif; ////if ($appointment_exists): ?>
+
                                 </td>
                             </tr>
 
@@ -1005,6 +1080,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                             <tr>
                                                 <th class="datacontenttitle">Engineer</th>
                                                 <th class="datacontenttitle">Visit Date</th>
+
                                                 <th class="datacontenttitle">Notes</th>
                                             </tr>
 
@@ -1020,6 +1096,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                                             -
                                                             <?php echo date('H:i A', $a->visit_end_date); ?>
                                                         </td>
+
                                                         <td><?php echo $a->notes; ?> </td>
                                                     </tr>
                                                 <?php endif;///end of if ($a->id!=$model->engg_diary_id): ?>
@@ -1030,7 +1107,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     <?php endif; ///end of if (count($all_appointments)>1):?>
                                 </td>
                             </tr>
-                        <?php endif; ///if($appointment_exists): ?>
+
+                        <?php endif; ///if ($appointment_exists): ?>
+
 
                     </table>
                 </div><!-- end of  <div class="contentbox"> -->

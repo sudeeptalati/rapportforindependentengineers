@@ -650,8 +650,31 @@ public function actionAddProduct($cust_id)
     }//end of getItems().
 
 
-    public function actionChangeEngineerOnly()
+
+    public function actionChangeengineeronly()
     {
+        if (isset ($_POST['Servicecall']))
+        {
+            $service_id = $_GET['service_id'];
+
+            $model=$this->loadModel($service_id);
+            $new_engineer_id=$_POST['Servicecall']['engineer_id'];
+            $redirect_url = $_POST['Servicecall']['successfulredirectto'];
+
+
+            $s_update=Servicecall::model()->changeengineerbyservicecallid($service_id, $new_engineer_id);
+            $d_update=Enggdiary::model()->changeengineer($model->engg_diary_id, $new_engineer_id);
+
+            if ($s_update == 1 && $d_update ==1) {
+                //redirect
+                $this->redirect(array($redirect_url));
+            } else
+                echo 'cannot update Job Status in servicecall. Please contact support';
+
+
+
+        }///end of if (isset ($_POST['Servicecall']))
+
         $this->render('changeEngineerOnly');
     }//end of ChangeEngineerOnly.
 

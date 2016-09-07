@@ -123,32 +123,73 @@ class Enggdiary extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}//end of search.
-	
+
+
+
+
+	public function createstartandendtime()
+	{
+
+		$prod = $this->slots*30;
+
+
+		$a = 'How are you?';
+		$phpdate = strtotime($this->visit_start_date);
+
+		if (strpos($this->notes, 'Afternoon') !== false) {
+			//echo 'This is a moring call';
+			/****** ADDING MINUTES TO START DATE TO MAKE IT 2 PM ******/
+			$new_date = date("d-m-Y H:i:s", strtotime('+840 minutes', $phpdate));
+			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 2 PM ******/
+		}
+		elseif (strpos($this->notes, 'Evening') !== false) {
+			//echo 'This is a moring call';
+			/****** ADDING MINUTES TO START DATE TO MAKE IT 5 PM ******/
+			$new_date = date("d-m-Y H:i:s", strtotime('+1020 minutes', $phpdate));
+			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 5 PM ******/
+		}
+		elseif (strpos($this->notes, 'First') !== false) {
+			//echo 'This is a moring call';
+			/****** ADDING MINUTES TO START DATE TO MAKE IT 8 AM ******/
+			$new_date = date("d-m-Y H:i:s", strtotime('+480 minutes', $phpdate));
+			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 8 AM ******/
+		}
+		elseif (strpos($this->notes, 'Last') !== false) {
+			//echo 'This is a moring call';
+			/****** ADDING MINUTES TO START DATE TO MAKE IT 6 PM ******/
+			$new_date = date("d-m-Y H:i:s", strtotime('+1080 minutes', $phpdate));
+			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 6 PM ******/
+		}
+		else ///it means it is morning or anytime call
+		{
+			//echo 'This is a moring call';
+			/****** ADDING MINUTES TO START DATE TO MAKE IT 9 AM ******/
+			$new_date = date("d-m-Y H:i:s", strtotime('+540 minutes', $phpdate));
+			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 9 AM ******/
+		}
+
+
+
+		$this->visit_start_date = strtotime($new_date);
+		/****** ADDING SLOT DURATION TO END TIME *******/
+		$added_end_date = date("d-m-Y H:i:s", strtotime($prod.'minutes', $this->visit_start_date));
+		$this->visit_end_date = strtotime($added_end_date);
+		//echo "<hr>End date calculated in beforeSave of enggDiary = ".$this->visit_end_date;
+		/****** END OF ADDING SLOT DURATION TO END TIME *******/
+
+
+	}///end of 	public function createstartandendtime()
+
+
 	protected function beforeSave()
     {
     	if(parent::beforeSave())
         {
-        	//echo $this->slots."<br>";
-        	$prod = $this->slots*30;
-        	//echo $prod;
+
         	if($this->isNewRecord)  // Creating new record 
             {
-            	
-            	/****** ADDING MINUTES TO START DATE TO MAKE IT 9 AM ******/
-            	$phpdate = strtotime($this->visit_start_date);
-            	$new_date = date("d-m-Y H:i:s", strtotime('+540 minutes', $phpdate));
-            	$this->visit_start_date = strtotime($new_date);
-            	/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 9 AM ******/
-            	
-            	/****** ADDING SLOT DURATION TO END TIME *******/
-				//echo "<br>start time after adding min = ".$this->visit_start_date;
-				$added_end_date = date("d-m-Y H:i:s", strtotime($prod.'minutes', $this->visit_start_date));            	
-            	//echo "<br>end time after adding slot = ".$added_end_date;
-            	$this->visit_end_date = strtotime($added_end_date);
-            	//echo "<hr>End date calculated in beforeSave of enggDiary = ".$this->visit_end_date;
-            	/****** END OF ADDING SLOT DURATION TO END TIME *******/
+				$this->createstartandendtime();
 
-				
 				//****** SETTING USER ID TO REMOTE USER, IF CALL IS REMOTELY BOOKED OTHERWISE CURRENT LOGGEDIN USER *****
             	if(Yii::app()->user->getId() === null)
             		$this->user_id = 1000000;
@@ -568,5 +609,43 @@ class Enggdiary extends CActiveRecord
 
 
 
-    
+	public function cancelappointment($model)
+	{
+		$notes="<b style='color:red'>Cancelled by ". Yii::app()->user->name." on ".date('d-M-Y H:i:s')." </b><br>";
+		$notes=$notes.$model->notes;
+
+
+		return Enggdiary::model()->updateByPk($model->id,
+			array(
+				'notes'=>$notes,
+				'status' => '102'//as 102 is cancelled status
+			));
+
+	}///end of	public function cancelappointment($diary_id)
+
+	public function changeengineer($diary_id, $engineer_id)
+	{
+
+		return Enggdiary::model()->updateByPk($diary_id,
+			array(
+				'engineer_id' => $engineer_id
+			));
+	}///end of	public function cancelappointment($diary_id)
+
+
+	public function timeofcalls()
+	{
+		return
+			array(
+			'Anytime (9 am - 5 pm)' => 'Anytime (9 am - 5 pm)',
+			'Morning (09:00 am)' => 'Morning (09:00 am )',
+			'Afternoon (02:00 pm)' => 'Afternoon (02:00 pm)',
+			'Evening (05:00 pm)' => 'Evening (05:00 pm)',
+			'First (08:00 am)' => 'First (08:00 am)',
+			'Last (06:00 pm)' => 'Last (06:00 pm)',
+			'Special Call' => 'Special Call',
+
+		);
+	}
+
 }//end of class.

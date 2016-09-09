@@ -22,43 +22,39 @@ foreach ($route_map_results as $r){
 	//echo '<hr>'.$r->servicecall_id;
 	
 	$servicecall=Servicecall::model()->findByPk($r->servicecall_id);
-	$fulladd='';
- 
-	if ($servicecall->customer->address_line_1!='' && $servicecall->customer->address_line_1 !=null)
-		$fulladd=$fulladd.$servicecall->customer->address_line_1;	
 
-	if ($servicecall->customer->address_line_2!='' && $servicecall->customer->address_line_2 !=null)
-		$fulladd=$fulladd.', '.$servicecall->customer->address_line_2;	
 
-	if ($servicecall->customer->address_line_3!='' && $servicecall->customer->address_line_3 !=null)
-		$fulladd=$fulladd.','.$servicecall->customer->address_line_3;	
-		
-	if ($servicecall->customer->town!='' && $servicecall->customer->town !=null)
-		$fulladd=$fulladd.','.$servicecall->customer->town;	
+	$fulladd=Setup::model()->formataddress($servicecall->customer->address_line_1, $servicecall->customer->address_line_2, $servicecall->customer->address_line_3, $servicecall->customer->town, $servicecall->customer->postcode);
 
-	if ($servicecall->customer->postcode!='' && $servicecall->customer->postcode !=null)
-		$fulladd=$fulladd.'<br>'.$servicecall->customer->postcode;		
-		
-		
-		
-		
+
+
+
 	if ($servicecall->customer->latitudes!='' && $servicecall->customer->longitudes !='' )
 	{	
 		$selected_date=date('l, F j, Y', $r->visit_start_date);  
 		/*
 		echo "<br><br>";
-		echo "<li><b>".$i.'</b> -- '.$fulladd;
-		echo '<br>'. date('l, j-F-Y', $r->visit_start_date);  
+		echo '<br>'. date('l, j-F-Y', $r->visit_start_date);
 		echo '----'.date('g:i a', $r->visit_start_date).' -'.date( 'g:i a', $r->visit_end_date);  
-		
+		echo "<li><b>".$i.'</b> -- '.$fulladd;
+		echo "  ".$servicecall->customer->latitudes;
+		echo "  ".$servicecall->customer->longitudes;
+
 		*/
-//		echo "  ".$servicecall->customer->latitudes;
-//		echo "  ".$servicecall->customer->longitudes;
-		
+
 		//echo "</li>";
-		//$fulladd=$fulladd.'<br>'.date('l, j-F-Y', $r->visit_start_date);  
-		$infocontent='<br>'.date('g:i a', $r->visit_start_date).' -'.date( 'g:i a', $r->visit_end_date);  
-		$infocontent=$infocontent.'<br>'.$fulladd.'<br><hr>';
+		//$fulladd=$fulladd.'<br>'.date('l, j-F-Y', $r->visit_start_date);
+		//
+
+		$coordinates_update_url= "index.php?r=customer/updatecustomeraddresscoordinates&customer_id=".$servicecall->customer_id;
+
+		$infocontent='';
+
+
+		$infocontent=$infocontent.'<br>'.date('g:i a', $r->visit_start_date).' -'.date( 'g:i a', $r->visit_end_date);
+		$infocontent=$infocontent.'<br>'.$fulladd.'<br>';
+		$infocontent=$infocontent."<a title='If you are finding the location on map as incorrect, click here. This will update the coordinate (latitude and longitude) of the address.' target='''_blank' href='".$coordinates_update_url."'>Relocate On Map</a>";
+		$infocontent=$infocontent."<hr>";
 
 		$customer_location=array($infocontent,$servicecall->customer->latitudes,$servicecall->customer->longitudes);
 		
@@ -67,7 +63,7 @@ foreach ($route_map_results as $r){
 	else
 	{
 		echo '<br><li><b>Coordinates not found.......finding the coordinatess</b>';
-		updatecoordinates($fulladd,$servicecall->customer->id);
+		Customer::model()->update_customer_address_coordinates($servicecall->customer->id);
 		echo '<br><b>Please refresh the page </li>';
 		echo "<SCRIPT LANGUAGE='javascript'>location.reload(true);</SCRIPT>";
 		
@@ -292,46 +288,51 @@ ul {
 		});
 	}////end of	function createlinebetweentwopostcodes()
 
-	
-	
-	
-	
-    </script>
+	function updatecoordinates(customer_id)
+	{
+
+
+		var urltoupdatecoordinates = '<?php echo Yii::app()->getBaseUrl(); ?>' + '/index.php?r=customer/updatecustomerpostcodecoordinates&customer_id='+customer_id;
+
+		console.log('updatecoordinates url'+urltoupdatecoordinates);
+
+
+
+		$.get( urltoupdatecoordinates, function( data ) {
+			if (data=="SAVED")
+			{
+				location.reload();
+			}
+			else
+			{
+				alert('Canoot Update customer address corrodinates'+data);
+			}
+		});
+
+
+
+
+
+
+
+
+	}///end of 	function updatecoordinates()
+
+
+
+
+
+
+
+
+</script>
 	
 <?php
 function updatecoordinates($p_code, $cid)	
 {
-	echo 'I ma called';
-	$p_code= preg_replace('/\s+/', '', $p_code);
-	
-	$url='http://maps.googleapis.com/maps/api/geocode/json?address='.$p_code;
-	$urldata=Setup::model()->curl_file_get_contents($url);
-	$json_data=json_decode($urldata);
-	//echo '<br><a href='.$url.' target="_blank">'.$url.'</a>';
-	//echo '<br>OUTPUT '.$urldata;
-	
-	
-	if ($json_data->status!="ZERO_RESULTS")
-	{
- 
-		$lat= $json_data->results[0]->geometry->location->lat;
-		$lng= $json_data->results[0]->geometry->location->lng;
-		echo '<br> latPostcode  is  :'.$p_code;
-		echo '<br> lat is  :'.$lat;
-		echo '<br> long is :'.$lng;
-		echo '<br> cid is :'.$cid;
-		
-		
-		$customerModel=Customer::model()->findByPk($cid);
-		
-		//echo ' Product Id:'. $customerModel->product_id;;
-		$customerModel->latitudes=$lat;
-		$customerModel->longitudes=$lng;
-		$customerModel->save();
-		
-	}
-		
-	
+
+
+
 	
 }///end of function updatecoordinates($p_code, $cid)
 

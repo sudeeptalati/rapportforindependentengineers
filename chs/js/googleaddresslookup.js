@@ -107,3 +107,16 @@ function checkifelementexists(element)
 
 }///end of function checkifelementexists()
 
+
+$( "#Customer_mobile" ).keyup(function() {
+    countrycode=$( "#code_disp_textField" ).val();
+    customer_mobile=$( "#Customer_mobile" ).val();
+
+     if(customer_mobile.startsWith(0))
+     {
+         customer_mobile = customer_mobile.substring(1);
+         $( "#Customer_mobile" ).val(customer_mobile);
+         console.log(customer_mobile);
+
+     }
+});///endof $( "#Customer_mobile" ).keyup(function() {

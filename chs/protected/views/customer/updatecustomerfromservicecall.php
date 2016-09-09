@@ -9,18 +9,16 @@
 ?>
 
 
-
 <div class="form">
 
     <?php $form = $this->beginWidget('CActiveForm', array(
         'id' => 'customer-form',
-        'action'=>Yii::app()->createUrl('customer/updatecustomerfromservicecall&servicecall_id='.$_GET['id']),
+        'action' => Yii::app()->createUrl('customer/updatecustomerfromservicecall&servicecall_id=' . $_GET['id']),
         //'enableAjaxValidation'=>false,
         'enableAjaxValidation' => false,
     )); ?>
 
     <?php
-
 
 
     /*
@@ -32,51 +30,8 @@
     */
 
 
-
     ?>
 
-    <!-- *************** BLOCK TO ASSIGN COUNTRY CODES TO YTHE MOBILE NUMBERS ********************** -->
-
-    <?php
-
-    $country_id = '';
-    $calling_code = '';
-
-    if ($model->mobile == '') {
-        //echo "<hr>In create customer form";
-        $setupModel = Setup::model()->findByPk(1);
-        $calling_code = $setupModel->countryCodes->calling_code;
-        //echo "<br>Country calling code  = ".$setupModel->countryCodes->calling_code;
-        $country_id = $setupModel->country_id;
-        //echo "<hr>";
-    }//This bit is called in CREATE
-
-    if ($model->mobile != '') {
-        //echo "<br>Customer mobile no = ".$model->mobile;
-        $mobile_number = $model->mobile;
-        $code = substr($mobile_number, 0, -10);  // gives the string data removing last 10 digits, returns only the code.
-        $calling_code = $code;
-        $contryCodeModel = CountryCodes::model()->findAllByAttributes(array('calling_code' => $code));
-
-        foreach ($contryCodeModel as $data) {
-            //echo "<br>Country short name = ".$data->short_name;
-            //echo "<br>Country id = ".$data->id;
-            $country_id = $data->id;
-
-        }//end of foreach().
-
-        //echo "<br>Code removing number = ".$code;
-        $number = substr($mobile_number, -10);  // gives last 10 digits, returns actual no.
-        //echo "<br>Actual number = ".$number;
-        $model->mobile = $number;
-
-    }//end of if(!= ''),This bit is called in UPDATE
-
-
-    ?>
-
-
-    <!-- *************** END OF BLOCK TO ASSIGN COUNTRY CODES TO YTHE MOBILE NUMBERS ********************** -->
 
     <p class="note">Fields with <span class="required">*</span> are required.</p>
 
@@ -101,7 +56,7 @@
 
                 <table>
                     <tr>
-                        <th colspan="3" ></th>
+                        <th colspan="3"></th>
                     </tr>
 
 
@@ -124,13 +79,11 @@
                     </tr>
 
 
-
                     <tr>
                         <td colspan="2">
-                            <?php echo $form->labelEx($model,'postcode'); ?>
-                            <?php echo $form->textField($model,'postcode'); ?>
-                            <?php echo $form->error($model,'postcode'); ?>
-
+                            <?php echo $form->labelEx($model, 'postcode'); ?>
+                            <?php echo $form->textField($model, 'postcode'); ?>
+                            <?php echo $form->error($model, 'postcode'); ?>
 
 
                         </td>
@@ -139,39 +92,38 @@
 
                     <tr>
                         <td colspan="2">
-                            <?php echo $form->labelEx($model,'address_line_1'); ?>
-                            <?php echo $form->textField($model,'address_line_1',array('size'=>68)); ?>
-                            <?php echo $form->error($model,'address_line_1'); ?>
+                            <?php echo $form->labelEx($model, 'address_line_1'); ?>
+                            <?php echo $form->textField($model, 'address_line_1', array('size' => 68)); ?>
+                            <?php echo $form->error($model, 'address_line_1'); ?>
                         </td>
                     </tr>
 
 
                     <tr>
                         <td>
-                            <?php echo $form->labelEx($model,'address_line_2'); ?>
-                            <?php echo $form->textField($model,'address_line_2',array('size'=>30)); ?>
-                            <?php echo $form->error($model,'address_line_2'); ?>
+                            <?php echo $form->labelEx($model, 'address_line_2'); ?>
+                            <?php echo $form->textField($model, 'address_line_2', array('size' => 30)); ?>
+                            <?php echo $form->error($model, 'address_line_2'); ?>
                         </td>
                         <td>
-                            <?php echo $form->labelEx($model,'address_line_3'); ?>
-                            <?php echo $form->textField($model,'address_line_3',array('size'=>30)); ?>
-                            <?php echo $form->error($model,'address_line_3'); ?>
+                            <?php echo $form->labelEx($model, 'address_line_3'); ?>
+                            <?php echo $form->textField($model, 'address_line_3', array('size' => 30)); ?>
+                            <?php echo $form->error($model, 'address_line_3'); ?>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
-                            <?php echo $form->labelEx($model,'town'); ?>
-                            <?php echo $form->textField($model,'town',array('size'=>30)); ?>
-                            <?php echo $form->error($model,'town'); ?>
+                            <?php echo $form->labelEx($model, 'town'); ?>
+                            <?php echo $form->textField($model, 'town', array('size' => 30)); ?>
+                            <?php echo $form->error($model, 'town'); ?>
                         </td>
                         <td>
-                            <?php echo $form->labelEx($model,'country'); ?>
-                            <?php echo $form->textField($model,'country',array('size'=>30)); ?>
-                            <?php echo $form->error($model,'country'); ?>
+                            <?php echo $form->labelEx($model, 'country'); ?>
+                            <?php echo $form->textField($model, 'country', array('size' => 30)); ?>
+                            <?php echo $form->error($model, 'country'); ?>
                         </td>
                     </tr>
-
 
 
                     <tr>
@@ -182,71 +134,50 @@
                     <tr>
                         <td>
                             <?php echo $form->labelEx($model, 'telephone'); ?>
-                            <?php echo $form->textField($model, 'telephone', array('placeholder' =>'home landline')); ?>
+                            <?php echo $form->textField($model, 'telephone', array('placeholder' => 'home landline')); ?>
                             <?php echo $form->error($model, 'telephone'); ?>
 
                             <?php echo $form->labelEx($model, 'fax'); ?>
-                            <?php echo $form->textField($model, 'fax', array('placeholder' =>'work landline'));?>
+                            <?php echo $form->textField($model, 'fax', array('placeholder' => 'work landline')); ?>
                             <?php echo $form->error($model, 'fax'); ?>
                         </td>
                         <td>
+
+
                             <?php echo $form->labelEx($model, 'mobile'); ?>
-                            <?php echo $form->textField($model, 'mobile', array('placeholder' =>'mobile without 0')); ?>
-                            <!-- <small><br>(Please enter number preceding with your country code<br> Like if you are based in UK your number will 447501662739 or if you are based in India write 919893139091)</small> -->
+                            <div class="infotooltip">
+                                <div style="margin-top: -24px;margin-left: 54px;font-size: 10px;">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    with country code & without 0
+                                </div>
+                                <span class="infotooltiptext">
+                                   <small>
+                                       <br>(Please enter number preceding with your country code
+                                       <br>Like if you are based in UK your number will 447501662739 or if you are based in India write 919893139091)
+                                   </small>
+                                </span>
+                            </div>
+
+                            <?php echo $form->textField($model, 'mobile', array('placeholder' => 'mobile with country code without 0 ')); ?>
                             <?php echo $form->error($model, 'mobile'); ?>
-                        </td>
-                        <td>
-                            <label>Country</label>
-                            <?php
 
-                            $codes_list = CountryCodes::model()->getAllCountryNames();
-
-                            echo CHtml::dropDownList('calling_codes', $country_id, $codes_list,
-                                array(
-                                    'prompt' => 'Please Select a county',
-                                    'value' => '0',
-                                    'ajax' => array(
-                                        'type' => 'POST',
-                                        'url' => CController::createUrl('CountryCodes/getCallingCode/'),
-                                        'data' => array("country_code_id" => "js:this.value"),
-                                        'success' => 'function(data)
-												{
-													if(data != " ")
-													{
-														$("#code_disp_textField").val(data);
-														$("#hidden_code_textField").val(data);
-													}
-													else
-													{
-														alert("Code is not present for this region !!!!!!!!");
-													}
-												}',
-                                        'error' => 'function(){alert("AJAX call error..!!!!!!!!!!");}',
-                                    )//end of ajax array().
-                                )//end of array
-                            );//end of chtml dropdown.
-
-                            ?>
-
-
-                            <?php echo CHtml::textField('', $calling_code, array('size' => 3, 'disabled' => 'disabled', 'id' => 'code_disp_textField')); ?>
-                            <?php
-                            //********** THIS HIDDEN FIELD IS TO PASS CODE VALUE TO CONTROLLER ************
-                            echo CHtml::hiddenField('hidden_code_val', $calling_code, array('id' => 'hidden_code_textField'));
-                            ?>
 
                         </td>
+                        <td></td>
+
+
+
                     </tr>
 
                     <tr>
                         <td colspan="2">
                             <?php //echo $form->labelEx($model, 'email'); ?>
-                            <?php echo $form->textField($model, 'email', array('placeholder' =>'customer email', 'style' => 'width: 450px;')); ?>
+                            <?php echo $form->textField($model, 'email', array('placeholder' => 'customer email', 'style' => 'width: 450px;')); ?>
                             <?php echo $form->error($model, 'email'); ?>
 
-                            <?php echo $form->labelEx($model,'notes'); ?>
-                            <?php echo $form->textArea($model,'notes',array(  'style' => 'width: 450px; height:100px;',  'value'=>'')); ?>
-                            <?php echo $form->error($model,'notes'); ?>
+                            <?php echo $form->labelEx($model, 'notes'); ?>
+                            <?php echo $form->textArea($model, 'notes', array('style' => 'width: 450px; height:100px;', 'value' => '')); ?>
+                            <?php echo $form->error($model, 'notes'); ?>
 
 
                         </td>

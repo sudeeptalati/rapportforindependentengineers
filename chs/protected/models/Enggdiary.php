@@ -136,23 +136,36 @@ class Enggdiary extends CActiveRecord
 		$a = 'How are you?';
 		$phpdate = strtotime($this->visit_start_date);
 
-		if (strpos($this->notes, 'Afternoon') !== false) {
+
+		if (strpos($this->notes, 'First') !== false) {
 			//echo 'This is a moring call';
-			/****** ADDING MINUTES TO START DATE TO MAKE IT 2 PM ******/
-			$new_date = date("d-m-Y H:i:s", strtotime('+840 minutes', $phpdate));
-			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 2 PM ******/
+			/****** ADDING MINUTES TO START DATE TO MAKE IT 8 AM ******/
+		$new_date = date("d-m-Y H:i:s", strtotime('+480 minutes', $phpdate));
+		/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 8 AM ******/
+		}
+		elseif (strpos($this->notes, 'Lunch') !== false) {
+			//echo 'This is a moring call';
+			/****** ADDING MINUTES TO START DATE TO MAKE IT 11 AM ******/
+			$new_date = date("d-m-Y H:i:s", strtotime('+660 minutes', $phpdate));
+			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 11 AM ******/
+		}
+		elseif (strpos($this->notes, 'Afternoon') !== false) {
+			//echo 'This is a moring call';
+			/****** ADDING MINUTES TO START DATE TO MAKE IT 1 PM ******/
+			$new_date = date("d-m-Y H:i:s", strtotime('+780 minutes', $phpdate));
+			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 1 PM ******/
+		}
+		elseif (strpos($this->notes, 'Snacks') !== false) {
+			//echo 'This is a moring call';
+			/****** ADDING MINUTES TO START DATE TO MAKE IT 3 PM ******/
+			$new_date = date("d-m-Y H:i:s", strtotime('+900 minutes', $phpdate));
+			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 3 PM ******/
 		}
 		elseif (strpos($this->notes, 'Evening') !== false) {
 			//echo 'This is a moring call';
 			/****** ADDING MINUTES TO START DATE TO MAKE IT 5 PM ******/
 			$new_date = date("d-m-Y H:i:s", strtotime('+1020 minutes', $phpdate));
 			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 5 PM ******/
-		}
-		elseif (strpos($this->notes, 'First') !== false) {
-			//echo 'This is a moring call';
-			/****** ADDING MINUTES TO START DATE TO MAKE IT 8 AM ******/
-			$new_date = date("d-m-Y H:i:s", strtotime('+480 minutes', $phpdate));
-			/****** END OF ADDING MINUTES TO START DATE TO MAKE IT 8 AM ******/
 		}
 		elseif (strpos($this->notes, 'Last') !== false) {
 			//echo 'This is a moring call';
@@ -637,15 +650,17 @@ class Enggdiary extends CActiveRecord
 	{
 		return
 			array(
-			'Anytime (9 am - 5 pm)' => 'Anytime (9 am - 5 pm)',
-			'Morning (09:00 am)' => 'Morning (09:00 am )',
-			'Afternoon (02:00 pm)' => 'Afternoon (02:00 pm)',
-			'Evening (05:00 pm)' => 'Evening (05:00 pm)',
-			'First (08:00 am)' => 'First (08:00 am)',
-			'Last (06:00 pm)' => 'Last (06:00 pm)',
-			'Special Call' => 'Special Call',
+				'Morning (09:00 am)' => 'Morning (09:00 am )',
+				'Lunch (11:00 am)' => 'Lunch (11:00 am )',
+				'Afternoon (01:00 pm)' => 'Afternoon (01:00 pm)',
+				'Snacks (03:00 pm)' => 'Snacks (03:00 pm)',
+				'Evening (05:00 pm)' => 'Evening (05:00 pm)',
+				'Anytime (9 am - 5 pm)' => 'Anytime (9 am - 5 pm)',
+				'First (08:00 am)' => 'First (08:00 am)',
+				'Last (06:00 pm)' => 'Last (06:00 pm)',
+				'Special Call' => 'Special Call',
 
-		);
-	}
+			);
+	}///end of function timeofcalls()
 
 }//end of class.

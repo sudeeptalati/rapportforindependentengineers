@@ -463,4 +463,24 @@ class CustomerController extends RController
 	}
 
 
+
+	public function actionUpdatecustomeraddresscoordinates()
+	{
+		$customer_id=$_GET['customer_id'];
+
+		$r=Customer::model()->update_customer_address_coordinates($customer_id);
+
+		if ($r=="SAVED")
+		{
+			echo "Corrdinates updated. <br>Please refresh the page";
+
+		}else
+		{
+			echo "Cannot Update customer address coordinates<br>".$r;
+		}
+
+	}////end of public function actionUpdatecustomerpostcodecoordinates()
+
+
+
 }//end of class.

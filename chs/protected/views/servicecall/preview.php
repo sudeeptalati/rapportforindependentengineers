@@ -2,6 +2,11 @@
 $this->layout = false;
 ?>
 
+<!-- FONT AWESOME-->
+<script src="https://use.fortawesome.com/860d66d0.js"></script>
+<script src="https://use.fortawesome.com/a8e251d4.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
 
 <style type="text/css">
 
@@ -79,7 +84,7 @@ $this->layout = false;
             //echo CHtml::image($company_logo,"ballpop");
             //$company_logo= getcwd().'/images/company_logo.png';
             $company_logo = 'images/company_logo.png';
-            echo '<img style="vertical-align: top" src="' . $company_logo . '" />';
+            echo '<img style="vertical-align: top" src="' . $company_logo . '" /><br>';
 
             ?>
 
@@ -243,10 +248,23 @@ $this->layout = false;
     <tr>
 
         <td width=20%>
-            <small><b>Product</b></small>
+
+
+            <?php $brandname=strtolower($model->product->brand->name); ?>
+            <?php $brandname=preg_replace('/\s+/', '', $brandname); ?>
+            <i class="ukw-logo-fa ukw-logo-fa-<?php echo $brandname;?> fa-3x"></i>
+            <?php $producttypename=strtolower($model->product->productType->name); ?>
+            <?php $producttypename=preg_replace('/\s+/', '', $producttypename); ?>
+            <i class="ukwfa ukwfa-<?php echo $producttypename;?> fa-3x"></i>
             <br>
-            <?php echo $model->product->brand->name; ?>&nbsp;
-            <?php echo $model->product->productType->name; ?>
+
+
+            <?php echo $model->product->brand->name; ?>
+            <?php echo '' . $model->product->productType->name; ?>
+
+
+
+
         </td>
         <td width=20%>
             <small><b>Model</b></small>

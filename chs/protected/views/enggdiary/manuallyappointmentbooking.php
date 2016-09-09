@@ -152,24 +152,46 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
                 <span class="fa fa-clock-o" aria-hidden="true"></span>
                 <span id="appointment-time"></span>
             </h3>
-
             <?php
             $timeofcallarray = Enggdiary::model()->timeofcalls();
             echo CHtml::dropDownList('timeofcall', '', $timeofcallarray);
             ?>
 
-
             <br>
-            Slots
-            <?php echo CHtml::dropDownList('slots', '8', array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10'), array('style' => 'width:50px;')); ?>
-            <span id="callduration"></span>
-
-            <small>1 slot = 30 minutes</small>
+            Duration <span id="callduration"></span>
             <br>
+
+
+            <?php //echo CHtml::dropDownList('slots', '8', array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10','11' => '11', '12' => '12', '13' => '13', '14' => '14', '15' => '15', '16' => '16', '17' => '17', '18' => '18'), array('style' => 'width:50px;')); ?>
+            <?php echo CHtml::hiddenField('slots','8');?>
+            <div title="Slide to change the duration" id='slider'></div>
+
+
+
 
             <script>
+                $( function() {
+                    var slotsHiddenfield = $( "#slots" );
+                    var slider = $( "#slider" ).slider({
+                        min: 1,
+                        max: 18,
+                        range: "min",
+                        value:slotsHiddenfield.val(),
+                        slide: function( event, ui ) {
+                            //select[ 0 ].selectedIndex = ui.value - 1;
+                            slotsHiddenfield.val(ui.value);
+                            printappointment();
+                        }
+                    });
+                    $( "#slots" ).on( "change", function() {
+                        slider.slider( "value", this.selectedIndex + 1 );
 
-                printappointment();
+
+                    });
+                } );
+
+
+
 
                 $("#slots").change(function () {
                     printappointment();
@@ -180,7 +202,14 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
                 });
 
 
+                printappointment();
+
+
+
+
                 function printappointment() {
+                    $("#slider").show();
+
                     slots = $("#slots").val();
                     calldurationminutes = slots * 30;
 
@@ -197,25 +226,31 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
                     timofcall = $("#timeofcall").val();
 
 
-                    if (timofcall.includes("Anytime") || timofcall.includes("Morning")) {
+                    if (timofcall.includes("Anytime") ) {
+
+                        $("#slots").val('16');
+                        slots = $("#slots").val();
+
+                        calldurationminutes = slots * 30;
+
                         var m = moment("2010-10-20 09:00", "YYYY-MM-DD HH:mm");
                         m.add(calldurationminutes, 'minutes').minutes(); // 6
                         endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('09:00 am - ' + endtimestring);
+                        $("#appointment-time").html('09:00 am - '+endtimestring );
+                        calldurationhours = slots / 2;
+                        $("#callduration").html(calldurationhours + ' hours');
+
+                        console.log(calldurationminutes );
+                        $("#slider").hide();
+
                     }
 
-                    if (timofcall.includes("Afternoon")) {
-                        var m = moment("2010-10-20 14:00", "YYYY-MM-DD HH:mm");
-                        m.add(calldurationminutes, 'minutes').minutes(); // 6
-                        endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('02:00 pm - ' + endtimestring);
-                    }
+                    if (timofcall.includes("Morning")) {
 
-                    if (timofcall.includes("Evening")) {
-                        var m = moment("2010-10-20 17:00", "YYYY-MM-DD HH:mm");
+                        var m = moment("2010-10-20 09:00", "YYYY-MM-DD HH:mm");
                         m.add(calldurationminutes, 'minutes').minutes(); // 6
                         endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('05:00 pm - ' + endtimestring);
+                        $("#appointment-time").html('09:00 am - '+endtimestring  );
                     }
 
                     if (timofcall.includes("First")) {
@@ -225,13 +260,45 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
                         $("#appointment-time").html('08:00 am - ' + endtimestring);
                     }
 
+
+                    if (timofcall.includes("Lunch")) {
+                        var m = moment("2010-10-20 11:00", "YYYY-MM-DD HH:mm");
+                        m.add(calldurationminutes, 'minutes').minutes(); // 6
+                        endtimestring = m.format("hh:mm a");
+                        $("#appointment-time").html('11:00 am - ' + endtimestring);
+                    }
+
+
+                    if (timofcall.includes("Afternoon")) {
+                        var m = moment("2010-10-20 13:00", "YYYY-MM-DD HH:mm");
+                        m.add(calldurationminutes, 'minutes').minutes(); // 6
+                        endtimestring = m.format("hh:mm a");
+                        $("#appointment-time").html('01:00 pm - ' + endtimestring);
+                    }
+
+                    if (timofcall.includes("Snacks")) {
+                        var m = moment("2010-10-20 15:00", "YYYY-MM-DD HH:mm");
+                        m.add(calldurationminutes, 'minutes').minutes(); // 6
+                        endtimestring = m.format("hh:mm a");
+                        $("#appointment-time").html('03:00 pm - ' + endtimestring);
+                    }
+
+
+
+                    if (timofcall.includes("Evening")) {
+                        var m = moment("2010-10-20 17:00", "YYYY-MM-DD HH:mm");
+                        m.add(calldurationminutes, 'minutes').minutes(); // 6
+                        endtimestring = m.format("hh:mm a");
+                        $("#appointment-time").html('05:00 pm - ' + endtimestring);
+                    }
+
+
                     if (timofcall.includes("Last")) {
                         var m = moment("2010-10-20 18:00", "YYYY-MM-DD HH:mm");
                         m.add(calldurationminutes, 'minutes').minutes(); // 6
                         endtimestring = m.format("hh:mm a");
                         $("#appointment-time").html('06:00 pm - ' + endtimestring);
                     }
-
 
 
                     if (timofcall.includes("Call")) {

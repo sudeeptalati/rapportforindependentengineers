@@ -935,5 +935,41 @@ class Setup extends CActiveRecord
 	}///end of public function savemodel($model)
 
 
+	public function getlatlngofaddress($address)
+	{
+		$google_maps_api_key=Yii::app()->params['google_maps_api_key'];
+		$address=urlencode($address);
+
+		$url='https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&sensor=false&key='.$google_maps_api_key;
+		//echo $url.'<br>';
+
+		$urldata=Setup::model()->curl_file_get_contents($url);
+		$json_data=json_decode($urldata);
+		//echo '<br>OUTPUT '.$urldata;
+
+		$coordinates=array();
+
+
+		if ($json_data->status!="ZERO_RESULTS")
+		{
+			$lat= $json_data->results[0]->geometry->location->lat;
+			$lng= $json_data->results[0]->geometry->location->lng;
+			$coordinates['lat']=$lat;
+			$coordinates['lng']=$lng;
+			$coordinates['status']="OK";
+			return $coordinates;
+		}else
+		{
+			$coordinates['lat']='';
+			$coordinates['lng']='';
+			$coordinates['status']="NOT FOUND";
+			return $coordinates;
+		}
+
+
+	}///end of public function getlatlngofaddress($address)
+
+
+
 
 }//end of class.

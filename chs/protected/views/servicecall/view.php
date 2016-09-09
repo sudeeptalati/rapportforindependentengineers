@@ -137,8 +137,14 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 
     <h4>
-        <i style="color:white;" class="fa fa-user" aria-hidden="true"></i>
+        <i style="color:white;" class="ukwfa ukwfa-engineer-repair"></i>
         <a style="color:white;" href="#enginnerbox">Engineer</a>
+    </h4>
+
+
+    <h4>
+        <i style="color:white;" class="fa fa-calendar-check-o"></i>
+        <a style="color:white;" href="#calendar">Appointment</a>
     </h4>
 
 
@@ -438,8 +444,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
                                 <a target="_blank"
                                    href="https://www.google.co.uk/maps?q=<?php echo strip_tags($address); ?>">
-                                    <span class="fa fa-map-o fa-2x" aria-hidden="true"></span></a>
-                                <br>
+                                    <span class="fa fa-map-o" aria-hidden="true"></span></a>
+
                                 <div class="googlemapdiv" style="display:block; float: right;">
                                     <?php $this->renderPartial('postcodeongooglemap', array('address' => $address, 'postcode'=>$model->customer->postcode)); ?>
                                 </div><!-- googlemapdiv -->
@@ -502,22 +508,22 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                             <td><span class="datacontenttitle">Brand</span>
                             <td>
 
-                                <?php echo $model->product->brand->name; ?>
-                                <br>
+
                                 <?php $brandname=strtolower($model->product->brand->name); ?>
                                 <?php $brandname=preg_replace('/\s+/', '', $brandname); ?>
-                                 <i class="ukw-logo-fa ukw-logo-fa-<?php echo $brandname;?> fa-4x"></i>
+                                <i class="ukw-logo-fa ukw-logo-fa-<?php echo $brandname;?> fa-4x"></i>
+                                <br>
+                                <?php echo $model->product->brand->name; ?>
 
 
                             </td>
                             <td><span class="datacontenttitle">Product Type</span>
                             <td>
-                                <?php echo '' . $model->product->productType->name; ?>
-                                <br>
                                 <?php $producttypename=strtolower($model->product->productType->name); ?>
                                 <?php $producttypename=preg_replace('/\s+/', '', $producttypename); ?>
-
                                 <i class="ukwfa ukwfa-<?php echo $producttypename;?> fa-4x"></i>
+                                <br>
+                                <?php echo '' . $model->product->productType->name; ?>
 
                             </td>
                         </tr>
@@ -954,7 +960,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
                         <tr>
                             <td>
-                                <div title="Engineer" class="fa fa-wrench fa-2x"></div>
+
+                                <div title="Engineer" class="ukwfa ukwfa-engineer-repair fa-2x"></div>
                             </td>
                             <td><?php echo $model->engineer->fullname; ?></td>
                             <td>
@@ -980,7 +987,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                         'modal' => 'true',
                                     ),
                                 ));
-                                $this->renderPartial('changeEngineeronly');
+                                $this->renderPartial('changeengineeronly');
 
                                 $this->endWidget('zii.widgets.jui.CJuiDialog');
                                 // the link that may open the dialog

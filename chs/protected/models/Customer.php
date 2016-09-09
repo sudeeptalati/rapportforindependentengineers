@@ -42,11 +42,12 @@ class Customer extends CActiveRecord
 	public $model_number;
 	public $serial_number;
 	public $service_number;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return Customer the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -68,12 +69,12 @@ class Customer extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title, last_name, address_line_1, town, postcode', 'required'),
-			array('product_id, created_by_user_id', 'numerical', 'integerOnly'=>true),
+			array('product_id, created_by_user_id', 'numerical', 'integerOnly' => true),
 			array('first_name, address_line_2, address_line_3, country,telephone, mobile, email, fax, notes, modified, fullname, lockcode, model_number, serial_number', 'safe'),
-			array('email','email'),
+			array('email', 'email'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, first_name, last_name, product_id, address_line_1, address_line_2, address_line_3, town, postcode, country, telephone, mobile, fax, email, notes, created_by_user_id, created, modified, fullname, postcode, model_number, serial_number, product_id, product_brand, product_type', 'safe', 'on'=>'search'),
+			array('id, title, first_name, last_name, product_id, address_line_1, address_line_2, address_line_3, town, postcode, country, telephone, mobile, fax, email, notes, created_by_user_id, created, modified, fullname, postcode, model_number, serial_number, product_id, product_brand, product_type', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -132,53 +133,53 @@ class Customer extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
-		$criteria->with = array( 'product','product.brand','product.productType' );
+		$criteria = new CDbCriteria;
+		$criteria->with = array('product', 'product.brand', 'product.productType');
 		$criteria->together = true;
-		
-    	$criteria->compare('product.id',$this->product_id, true);
-    	$criteria->compare('product.model_number', $this->model_number, true );
-    	$criteria->compare('product.serial_number', $this->serial_number, true );
-		$criteria->compare('product.brand.name', $this->product_brand, true );
-		$criteria->compare('product.productType.name', $this->product_type, true );
-		
-		$criteria->compare('id',$this->id, true);
-		$criteria->compare('title',$this->title,true);
-		$criteria->compare('first_name',$this->first_name,true);
-		$criteria->compare('last_name',$this->last_name,true);
-		
-		$criteria->compare('address_line_1',$this->address_line_1,true);
-		$criteria->compare('address_line_2',$this->address_line_2,true);
-		$criteria->compare('address_line_3',$this->address_line_3,true);
-		$criteria->compare('town',$this->town,true);
-		$criteria->compare('postcode_s',$this->postcode_s,true);
-		$criteria->compare('postcode_e',$this->postcode_e,true);
-		$criteria->compare('postcode',$this->postcode,true);
-		$criteria->compare('country',$this->country,true);
-		$criteria->compare('telephone',$this->telephone,true);
-		$criteria->compare('mobile',$this->mobile,true);
-		$criteria->compare('fax',$this->fax,true);
-		$criteria->compare('email',$this->email,true);
-		$criteria->compare('notes',$this->notes,true);
-		$criteria->compare('created_by_user_id',$this->created_by_user_id);
-		$criteria->compare('created',$this->created,true);
-		$criteria->compare('modified',$this->modified,true);
-		$criteria->compare('fullname',$this->fullname,true);
-		
-	//	$criteria->order = 'product.created DESC';
-		
+
+		$criteria->compare('product.id', $this->product_id, true);
+		$criteria->compare('product.model_number', $this->model_number, true);
+		$criteria->compare('product.serial_number', $this->serial_number, true);
+		$criteria->compare('product.brand.name', $this->product_brand, true);
+		$criteria->compare('product.productType.name', $this->product_type, true);
+
+		$criteria->compare('id', $this->id, true);
+		$criteria->compare('title', $this->title, true);
+		$criteria->compare('first_name', $this->first_name, true);
+		$criteria->compare('last_name', $this->last_name, true);
+
+		$criteria->compare('address_line_1', $this->address_line_1, true);
+		$criteria->compare('address_line_2', $this->address_line_2, true);
+		$criteria->compare('address_line_3', $this->address_line_3, true);
+		$criteria->compare('town', $this->town, true);
+		$criteria->compare('postcode_s', $this->postcode_s, true);
+		$criteria->compare('postcode_e', $this->postcode_e, true);
+		$criteria->compare('postcode', $this->postcode, true);
+		$criteria->compare('country', $this->country, true);
+		$criteria->compare('telephone', $this->telephone, true);
+		$criteria->compare('mobile', $this->mobile, true);
+		$criteria->compare('fax', $this->fax, true);
+		$criteria->compare('email', $this->email, true);
+		$criteria->compare('notes', $this->notes, true);
+		$criteria->compare('created_by_user_id', $this->created_by_user_id);
+		$criteria->compare('created', $this->created, true);
+		$criteria->compare('modified', $this->modified, true);
+		$criteria->compare('fullname', $this->fullname, true);
+
+		//	$criteria->order = 'product.created DESC';
+
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-			'sort'=>array(
-							'defaultOrder'=>'product.created DESC',
-						),
-			 
-		
+			'criteria' => $criteria,
+			'sort' => array(
+				'defaultOrder' => 'product.created DESC',
+			),
+
+
 		));
 	}//end of search().
-	
-	private static $_items=array();
-	
+
+	private static $_items = array();
+
 	/**
 	 * Returns the items for the specified type.
 	 * @param string item type (e.g. 'PostStatus').
@@ -187,190 +188,213 @@ class Customer extends CActiveRecord
 	 */
 	public static function items($type)
 	{
-		if(!isset(self::$_items[$type]))
+		if (!isset(self::$_items[$type]))
 			self::loadItems($type);
 		return self::$_items[$type];
 	}//end of items.
-	
+
 	/**
 	 * Returns the item name for the specified type and code.
 	 * @param string the item type (e.g. 'PostStatus').
 	 * @param integer the item code (corresponding to the 'code' column value)
 	 * @return string the item name for the specified the code. False is returned if the item type or code does not exist.
 	 */
-	public static function item($type,$code)
+	public static function item($type, $code)
 	{
-		if(!isset(self::$_items[$type]))
+		if (!isset(self::$_items[$type]))
 			self::loadItems($type);
 		return isset(self::$_items[$type][$code]) ? self::$_items[$type][$code] : false;
 	}//end of item.
-	
+
 	/**
 	 * Loads the lookup items for the specified type from the database.
 	 * @param string the item type
 	 */
 	private static function loadItems($type)
 	{
-		self::$_items[$type]=array();
-		$models=self::model()->findAll();
-		foreach($models as $model)
-			self::$_items[$type][$model->id]=$model->fullname;
+		self::$_items[$type] = array();
+		$models = self::model()->findAll();
+		foreach ($models as $model)
+			self::$_items[$type][$model->id] = $model->fullname;
 	}//end of loaditems.
-	
+
 	protected function beforeSave()
 	{
-		if(parent::beforeSave())
-        {
- 
-        	$this->fullname=trim($this->first_name)." ".trim($this->last_name);
-        	//$this->fullname=$this->first_name;
-        	
-        	if($this->isNewRecord)  // Creating new record 
-            {
-        		$this->created_by_user_id=Yii::app()->user->id;
-        		
-        		/******CHECKING WHETHER CUSTOMER IS CREATED FROM CREATE OF CUSTOMER*/
-        		if($this->lockcode == '0')
-        		{
-        			//echo "Lockcode is set to zeero, In Create of customers";
-        			$this->lockcode=0;
-        		}
-        		else 
-        		{
-        			//echo "Lockdode is not set, some error";
-        			$this->lockcode=Yii::app()->user->id*1000;
-        		}
-        		
-        		$this->created=time();
-        		
-        		//SAVING DETAILS TO PRODUCT TABLE.
-        		
-        		
-        		if (empty($this->product_id))
-        		{
-	        		$productModel=new Product;
-	        		$productModel->attributes=$_POST['Product'];
-	        		//$productModel->customer_id=0;
-					if($productModel->save())
-					{
+		if (parent::beforeSave()) {
+
+			$this->fullname = trim($this->first_name) . " " . trim($this->last_name);
+			//$this->fullname=$this->first_name;
+
+			if ($this->isNewRecord)  // Creating new record
+			{
+				$this->created_by_user_id = Yii::app()->user->id;
+
+				/******CHECKING WHETHER CUSTOMER IS CREATED FROM CREATE OF CUSTOMER*/
+				if ($this->lockcode == '0') {
+					//echo "Lockcode is set to zeero, In Create of customers";
+					$this->lockcode = 0;
+				} else {
+					//echo "Lockdode is not set, some error";
+					$this->lockcode = Yii::app()->user->id * 1000;
+				}
+
+				$this->created = time();
+
+				//SAVING DETAILS TO PRODUCT TABLE.
+
+
+				if (empty($this->product_id)) {
+					$productModel = new Product;
+					$productModel->attributes = $_POST['Product'];
+					//$productModel->customer_id=0;
+					if ($productModel->save()) {
 						//echo "lockcode of product model is :".$productModel->lockcode."<br>";
 					}
-					
+
 					//GETTING LOCKCODE FROM PRODUCT TABLE.
-					
-					$lockcode=$productModel->lockcode;
-					
+
+					$lockcode = $productModel->lockcode;
+
 					$productQueryModel = Product::model()->findByAttributes(
-	        											array('lockcode'=>$lockcode)
-														);
+						array('lockcode' => $lockcode)
+					);
 					//echo "ID GOT FROM LOCKCODE : ".$productQueryModel->id;
-					
-					$this->product_id=$productQueryModel->id;
-	        	}
-	        	
-	        	
-	        	
-        		return true;
-            }//end of if($this->isNewRecord).
-            /******** END OF SAVING NEW RECORD *************/
-            else
-            {
-            	if(isset($_GET['product_id']))
-            	{
+
+					$this->product_id = $productQueryModel->id;
+				}
+
+
+				return true;
+			}//end of if($this->isNewRecord).
+			/******** END OF SAVING NEW RECORD *************/
+			else {
+				if (isset($_GET['product_id'])) {
 //            		$prod_id=$_GET['product_id'];
 //            		
 //            	if($prod_id != $this->product_id)
-            	
-            		//echo "SECONDARY PROD";
-            		$product_id=$_GET['product_id'];/* CHECKING FOR PRIMARY PRODUCT */
-            		//echo $product_id;
-            		
-            		$productModel=Product::model()->findByPk($product_id);
-	            	$productModel->attributes=$_POST['Product'];
-	            	if($productModel->save())
-	            	{
-	            		
-	            	}
- 					$this->modified=time();
-	                return true;
-            	}//end of if(isset()).
-            	
-            	else 
-            	{
-            	//	echo "PRIMARY PROD";
-            		
-					if (isset($_POST['Product']))
-					{
-						$productModel=Product::model()->findByPk($this->product_id);
-						$productModel->attributes=$_POST['Product'];
-						if($productModel->save())
-						{
-		            	
-						}
- 
-						$this->modified=time();
-					
+
+					//echo "SECONDARY PROD";
+					$product_id = $_GET['product_id'];/* CHECKING FOR PRIMARY PRODUCT */
+					//echo $product_id;
+
+					$productModel = Product::model()->findByPk($product_id);
+					$productModel->attributes = $_POST['Product'];
+					if ($productModel->save()) {
+
 					}
-				
+					$this->modified = time();
 					return true;
-					
-					
-					
-            	}//end of else of if(isset()).
-            	//}//end of if().
-          	}//end of ELSE of if($this->isNewRecord).
-        }//end of if(parent())
+				}//end of if(isset()).
+
+				else {
+					//	echo "PRIMARY PROD";
+
+					if (isset($_POST['Product'])) {
+						$productModel = Product::model()->findByPk($this->product_id);
+						$productModel->attributes = $_POST['Product'];
+						if ($productModel->save()) {
+
+						}
+
+						$this->modified = time();
+
+					}
+
+					return true;
+
+
+				}//end of else of if(isset()).
+				//}//end of if().
+			}//end of ELSE of if($this->isNewRecord).
+		}//end of if(parent())
 	}//end of beforeSave().
-	
+
 	protected function afterSave()
-    {
-    	$productQueryModel = Product::model()->findByPK(
-        											$this->product_id
-													);
-    	//echo "PRODUCT ID IN AFTER SAVE() :".$productQueryModel->id;
-    	
-    	$productUpdateModel = Product::model()->updateByPk(
-													$productQueryModel->id,
-													
-													array
-													(
-														'lockcode'=>0,
-														'customer_id'=>$this->id
-													)
-													);
-    	
-    }//END OF afterSave().
-    
-    public function freeSearch($keyword)
-    {
-        $criteria=new CDbCriteria;
+	{
+		$productQueryModel = Product::model()->findByPK(
+			$this->product_id
+		);
+		//echo "PRODUCT ID IN AFTER SAVE() :".$productQueryModel->id;
 
-        $criteria->with = array('product');
+		$productUpdateModel = Product::model()->updateByPk(
+			$productQueryModel->id,
 
-        $criteria->compare('fullname', $keyword, true, 'OR');
+			array
+			(
+				'lockcode' => 0,
+				'customer_id' => $this->id
+			)
+		);
 
-        $criteria->compare('postcode', $keyword, true, 'OR');
-        $criteria->compare('town', $keyword, true, 'OR');
-        $criteria->compare('telephone', $keyword, true, 'OR');
-        $criteria->compare('mobile', $keyword, true, 'OR');
-        $criteria->compare('product.serial_number', $keyword, true, 'OR');
+		if (parent::beforeSave()) {
+
+			if ($this->isNewRecord)  // Creating new record
+			{
+				$this->update_customer_address_coordinates($this->id);
+			}
+		}
 
 
-        /*result limit*/
-        //$criteria->limit = 100;
+	}//END OF afterSave().
 
-        return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
-         //  'pagination'=>array('pageSize'=>'100',),
-                  'pagination'=>false,
-                ));
+	public function freeSearch($keyword)
+	{
+		$criteria = new CDbCriteria;
 
-    }//end of freeSearch().
-    
-    public function getAllProducts($id)
-    {
-    	return Product::model()->findAllByAttributes(array('customer_id'=>$id));
-    }
-    
-    
+		$criteria->with = array('product');
+
+		$criteria->compare('fullname', $keyword, true, 'OR');
+
+		$criteria->compare('postcode', $keyword, true, 'OR');
+		$criteria->compare('town', $keyword, true, 'OR');
+		$criteria->compare('telephone', $keyword, true, 'OR');
+		$criteria->compare('mobile', $keyword, true, 'OR');
+		$criteria->compare('product.serial_number', $keyword, true, 'OR');
+
+
+		/*result limit*/
+		//$criteria->limit = 100;
+
+		return new CActiveDataProvider($this, array(
+			'criteria' => $criteria,
+			//  'pagination'=>array('pageSize'=>'100',),
+			'pagination' => false,
+		));
+
+	}//end of freeSearch().
+
+	public function getAllProducts($id)
+	{
+		return Product::model()->findAllByAttributes(array('customer_id' => $id));
+	}
+
+
+	public function update_customer_address_coordinates($customer_id)
+	{
+		$model=Customer::model()->findByPk($customer_id);
+
+		$fulladdress=Setup::model()->formataddress($model->address_line_1, $model->address_line_2, $model->address_line_3, $model->town, $model->postcode);
+
+		$address_coordinates=Setup::model()->getlatlngofaddress($fulladdress);
+
+		if ($address_coordinates['status']==='OK')
+		{
+			$uc=Customer::model()->updateByPk($customer_id,
+				array(
+					'latitudes' => $address_coordinates['lat'],
+					'longitudes'=>$address_coordinates['lng'],
+				)
+			);
+
+			if ($uc)
+				return  "SAVED";
+			else
+				return "NOTSAVED";
+
+		}//end of if ($address_coordinates['status']=='OK')
+		else
+			return "Problem in Getting coordinates. Please contact support";
+	}
+
+
 }//end of class.

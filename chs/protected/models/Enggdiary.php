@@ -646,7 +646,7 @@ class Enggdiary extends CActiveRecord
 	}///end of	public function cancelappointment($diary_id)
 
 
-	public function timeofcalls()
+		public function timeofcalls()
 	{
 		return
 			array(

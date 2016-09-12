@@ -10,8 +10,6 @@ $starttime = $mtime;
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
 
-
-
 	<!-- blueprint CSS framework -->
 
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
@@ -30,13 +28,9 @@ $starttime = $mtime;
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/fullcalendar/fullcalendar.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/fullcalendar/fullcalendar.print.css" />
 
-
 	<!-- JQUERY for Sliders when selecting appointment DO NOT ADD SCRIPT. PLEASE TEST BEFORE ADDING ANY JQUERY SCRIP T-->
 	<!-- JQUERY ADDED FOR SLIDERS I FIND NEXT APPOINT FROM ALL ENGG .php-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
-
-
-
 
 	<!-- Moment JS for formatting date-->
 
@@ -44,6 +38,7 @@ $starttime = $mtime;
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
 	<!-- PIKADAY CALENDAR-->
+
 	<link rel="stylesheet" type="text/css"
 		  href="<?php echo Yii::app()->request->baseUrl; ?>/js/pikaday/css/pikaday.css"/>
 
@@ -53,6 +48,8 @@ $starttime = $mtime;
 
 	<!-- FONT AWESOME-->
 	<script src="https://use.fortawesome.com/860d66d0.js"></script>
+
+
 	<script src="https://use.fortawesome.com/a8e251d4.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
@@ -67,7 +64,6 @@ $starttime = $mtime;
 </head>
 
 <body>
-
 
 <?php
 
@@ -206,6 +202,7 @@ $baseUrl= Yii::app()->request->baseUrl;
 <input id="google_maps_api_key" type="hidden" value="<?php echo $google_maps_api_key;?>" />
 <script src="js/googleaddresslookup.js"></script>
 <!-- Google ServicesEnd -->
+
 
 
 

@@ -283,7 +283,7 @@ class ApiController extends RController
 										
 			if(count($notificationModel)!=0)
 			{
-				//echo "<br>Rule is present";
+				
 			
 				try 
 				{

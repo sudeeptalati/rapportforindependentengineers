@@ -426,8 +426,11 @@ class NotificationRules extends CActiveRecord
 
 	public function performNotification($status_id, $service_id, $frequency_type)
 	{
+	
+	
+		//echo "<br>performNotification iscalledpresent";
 		$info = '';
-
+		
 		$servicecall = Servicecall::model()->findByPk($service_id);
 		$setup = Setup::model()->findByPk(1);
 

@@ -359,7 +359,7 @@ class ApiController extends RController
     	
     }//end of actionGetAllBookedAppointment().
     
-    public function actionRaiseServicecall()
+    public function actionRaiseservicecall()
     {
     	$finalArray = array();
     	$title = $_GET['title'];
@@ -807,6 +807,90 @@ class ApiController extends RController
             $this->_sendResponse(401, 'Error: User Password is invalid');
         }
     }//end of function checkAuth
+    
+    
+    public function actionRemoteservicecallbooking()
+    { 
+    	$output['status']='NOT OK';
+    	$output['message']='Service NOYT ';
+    	$output['api_key']='CAREYS';
+    	
+    	$user_id='1';///taking as remote user
+    	$contract_id='1000000';///Unknown Contract
+    	$engineer_id='90000000';////Unassigned Engineer
+    	$job_status='2';///remotely booked
+
+		$remote_data_string=implode(" ",$_POST);
+		$remote_data_json=json_decode($remote_data_string);
+		
+		
+		
+		
+		$newRemoteProductModel = new Product;
+		$newRemoteProductModel->customer_id = '888888888';
+		$newRemoteProductModel->contract_id = $contract_id;
+		$newRemoteProductModel->brand_id = $remote_data_json->manufacturer_id;
+		$newRemoteProductModel->product_type_id = $remote_data_json->product_id;
+		$newRemoteProductModel->model_number = $remote_data_json->model_number;
+		if ($newRemoteProductModel->save())
+		{
+			$output['product_status']='SAVED';
+			$output['product_message']='Product saved';
+					
+			$newRemoteCustomerModel = new Customer();
+		    $newRemoteCustomerModel->product_id = $newRemoteProductModel->id;
+		    $newRemoteCustomerModel->title = $remote_data_json->title;
+		    $newRemoteCustomerModel->first_name = $remote_data_json->first_name;
+		    $newRemoteCustomerModel->last_name = $remote_data_json->last_name;
+		    $newRemoteCustomerModel->address_line_1 = $remote_data_json->line_1;
+		    $newRemoteCustomerModel->address_line_2 = $remote_data_json->line_2;
+		    $newRemoteCustomerModel->address_line_3 = $remote_data_json->line_3;
+		    $newRemoteCustomerModel->town = $remote_data_json->town;
+		    $newRemoteCustomerModel->postcode = $remote_data_json->postcode;
+		    $newRemoteCustomerModel->telephone = $remote_data_json->telephone;
+		    $newRemoteCustomerModel->mobile = $remote_data_json->cell;
+		    	
+		    if($newRemoteCustomerModel->save())
+		    {
+				$output['customer_status']='SAVED';
+				$output['customer_message']='Customer saved';
+					
+				$newRemoteServicecall = new Servicecall;
+				$newRemoteServicecall->customer_id = $newRemoteCustomerModel->id;
+				$newRemoteServicecall->product_id = $newRemoteProductModel->id;
+				$newRemoteServicecall->fault_description = $remote_data_json->fault_description;
+				$newRemoteServicecall->notes = $remote_data_json->other_notes;
+				$newRemoteServicecall->recalled_job = '0';
+				$newRemoteServicecall->job_status_id = $job_status;
+				$newRemoteServicecall->contract_id = $contract_id;
+				$newRemoteServicecall->engineer_id = $engineer_id;
+				//$newServicecall->activity_log = 'Service status is changed to remotly booked by admin on'
+				
+				if($newRemoteServicecall->save())
+				{
+					$output['servicecall_status']='SAVED';
+					$output['servicecall_message']='Servicecall saved';
+						
+					$output['status']='ALL_PCS_SAVED';
+					$output['message']='Servicecall Customer & Product saved';
+				}///end of if($newRemoteServicecall->save())
+
+			}///end of if($newRemoteCustomerModel->save())
+									 
+		}///end of if($newRemoteProductModel->save())
+		echo json_encode($output);		
+    }//end of actionRaiseServicecall().
+    
+    public function actionCheckservice()
+    { 
+    	$output['status']='OK';
+    	$output['message']='Service OK';
+    	$output['api_key']='CAREYS';
+    	echo json_encode($output);
+    }//end of actionRaiseServicecall().
+    
+    
+    
     
     
     

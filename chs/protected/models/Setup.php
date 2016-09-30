@@ -972,4 +972,6 @@ class Setup extends CActiveRecord
 
 
 
+
+
 }//end of class.

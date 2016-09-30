@@ -188,7 +188,7 @@ $this->layout = false;
                         <br><font size="4">
                             <?php echo $model->customer->mobile; ?>
                         </font><br><br>
-                        <b>Alternate</b>
+                        <b>Parking</b>
                         <br><font size="4">
                             <?php echo $model->customer->fax; ?>
                         </font><br><br></h3>
@@ -217,7 +217,7 @@ $this->layout = false;
                 </tr>
 
             </table>
-
+ 			<b>Email: </b> <?php echo $model->customer->email; ?>
         </td>
     </tr>
 

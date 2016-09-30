@@ -113,7 +113,7 @@ class Customer extends CActiveRecord
 			'country' => 'Country',
 			'telephone' => 'Telephone',
 			'mobile' => 'Mobile',
-			'fax' => 'Fax',
+			'fax' => 'Parking Restrictions',
 			'email' => 'Email',
 			'notes' => 'Customer Notes',
 			'created_by_user_id' => 'Created By User',

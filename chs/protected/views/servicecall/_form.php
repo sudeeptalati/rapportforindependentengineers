@@ -157,6 +157,28 @@ else
                             </td>
                         </tr>
 
+                        <tr>
+                            <td>
+                                <!-- FAX IS RENAMED FOR PARKING-->
+                                <table>
+                                    <tr>
+                                        <td style="width: 10px">
+                                            <i class="fa fa-car" aria-hidden="true"></i>
+                                        </td>
+                                        <td>
+                                            <?php echo $form->labelEx($customerModel, 'fax'); ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <?php echo $form->textField($customerModel, 'fax', array('size' => 30)); ?>
+                                            <?php echo $form->error($customerModel, 'fax'); ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
 
 
                         <tr>
@@ -213,10 +235,8 @@ else
                                 <?php echo $form->error($customerModel, 'telephone'); ?>
                             </td>
                             <td>
-                                <?php echo $form->labelEx($customerModel, 'fax'); ?>
-                                <br><br>
-                                <?php echo $form->textField($customerModel, 'fax', array('size' => 30)); ?>
-                                <?php echo $form->error($customerModel, 'fax'); ?>
+
+
                             </td>
 
                         </tr>

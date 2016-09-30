@@ -116,12 +116,8 @@ class ModelNumbers extends CActiveRecord
 		//$model_number='AWCT10L';
 		$modelnumberdata=ModelNumbers::model()->findAllByAttributes(array('model_number'=>$m));
 		
-			if ($modelnumberdata!=null)
+			if ($modelnumberdata==null)
 			{
-				echo 'Exists';
-				
-			} 
-			else {
 				$newmodel=new ModelNumbers;
 				$newmodel->model_number=$m;
 				$newmodel->brand_id=$bid;

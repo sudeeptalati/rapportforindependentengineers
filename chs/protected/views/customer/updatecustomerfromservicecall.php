@@ -127,7 +127,33 @@
 
 
                     <tr>
-                        <td colspan="3"><br><b><i>Contact Details</i></b></td>
+                        <td>
+                            <!-- FAX IS RENAMED FOR PARKING-->
+                            <table>
+                                <tr>
+                                    <td style="width: 10px">
+                                        <i class="fa fa-car" aria-hidden="true"></i>
+                                    </td>
+                                    <td>
+                                        <?php echo $form->labelEx($model, 'fax'); ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                   <td colspan="2">
+                                       <?php echo $form->textField($model, 'fax', array('size' => 30)); ?>
+                                       <?php echo $form->error($model, 'fax'); ?>
+                                   </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+
+
+
+
+                    <tr>
+                        <td colspan="3"><hr><b><i>Contact Details</i></b></td>
                     </tr>
 
 
@@ -136,10 +162,6 @@
                             <?php echo $form->labelEx($model, 'telephone'); ?>
                             <?php echo $form->textField($model, 'telephone', array('placeholder' => 'home landline')); ?>
                             <?php echo $form->error($model, 'telephone'); ?>
-
-                            <?php echo $form->labelEx($model, 'fax'); ?>
-                            <?php echo $form->textField($model, 'fax', array('placeholder' => 'work landline')); ?>
-                            <?php echo $form->error($model, 'fax'); ?>
                         </td>
                         <td>
 

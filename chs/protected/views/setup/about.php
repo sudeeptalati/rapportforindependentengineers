@@ -15,6 +15,8 @@
 
 <?php 
 	
+ 
+	
 $setupModel = Setup::model()->findByPk(1);
 $update_url_from_db = $setupModel->version_update_url;
 $request = $update_url_from_db.'/latest_callhandling_version.txt';

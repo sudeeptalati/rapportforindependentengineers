@@ -217,7 +217,8 @@ $this->layout = false;
                 </tr>
 
             </table>
- 			<b>Email: </b> <?php echo $model->customer->email; ?>
+             <b>Email: </b> <?php echo $model->customer->email; ?>
+
         </td>
     </tr>
 

@@ -359,7 +359,7 @@ class ApiController extends RController
     	
     }//end of actionGetAllBookedAppointment().
     
-    public function actionRaiseservicecall()
+    public function actionRaiseServicecall()
     {
     	$finalArray = array();
     	$title = $_GET['title'];
@@ -808,7 +808,7 @@ class ApiController extends RController
         }
     }//end of function checkAuth
     
-    
+       
     public function actionRemoteservicecallbooking()
     { 
     	$output['status']='NOT OK';
@@ -859,6 +859,7 @@ class ApiController extends RController
 				$newRemoteServicecall->customer_id = $newRemoteCustomerModel->id;
 				$newRemoteServicecall->product_id = $newRemoteProductModel->id;
 				$newRemoteServicecall->fault_description = $remote_data_json->fault_description;
+				$newRemoteServicecall->fault_date=date('d-M-Y');
 				$newRemoteServicecall->notes = $remote_data_json->other_notes;
 				$newRemoteServicecall->recalled_job = '0';
 				$newRemoteServicecall->job_status_id = $job_status;
@@ -883,14 +884,12 @@ class ApiController extends RController
     
     public function actionCheckservice()
     { 
+	    //header("Access-Control-Allow-Origin: *");
     	$output['status']='OK';
     	$output['message']='Service OK';
     	$output['api_key']='CAREYS';
     	echo json_encode($output);
     }//end of actionRaiseServicecall().
-    
-    
-    
     
     
     

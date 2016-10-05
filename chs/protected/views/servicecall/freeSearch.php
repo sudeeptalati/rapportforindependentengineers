@@ -5,6 +5,31 @@ include('servicecall_sidemenu.php');
 ?>
 
 
+<?php $remotelylogged_jobs = Servicecall::model()->findAll( array('condition'=>'job_status_id=2',));?>
+												
+												
+<?php if (count($remotelylogged_jobs)!=0):?>
+
+	<div class="flash-notice">
+		<i class="fa fa-newspaper-o" aria-hidden="true"></i>
+		You have some jobs as remotely logged
+		<ul>
+			<?php foreach ($remotelylogged_jobs as $rl): ?>
+			<li >
+				<?php $rl_url=Yii::app()->baseUrl."/index.php?r=Servicecall/view&id=".$rl->id; ?>
+				<a href="<?php echo $rl_url; ?>" style="color:#0088cc;">
+					<?php echo $rl->service_reference_number; ?>
+					&nbsp;&nbsp;&nbsp;
+					<?php echo $rl->customer->fullname; ?>
+					&nbsp;&nbsp;&nbsp;
+					<?php echo $rl->customer->postcode; ?>
+				</a>
+			</li>			
+			<?php endforeach; ?>
+		</ul>
+	</div>
+<?php endif; ?>
+
 <?php 
   /*To import the client script*/
   $baseUrl = Yii::app()->baseUrl; 
@@ -88,8 +113,9 @@ $("#faq_search_input").keyup(function()
 </script>
 
  
-
+ 
 <?php
+ 
  
 /*You need to change the URL as per your requirements, else this will show error page*/
 $model_name=Yii::app()->controller->id;

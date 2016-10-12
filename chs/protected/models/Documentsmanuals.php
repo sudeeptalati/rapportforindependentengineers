@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table 'documents_manuals':
  * @property integer $id
- * @property integer $parent_document_id
+ * @property integer $document_type_id
  * @property string $name
  * @property string $description
  * @property integer $brand_id
@@ -13,9 +13,15 @@
  * @property string $model_nos
  * @property string $created
  * @property integer $created_by_user_id
+ * @property string $filename
+ * @property string $version
+ * @property string $active
  */
 class Documentsmanuals extends CActiveRecord
 {
+
+    public $upload;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -32,30 +38,37 @@ class Documentsmanuals extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('parent_document_id, brand_id, product_type_id, created_by_user_id', 'numerical', 'integerOnly'=>true),
-			array('name, description, model_nos, created', 'safe'),
-			// The following rule is used by search().
+
+            array('active,  brand_id, product_type_id, name, filename', 'required'),
+
+
+			array('active, document_type_id, brand_id, product_type_id, created_by_user_id', 'numerical', 'integerOnly'=>true),
+            array('name, description, model_nos, created, filename, version', 'safe'),
+
+            array('upload', 'file', 'types'=>'jpg, gif, png, jpeg, pdf', 'allowEmpty' => true, 'safe' => false),
+
+            // The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, parent_document_id, name, description, brand_id, product_type_id, model_nos, created, created_by_user_id', 'safe', 'on'=>'search'),
+			array('active, id, document_type_id, name, description, brand_id, product_type_id, model_nos, created, created_by_user_id, filename, version', 'safe', 'on'=>'search'),
 		);
 	}
 
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return array(
 
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return array(
-            'productType' => array(self::BELONGS_TO, 'ProductType', 'product_type_id'),
+            'document_type' => array(self::BELONGS_TO, 'Documenttype', 'document_type_id'),
+            'product_type' => array(self::BELONGS_TO, 'ProductType', 'product_type_id'),
             'brand' => array(self::BELONGS_TO, 'Brand', 'brand_id'),
-            'createdby' => array(self::BELONGS_TO, 'User', 'created_by_user_id'),
-        );
-    }
+            'created_by_user' => array(self::BELONGS_TO, 'User', 'created_by_user_id'),
 
-
+		);
+	}
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -63,15 +76,19 @@ class Documentsmanuals extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'parent_document_id' => 'Parent Document',
+            'id' => 'ID',
+            'upload' => 'Upload ',
+            'document_type_id' => 'Document Type',
 			'name' => 'Name',
 			'description' => 'Description',
 			'brand_id' => 'Brand',
 			'product_type_id' => 'Product Type',
-			'model_nos' => 'Model Nos',
+			'model_nos' => 'Model Nos. ',
 			'created' => 'Created',
 			'created_by_user_id' => 'Created By User',
+			'filename' => 'Filename',
+			'version' => 'Version',
+            'active'=>'Enabled',
 		);
 	}
 
@@ -94,7 +111,7 @@ class Documentsmanuals extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('parent_document_id',$this->parent_document_id);
+		$criteria->compare('document_type_id',$this->document_type_id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('brand_id',$this->brand_id);
@@ -102,10 +119,16 @@ class Documentsmanuals extends CActiveRecord
 		$criteria->compare('model_nos',$this->model_nos,true);
 		$criteria->compare('created',$this->created,true);
 		$criteria->compare('created_by_user_id',$this->created_by_user_id);
+		$criteria->compare('filename',$this->filename,true);
+		$criteria->compare('version',$this->version,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'sort'=>array(
+                'defaultOrder'=>'created DESC',
+            ),
+
+        ));
 	}
 
 	/**
@@ -118,4 +141,63 @@ class Documentsmanuals extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    protected function beforeSave()
+    {
+        if(parent::beforeSave())
+        {
+            if($this->isNewRecord)  // Creating new record
+            {
+                $this->created_by_user_id=Yii::app()->user->id;
+                $this->created=time();
+
+            }
+        }//end of if(parent())
+
+        return true;
+    }//end of beforeSave().
+
+
+
+
+
+    public function getAllDocumenttypesforDropdown()
+    {
+        return CHtml::listData(Documenttype::model()->findAll(array( 'order'=>"`name` ASC")), 'id', 'name');
+
+    }//end of getAllBrands().
+
+    public function getAllproducttypesforDropdown()
+    {
+        return CHtml::listData(ProductType::model()->findAll(array( 'order'=>"`name` ASC")), 'id', 'name');
+
+    }//end of getAllBrands().
+
+
+    public function searchbyfilenamemodeldesc($keyword)
+    {
+        $criteria=new CDbCriteria;
+        $criteria->compare('model_nos',$keyword,true, 'OR');
+        $criteria->compare('name',$keyword,true, 'OR');
+        //$criteria->compare('description',$keyword,true, 'OR');
+        $criteria->compare('filename',$keyword,true, 'OR');
+
+        return Documentsmanuals::findAll($criteria);
+
+
+    }///end of public function searchpartnumberoritemname($keyword)
+
+
+    public function loadalldocumentsbyservicecallid($service_id)
+    {
+
+        $criteria=new CDbCriteria;
+        $criteria->compare('servicecall_id',$service_id);
+
+        return Servicecallsdocsmanuals::model()->findAll($criteria);
+
+    }///end of public function loadalldocumentsbyservicecallid($service_id)
+
+
+
 }

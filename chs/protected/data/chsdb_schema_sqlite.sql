@@ -47,3 +47,26 @@ ALTER TABLE 'spares_used' ADD COLUMN 'used ' INETEGER;
 ALTER TABLE 'spares_used' ADD COLUMN 'notes ' TEXT;
 
 UPDATE "servicecall" SET "activity_log"='' WHERE 1
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE 'documents_manuals' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'document_type_id' INTEGER, 'name' TEXT, 'description' TEXT, 'brand_id' INTEGER, 'product_type_id' INTEGER, 'model_nos' TEXT, 'created' DATETIME, 'created_by_user_id' INTEGER,'filename' TEXT, 'version' TEXT, 'active' INTEGER)
+
+
+----
+-- Table structure for document_type
+----
+CREATE TABLE 'document_type' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'name' TEXT, 'info' TEXT);
+
+----
+-- Data dump for document_type, a total of 3 rows
+----
+INSERT INTO "document_type" ("id","name","info") VALUES ('1','Image','');
+INSERT INTO "document_type" ("id","name","info") VALUES ('2','Product Image','');
+INSERT INTO "document_type" ("id","name","info") VALUES ('3','Rating Plate Image','Rating Plate Image');
+
+CREATE TABLE "servicecalls_docs_manuals" ('servicecall_id' INTEGER NOT NULL, 'document_id' INTEGER NOT NULL, PRIMARY KEY (document_id, servicecall_id))

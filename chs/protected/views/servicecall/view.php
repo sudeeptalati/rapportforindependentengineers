@@ -143,6 +143,12 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 
     <h4>
+        <i style="color:white;" class="fa fa-paperclip"></i>
+        <a style="color:white;" href="#attachmentsbox">Attachments</a>
+    </h4>
+
+
+    <h4>
         <i style="color:white;" class="fa fa-calendar-check-o"></i>
         <a style="color:white;" href="#calendar">Appointment</a>
     </h4>
@@ -1156,6 +1162,130 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 
     <!-- Engineer End -->
+
+
+
+
+    <!-- attachmentsbox  Start-->
+    <tr>
+        <td colspan="2">
+            <div class="attachmentsbox contentbox" id="attachmentsbox">
+
+                <div class="attachmentsheadingbox contentbox">
+
+
+                    <?php
+
+                    Yii::app()->clientScript->registerScript('attachmentsbox-div', "
+                                        $('#attachmentsbox-button').click(function(){
+	                                    $('#attachmentsbox-div').toggle();
+	                                    return false;
+                                        });
+                                ");
+                    ?>
+
+
+                    <?php $activitylogtext = "<h4 style='color: white;' id='activilitylogdivbutton'><div style='float:right;'><i class='fa fa-toggle-on'></i></div> <h4>"; ?>
+                    <?php echo CHtml::link($activitylogtext, '#', array('id' => 'attachmentsbox-button')); ?>
+
+
+                    <?php
+                    echo CHtml::link('<div title="Add Attachments" style="color: white;" ><i class="fa fa-paperclip"></i>&nbsp;&nbsp;Attachments <i class="fa fa-plus-square-o"></i></div>',
+                        '#', array(
+                            'onclick' => '$("#add-attachments-dialog").dialog("open"); return false;',
+                        ));
+                    ?>
+
+
+                    <?php
+                    $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+                        'id' => 'add-attachments-dialog',
+                        // additional javascript options for the dialog plugin
+                        'options' => array(
+                            'title' => 'Add Attachments',
+                            'width' => '800px',
+                            'autoOpen' => false,
+                            'resizable' => false,
+                            'modal' => 'true',
+                        ),
+                    ));
+
+                    $this->renderPartial('addattachments');
+
+                    $this->endWidget('zii.widgets.jui.CJuiDialog');
+                    // the link that may open the dialog
+                    ?>
+
+                </div>
+                <div id="attachmentsbox-div" style="display:block">
+
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Model Nos</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                    <?php $alldocs=Documentsmanuals::model()->loadalldocumentsbyservicecallid($model->id); ?>
+
+                    <?php foreach ($alldocs as $doc): ?>
+                        <tr>
+                            <td><?php echo $doc->documentmanual->name; ?></td>
+                            <td><?php echo $doc->documentmanual->model_nos; ?></td>
+                            <td><?php echo $doc->documentmanual->description; ?></td>
+                            <td>
+                                <?php
+                                $delete_url=$this->createUrl('documentsmanuals/deletedocumentfromservicecall', array('document_id'=>$doc->document_id, 'service_id'=>$doc->servicecall_id));
+                                echo CHtml::link('<div class="btn btn-danger" title="Delete Attachment" ><i class="btn-danger fa fa-times"></i><div>',
+                                    $delete_url,array('confirm'=>'Are you sure you want to delete this item?'));
+                                ?>
+                            </td>
+
+                            <td>
+                                <?php
+                                                                   ?>
+
+                                <?php
+                                $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
+                                    'id'=>'glimpse_dialog'.$doc->document_id,
+
+                                    // additional javascript options for the dialog plugin
+                                    'options'=>array(
+                                        'title'=>'Preview box',
+                                        'autoOpen'=>false,
+                                        'modal'=>true,
+                                        'show'=>'effect: "blind",duration: 1000',
+                                        'hide'=>'effect: "explode",duration: 1000',
+                                        'width'=>800,
+                                        'height'=>800,
+
+                                    ),
+                                ));
+
+                                    $preview_link=Yii::app()->request->baseUrl."/documents_manuals/".$doc->documentmanual->filename;
+                                    $this->renderPartial('/documentsmanuals/minipreview', array('preview_link' => $preview_link));
+
+                                $this->endWidget('zii.widgets.jui.CJuiDialog');
+
+                                // the link that may open the dialog
+                                echo CHtml::link('<i class="btn btn-primary fa fa-search-plus" aria-hidden="true"></i>', '#', array(
+                                    'onclick'=>'$("#glimpse_dialog'.$doc->document_id.'").dialog("open"); return false;',
+                                ));
+                                ?>
+
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </table>
+
+                </div>
+
+            </div>
+        </td>
+    </tr>
+    <!-- attachmentsbox  End-->
+
+
 
 
     <!-- Activity Log Start-->

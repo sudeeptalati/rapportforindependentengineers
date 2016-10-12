@@ -2,17 +2,12 @@
 /* @var $this DocumentsmanualsController */
 /* @var $model Documentsmanuals */
 
-$this->breadcrumbs=array(
-	'Documentsmanuals'=>array('index'),
-	'Create',
-);
+include('menu.php');
 
-$this->menu=array(
-	array('label'=>'List Documentsmanuals', 'url'=>array('index')),
-	array('label'=>'Manage Documentsmanuals', 'url'=>array('admin')),
-);
+
+$this->layout='column1';
 ?>
 
-<h1>Create Documentsmanuals</h1>
+<h1>Upload Documents &  Manuals</h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

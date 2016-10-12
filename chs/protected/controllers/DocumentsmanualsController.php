@@ -1,6 +1,6 @@
 <?php
 
-class DocumentsmanualsController extends Controller
+class DocumentsmanualsController extends RController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -11,13 +11,12 @@ class DocumentsmanualsController extends Controller
 	/**
 	 * @return array action filters
 	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
+    public function filters()
+    {
+        return array(
+            'rights', // perform access control for CRUD operations
+        );
+    }
 
 	/**
 	 * Specifies the access control rules.
@@ -69,9 +68,14 @@ class DocumentsmanualsController extends Controller
 
 		if(isset($_POST['Documentsmanuals']))
 		{
-			$model->attributes=$_POST['Documentsmanuals'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            $model->attributes=$_POST['Documentsmanuals'];
+
+            $model->upload=CUploadedFile::getInstance($model,'upload');
+            if($model->save())
+            {
+                $model->upload->saveAs('documents_manuals/'.$model->filename);
+                $this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
 		$this->render('create',array(
@@ -94,20 +98,109 @@ class DocumentsmanualsController extends Controller
 		if(isset($_POST['Documentsmanuals']))
 		{
 			$model->attributes=$_POST['Documentsmanuals'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+
+            $model->upload=CUploadedFile::getInstance($model,'upload');
+
+            if ($model->upload)
+            {
+                echo "Uploading";
+                $model->upload->saveAs('documents_manuals/'.$model->filename);
+
+            }
+
+
+            if($model->save())
+            {
+                $this->redirect(array('view','id'=>$model->id));
+            }
+
+
+        }
+
+
 
 		$this->render('update',array(
 			'model'=>$model,
 		));
+
+
+
 	}
 
-	/**
+
+	public function actionSearch_docs_manuals()
+    {
+
+        $keyword=$_GET['keyword'];
+
+        $docs_manuals=Documentsmanuals::model()->searchbyfilenamemodeldesc($keyword);
+
+        $output=array();
+        foreach ($docs_manuals as $d)
+        {
+            $attach=array();
+            $attach['id']=$d->id;
+            $attach['name']=$d->name;
+            $attach['model_nos']=$d->model_nos;
+            $attach['description']=$d->description;
+            $attach['filename']=$d->filename;
+
+            array_push($output, $attach);
+        }//end of foreach ($sparesresults as $s)
+
+        echo json_encode($output);
+
+
+    }///end of 	public function actionSearch_docs_manuals()
+
+    public function actionLinkdocumenttoservicecall()
+    {
+        $service_id=$_POST['service_id'];
+        $document_id=$_POST['document_id'];
+
+        /*
+        $service_id=$_GET['service_id'];
+        $document_id=$_GET['document_id'];
+        */
+
+        $service_document=new Servicecallsdocsmanuals;
+        $service_document->servicecall_id=$service_id;
+        $service_document->document_id=$document_id;
+
+        echo Setup::model()->savemodel($service_document);
+
+    }///end of  public function actionLinkdocumenttoservicecall($service_id,$document_id)
+
+    public function actionDeletedocumentfromservicecall()
+    {
+
+        $service_id=$_GET['service_id'];
+        $document_id=$_GET['document_id'];
+
+
+        $servicecall_docs_model=Servicecallsdocsmanuals::model()->findByPk(array('servicecall_id' => $service_id, 'document_id' => $document_id));
+
+        if ($servicecall_docs_model->delete())
+            $this->redirect(array('servicecall/view&id='.$service_id.'#attachmentsbox'));
+        else
+            echo "cannot delete. Pleasec contact support";
+
+    }///end of  public function actionLinkdocumenttoservicecall($service_id,$document_id)
+
+
+
+
+
+
+
+
+
+    /**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
+	/*
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
@@ -116,6 +209,7 @@ class DocumentsmanualsController extends Controller
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
+	*/
 
 	/**
 	 * Lists all models.

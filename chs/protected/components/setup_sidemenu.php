@@ -8,6 +8,7 @@ $sidebarMenuItems=array(
 	array('label'=>'Documents & Manuals', 'url'=>array('documentsmanuals/admin')),
 
 
+
 	array('label'=>'Brands / Make', 'url'=>array('Brand/admin')),
 	array('label'=>'Company Details', 'url'=>array('/setup/view&id=1')),
 	array('label'=>'Job Type', 'url'=>array('Contract/admin')),

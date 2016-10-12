@@ -17,8 +17,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'parent_document_id'); ?>
-		<?php echo $form->textField($model,'parent_document_id'); ?>
+		<?php echo $form->label($model,'document_type_id'); ?>
+		<?php echo $form->textField($model,'document_type_id'); ?>
 	</div>
 
 	<div class="row">
@@ -54,6 +54,16 @@
 	<div class="row">
 		<?php echo $form->label($model,'created_by_user_id'); ?>
 		<?php echo $form->textField($model,'created_by_user_id'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'filename'); ?>
+		<?php echo $form->textArea($model,'filename',array('rows'=>6, 'cols'=>50)); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'version'); ?>
+		<?php echo $form->textArea($model,'version',array('rows'=>6, 'cols'=>50)); ?>
 	</div>
 
 	<div class="row buttons">

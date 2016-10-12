@@ -9,7 +9,7 @@
 	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('parent_document_id')); ?>:</b>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('document_type_id')); ?>:</b>
 	<?php echo CHtml::encode($data->parent_document_id); ?>
 	<br />
 
@@ -40,6 +40,14 @@
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('created_by_user_id')); ?>:</b>
 	<?php echo CHtml::encode($data->created_by_user_id); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('filename')); ?>:</b>
+	<?php echo CHtml::encode($data->filename); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('version')); ?>:</b>
+	<?php echo CHtml::encode($data->version); ?>
 	<br />
 
 	*/ ?>

@@ -1385,6 +1385,15 @@ div.active {
     background-color: #ffad77;
 }
 
+.attachmentsbox {
+    background-color: #cce8dd;
+}
+.attachmentsheadingbox {
+    background-color: #6c9e89;
+}
+
+
+
 .calendar-dayheading {
     color: #ffffff;
     padding: 5px 12px 0px 12px;
@@ -1416,4 +1425,12 @@ div.active {
     margin-bottom: -20px;
     height: 4em;
     z-index: 1;
+}
+
+.drag_upload{
+
+    width: 745px;
+    height: 420px;
+    /*background: url("https://css-tricks.com/wp-content/uploads/2015/11/drag-drop-upload-1.gif") no-repeat left top;*/
+    background: url("../images/drag_file.gif") no-repeat left top;
 }

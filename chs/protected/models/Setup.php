@@ -971,5 +971,26 @@ class Setup extends CActiveRecord
 
 
 
+    public function getawesomeapplianceicon($producttypename)
+    {
+        $producttypename = strtolower($producttypename);
+        $producttypename = preg_replace('/\s+/', '', $producttypename);
+        return '<i class="ukwfa ukwfa-' . $producttypename . '"></i>';
+
+    }///end of public function getawesomeapplianceicon()
+
+    public function getawesomebrandicon($brandname)
+    {
+        $brandname = strtolower($brandname);
+        $brandname = preg_replace('/\s+/', '', $brandname);
+        return '<i class="ukw-logo-fa ukw-logo-fa-' . $brandname .'"></i>';
+
+
+    }///end of public function getawesomebrandicon()
+
+
+
+
+
 
 }//end of class.

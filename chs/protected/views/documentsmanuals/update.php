@@ -2,20 +2,11 @@
 /* @var $this DocumentsmanualsController */
 /* @var $model Documentsmanuals */
 
-$this->breadcrumbs=array(
-	'Documentsmanuals'=>array('index'),
-	$model->name=>array('view','id'=>$model->id),
-	'Update',
-);
+$this->layout='column1';
 
-$this->menu=array(
-	array('label'=>'List Documentsmanuals', 'url'=>array('index')),
-	array('label'=>'Create Documentsmanuals', 'url'=>array('create')),
-	array('label'=>'View Documentsmanuals', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Documentsmanuals', 'url'=>array('admin')),
-);
+include('menu.php');
 ?>
 
-<h1>Update Documentsmanuals <?php echo $model->id; ?></h1>
+<h1>Update Documents & Manuals# <?php echo $model->name; ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

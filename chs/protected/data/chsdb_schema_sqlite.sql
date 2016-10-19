@@ -69,4 +69,9 @@ INSERT INTO "document_type" ("id","name","info") VALUES ('1','Image','');
 INSERT INTO "document_type" ("id","name","info") VALUES ('2','Product Image','');
 INSERT INTO "document_type" ("id","name","info") VALUES ('3','Rating Plate Image','Rating Plate Image');
 
-CREATE TABLE "servicecalls_docs_manuals" ('servicecall_id' INTEGER NOT NULL, 'document_id' INTEGER NOT NULL, PRIMARY KEY (document_id, servicecall_id))
+CREATE TABLE "servicecalls_docs_manuals" ('servicecall_id' INTEGER NOT NULL, 'document_id' INTEGER NOT NULL, PRIMARY KEY (document_id, servicecall_id));
+
+
+
+
+CREATE TABLE 'engineer_login' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'username' TEXT, 'password' TEXT, 'authKey' TEXT, 'accessToken' TEXT, 'active' DATETIME, 'created' DATETIME);

@@ -1,0 +1,55 @@
+Message-ID: <5aa7f773947585a7484ae7d7e1f2aead@localhost>
+Date: Fri, 23 Sep 2016 16:54:48 +0200
+Subject: Password reset for UK Whitegoods
+From: UK Whitegoods robot <sudeep.makku@gmail.com>
+To: sudeep.makku@gmail.com
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="_=_swift_v4_1474642488_532f9bfe43375956dc49bbc8390d83d9_=_"
+
+
+--_=_swift_v4_1474642488_532f9bfe43375956dc49bbc8390d83d9_=_
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Hello sudeep.makku@gmail.com,
+
+Follow the link below to reset your pass=
+word:
+
+http://localhost/findmyengineer/advanced/frontend/web/site/reset=
+-password?token=3DmfX3qyYIRJ8wBjRc6BPWWXjpK9wZPWG1_1474642488
+
+--_=_swift_v4_1474642488_532f9bfe43375956dc49bbc8390d83d9_=_
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
+/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns=3D"http://www.w3.org/1999/=
+xhtml">
+<head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/ht=
+ml; charset=3DUTF-8" />
+    <title></title>
+    </head>
+<body>
+    =
+    <div class=3D"password-reset">
+    <p>Hello sudeep.makku@gmail.com,</=
+p>
+
+    <p>Follow the link below to reset your password:</p>
+
+    <=
+p><a href=3D"http://localhost/findmyengineer/advanced/frontend/web/site/res=
+et-password?token=3DmfX3qyYIRJ8wBjRc6BPWWXjpK9wZPWG1_1474642488">http://loc=
+alhost/findmyengineer/advanced/frontend/web/site/reset-password?token=3DmfX=
+3qyYIRJ8wBjRc6BPWWXjpK9wZPWG1_1474642488</a></p>
+</div>
+    </body>
+<=
+/html>
+
+
+--_=_swift_v4_1474642488_532f9bfe43375956dc49bbc8390d83d9_=_--

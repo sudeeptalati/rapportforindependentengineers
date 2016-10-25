@@ -757,11 +757,15 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 
                                     <td>
-                                        <?php if ($data->used == 1): ?>
-                                            <span class="fa fa-check-square-o" aria-hidden="true"></span>
-                                        <?php else: ?>
-                                            <span class="fa fa-square-o" aria-hidden="true"></span>
-                                        <?php endif; ?>
+
+                                        <?php  $togglesparesused=$this->createUrl('sparesused/togglesparesused',array('id'=>$data->id));?>
+                                        <a href="<?php echo $togglesparesused; ?>">
+                                            <?php if ($data->used == 1): ?>
+                                                <span class="fa fa-check-square-o" aria-hidden="true"></span>
+                                            <?php else: ?>
+                                                <span class="fa fa-square-o" aria-hidden="true"></span>
+                                            <?php endif; ?>
+                                        </a>
 
                                     </td>
                                     <td><?php echo $data->item_name; ?></td>

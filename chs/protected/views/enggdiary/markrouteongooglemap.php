@@ -62,10 +62,12 @@ foreach ($route_map_results as $r){
 	}
 	else
 	{
-		echo '<br><li><b>Coordinates not found.......finding the coordinatess</b>';
-		Customer::model()->update_customer_address_coordinates($servicecall->customer->id);
-		echo '<br><b>Please refresh the page </li>';
-		echo "<SCRIPT LANGUAGE='javascript'>location.reload(true);</SCRIPT>";
+		echo '<br><div><h2>ERROR: Geometry Location not found for postcode</h2>  <h3>'.$servicecall->customer->postcode.'</h3> Trying to finding the coordinates...........';
+		echo Customer::model()->update_customer_address_coordinates($servicecall->customer->id);
+		echo '<br><br><b>Please ';
+		echo CHtml::htmlButton ('Refresh <i class="fa fa-refresh" aria-hidden="true"></i>', array('onClick'=>'window.location="'.Yii::app()->getRequest()->getUrl().'"'));
+		echo ' the page </div><br><br>';
+		//echo "<SCRIPT LANGUAGE='javascript'>location.reload(true);</SCRIPT>";
 		
 	}
 	

@@ -31,6 +31,13 @@
 		<?php echo $form->error($model,'info'); ?>
 	</div>
 
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'category'); ?>
+		<?php echo $form->dropDownList($model,'category', $model->getdocumentcategory()); ?>
+		<?php echo $form->error($model,'category'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

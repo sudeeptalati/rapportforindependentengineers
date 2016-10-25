@@ -22,6 +22,12 @@ $this->renderPartial('//documentsmanuals/menu');
 		'name',
 		'info',
 		array(
+			'name'=>'category',
+			'filter'=>$model->getdocumentcategory(),
+
+					),
+
+		array(
 			'class'=>'CButtonColumn',
 			'template'=>'{view}{update}',
 		),

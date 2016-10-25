@@ -16,16 +16,22 @@ use yii\helpers\Html;
 
 ?>
 
-<?php
-
-$customer_model=Customer::findOne($customer_id);
-
-?>
+<?php $customer_model=Customer::findOne($customer_id);?>
 
 
 <div class="customer-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'action' =>['customer/updateeditcustomeronly','customer_id'=>$customer_id, 'servicecall_id'=>$servicecall_id, ],
+        'id' => 'edit_customer',
+        'method' => 'post',
+
+    ]);
+    ?>
+
+    <div class="form-group text-center">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
 
     <?= $form->field($customer_model, 'id')->hiddenInput()->label(false); ?>
 
@@ -34,9 +40,13 @@ $customer_model=Customer::findOne($customer_id);
         <h2 class="text-center">
             <i class="fa fa-user fa-2x" aria-hidden="true"></i>
         </h2>
-        <?= $form->field($customer_model, 'title')->dropDownList(Handyfunctions::name_title()); ?>
-        <?= $form->field($customer_model, 'first_name')->textInput(); ?>
-        <?= $form->field($customer_model, 'last_name')->textInput(); ?>
+        <table class="responsive-stacked-table">
+            <tr>
+                <td><?= $form->field($customer_model, 'title')->dropDownList(Handyfunctions::name_title()); ?></td>
+                <td><?= $form->field($customer_model, 'first_name')->textInput(); ?></td>
+                <td><?= $form->field($customer_model, 'last_name')->textInput(); ?></td>
+            </tr>
+        </table>
 
     </div>
 
@@ -46,54 +56,70 @@ $customer_model=Customer::findOne($customer_id);
             <i class="fa fa-home fa-2x" aria-hidden="true"></i>
         </h3>
 
-        <?= $form->field($customer_model, 'address_line_1')->textInput(); ?>
-        <?= $form->field($customer_model, 'address_line_2')->textInput(); ?>
-        <?= $form->field($customer_model, 'address_line_3')->textInput(); ?>
-        <?= $form->field($customer_model, 'town')->textInput(); ?>
-        <?= $form->field($customer_model, 'postcode')->textInput(); ?>
+        <table class="responsive-stacked-table">
+            <tr>
+                <td><?= $form->field($customer_model, 'address_line_1')->textInput(); ?></td>
+                <td><?= $form->field($customer_model, 'address_line_2')->textInput(); ?></td>
+                <td><?= $form->field($customer_model, 'address_line_3')->textInput(); ?></td>
+            </tr>
+            <tr>
 
-        <i class="fa fa-car" aria-hidden="true"></i> <b>Parking Restrictions</b>
+                <td><?= $form->field($customer_model, 'town')->textInput(); ?></td>
+                <td><?= $form->field($customer_model, 'postcode')->textInput(); ?></td>
+            </tr>
+            <tr>
 
-        <?= $form->field($customer_model, 'fax')->textInput()->label(false); ?>
+                <td>
+                    <i class="fa fa-car" aria-hidden="true"></i> <b>Parking Restrictions</b>
+
+                    <?= $form->field($customer_model, 'fax')->textInput()->label(false); ?>
+
+                </td>
+            </tr>
+
+        </table>
+
+
+
 
     </div>
 
 
     <hr>
     <div>
+        <table class="full_width">
+            <tr>
+                <td class="text-center">
+                    <i class="fa fa-phone fa-2x" aria-hidden="true"></i>
+                </td>
+                <td class="text-center">
+                    <i class="fa fa-mobile fa-2x" aria-hidden="true"></i>
+                </td>
+                <td class="text-center">
+                    <i class="fa-2x">@</i>
+                </td>
+
+            </tr>
+
+        </table>
         <h4 class="text-center">
-            <i class="fa fa-phone fa-2x" aria-hidden="true"></i>
-            <i class="fa fa-mobile fa-2x" aria-hidden="true"></i>
-            <i class="fa-2x">@</i>
         </h4>
 
-        <?= $form->field($customer_model, 'telephone')->textInput(); ?>
-
-
-        <?= $form->field($customer_model, 'mobile')->textInput(); ?>
-
-        <?= $form->field($customer_model, 'email')->textInput(); ?>
+        <table class="responsive-stacked-table">
+            <tr>
+                <td><?= $form->field($customer_model, 'telephone')->textInput(); ?></td>
+                <td><?= $form->field($customer_model, 'mobile')->textInput(); ?></td>
+                <td><?= $form->field($customer_model, 'email')->textInput(); ?></td>
+            </tr>
+        </table>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     <?= $form->field($customer_model, 'notes')->textarea(['rows' => 6]) ?>
 
 
-    <div class="form-group">
-        <?= Html::submitButton($customer_model->isNewRecord ? 'Create' : 'Update', ['class' => $customer_model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <div class="form-group text-center">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

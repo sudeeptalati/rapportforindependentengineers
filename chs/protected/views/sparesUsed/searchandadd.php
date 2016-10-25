@@ -194,7 +194,7 @@ $service_id=$_GET['id'];///this is when called from servicecall page
 
         response = $.parseJSON(stringdata);
 
-        $(function () {
+         $(function () {
             $.each(response, function (i, item) {
                 console.log(item);
                 $('#scores').append('<tr id="rowno' + i + '" class="mytr" onclick="selectrow(' + i + ')" >' +

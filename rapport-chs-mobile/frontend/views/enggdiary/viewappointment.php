@@ -6,11 +6,13 @@
  * Time: 16:41
  */
 
+use common\models\Documentsmanuals;
 use common\models\Handyfunctions;
-use yii\helpers\Html;
+use common\models\Product;
+use common\models\Sparesused;
 use frontend\assets\LocateAsset;
-
-
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 LocateAsset::register($this);
 
@@ -26,70 +28,561 @@ $customer_address_html = Handyfunctions::formataddressinhtml(
 );
 
 
+$customer_block='none';
+if (Yii::$app->getRequest()->get('customer_block'))
+    $customer_block='block';
+
+
+$product_block='none';
+if (Yii::$app->getRequest()->get('product_block'))
+    $product_block='block';
+
+$docs_manuals_block='none';
+if (Yii::$app->getRequest()->get('docs_manuals_block'))
+    $docs_manuals_block='block';
+
+$servicecall_block='none';
+if (Yii::$app->getRequest()->get('servicecall_block'))
+    $servicecall_block='block';
+
+$spares_block='none';
+if (Yii::$app->getRequest()->get('spares_block'))
+    $spares_block='block';
+
+$signature_block='none';
+if (Yii::$app->getRequest()->get('signature_block'))
+    $signature_block='block';
+
+
+
 ?>
 
-<?= Html::button('Customer', ['class' => 'btn-lg btn-primary full_width', 'onclick' => '(function ( $event ) { $("#customerbox").toggle(); })();']); ?>
-    <div id="customerbox" class="customerbox contentbox">
+<?= Html::button('Customer', ['class' => 'btn-lg customerheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#customerbox").toggle("slow"); })();']); ?>
+<div id="customerbox" class="customerbox contentbox" style="display: <?php echo $customer_block;?>">
 
-        <div id="customer_view_block">
+    <?= Html::button('<i class="fa fa-user fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'customer_edit_btn', 'onclick' => '(function ( $event ) {  togglecustomereditbox(); })();']); ?>
+    <div id="customer_edit_block" style="display: none  ;">
 
-            <table class="full_width responsive-stacked-table">
+
+        <?php echo $this->render('//customer/editcustomeronly', [
+                'customer_id' => $servicecall->customer_id,
+                'servicecall_id' => $servicecall->id
+            ]
+        ); ?>
+
+    </div><!-- <div id="customer_edit_block" end of customer_edit_block -->
+
+
+    <div id="customer_view_block" >
+
+        <table class="full_width responsive-stacked-table">
+            <tr>
+                <td>
+                    <div class="mobile_title">
+                        <?php echo $servicecall->customer->fullname; ?>
+                    </div>
+                    <div class="mobile_address">
+                        <?php echo $customer_address_html; ?>
+                    </div>
+                </td>
+                <td>
+                    <div class="mobile_title">
+                        <i class="fa fa-mobile"></i>
+                        <?php echo Handyfunctions::get_telephone_link($servicecall->customer->mobile); ?>
+                        </a>
+                    </div>
+                    <br>
+
+                    <div class="mobile_title">
+                        <i class="fa fa-phone"></i>
+                        <?php echo Handyfunctions::get_telephone_link($servicecall->customer->telephone); ?>
+                    </div>
+                    <br>
+
+                    <div class="mobile_title">
+                        <i class="fa fa-envelope"></i>
+                        <?php echo $servicecall->customer->email; ?>
+                    </div>
+                    <br>
+
+
+
+                    <div class="mobile_title">
+                        <i class="fa fa-car"></i>
+                        <?php echo $servicecall->customer->fax; ?>
+                    </div>
+                </td>
+                <td>
+                    <div class="mobile_content_title">
+                        <i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notes
+                    </div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->customer->notes; ?>
+                    </div>
+                </td>
+                <td>
+                    <button id="customer_details_check_btn" class="btn-clear" style="float: right; color:grey;"
+                            onclick="customerdetailsverified();">
+                        <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- end of Div customerbox  -->
+<br><br>
+
+
+<!-- Product Section -->
+<?php $product_model_for_label = new Product(); ?>
+
+<?= Html::button('Product', ['class' => 'btn-lg productheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#productbox").toggle("slow"); })();']); ?>
+<div id="productbox" class="productbox contentbox" style="display: <?php echo $product_block; ?>">
+
+    <?= Html::button('<i class="fa fa-archive fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'product_edit_btn', 'onclick' => '(function ( $event ) {  toggleproducteditbox(); })();']); ?>
+    <div id="product_edit_block" style="display: none  ;">
+
+
+        <?php echo $this->render('//product/editproductonly', [
+                'product_id' => $servicecall->product_id,
+                'servicecall_id' => $servicecall->id
+            ]
+        ); ?>
+
+    </div><!-- <div id="product_edit_block" end of product_edit_block -->
+
+
+    <div id="product_view_block">
+
+        <table class="full_width responsive-stacked-table">
+
+            <tr>
+                <td>
+                    <h1>
+                        <i class="fa fa-industry" aria-hidden="true"></i>
+
+                        <?php echo Handyfunctions::getawesomebrandicon($servicecall->product->brand->name); ?>
+                    </h1>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->product->brand->name; ?>
+                    </div>
+
+                </td>
+                <td>
+                    <h1>
+                        <i class="ukwfa ukwfa-threeappliancelogo"></i>
+                        <?php echo Handyfunctions::getawesomeapplianceicon($servicecall->product->productType->name); ?>
+                    </h1>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->product->productType->name; ?>
+                    </div>
+                </td>
+                <td>
+                    <div
+                        class="mobile_content_title"><?php echo $product_model_for_label->attributeLabels()['serial_number']; ?></div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->product->serial_number; ?>
+                    </div>
+                </td>
+
+                <td>
+                    <button id="product_details_check_btn" class="btn-clear" style="float: right; color:grey;"
+                            onclick="productdetailsverified();">
+                        <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div
+                        class="mobile_content_title"><?php echo $product_model_for_label->attributeLabels()['model_number']; ?></div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->product->model_number; ?>
+                    </div>
+                </td>
+                <td>
+                    <div
+                        class="mobile_content_title"><?php echo $product_model_for_label->attributeLabels()['enr_number']; ?></div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->product->enr_number; ?>
+                    </div>
+                </td>
+                <td>
+                    <div
+                        class="mobile_content_title"><?php echo $product_model_for_label->attributeLabels()['fnr_number']; ?></div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->product->fnr_number; ?>
+                    </div>
+                </td>
+                <td>
+                    <div
+                        class="mobile_content_title"><?php echo $product_model_for_label->attributeLabels()['production_code']; ?></div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->product->production_code; ?>
+                    </div>
+                </td>
+
+
+            </tr>
+
+            <tr>
+                <td>
+
+                    <div class="mobile_content_title">
+                        <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+                        <?php echo $product_model_for_label->attributeLabels()['notes']; ?>
+                    </div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->product->notes; ?>
+                    </div>
+
+
+                </td>
+
+            </tr>
+
+
+        </table>
+    </div><!-- end of product_view_block-->
+</div>
+<!-- end of Div productbox  -->
+
+
+<br><br>
+
+
+<!-- documentsmanuals Section -->
+
+<?= Html::button('Photos & Attachments', ['class' => 'btn-lg attachmentsheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#documentsmanualsbox").toggle("slow"); })();']); ?>
+<div id="documentsmanualsbox" class="attachmentsbox contentbox" style="display: <?php echo $docs_manuals_block; ?>">
+
+    <?= Html::button('<i class="fa fa-camera  fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'upload_document_and_manuals_btn', 'onclick' => '(function ( $event ) {  toggledocumentsmanualseditbox(); })();']); ?>
+    <div id="documentsmanuals_edit_block" style="display: none  ;">
+
+
+
+
+        <?php echo $this->render('//documentsmanuals/uploaddocumentsmanualsonly', [
+                'servicecallmodel' => $servicecall
+            ]
+        ); ?>
+
+    </div><!-- <div id="documentsmanuals_edit_block" end of documentsmanuals_edit_block -->
+
+
+    <div id="documentsmanuals_view_block">
+
+        <button id="photos_check_btn" class="btn-clear" style="float: right; color:grey;"
+                onclick="needtotakephotos();">
+            <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
+        </button>
+
+
+
+        <table class="full_width responsivetable">
+
+            <?php $alldocs = Documentsmanuals::loadalldocumentsbyservicecallid($servicecall->id); ?>
+            <?php foreach ($alldocs as $doc): ?>
                 <tr>
+                    <td><?php echo $doc->document->doctype->name; ?></td>
                     <td>
-                        <div class="mobile_title">
-                            <?php echo $servicecall->customer->fullname; ?>
-                        </div>
-                        <div class="mobile_address">
-                            <?php echo $customer_address_html; ?>
-                        </div>
+                        <?php $doc_link = Yii::$app->params['documents_upload_location_web_path'] . $doc->document->filename; ?>
+                        <a href=<?php echo $doc_link; ?> target="_blank">
+                            <?php echo $doc->document->name; ?>
+                        </a>
                     </td>
-                    <td>
-                        <div class="mobile_title">
-                            <i class="fa fa-mobile"></i>
-                            <?php echo Handyfunctions::get_telephone_link($servicecall->customer->mobile); ?>
-                            </a>
-                        </div>
-                        <br>
-                        <div class="mobile_title">
-                            <i class="fa fa-phone"></i>
-                            <?php echo Handyfunctions::get_telephone_link($servicecall->customer->telephone); ?>
-                        </div>
-                        <br>
-                        <div class="mobile_title">
-                            <i class="fa fa-car"></i>
-                            <?php echo $servicecall->customer->fax; ?>
-                        </div>
 
-
-                    </td>
-                    <td>
-                        <div style="float: left;">
-
-
-                        </div>
-
-
-                        <div style="float: right; color:grey;">
-                            <i class="fa fa-check-circle fa-3x" aria-hidden="true"></i>
-                        </div>
-                    </td>
                 </tr>
-            </table>
+
+            <?php endforeach; ?>
+        </table>
+
+
+    </div><!-- end of documentsmanuals_view_block-->
+</div>
+<!-- end of Div documentsmanualsbox  -->
+
+
+
+
+<br><br>
+
+<!-- servicecall Section -->
+
+<?= Html::button('Service', ['class' => 'btn-lg serviceheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#servicecallbox").toggle("slow"); })();']); ?>
+<div id="servicecallbox" class="servicebox contentbox" style="display: <?php echo $servicecall_block; ?>">
+
+    <?= Html::button('<i class="fa fa-wrench  fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'upload_document_and_manuals_btn', 'onclick' => '(function ( $event ) {  toggleservicecalleditbox(); })();']); ?>
+    <div id="servicecall_edit_block" style="display: block  ;">
+
+
+        <?php echo $this->render('//servicecall/editservicecallonly', [
+                'servicecallmodel' => $servicecall
+            ]
+        ); ?>
+
+    </div><!-- <div id="servicecall_edit_block" end of servicecall_edit_block -->
+
+
+    <div id="servicecall_view_block">
+
+        <table class="responsive-stacked-table">
+            <tr>
+
+                <td>
+                    <div class="mobile_content_title">
+                        <?php echo $servicecall->attributeLabels()['contract']; ?>
+                    </div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->contract->name; ?>
+                    </div>
+                </td>
+                <td>
+                    <div class="mobile_content_title">
+                        <?php echo $servicecall->attributeLabels()['insurer_reference_number']; ?>
+                    </div>
+                    <div class="mobile_content">
+                        <?php $servicecall->insurer_reference_number; ?>
+                    </div>
+                </td>
+
+
+                <td>
+                    <div class="mobile_content_title">
+                        <?php echo $servicecall->attributeLabels()['fault_code']; ?>
+                    </div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->fault_code; ?>
+                    </div>
+                </td>
+
+
+            </tr>
+
+
+            <tr>
+                <td>
+                    <div class="mobile_content_title">
+                        <?php echo $servicecall->attributeLabels()['fault_date']; ?>
+                    </div>
+                    <div class="mobile_content">
+                        <?php echo Handyfunctions::format_date($servicecall->fault_date); ?>
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div class="mobile_content_title">
+                        <?php echo $servicecall->attributeLabels()['notes']; ?>
+                    </div>
+                    <div class="mobile_content">
+                        <?php echo $servicecall->notes; ?>
+                    </div>
+                </td>
+
+
+            </tr>
+        </table>
+        <button id="service_check_btn" class="btn-clear" style="float: right; color:grey;"
+                onclick="workcarriedoutadded();">
+            <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
+        </button>
+
+
+        <div class="mobile_content_title">
+            <?php echo $servicecall->attributeLabels()['fault_description']; ?>
+        </div>
+        <div class="mobile_content">
+            <?php echo $servicecall->fault_description; ?>
         </div>
 
 
-
-        <?= Html::button('<i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-success','id' => 'customer_edit_btn', 'onclick' => '(function ( $event ) {  togglecustomereditbox(); })();']); ?>
-        <div id="customer_edit_block" style="display: none  ;">
-
-
-            <?php echo $this->render('//customer/editcustomeronly', [
-                    'customer_id' => $servicecall->customer_id,
-                 ]
-            ); ?>
-
-        </div><!-- <div id="customer_edit_block" end of customer_edit_block -->
+    </div><!-- end of servicecall_view_block-->
+</div>
+<!-- end of Div servicecallbox  -->
 
 
-    </div>
+<br><br>
+
+<!-- spares Section -->
+
+<?= Html::button('Spares', ['class' => 'btn-lg sparesheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#sparesbox").toggle("slow"); })();']); ?>
+<div id="sparesbox" class="sparesbox contentbox" style="display: <?php echo $spares_block; ?>">
+
+    <button id="spares_check_btn" class="btn-clear" style="float: right; color:grey;"
+            onclick="sparesrequested();">
+        <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
+    </button>
+
+    <?= Html::button('<i class="fa fa-gears  fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'upload_document_and_manuals_btn', 'onclick' => '(function ( $event ) {  togglespareseditbox(); })();']); ?>
+    <div id="spares_edit_block" style="display: block  ;">
+
+
+        <?php echo $this->render('//sparesused/requestsparepart', [
+                'servicecallmodel' => $servicecall
+            ]
+        ); ?>
+
+
+
+    </div><!-- <div id="spares_edit_block" end of spares_edit_block -->
+
+    <hr>
+    <div id="spares_view_block" style="display: block  ;">
+
+
+
+        <table class="full_width ">
+            <tr>
+                <th>Used</th>
+                <th>Name</th>
+                <th>Qty</th>
+            </tr>
+            <?php $appspares = Sparesused::loadallsparesbyservicecallid($servicecall->id); ?>
+            <?php foreach ($appspares as $sparepart): ?>
+                <tr>
+
+                    <td>
+                        <?php $togglesparesusedurl = Url::to(['sparesused/togglesparesused', 'id' => $sparepart->id]); ?>
+
+                        <a href="<?php echo $togglesparesusedurl; ?>">
+                            <div class="mobile_content">
+                                <?php if ($sparepart->used == 1) {
+                                    echo '<i class="fa fa-check-square-o" aria-hidden="true"></i>';
+
+                                } else {
+                                    echo '<i class="fa fa-square-o" aria-hidden="true"></i>';
+                                } ?>
+                            </div>
+                        </a>
+
+                    </td>
+                    <td>
+                        <div class="mobile_content">
+                            <?php echo $sparepart->item_name . ' - ' . $sparepart->part_number; ?>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="mobile_content">
+                            <?php echo $sparepart->quantity ?>
+                        </div>
+                    </td>
+
+                </tr>
+
+            <?php endforeach; ?>
+        </table>
+
+
+    </div><!-- end of spares_view_block-->
+</div>
+<!-- end of Div sparesbox  -->
+
+
+
+
+<br><br>
+
+<!-- Signature Section -->
+
+<?= Html::button('Signature', ['class' => 'btn-lg signatureheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#signaturebox").toggle("slow"); })();']); ?>
+<div id="signaturebox" class="signaturebox contentbox" style="display: <?php echo $signature_block;?>">
+
+    <?= Html::button('<i class="fa fa-glide-g  fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'upload_document_and_manuals_btn', 'onclick' => '(function ( $event ) {  togglesignatureeditbox(); })();']); ?>
+    <div id="signature_edit_block" style="display: block  ;">
+
+
+        <?php echo $this->render('//documentsmanuals/capturesignature', [
+                'servicecallmodel' => $servicecall
+            ]
+        ); ?>
+
+    </div><!-- <div id="signature_edit_block" end of signature_edit_block -->
+
+
+    <hr>
+
+
+    <div id="signature_view_block">
+        <?php $signatures = Documentsmanuals::loadallallsignaturesforservicecallid($servicecall->id); ?>
+
+        <table class="full_width responsivetable">
+        <?php foreach ($signatures as $sign): ?>
+            <tr>
+                <td><?php echo $sign->document->doctype->name; ?></td>
+                <td>
+                    <?php $sign_link = Yii::$app->params['documents_upload_location_web_path'] . $sign->document->filename; ?>
+                    <a href=<?php echo $sign_link; ?> target="_blank">
+                        <?php echo $sign->document->name; ?>
+                    </a>
+                </td>
+
+            </tr>
+
+        <?php endforeach; ?>
+        </table>
+
+
+    </div><!-- end of signature_view_block-->
+</div>
+<!-- end of Div signaturebox  -->
+
+<hr>
+
+
+<br>
+
+
+<?php $job_finished_url = Url::to(['servicecall/jobfinished', 'servicecall_id' => $servicecall->id]); ?>
+
+<table class="full_width responsive-stacked-table">
+    <tr>
+        <td>
+            <?php $job_finished_id='22'; ?>
+            <?php $job_finished_url = Url::to(['servicecall/jobfinished', 'servicecall_id' => $servicecall->id, 'job_status_id' => $job_finished_id]); ?>
+            <a href="<?php echo $job_finished_url ; ?>">
+                <button class="btn btn-success center-block" >
+                    <h4>
+                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        Job Finished
+                    </h4>
+                </button>
+
+            </a>
+        </td>
+        <td>
+            <?php $no_access_id='9'; ?>
+            <?php $no_access_url = Url::to(['servicecall/jobfinished', 'servicecall_id' => $servicecall->id, 'job_status_id' => $no_access_id]); ?>
+            <a href="<?php echo $no_access_url ; ?>">
+                <button class="btn btn-danger center-block" >
+                    <h4>
+                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                        No Access
+                    </h4>
+                </button>
+            </a>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" class="contentbox">
+
+            <?= Html::button('<h4><i class="fa fa-paper-plane"></i> Email Invoice </h4>', ['class'=>'btn btn-info center-block', 'onclick' => '(function ( $event ) { $("#email_servicecall_block").toggle("slow"); })();']); ?>
+
+            <div id="email_servicecall_block" style="display: none  ;">
+
+
+                <?php echo $this->render('//servicecall/emailform', [
+                        'servicecallmodel' => $servicecall
+                    ]
+                ); ?>
+
+            </div><!-- <div id="signature_edit_block" end of signature_edit_block -->
+
+
+
+        </td>
+    </tr>
+
+</table>
+
 

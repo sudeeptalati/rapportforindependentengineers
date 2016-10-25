@@ -57,11 +57,11 @@ class Product extends \yii\db\ActiveRecord
             [['purchased_from', 'model_number', 'serial_number', 'production_code', 'enr_number', 'fnr_number', 'notes'], 'string'],
             [['purchase_date', 'warranty_date', 'created', 'modified', 'cancelled'], 'safe'],
             [['purchase_price'], 'number'],
-            [['engineer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Engineer::className(), 'targetAttribute' => ['engineer_id' => 'id']],
+            //[['engineer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Engineer::className(), 'targetAttribute' => ['engineer_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
             [['product_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['product_type_id' => 'id']],
             [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand_id' => 'id']],
-            [['contract_id'], 'exist', 'skipOnError' => true, 'targetClass' => Contract::className(), 'targetAttribute' => ['contract_id' => 'id']],
+            //[['contract_id'], 'exist', 'skipOnError' => true, 'targetClass' => Contract::className(), 'targetAttribute' => ['contract_id' => 'id']],
         ];
     }
 
@@ -73,8 +73,8 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'contract_id' => Yii::t('app', 'Contract ID'),
-            'brand_id' => Yii::t('app', 'Brand ID'),
-            'product_type_id' => Yii::t('app', 'Product Type ID'),
+            'brand_id' => Yii::t('app', 'Brand'),
+            'product_type_id' => Yii::t('app', 'Product Type'),
             'customer_id' => Yii::t('app', 'Customer ID'),
             'engineer_id' => Yii::t('app', 'Engineer ID'),
             'purchased_from' => Yii::t('app', 'Purchased From'),
@@ -83,8 +83,8 @@ class Product extends \yii\db\ActiveRecord
             'model_number' => Yii::t('app', 'Model Number'),
             'serial_number' => Yii::t('app', 'Serial Number'),
             'production_code' => Yii::t('app', 'Production Code'),
-            'enr_number' => Yii::t('app', 'Enr Number'),
-            'fnr_number' => Yii::t('app', 'Fnr Number'),
+            'enr_number' => Yii::t('app', 'Color '),
+            'fnr_number' => Yii::t('app', 'Appliance Age (in months)'),
             'discontinued' => Yii::t('app', 'Discontinued'),
             'warranty_for_months' => Yii::t('app', 'Warranty For Months'),
             'purchase_price' => Yii::t('app', 'Purchase Price'),

@@ -58,19 +58,19 @@ $next_day_url=Url::to(['site/index', 'date' => $next_day]);
         <table style="width: 100%">
             <tr>
                 <td>
-                    <a class="link_white_color" href="<?php echo $previous_day_url;?>">
+                    <a class="white_color" href="<?php echo $previous_day_url;?>">
                         <i class="fa fa-arrow-circle-left"></i>
                     </a>
                 </td>
                 <td>
-                    <a class="link_white_color" href="<?php echo $next_day_url;?>">
+                    <a class="white_color" href="<?php echo $next_day_url;?>">
                         <i class="fa fa-arrow-circle-right"></i>
                     </a>
                 </td>
             </tr>
         </table>
 
-        <a class="link_white_color" href="<?php echo $calendar_url;?>">
+        <a class="white_color" href="<?php echo $calendar_url;?>">
             <?php echo $month_string; ?>
         </a>
 

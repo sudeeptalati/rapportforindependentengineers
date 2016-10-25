@@ -223,6 +223,85 @@ a.desc:after {
 /*////////////MY CSSS///////////*/
 
 
+table.responsivetable {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-family: Agenda-Light, sans-serif;
+    font-weight: 100;
+    background: #333; color: #fff;
+    text-rendering: optimizeLegibility;
+    border-radius: 5px;
+}
+table.responsivetable caption {
+    font-size: 2rem; color: #444;
+    margin: 1rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center left, center right;
+}
+table.responsivetable thead th { font-weight: 600; }
+table.responsivetable thead th, table.responsivetable tbody td {
+    padding: .8rem; font-size: 1.4rem;
+}
+table.responsivetable tbody td {
+    vertical-align: top;
+    padding: .8rem; font-size: 1.4rem;
+    color: #444; background: #eee;
+}
+table.responsivetable tbody tr td:first-child {
+    background: #666; color: #fff;
+}
+
+table.responsivetable tbody tr:not(:last-child) {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+@media screen and (max-width: 600px) {
+    table.responsivetable caption { background-image: none; }
+    table.responsivetable thead { display: none; }
+    table.responsivetable tbody td {
+        display:block; padding: .6rem;
+    }
+    table.responsivetable tbody tr td:first-child {
+        background: #666; color: #fff;
+    }
+    table.responsivetable tbody td:before {
+        content: attr(data-th);
+        font-weight: bold;
+        display: inline-block;
+
+        /*width: 6rem;*/
+    }
+
+}
+
+
+
+/* responsive tables */
+
+.responsive-stacked-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.responsive-stacked-table td{
+    padding: 10px 10px;
+    vertical-align: top;
+
+}
+
+@media (max-width: 700px) {
+    .responsive-stacked-table tr,
+    .responsive-stacked-table th,
+    .responsive-stacked-table td {
+        display: block;
+    }
+}
+
+
 .emailbox {
     background-color: #F6F6F6;
     margin: 10px;
@@ -257,12 +336,14 @@ a.desc:after {
     background: #E5F1F4;
 }
 
+/*
 .alert {
     color: #D0583F;
     background-color: #FFFBFB;
     border-bottom: 1px solid #F8C9BB;
     border-right: 1px solid #F8C9BB;
 }
+*/
 
 .info {
     color: #fff;
@@ -466,6 +547,19 @@ a.desc:after {
     letter-spacing: 2px;
 }
 
+.mobile_content {
+    font-size: 20px;
+    font-weight: 300;
+    padding-left: 10px;
+    letter-spacing: 2px;
+}
+
+.mobile_content_title {
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
 
 
 
@@ -501,7 +595,7 @@ a.desc:after {
     background-color: #C7E8FD;
 }
 .customerheadingbox {
-    background-color: #6FACCF;
+    background-color: #0573b3;
 }
 
 
@@ -511,6 +605,7 @@ a.desc:after {
 .productheadingbox {
     background-color: #4a794a;
 }
+
 
 .servicebox {
     background-color: #e0f2f5;
@@ -528,10 +623,25 @@ a.desc:after {
 }
 
 .attachmentsbox {
-    background-color: #cce8dd;
+    background-color: #e2cccc;
 }
 .attachmentsheadingbox {
-    background-color: #6c9e89;
+    background-color: #a25b5b   ;
+}
+
+
+.signaturebox {
+    background-color: #e0e0e0;
+}
+.signatureheadingbox {
+    background-color: #000000;
+}
+
+.sparesbox {
+    background-color: #deeffe;
+}
+.sparesheadingbox {
+    background-color: #2196f3;
 }
 
 
@@ -586,7 +696,7 @@ div.today_border {
     font-family: Verdana, sans-serif;
 }
 
-.link_white_color{
+.white_color{
     color:white;
 }
 
@@ -597,76 +707,31 @@ div.today_border {
     font-size: 20px;
 }
 
-
-
-
-table.responsivetable {
-    width: 100%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    font-family: Agenda-Light, sans-serif;
-    font-weight: 100;
-    background: #333; color: #fff;
-    text-rendering: optimizeLegibility;
-    border-radius: 5px;
-}
-table.responsivetable caption {
-    font-size: 2rem; color: #444;
-    margin: 1rem;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center left, center right;
-}
-table.responsivetable thead th { font-weight: 600; }
-table.responsivetable thead th, table.responsivetable tbody td {
-    padding: .8rem; font-size: 1.4rem;
-}
-table.responsivetable tbody td {
-    vertical-align: top;
-    padding: .8rem; font-size: 1.4rem;
-    color: #444; background: #eee;
-}
-table.responsivetable tbody tr td:first-child {
-    background: #666; color: #fff;
+.horizontal-list{
+    float:right;
+    position:relative;
+    left:-50%;
+    text-align:left;
 }
 
-table.responsivetable tbody tr:not(:last-child) {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+.horizontal-list ul{
+    list-style:none;
+    position:relative;
+    left:50%;
 }
 
-@media screen and (max-width: 600px) {
-    table.responsivetable caption { background-image: none; }
-    table.responsivetable thead { display: none; }
-    table.responsivetable tbody td {
-        display:block; padding: .6rem;
-    }
-    table.responsivetable tbody tr td:first-child {
-        background: #666; color: #fff;
-    }
-    table.responsivetable tbody td:before {
-        content: attr(data-th);
-        font-weight: bold;
-        display: inline-block;
+.horizontal-list li{
+    display: inline;
+    float:left;
+    position:relative;
+    width: 50px;
+}/* ie needs position:relative here*/
 
-        /*width: 6rem;*/
-    }
 
+
+.btn-clear{
+    padding: 0;
+    border: none;
+    background: none;
 }
 
-
-
-/* responsive tables */
-
-.responsive-stacked-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-@media (max-width: 767px) {
-    .responsive-stacked-table tr,
-    .responsive-stacked-table th,
-    .responsive-stacked-table td {
-        display: block;
-    }
-}

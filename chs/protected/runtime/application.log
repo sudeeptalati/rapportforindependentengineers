@@ -2127,3 +2127,241 @@ in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindepend
 in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/DocumentsmanualsController.php (71)
 in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php (36)
 in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php (20)
+2016/10/19 17:31:27 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not allowed to access this page.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/gii/GiiModule.php:170
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(263): GiiModule->beforeControllerAction(Object(DefaultController), Object(CInlineAction))
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('')
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('gii')
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#5 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=gii
+---
+2016/10/19 17:31:45 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not allowed to access this page.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/gii/GiiModule.php:170
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(263): GiiModule->beforeControllerAction(Object(DefaultController), Object(CInlineAction))
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('')
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('gii')
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#5 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=gii
+---
+2016/10/20 12:48:27 [error] [php] Trying to get property of non-object (/Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CComponent.php(612) : eval()'d code:1)
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/zii/widgets/grid/CGridColumn.php(151): CDataColumn->renderDataCellContent()
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/zii/widgets/grid/CGridView.php(616): CDataColumn->renderDataCell()
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/zii/widgets/grid/CGridView.php(572): CGridView->renderTableRow()
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/zii/widgets/grid/CGridView.php(482): CGridView->renderTableBody()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/zii/widgets/CBaseListView.php(167): CGridView->renderItems()
+#5 unknown(0): CGridView->renderSection()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/zii/widgets/CBaseListView.php(150): preg_replace_callback()
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/zii/widgets/CBaseListView.php(135): CGridView->renderContent()
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CBaseController.php(173): CGridView->run()
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/views/documentsmanuals/admin.php(115): DocumentsmanualsController->widget()
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CBaseController.php(126): require()
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CBaseController.php(95): DocumentsmanualsController->renderInternal()
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(869): DocumentsmanualsController->renderFile()
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(782): DocumentsmanualsController->renderPartial()
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/DocumentsmanualsController.php(237): DocumentsmanualsController->render()
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(49): DocumentsmanualsController->actionAdmin()
+#16 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams()
+#17 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): DocumentsmanualsController->runAction()
+#18 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#19 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): RightsFilter->filter()
+#20 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): DocumentsmanualsController->filterRights()
+#21 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#22 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#23 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): DocumentsmanualsController->runActionWithFilters()
+#24 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): DocumentsmanualsController->run()
+#25 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#26 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#27 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CWebApplication->run()
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=documentsmanuals/admin
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/views/documentsmanuals/admin.php (115)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/DocumentsmanualsController.php (237)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php (36)
+2016/10/20 16:19:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "engdddgdiary/changeEngineer".' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('engdddgdiary/ch...')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#3 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=engdddgdiary/changeEngineer&month=10&year=16
+---
+2016/10/20 16:20:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "engdddgdiary/changeEngineer".' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('engdddgdiary/ch...')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#3 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=engdddgdiary/changeEngineer&month=10&year=16
+---
+2016/10/20 16:22:47 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "engdddgdiary/changeEngineer".' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('engdddgdiary/ch...')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#3 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=engdddgdiary/changeEngineer&month=10&year=16
+---
+2016/10/20 16:22:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "engdddgdiary/changeEngineer".' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('engdddgdiary/ch...')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#3 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=engdddgdiary/changeEngineer&month=10&year=16
+---
+2016/10/20 23:04:58 [warning] [application] Failed to set unsafe attribute "upload" of "Documentsmanuals".
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/DocumentsmanualsController.php (100)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php (36)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php (20)
+2016/10/21 17:13:06 [error] [exception.CException] exception 'CException' with message 'SparesUsedController and its behaviors do not have a method or closure named "findModel".' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CComponent.php:266
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/SparesusedController.php(251): CComponent->__call('findModel', Array)
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/SparesusedController.php(251): SparesUsedController->findModel('11019')
+#2 [internal function]: SparesUsedController->actionTogglesparesused('11019')
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(SparesUsedController), Array)
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(SparesUsedController), Object(ReflectionMethod), Array)
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): CFilter->filter(Object(CFilterChain))
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): RController->filterRights(Object(CFilterChain))
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('togglesparesuse...')
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('sparesused/togg...')
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#16 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#17 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=sparesused/togglesparesused&id=11019
+---
+2016/10/21 17:13:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "viewappointment".' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php:483
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(270): CController->missingAction('viewappointment')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('viewappointment')
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('enggdiary/viewa...')
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#5 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=enggdiary/viewappointment&servicecall_id=4668
+---
+2016/10/21 17:13:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "viewappointment".' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php:483
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(270): CController->missingAction('viewappointment')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('viewappointment')
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('enggdiary/viewa...')
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#5 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=enggdiary/viewappointment&servicecall_id=4668
+---
+2016/10/21 17:13:37 [error] [php] Undefined variable: service_id (/Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/SparesusedController.php:259)
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams()
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): SparesUsedController->runAction()
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): RightsFilter->filter()
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): SparesUsedController->filterRights()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): SparesUsedController->runActionWithFilters()
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): SparesUsedController->run()
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CWebApplication->run()
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=sparesused/togglesparesused&id=11019
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/SparesusedController.php (259)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php (36)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php (20)
+2016/10/21 17:13:51 [error] [php] Object of class SparesUsed could not be converted to string (/Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/SparesusedController.php:259)
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams()
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): SparesUsedController->runAction()
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): RightsFilter->filter()
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): SparesUsedController->filterRights()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): SparesUsedController->runActionWithFilters()
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): SparesUsedController->run()
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CWebApplication->run()
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=sparesused/togglesparesused&id=11019
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/SparesusedController.php (259)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php (36)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php (20)
+2016/10/21 17:13:58 [error] [exception.CException] exception 'CException' with message 'Property "SparesUsed.service_id" is not defined.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CComponent.php:130
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/ar/CActiveRecord.php(145): CComponent->__get('service_id')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/SparesusedController.php(259): CActiveRecord->__get('service_id')
+#2 [internal function]: SparesUsedController->actionTogglesparesused('11019')
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(SparesUsedController), Array)
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(SparesUsedController), Object(ReflectionMethod), Array)
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): CFilter->filter(Object(CFilterChain))
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): RController->filterRights(Object(CFilterChain))
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('togglesparesuse...')
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('sparesused/togg...')
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#16 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#17 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=sparesused/togglesparesused&id=11019
+---
+2016/10/21 17:13:59 [error] [exception.CException] exception 'CException' with message 'Property "SparesUsed.service_id" is not defined.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CComponent.php:130
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/ar/CActiveRecord.php(145): CComponent->__get('service_id')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/SparesusedController.php(259): CActiveRecord->__get('service_id')
+#2 [internal function]: SparesUsedController->actionTogglesparesused('11019')
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(SparesUsedController), Array)
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(SparesUsedController), Object(ReflectionMethod), Array)
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): CFilter->filter(Object(CFilterChain))
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): RController->filterRights(Object(CFilterChain))
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('togglesparesuse...')
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('sparesused/togg...')
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#16 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#17 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=sparesused/togglesparesused&id=11019
+---
+2016/10/25 02:18:21 [error] [exception.CException] exception 'CException' with message 'Filter "rights" is invalid. Controller "ServicecallController" does not have the filter method "filterrights".' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php:46
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(72): CInlineFilter::create(Object(ServicecallController), 'rights')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain::create(Object(ServicecallController), Object(CInlineAction), Array)
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('preview')
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('servicecall/pre...')
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#7 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/preview&id=4571
+---
+2016/10/25 02:18:32 [error] [exception.CException] exception 'CException' with message 'Filter "accessrights" is invalid. Controller "ServicecallController" does not have the filter method "filteraccessrights".' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php:46
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(72): CInlineFilter::create(Object(ServicecallController), 'accessrights')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain::create(Object(ServicecallController), Object(CInlineAction), Array)
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('preview')
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('servicecall/pre...')
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#7 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/preview&id=4571
+---

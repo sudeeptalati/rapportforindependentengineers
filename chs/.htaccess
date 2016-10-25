@@ -1,6 +1,9 @@
-Options +FollowSymLinks
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond $1 !^(index\.php)
-RewriteRule ^(.+)$ index.php?$1 [PT,L,QSA]
+#Options +FollowSymLinks
+#RewriteEngine On
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond $1 !^(index\.php)
+#RewriteRule ^(.+)$ index.php?$1 [PT,L,QSA]
+
+
+#ABOVE CODE DISABLED BECAUSE IF IMAGE NOT FOUND IN MOBILE, IT WAS LOADING THE HOME PAGE OF MAILN CALL HANDLING

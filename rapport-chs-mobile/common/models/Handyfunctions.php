@@ -129,7 +129,7 @@ class Handyfunctions extends Model
     ////Brand
     public static function get_all_brands_for_drop_down()
     {
-        return ArrayHelper::map(Brand::find()->orderBy(['manufacturer'=>SORT_ASC])->all(), 'manufacturer_id', 'manufacturer');
+        return ArrayHelper::map(Brand::find()->orderBy(['name'=>SORT_ASC])->all(), 'id', 'name');
     }//    public function get_all_brands_for_drop_down()
 
     public static function get_brand_name($brand_id)
@@ -142,7 +142,7 @@ class Handyfunctions extends Model
     ////Product Type
     public static function get_all_product_types_for_drop_down()
     {
-        return ArrayHelper::map(Producttype::find()->orderBy(['product_type'=>SORT_ASC])->all(), 'product_id', 'product_type');
+        return ArrayHelper::map(Producttype::find()->orderBy(['name'=>SORT_ASC])->all(), 'id', 'name');
     }//    public function get_all_brands_for_drop_down()
 
     public static function get_product_type_name($product_type_id)
@@ -433,6 +433,7 @@ class Handyfunctions extends Model
 
         if (strlen($mobile)!=0)
         {
+
             ///If first two places are 44
             if (substr($mobile, 0, 2) == '44') {
                 $mobile='+'.$mobile;

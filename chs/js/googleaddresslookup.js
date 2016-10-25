@@ -16,7 +16,11 @@ var valuesinform={
     administrative_area_level_2: null, //this is county like east ayrshire
     administrative_area_level_1: null, //this is like Scotland, England
     country: 'Customer_country',
-    postal_code: 'Customer_postcode'
+    postal_code: 'Customer_postcode',
+    latitudes: 'Customer_latitudes',
+    longitudes: 'Customer_longitudes'
+
+
 }
 
 $( "#autocomplete" ).keyup(function() {
@@ -66,6 +70,13 @@ function formatdatatoaddress(address_data_obj)
 
     address_components=address_data_obj.results[0].address_components;
 
+    geometry_location=address_data_obj.results[0].geometry.location;
+    //console.log(geometry_location.lat);
+    //console.log(geometry_location.lng);
+
+    $("#"+valuesinform['latitudes']).val( geometry_location.lat);
+    $("#"+valuesinform['longitudes']).val(geometry_location.lng);
+
     for (var i=0;i<address_components.length;i++)
     {
         //console.log(address_components[i]);
@@ -112,11 +123,11 @@ $( "#Customer_mobile" ).keyup(function() {
     countrycode=$( "#code_disp_textField" ).val();
     customer_mobile=$( "#Customer_mobile" ).val();
 
-     if(customer_mobile.startsWith(0))
-     {
-         customer_mobile = customer_mobile.substring(1);
-         $( "#Customer_mobile" ).val(customer_mobile);
-         console.log(customer_mobile);
+    if(customer_mobile.startsWith(0))
+    {
+        customer_mobile = customer_mobile.substring(1);
+        $( "#Customer_mobile" ).val(customer_mobile);
+        console.log(customer_mobile);
 
-     }
+    }
 });///endof $( "#Customer_mobile" ).keyup(function() {

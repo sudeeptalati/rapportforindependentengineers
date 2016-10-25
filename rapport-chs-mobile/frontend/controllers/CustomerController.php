@@ -93,6 +93,36 @@ class CustomerController extends Controller
         }
     }
 
+
+
+    public function actionUpdateeditcustomeronly()
+    {
+        $customer_id= Yii::$app->getRequest()->get('customer_id');
+        $servicecall_id= Yii::$app->getRequest()->get('servicecall_id');
+
+        if ($customer_id && $servicecall_id)
+        {
+            $model = $this->findModel($customer_id);
+
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'customer_block'=>'true']);
+            } else {
+                Yii::$app->session->setFlash('warning', 'Try again from here');
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+        }else
+        {
+            Yii::$app->session->setFlash('error', 'You landed here due wrong path, if happens again please contact support');
+            return $this->redirect(['site/calendar']);
+        }
+    }
+
+
+
+
+
     /**
      * Deletes an existing Customer model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

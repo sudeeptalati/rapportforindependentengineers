@@ -169,6 +169,10 @@
 				<?php echo $form->labelEx($model,'postcode'); ?>
 				<?php echo $form->textField($model,'postcode'); ?>
 				<?php echo $form->error($model,'postcode'); ?>
+				<?php echo $form->hiddenField($model, 'latitudes'); ?>
+				<?php echo $form->hiddenField($model, 'longitudes'); ?>
+
+
 			</td>
 		</tr>
 

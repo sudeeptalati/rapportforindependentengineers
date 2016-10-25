@@ -225,7 +225,7 @@ class SparesUsedController extends RController
         $this->updatesparestotal($service_id);
 
         //$this->redirect(array('/servicecall/update/'.$service_id));
-        $this->redirect(array('servicecall/view&id='.$service_id.'#spares_details'));
+        $this->redirect(array('servicecall/view&id='.$service_id.'#sparesbox'));
 
         /*
         if(Yii::app()->request->isPostRequest)
@@ -242,6 +242,29 @@ class SparesUsedController extends RController
         */
 
     }
+
+
+
+    public function actionTogglesparesused($id)
+    {
+
+        $model = $this->loadModel($id);
+
+        if ($model->used==1)
+            $model->used=0;
+        else
+            $model->used=1;
+
+        if ($model->save()) {
+            $this->redirect(array('servicecall/view&id='.$model->servicecall_id.'#sparesbox'));
+        }
+        echo "Error: Please contact support";
+
+    }///end of toggle spares used
+
+
+
+
 
     /**
      * Lists all models.

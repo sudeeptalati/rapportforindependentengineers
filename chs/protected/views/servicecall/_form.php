@@ -149,6 +149,10 @@ else
                                 <?php echo $form->labelEx($customerModel, 'postcode'); ?>
                                 <?php echo $form->textField($customerModel, 'postcode'); ?>
                                 <?php echo $form->error($customerModel, 'postcode'); ?>
+
+                                <?php echo $form->hiddenField($customerModel, 'latitudes'); ?>
+                                <?php echo $form->hiddenField($customerModel, 'longitudes'); ?>
+
                             </td>
                             <td>
                                 <?php echo $form->labelEx($customerModel, 'country'); ?>

@@ -137,7 +137,7 @@ class Product extends CActiveRecord
 			'created' => 'Created',
 			'modified' => 'Modified',
 			'cancelled' => 'Cancelled',
-		/*USER ADDED ATTRIBUTED*/
+		    /*USER ADDED ATTRIBUTED*/
 			'warranty_until' => 'Warranty Expires',
 			'distributor' => 'Distributor',
 		);

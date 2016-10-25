@@ -70,7 +70,7 @@ class Customer extends CActiveRecord
 		return array(
 			array('title, last_name, address_line_1, town, postcode', 'required'),
 			array('product_id, created_by_user_id', 'numerical', 'integerOnly' => true),
-			array('first_name, address_line_2, address_line_3, country,telephone, mobile, email, fax, notes, modified, fullname, lockcode, model_number, serial_number', 'safe'),
+			array('latitudes, longitudes, first_name, address_line_2, address_line_3, country,telephone, mobile, email, fax, notes, modified, fullname, lockcode, model_number, serial_number', 'safe'),
 			array('email', 'email'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -369,32 +369,33 @@ class Customer extends CActiveRecord
 	}
 
 
-	public function update_customer_address_coordinates($customer_id)
-	{
-		$model=Customer::model()->findByPk($customer_id);
+    public function update_customer_address_coordinates($customer_id)
+    {
+        $model=Customer::model()->findByPk($customer_id);
 
-		$fulladdress=Setup::model()->formataddress($model->address_line_1, $model->address_line_2, $model->address_line_3, $model->town, $model->postcode);
+        $fulladdress=Setup::model()->formataddress($model->address_line_1, $model->address_line_2, $model->address_line_3, $model->town, $model->postcode);
 
-		$address_coordinates=Setup::model()->getlatlngofaddress($fulladdress);
+        $address_coordinates=Setup::model()->getlatlngofaddress($fulladdress);
 
-		if ($address_coordinates['status']==='OK')
-		{
-			$uc=Customer::model()->updateByPk($customer_id,
-				array(
-					'latitudes' => $address_coordinates['lat'],
-					'longitudes'=>$address_coordinates['lng'],
-				)
-			);
+        //echo "I AM CALLEd".var_dump($address_coordinates);
+        if ($address_coordinates['status']==='OK')
+        {
+            $uc=Customer::model()->updateByPk($customer_id,
+                array(
+                    'latitudes' => $address_coordinates['lat'],
+                    'longitudes'=>$address_coordinates['lng'],
+                )
+            );
 
-			if ($uc)
-				return  "SAVED";
-			else
-				return "NOTSAVED";
+            if ($uc)
+                return  "Coordinates found and SAVED";
+            else
+                return "Coordinates found but NOT SAVED. Please contact support. ";
 
-		}//end of if ($address_coordinates['status']=='OK')
-		else
-			return "Problem in Getting coordinates. Please contact support";
-	}
+        }//end of if ($address_coordinates['status']=='OK')
+        else
+            return "Problem in Getting coordinates. Please contact support";
+    }
 
 
 }//end of class.

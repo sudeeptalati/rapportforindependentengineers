@@ -130,6 +130,9 @@ class AdminController extends Controller
 	 */
 	public function actionDelete()
 	{
+
+	    //?We have disabled the delete as it might conflidt with other records
+	    /*
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
@@ -143,6 +146,9 @@ class AdminController extends Controller
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+	*/
+
+
 	}
 	
 	

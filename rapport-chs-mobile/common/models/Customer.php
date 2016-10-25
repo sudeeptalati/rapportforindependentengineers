@@ -2,8 +2,10 @@
 
 namespace common\models;
 
+
 use Yii;
 
+use common\models\Handyfunctions;
 /**
  * This is the model class for table "customer".
  *
@@ -53,7 +55,10 @@ class Customer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['title', 'last_name', 'address_line_1', 'town', 'postcode'], 'required'],
             [['product_id', 'created_by_user_id', 'lockcode'], 'integer'],
+            [['email'], 'email'],
+
             [['title', 'first_name', 'last_name', 'fullname', 'address_line_1', 'address_line_2', 'address_line_3', 'town', 'postcode_s', 'postcode_e', 'postcode', 'county', 'state', 'country', 'latitudes', 'longitudes', 'telephone', 'mobile', 'fax', 'email', 'notes'], 'string'],
             [['created', 'modified'], 'safe'],
         ];
@@ -94,6 +99,24 @@ class Customer extends \yii\db\ActiveRecord
             'lockcode' => Yii::t('app', 'Lockcode'),
         ];
     }
+
+    public function beforeSave($insert)
+    {
+        $this->fullname=$this->title.' '.$this->first_name.' '.$this->last_name;
+        $this->telephone=Handyfunctions::formatphonenoforuk($this->telephone);
+        $this->mobile=Handyfunctions::formatphonenoforuk($this->mobile);
+
+        if (parent::beforeSave($insert)) {
+            // Place your custom code here
+
+            return true;
+        } else {
+
+            return false;
+        }
+    }//end of before save
+
+
 
     /**
      * @return \yii\db\ActiveQuery

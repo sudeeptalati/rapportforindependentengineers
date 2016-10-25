@@ -7,6 +7,7 @@
  * @property integer $id
  * @property string $name
  * @property string $info
+ * @property string $category
  */
 class Documenttype extends CActiveRecord
 {
@@ -26,10 +27,10 @@ class Documenttype extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, info', 'safe'),
+			array('name, info, category', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, info', 'safe', 'on'=>'search'),
+			array('id, name, info, category', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,6 +54,7 @@ class Documenttype extends CActiveRecord
 			'id' => 'ID',
 			'name' => 'Name',
 			'info' => 'Info',
+            'category'=>'Category'
 		);
 	}
 
@@ -76,7 +78,9 @@ class Documenttype extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('info',$this->info,true);
+        $criteria->compare('info',$this->info,true);
+        $criteria->compare('category',$this->category,true);
+
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -93,4 +97,16 @@ class Documenttype extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+
+	public function getdocumentcategory()
+    {
+
+        return array(
+            'SIGNATURE'=>'SIGNATURE',
+            'IMAGE'=>'IMAGE',
+            'MANUAL'=>'MANUAL'
+        );
+    }//end of 	public function getdocumentcategory()
+
 }

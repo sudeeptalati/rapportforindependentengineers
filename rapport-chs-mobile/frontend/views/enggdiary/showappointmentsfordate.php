@@ -64,6 +64,11 @@ $this->title=$date_string.'| Diary | Rapport';
 
             <td>
                 <?php echo $app->servicecall->customer->fullname; ?>
+                <br>
+                <small>
+                    <?php echo $app->servicecall->jobstatus->html_name; ?>
+
+                </small>
             </td>
 
             <td>

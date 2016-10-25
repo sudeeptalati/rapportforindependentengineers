@@ -87,6 +87,13 @@ class Servicecall extends \yii\db\ActiveRecord
     }
 
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getContract()
+    {
+        return $this->hasOne(Contract::className(), ['id' => 'contract_id']);
+    }
 
 
 
@@ -95,7 +102,12 @@ class Servicecall extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
+
+
+
         return [
+
+            /*
             'id' => Yii::t('app', 'ID'),
             'service_reference_number' => Yii::t('app', 'Service Reference Number'),
             'customer_id' => Yii::t('app', 'Customer ID'),
@@ -106,7 +118,7 @@ class Servicecall extends \yii\db\ActiveRecord
             'job_status_id' => Yii::t('app', 'Job Status ID'),
             'fault_date' => Yii::t('app', 'Fault Date'),
             'fault_code' => Yii::t('app', 'Fault Code'),
-            'fault_description' => Yii::t('app', 'Fault Description'),
+            'fault_description' => Yii::t('app', 'Issue Reported '),
             'engg_diary_id' => Yii::t('app', 'Engg Diary ID'),
             'work_carried_out' => Yii::t('app', 'Work Carried Out'),
             'spares_used_status_id' => Yii::t('app', 'Spares Used Status ID'),
@@ -126,6 +138,39 @@ class Servicecall extends \yii\db\ActiveRecord
             'comments' => Yii::t('app', 'Comments'),
             'recalled_job' => Yii::t('app', 'Recalled Job'),
             'work_summary' => Yii::t('app', 'Work Summary'),
+
+            */
+            'id' => 'ID',
+            'service_reference_number' => 'Job Ref. No#',
+            'customer_id' => 'Customer',
+            'product_id' => 'Product',
+            'contract_id' => 'Job Type',
+            'engineer_id' => 'Servicecall Engineer',
+            'insurer_reference_number' => 'Insurer Reference No#',
+            'job_status_id' => 'Job Status',
+            'fault_date' => 'Reported Date',
+            'fault_code' => 'Agreement No./ Plan No. ',
+            'fault_description' => 'Issue Reported',
+            'engg_diary_id' => 'Engineer Diary',
+            'work_carried_out' => 'Work Carried Out',
+            'spares_used_status_id' => 'Spares Used ',
+            'total_cost' => 'Total Cost',
+            'vat_on_total' => 'Vat On Total',
+            'net_cost' => 'Net Cost',
+            'job_payment_date' => 'Job Payment Date',
+            'job_finished_date' => 'Job Finished Date',
+            'notes' => 'Ω BER Authority No. / Test Results / Booking Time , etc',
+            'created_by_user_id' => 'Created By User',
+            'created' => 'Created',
+            'modified' => 'Modified',
+            'cancelled' => 'Cancelled',
+            'closed' => 'Closed',
+            'comments' => 'Comments ',
+            'work_summary' => 'Work Summary',
+
+            ///Custom Labels
+            'contract' => 'Contract',
+
         ];
     }
 

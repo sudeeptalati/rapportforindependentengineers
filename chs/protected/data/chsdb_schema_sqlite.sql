@@ -75,3 +75,9 @@ CREATE TABLE "servicecalls_docs_manuals" ('servicecall_id' INTEGER NOT NULL, 'do
 
 
 CREATE TABLE 'engineer_login' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'username' TEXT, 'password' TEXT, 'authKey' TEXT, 'accessToken' TEXT, 'active' DATETIME, 'created' DATETIME);
+
+
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('22','Job Completed by Engineer','','1','1','1','1',NULL,'','1',NULL,'')
+
+

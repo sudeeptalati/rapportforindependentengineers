@@ -206,4 +206,117 @@ function selectrow(master_item_id, item_nm, part_nm) {
 
 
 
+//////////Duration of Appointment
 
+if ( $( "#admintimer" ).length ) {
+    var seconds = 0, minutes = 0, hours = 0, countingseconds=0,
+        t;
+    timer();
+
+}
+start = new Date().getTime();
+
+function add() {
+    seconds++;
+
+    if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+
+    document.getElementById('admintimer').innerHTML = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+    timer();
+}
+
+function countseconds()
+{
+    countingseconds++;
+    //document.getElementById('Servicecall_time_spent_on_call_now').value=countingseconds;
+    //timer();
+
+    updateafterseconds=10;
+    remainder=countingseconds%updateafterseconds;
+    //console.log('remainder'+remainder);
+
+    if (remainder===0)
+    {
+        end = new Date().getTime();
+        dur= end - start;
+
+        console.log(end-start);
+        //updatedurationofappointment(duration_url, dur );
+    }
+}
+
+
+
+function timer() {
+
+    t = setTimeout(add, 1000);
+    t = setTimeout(countseconds,1000);
+
+    /*
+    if (countingseconds==900)
+    {
+        if (confirm("This job has been open for more than 15 minutes!. Were you looking some stuff for this job?"))
+        {
+            countingseconds=countingseconds;
+        }else
+        {
+            countingseconds=0;
+        }
+        alert("Thank you. This helps to calculate the admin time on a job! ");
+    }
+    */
+
+}
+
+
+
+function updatedurationofappointment(dur_url, duration, diary_id )
+{
+
+    diary_id =$("#enggdiary_id").val();
+
+    data={'duration_in_seconds': duration, enggdiary_id:diary_id};
+
+    console.log("data Posted"+duration);
+
+    $.ajax({
+        type: "POST",
+        url: dur_url,
+        data: data,
+        success:function(result){
+            console.log("Successfully Posted"+result);
+
+            $("#timespentoncall").html(result);
+
+        }
+    });
+
+}
+
+var start;
+var duration_url =$("#update_dur_url").val();
+
+$(document).ready(function() {
+    start = new Date().getTime();
+
+
+});
+
+
+$(window).on('beforeunload', function(){
+
+
+    end = new Date().getTime();
+    dur= end - start;
+    console.log('Unliading pgage');
+    updatedurationofappointment(duration_url, dur );
+
+});

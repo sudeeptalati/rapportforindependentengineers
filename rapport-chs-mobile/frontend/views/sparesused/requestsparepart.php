@@ -62,7 +62,7 @@ use yii\helpers\Url;
 
 
     $form = ActiveForm::begin([
-        'action' => ['sparesused/requestsparepart'],
+        'action' => ['sparesused/requestsparepart', 'enggdiary_id'=>$enggdiary_id],
         'id' => 'request_spare_part',
         'method' => 'post',
     ]);

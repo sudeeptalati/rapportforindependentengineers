@@ -23,7 +23,7 @@ use yii\helpers\Html;
 <div class="product-form">
 
     <?php $form = ActiveForm::begin([
-        'action' =>['product/updateeditproductonly','product_id'=>$product_id, 'servicecall_id'=>$servicecall_id, ],
+        'action' =>['product/updateeditproductonly','product_id'=>$product_id, 'servicecall_id'=>$servicecall_id, 'enggdiary_id' => $enggdiary_id, ],
         'id' => 'edit_product',
         'method' => 'post',
 

@@ -98,14 +98,16 @@ class CustomerController extends Controller
     public function actionUpdateeditcustomeronly()
     {
         $customer_id= Yii::$app->getRequest()->get('customer_id');
+        $enggdiary_id= Yii::$app->getRequest()->get('enggdiary_id');
         $servicecall_id= Yii::$app->getRequest()->get('servicecall_id');
+
 
         if ($customer_id && $servicecall_id)
         {
             $model = $this->findModel($customer_id);
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'customer_block'=>'true']);
+                return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'enggdiary_id'=>$enggdiary_id, 'customer_block'=>'true']);
             } else {
                 Yii::$app->session->setFlash('warning', 'Try again from here');
                 return $this->render('update', [

@@ -99,7 +99,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 ?>
 
 
-
 <div class="customerheadingbox" id="draggable"
      style="position: fixed;right: 14%; top: 4%;   width: 150px; height:auto;   padding-left: 35px; border-radius: 10px; cursor:move;">
 
@@ -174,7 +173,35 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 </div>
 
+<!-- Admin Time on Call Start -->
 
+
+<h1 title="Recording Time Spent on this call" style="text-align: right">
+    <i class="fa fa-clock-o" aria-hidden="true"></i>
+    <span id="admintimer"></span>
+</h1>
+
+
+<h4 title="Admin Time Spent on this call" style="text-align: right" class="media">
+    <i class="fa fa-clock-o" aria-hidden="true"></i>
+
+    <span id="timespentoncall">
+        <?php echo $setupmodel->convertsecondstotime($model->admintime);?>
+    </span>
+</h4>
+
+
+<?php $timerupdateurl=Yii::app()->createUrl("servicecall/updateadmintimeofservicecall");?>
+
+
+<input id="timerupdateurl" value="<?php echo  $timerupdateurl;?>" type="hidden" />
+
+<input id="Servicecall_time_spent_on_call_now"  type="hidden" />
+
+
+
+
+<!-- Admin Time on Call End -->
 
 <div style="text-align:center; ">
     <h1>Servicecall</h1>

@@ -81,3 +81,5 @@ CREATE TABLE 'engineer_login' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
 INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('22','Job Completed by Engineer','','1','1','1','1',NULL,'','1',NULL,'')
 
 
+
+ALTER TABLE 'servicecall' ADD COLUMN 'admintime ' INETEGER;

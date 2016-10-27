@@ -39,7 +39,7 @@ $this->title=$date_string.'| Diary | Rapport';
             $app->servicecall->customer->postcode
         );
 
-        $view_appointment_url=Url::to(['enggdiary/viewappointment', 'servicecall_id' => $app->servicecall_id]);
+        $view_appointment_url=Url::to(['enggdiary/viewappointment', 'servicecall_id' => $app->servicecall_id, 'enggdiary_id'=>$app->id]);
 
         ?>
 

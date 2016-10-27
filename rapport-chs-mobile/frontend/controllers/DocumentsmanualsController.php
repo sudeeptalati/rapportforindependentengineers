@@ -120,7 +120,7 @@ class DocumentsmanualsController extends Controller
     public function actionQuickupload()
     {
         $model = new Documentsmanuals();
-
+        $enggdiary_id= Yii::$app->getRequest()->get('enggdiary_id');
         $servicecall_id = Yii::$app->getRequest()->get('servicecall_id');
 
 
@@ -139,7 +139,7 @@ class DocumentsmanualsController extends Controller
                     $service_doc->document_id = $model->id;
                     if ($service_doc->save()) {
                         Yii::$app->session->setFlash('successfully', 'File Attached');
-                        return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'docs_manuals_block'=>'true']);
+                        return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'enggdiary_id'=>$enggdiary_id, 'docs_manuals_block'=>'true']);
 
                     }////end of if ($service_doc->save())
 
@@ -176,6 +176,8 @@ class DocumentsmanualsController extends Controller
     {
         $model = new Documentsmanuals();
         $servicecall_id = Yii::$app->getRequest()->get('servicecall_id');
+        $enggdiary_id= Yii::$app->getRequest()->get('enggdiary_id');
+
 
         if (Yii::$app->request->isPost && $servicecall_id) {
 
@@ -203,25 +205,25 @@ class DocumentsmanualsController extends Controller
                     $service_doc->document_id = $model->id;
                     if ($service_doc->save()) {
                         Yii::$app->session->setFlash('successfully', 'File Attached');
-                        return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'signature_block'=>'true' ,'#'=>'signaturebox']);
+                        return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'enggdiary_id'=>$enggdiary_id, 'signature_block'=>'true' ,'#'=>'signaturebox']);
 
                     }////end of if ($service_doc->save())
 
                     else {
                         Yii::$app->session->setFlash('error', 'File was uploaded and saved but could not link to servicecall please try again');
-                        return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id]);
+                        return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id,'enggdiary_id'=>$enggdiary_id,]);
                     }
                 }
                 else
                 {
                     Yii::$app->session->setFlash('error', 'File was uploaded but data could not be saved. Please try again');
-                    return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id]);
+                    return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id,'enggdiary_id'=>$enggdiary_id,]);
 
                 }
             }
             else {
                 Yii::$app->session->setFlash('error', 'Cannot Upload file. If it happens again please contact support');
-                return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id]);
+                return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id,'enggdiary_id'=>$enggdiary_id,]);
             }
 
         }

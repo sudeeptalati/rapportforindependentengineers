@@ -87,7 +87,7 @@ $items = Documenttype::getdocumenttypeslist('SIGNATURE');
 
 
 <?php $form = ActiveForm::begin([
-    'action' => ['documentsmanuals/uploadsignature', 'servicecall_id' => $servicecallmodel->id,],
+    'action' => ['documentsmanuals/uploadsignature', 'servicecall_id' => $servicecallmodel->id,'enggdiary_id'=>$enggdiary_id,],
     'id' => 'signature_upload',
     'method' => 'post',
     'options' => ['enctype' => 'multipart/form-data'],

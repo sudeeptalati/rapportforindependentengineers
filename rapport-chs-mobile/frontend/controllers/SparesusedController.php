@@ -82,9 +82,10 @@ class SparesusedController extends Controller
     public function actionRequestsparepart()
     {
         $model = new Sparesused();
+        $enggdiary_id= Yii::$app->getRequest()->get('enggdiary_id');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $model->servicecall_id, 'spares_block'=>'true' , '#'=>'spares_edit_block']);
+            return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $model->servicecall_id, 'enggdiary_id'=>$enggdiary_id, 'spares_block'=>'true' , '#'=>'spares_edit_block']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -117,6 +118,8 @@ class SparesusedController extends Controller
     public function actionTogglesparesused($id)
     {
 
+        $enggdiary_id= Yii::$app->getRequest()->get('enggdiary_id');
+
         $model = $this->findModel($id);
 
         if ($model->used==1)
@@ -125,7 +128,7 @@ class SparesusedController extends Controller
             $model->used=1;
 
         if ($model->save()) {
-            return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $model->servicecall_id, 'spares_block'=>'true' ,'#'=>'spares_edit_block']);
+            return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $model->servicecall_id, 'enggdiary_id'=>$enggdiary_id, 'spares_block'=>'true' ,'#'=>'spares_edit_block']);
         } else {
 
             Yii::$app->session->setFlash('warning', 'Try again from here');

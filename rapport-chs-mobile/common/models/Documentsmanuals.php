@@ -101,7 +101,21 @@ class Documentsmanuals extends \yii\db\ActiveRecord
 
     public static function loadalldocumentsbyservicecallid($service_id)
     {
-        return Servicecallsdocsmanuals::findAll(['servicecall_id'=>$service_id]);
+        $alldocs=Servicecallsdocsmanuals::findAll(['servicecall_id'=>$service_id]);
+
+        $docs_only=array();
+        foreach ($alldocs as $alldoc) {
+
+            if ($alldoc->document->doctype->category!="SIGNATURE")
+                array_push($docs_only,$alldoc);
+
+        }
+
+        return $docs_only;
+
+
+
+
     }///end of public function loadalldocumentsbyservicecallid($service_id)
 
 

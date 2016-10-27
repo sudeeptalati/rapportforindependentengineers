@@ -989,6 +989,10 @@ class Setup extends CActiveRecord
     }///end of public function getawesomebrandicon()
 
 
+    public function convertsecondstotime($seconds)
+    {
+        return  gmdate("H:i:s", $seconds);
+    }
 
 
 

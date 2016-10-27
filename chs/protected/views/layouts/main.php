@@ -204,6 +204,7 @@ $baseUrl= Yii::app()->request->baseUrl;
 <script src="js/googleaddresslookup.js"></script>
 <!-- Google ServicesEnd -->
 
+<script src="js/servicecall.js"></script>
 
 
 

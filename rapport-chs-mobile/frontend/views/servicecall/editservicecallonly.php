@@ -20,7 +20,7 @@ use yii\helpers\Html;
 <div class="servicecall-form">
 
     <?php $form = ActiveForm::begin([
-        'action' =>['servicecall/updateeditservicecallonly', 'servicecall_id'=>$servicecallmodel->id, ],
+        'action' =>['servicecall/updateeditservicecallonly', 'servicecall_id'=>$servicecallmodel->id,'enggdiary_id'=>$enggdiary_id,  ],
         'id' => 'edit_servicecall',
         'method' => 'post',
 

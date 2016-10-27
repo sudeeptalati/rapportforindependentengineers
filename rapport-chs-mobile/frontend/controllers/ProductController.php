@@ -98,12 +98,14 @@ class ProductController extends Controller
         $product_id= Yii::$app->getRequest()->get('product_id');
         $servicecall_id= Yii::$app->getRequest()->get('servicecall_id');
 
+        $enggdiary_id= Yii::$app->getRequest()->get('enggdiary_id');
+
         if ($product_id && $servicecall_id)
         {
             $model = $this->findModel($product_id);
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'product_block'=>true]);
+                return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id,'enggdiary_id'=>$enggdiary_id,  'product_block'=>true]);
             } else {
                 Yii::$app->session->setFlash('warning', 'Try again from here');
                 return $this->render('update', [

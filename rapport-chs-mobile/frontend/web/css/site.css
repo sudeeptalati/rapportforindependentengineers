@@ -258,6 +258,11 @@ table.responsivetable tbody tr:not(:last-child) {
     border-bottom: 1px solid #ddd;
 }
 
+.embed_image{
+    width: 50%;
+}
+
+
 @media screen and (max-width: 600px) {
     table.responsivetable caption { background-image: none; }
     table.responsivetable thead { display: none; }
@@ -273,6 +278,9 @@ table.responsivetable tbody tr:not(:last-child) {
         display: inline-block;
 
         /*width: 6rem;*/
+    }
+    .embed_image{
+        width: 100%;
     }
 
 }

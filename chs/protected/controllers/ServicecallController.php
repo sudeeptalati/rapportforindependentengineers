@@ -831,6 +831,19 @@ public function actionAddProduct($cust_id)
 
 
 
+    public function actionUpdateadmintimeofservicecall()
+    {
+
+        $servicecall_id=$_GET['servicecall_id'];
+        $admin_time_in_seconds=$_GET['admintime'];
+
+        $total_admin_time= Servicecall::model()->updateadmintimebyservicecallid($servicecall_id,$admin_time_in_seconds);
+
+        echo Setup::model()->convertsecondstotime($total_admin_time);
+    }////end of public function actionUpdateadmintimeofservicecall()
+
+
+
 
     public function donotificationtasks($service_id, $job_status_id)
     {

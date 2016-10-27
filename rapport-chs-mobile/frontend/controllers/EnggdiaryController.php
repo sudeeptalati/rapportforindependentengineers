@@ -95,6 +95,8 @@ class EnggdiaryController extends Controller
     {
 
         $servicecall_id = Yii::$app->request->get('servicecall_id');
+        $enggdiary_id = Yii::$app->request->get('enggdiary_id');
+
         $engineer_id = Yii::$app->user->identity->engineer_id;
 
         if (!$servicecall_id )
@@ -103,12 +105,52 @@ class EnggdiaryController extends Controller
         }
 
         $servicecall=Servicecall::findOne($servicecall_id);
+        $enggdiary=$this->findModel($enggdiary_id);
 
         return $this->render('viewappointment', [
             'servicecall' => $servicecall,
+            'enggdiary' => $enggdiary,
+
         ]);
 
     }
+
+
+
+    public function actionUpdatedurationofappointment()
+    {
+        $duration_in_seconds=Yii::$app->request->post('duration_in_seconds');
+        $enggdiary_id=Yii::$app->request->post('enggdiary_id');
+
+
+        if ($duration_in_seconds && $enggdiary_id)
+        {
+            ///converting miliseconds to sec
+            $duration_in_seconds = intval($duration_in_seconds/1000);
+
+
+            $model=$this->findModel($enggdiary_id);
+            $model->duration_of_call=$model->duration_of_call+$duration_in_seconds;
+            if ($model->save())
+            {
+                echo Handyfunctions::convertsecondstoduration($model->duration_of_call);
+            }else
+            {
+                echo "Error in updating";
+            }
+
+
+
+        }else
+        {
+            echo "WRONG APRAMS";
+            //return $this->render('enggdiary/showappointmentsfordate');
+
+        }
+
+
+
+    }////end of public function actionUpdatedurationofappointment()
 
 
 

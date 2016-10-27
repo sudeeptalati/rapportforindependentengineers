@@ -36,7 +36,7 @@ $items = Documenttype::getdocumenttypeslist('IMAGE');
 <input type="hidden" id="doc_title" value="<?php echo "SerRefNo ".$servicecallmodel->service_reference_number; ?>">
 
 <?php $form = ActiveForm::begin([
-    'action' =>['documentsmanuals/quickupload', 'servicecall_id'=>$servicecallmodel->id, ],
+    'action' =>['documentsmanuals/quickupload', 'servicecall_id'=>$servicecallmodel->id, 'enggdiary_id'=>$enggdiary_id,  ],
     'id' => 'quick_upload',
     'method' => 'post',
     'options' => ['enctype' => 'multipart/form-data'],

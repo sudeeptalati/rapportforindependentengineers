@@ -33,6 +33,7 @@
  * @property string $activity_log
  * @property string $comments
  * @property string $work_summary
+ * @property integer $admintime
  *
  * The followings are the available model relations:
  * @property SparesUsedStatus $sparesUsedStatus
@@ -60,6 +61,9 @@ class Servicecall extends CActiveRecord
     public $pervious_job_status;
     public $successfulredirectto;
 
+    ////This will capture only seconds in the instance and will be added to actual column of admintime
+    public $time_spent_on_call_now;
+
     /**
      * @return string the associated database table name
      */
@@ -77,9 +81,9 @@ class Servicecall extends CActiveRecord
         // will receive user inputs.
         return array(
             array('fault_description, recalled_job,engineer_id', 'required'),
-            array('created_by_user_id,	service_reference_number, customer_id, product_id, contract_id, engineer_id, job_status_id, spares_used_status_id', 'numerical', 'integerOnly' => true),
+            array('admintime, created_by_user_id,	service_reference_number, customer_id, product_id, contract_id, engineer_id, job_status_id, spares_used_status_id', 'numerical', 'integerOnly' => true),
             array('total_cost, vat_on_total, net_cost', 'numerical'),
-            array('engineer_name, product_serial_number,number_of_visits, customer_town,customer_postcode , recalled_job, activity_log , insurer_reference_number, fault_date, fault_code, engg_diary_id, work_carried_out, job_payment_date, job_finished_date, notes, modified, cancelled, closed, comments, model_number, serial_number, notify_flag, pervious_job_status, work_summary', 'safe'),
+            array('time_spent_on_call_now, engineer_name, product_serial_number,number_of_visits, customer_town,customer_postcode , recalled_job, activity_log , insurer_reference_number, fault_date, fault_code, engg_diary_id, work_carried_out, job_payment_date, job_finished_date, notes, modified, cancelled, closed, comments, model_number, serial_number, notify_flag, pervious_job_status, work_summary', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('contract_name, engineer_name,engineer_id, product_serial_number,created_by_user_id, id, customer_town , customer_postcode, customer_name, customer_id, job_status, engineer_name, product_name, service_reference_number, insurer_reference_number, job_status_id, fault_date, fault_code, fault_description, engg_visit_date, work_carried_out, spares_used_status_id, total_cost, vat_on_total, net_cost, job_payment_date, job_finished_date, notes,  created, modified, cancelled, closed, model_number, serial_number', 'safe', 'on' => 'search'),
@@ -142,8 +146,8 @@ class Servicecall extends CActiveRecord
             'customer_town' => 'Town',
             'customer_postcode' => 'Postcode',
             'comments' => 'Comments ',
-            'work_summary' => 'Work Summary'
-
+            'work_summary' => 'Work Summary',
+            'admintime'=>'Amount of Administration time for managing service call'
         );
     }
 
@@ -549,6 +553,28 @@ class Servicecall extends CActiveRecord
     }////end of public function updateengineer($id, $engineer_id)
 
 
+
+    public function updateadmintimebyservicecallid($id, $admintimeinseconds)
+    {
+        $model = $this->loadmodel($id);
+
+        $total_admin_time=$model->admintime+$admintimeinseconds;
+
+
+        $servicecall_update = Servicecall::model()->updateByPk($id,
+            array(
+                'admintime' => $total_admin_time
+            ));
+
+        return $total_admin_time;
+
+    }////end of public function updateengineer($id, $engineer_id)
+
+
+
+
+
+
     public function updateactivitylog($id)
     {
         ////Make sure Activity log is set to 0 before using this
@@ -588,6 +614,9 @@ class Servicecall extends CActiveRecord
 
     protected function beforeSave()
     {
+
+
+        $this->admintime=$this->time_spent_on_call_now+$this->admintime;
 
         $setupModel = Setup::model()->findByPk(1);
         $vatPercentage = $setupModel->alternate;

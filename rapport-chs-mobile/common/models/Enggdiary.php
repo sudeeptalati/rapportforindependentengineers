@@ -18,6 +18,8 @@ use Yii;
  * @property string $modified
  * @property integer $status
  * @property string $notes
+ * @property string $duration_of_call
+ *
  */
 class Enggdiary extends \yii\db\ActiveRecord
 {
@@ -35,7 +37,7 @@ class Enggdiary extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['engineer_id', 'slots', 'servicecall_id', 'user_id', 'status'], 'integer'],
+            [['duration_of_call', 'engineer_id', 'slots', 'servicecall_id', 'user_id', 'status'], 'integer'],
             [['visit_start_date', 'visit_end_date', 'created', 'modified'], 'safe'],
             [['notes'], 'string'],
         ];
@@ -70,6 +72,7 @@ class Enggdiary extends \yii\db\ActiveRecord
             'modified' => Yii::t('app', 'Modified'),
             'status' => Yii::t('app', 'Status'),
             'notes' => Yii::t('app', 'Notes'),
+            'duration_of_call'=>Yii::t('app', 'Duration of Call')
         ];
     }
 }

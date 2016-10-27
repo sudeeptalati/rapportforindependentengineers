@@ -28,43 +28,67 @@ $customer_address_html = Handyfunctions::formataddressinhtml(
 );
 
 
-$customer_block='none';
+$customer_block = 'none';
 if (Yii::$app->getRequest()->get('customer_block'))
-    $customer_block='block';
+    $customer_block = 'block';
 
 
-$product_block='none';
+$product_block = 'none';
 if (Yii::$app->getRequest()->get('product_block'))
-    $product_block='block';
+    $product_block = 'block';
 
-$docs_manuals_block='none';
+$docs_manuals_block = 'none';
 if (Yii::$app->getRequest()->get('docs_manuals_block'))
-    $docs_manuals_block='block';
+    $docs_manuals_block = 'block';
 
-$servicecall_block='none';
+$servicecall_block = 'none';
 if (Yii::$app->getRequest()->get('servicecall_block'))
-    $servicecall_block='block';
+    $servicecall_block = 'block';
 
-$spares_block='none';
+$spares_block = 'none';
 if (Yii::$app->getRequest()->get('spares_block'))
-    $spares_block='block';
+    $spares_block = 'block';
 
-$signature_block='none';
+$signature_block = 'none';
 if (Yii::$app->getRequest()->get('signature_block'))
-    $signature_block='block';
-
+    $signature_block = 'block';
 
 
 ?>
 
+
+<h1 title="Recording Time Spent on this call" style="text-align: right">
+    <i class="fa fa-clock-o" aria-hidden="true"></i>
+    <span id="admintimer">00:00:00</span>
+</h1>
+<h4 title="Admin Time Spent on this call" style="text-align: right" class="media">
+    <i class="fa fa-clock-o" aria-hidden="true"></i>
+    <span id="timespentoncall">
+        <?php echo Handyfunctions::convertsecondstoduration($enggdiary->duration_of_call); ?>
+
+    </span>
+</h4>
+
+<?php
+
+$update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
+
+
+?>
+<input id="update_dur_url" value="<?php echo $update_dur_url; ?>" type="hidden"/>
+
+<input id="enggdiary_id" value="<?php echo $enggdiary->id; ?>" type="hidden"/>
+
+
 <?= Html::button('Customer', ['class' => 'btn-lg customerheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#customerbox").toggle("slow"); })();']); ?>
-<div id="customerbox" class="customerbox contentbox" style="display: <?php echo $customer_block;?>">
+<div id="customerbox" class="customerbox contentbox" style="display: <?php echo $customer_block; ?>">
 
     <?= Html::button('<i class="fa fa-user fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'customer_edit_btn', 'onclick' => '(function ( $event ) {  togglecustomereditbox(); })();']); ?>
     <div id="customer_edit_block" style="display: none  ;">
 
 
         <?php echo $this->render('//customer/editcustomeronly', [
+                'enggdiary_id' => $enggdiary->id,
                 'customer_id' => $servicecall->customer_id,
                 'servicecall_id' => $servicecall->id
             ]
@@ -73,7 +97,7 @@ if (Yii::$app->getRequest()->get('signature_block'))
     </div><!-- <div id="customer_edit_block" end of customer_edit_block -->
 
 
-    <div id="customer_view_block" >
+    <div id="customer_view_block">
 
         <table class="full_width responsive-stacked-table">
             <tr>
@@ -104,7 +128,6 @@ if (Yii::$app->getRequest()->get('signature_block'))
                         <?php echo $servicecall->customer->email; ?>
                     </div>
                     <br>
-
 
 
                     <div class="mobile_title">
@@ -145,6 +168,8 @@ if (Yii::$app->getRequest()->get('signature_block'))
 
 
         <?php echo $this->render('//product/editproductonly', [
+                'enggdiary_id' => $enggdiary->id,
+
                 'product_id' => $servicecall->product_id,
                 'servicecall_id' => $servicecall->id
             ]
@@ -261,10 +286,9 @@ if (Yii::$app->getRequest()->get('signature_block'))
     <div id="documentsmanuals_edit_block" style="display: none  ;">
 
 
-
-
         <?php echo $this->render('//documentsmanuals/uploaddocumentsmanualsonly', [
-                'servicecallmodel' => $servicecall
+                'servicecallmodel' => $servicecall,
+                'enggdiary_id' => $enggdiary->id,
             ]
         ); ?>
 
@@ -279,19 +303,29 @@ if (Yii::$app->getRequest()->get('signature_block'))
         </button>
 
 
-
         <table class="full_width responsivetable">
+
 
             <?php $alldocs = Documentsmanuals::loadalldocumentsbyservicecallid($servicecall->id); ?>
             <?php foreach ($alldocs as $doc): ?>
+                <?php $doc_link = Yii::$app->params['documents_upload_location_web_path'] . $doc->document->filename; ?>
                 <tr>
                     <td><?php echo $doc->document->doctype->name; ?></td>
                     <td>
-                        <?php $doc_link = Yii::$app->params['documents_upload_location_web_path'] . $doc->document->filename; ?>
+                        <span>
+                            <a href=<?php echo $doc_link; ?> target="_blank">
+                                <?php echo $doc->document->name; ?>
+                            </a>
+                        </span>
+
+                    </td>
+
+                    <td>
                         <a href=<?php echo $doc_link; ?> target="_blank">
-                            <?php echo $doc->document->name; ?>
+                            <embed class="embed_image" src="<?php echo $doc_link; ?>">
                         </a>
                     </td>
+
 
                 </tr>
 
@@ -302,8 +336,6 @@ if (Yii::$app->getRequest()->get('signature_block'))
     </div><!-- end of documentsmanuals_view_block-->
 </div>
 <!-- end of Div documentsmanualsbox  -->
-
-
 
 
 <br><br>
@@ -318,7 +350,9 @@ if (Yii::$app->getRequest()->get('signature_block'))
 
 
         <?php echo $this->render('//servicecall/editservicecallonly', [
-                'servicecallmodel' => $servicecall
+                'servicecallmodel' => $servicecall,
+                'enggdiary_id' => $enggdiary->id,
+
             ]
         ); ?>
 
@@ -418,17 +452,16 @@ if (Yii::$app->getRequest()->get('signature_block'))
 
 
         <?php echo $this->render('//sparesused/requestsparepart', [
-                'servicecallmodel' => $servicecall
+                'servicecallmodel' => $servicecall,
+                'enggdiary_id' => $enggdiary->id,
             ]
         ); ?>
-
 
 
     </div><!-- <div id="spares_edit_block" end of spares_edit_block -->
 
     <hr>
     <div id="spares_view_block" style="display: block  ;">
-
 
 
         <table class="full_width ">
@@ -442,7 +475,7 @@ if (Yii::$app->getRequest()->get('signature_block'))
                 <tr>
 
                     <td>
-                        <?php $togglesparesusedurl = Url::to(['sparesused/togglesparesused', 'id' => $sparepart->id]); ?>
+                        <?php $togglesparesusedurl = Url::to(['sparesused/togglesparesused', 'id' => $sparepart->id, 'enggdiary_id' => $enggdiary->id,]); ?>
 
                         <a href="<?php echo $togglesparesusedurl; ?>">
                             <div class="mobile_content">
@@ -478,21 +511,21 @@ if (Yii::$app->getRequest()->get('signature_block'))
 <!-- end of Div sparesbox  -->
 
 
-
-
 <br><br>
 
 <!-- Signature Section -->
 
 <?= Html::button('Signature', ['class' => 'btn-lg signatureheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#signaturebox").toggle("slow"); })();']); ?>
-<div id="signaturebox" class="signaturebox contentbox" style="display: <?php echo $signature_block;?>">
+<div id="signaturebox" class="signaturebox contentbox" style="display: <?php echo $signature_block; ?>">
 
     <?= Html::button('<i class="fa fa-glide-g  fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'upload_document_and_manuals_btn', 'onclick' => '(function ( $event ) {  togglesignatureeditbox(); })();']); ?>
     <div id="signature_edit_block" style="display: block  ;">
 
 
         <?php echo $this->render('//documentsmanuals/capturesignature', [
+                'enggdiary_id' => $enggdiary->id,
                 'servicecallmodel' => $servicecall
+
             ]
         ); ?>
 
@@ -506,19 +539,28 @@ if (Yii::$app->getRequest()->get('signature_block'))
         <?php $signatures = Documentsmanuals::loadallallsignaturesforservicecallid($servicecall->id); ?>
 
         <table class="full_width responsivetable">
-        <?php foreach ($signatures as $sign): ?>
-            <tr>
-                <td><?php echo $sign->document->doctype->name; ?></td>
-                <td>
-                    <?php $sign_link = Yii::$app->params['documents_upload_location_web_path'] . $sign->document->filename; ?>
-                    <a href=<?php echo $sign_link; ?> target="_blank">
-                        <?php echo $sign->document->name; ?>
-                    </a>
-                </td>
+            <?php foreach ($signatures as $sign): ?>
+                <?php $sign_link = Yii::$app->params['documents_upload_location_web_path'] . $sign->document->filename; ?>
 
-            </tr>
+                <tr>
+                    <td><?php echo $sign->document->doctype->name; ?></td>
+                    <td>
+                        <a href=<?php echo $sign_link; ?> target="_blank">
+                            <?php echo $sign->document->name; ?>
+                        </a>
+                    </td>
 
-        <?php endforeach; ?>
+
+                    <td>
+                        <a href=<?php echo $sign_link; ?> target="_blank">
+                            <embed class="embed_image" src="<?php echo $sign_link; ?>">
+                        </a>
+                    </td>
+
+
+                </tr>
+
+            <?php endforeach; ?>
         </table>
 
 
@@ -537,10 +579,10 @@ if (Yii::$app->getRequest()->get('signature_block'))
 <table class="full_width responsive-stacked-table">
     <tr>
         <td>
-            <?php $job_finished_id='22'; ?>
+            <?php $job_finished_id = '22'; ?>
             <?php $job_finished_url = Url::to(['servicecall/jobfinished', 'servicecall_id' => $servicecall->id, 'job_status_id' => $job_finished_id]); ?>
-            <a href="<?php echo $job_finished_url ; ?>">
-                <button class="btn btn-success center-block" >
+            <a href="<?php echo $job_finished_url; ?>">
+                <button class="btn btn-success center-block">
                     <h4>
                         <i class="fa fa-check-circle" aria-hidden="true"></i>
                         Job Finished
@@ -550,10 +592,10 @@ if (Yii::$app->getRequest()->get('signature_block'))
             </a>
         </td>
         <td>
-            <?php $no_access_id='9'; ?>
+            <?php $no_access_id = '9'; ?>
             <?php $no_access_url = Url::to(['servicecall/jobfinished', 'servicecall_id' => $servicecall->id, 'job_status_id' => $no_access_id]); ?>
-            <a href="<?php echo $no_access_url ; ?>">
-                <button class="btn btn-danger center-block" >
+            <a href="<?php echo $no_access_url; ?>">
+                <button class="btn btn-danger center-block">
                     <h4>
                         <i class="fa fa-times-circle" aria-hidden="true"></i>
                         No Access
@@ -566,7 +608,7 @@ if (Yii::$app->getRequest()->get('signature_block'))
     <tr>
         <td colspan="2" class="contentbox">
 
-            <?= Html::button('<h4><i class="fa fa-paper-plane"></i> Email Invoice </h4>', ['class'=>'btn btn-info center-block', 'onclick' => '(function ( $event ) { $("#email_servicecall_block").toggle("slow"); })();']); ?>
+            <?= Html::button('<h4><i class="fa fa-paper-plane"></i> Email Invoice </h4>', ['class' => 'btn btn-info center-block', 'onclick' => '(function ( $event ) { $("#email_servicecall_block").toggle("slow"); })();']); ?>
 
             <div id="email_servicecall_block" style="display: none  ;">
 
@@ -577,7 +619,6 @@ if (Yii::$app->getRequest()->get('signature_block'))
                 ); ?>
 
             </div><!-- <div id="signature_edit_block" end of signature_edit_block -->
-
 
 
         </td>

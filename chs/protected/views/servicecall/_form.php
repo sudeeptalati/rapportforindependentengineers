@@ -10,6 +10,14 @@ else
 ?>
 
 
+
+<h1 title="Recording Time Spent on this call" style="text-align: right">
+    <i class="fa fa-clock-o" aria-hidden="true"></i>
+    <span id="admintimer"></span>
+</h1>
+
+
+
 <div class="contentbox">
 
 
@@ -575,6 +583,10 @@ else
                     $productModel->engineer_id='90000000';///default id for Not Assigned Engg
                     $model->engineer_id='90000000';///default id for Not Assigned Engg
                     echo $form->hiddenField($productModel,'engineer_id'); ?>
+
+
+                        <?php  echo $form->hiddenField($model,'time_spent_on_call_now');  ?>
+
 
                     <?php echo CHtml::submitButton($model->isNewRecord ? 'Raise Call' : 'Save', array('class' => 'themebtn-info', 'style'=>'width:100%')); ?>
                     <br><br>

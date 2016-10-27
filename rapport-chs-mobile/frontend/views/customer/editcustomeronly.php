@@ -22,7 +22,7 @@ use yii\helpers\Html;
 <div class="customer-form">
 
     <?php $form = ActiveForm::begin([
-        'action' =>['customer/updateeditcustomeronly','customer_id'=>$customer_id, 'servicecall_id'=>$servicecall_id, ],
+        'action' =>['customer/updateeditcustomeronly','customer_id'=>$customer_id, 'servicecall_id'=>$servicecall_id, 'enggdiary_id'=>$enggdiary_id],
         'id' => 'edit_customer',
         'method' => 'post',
 

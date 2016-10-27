@@ -6,6 +6,8 @@ use common\models\Emailservicecall;
 use Yii;
 use common\models\Servicecall;
 use common\models\ServicecallSearch;
+use yii\bootstrap\Html;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -98,13 +100,14 @@ class ServicecallController extends Controller
 
     public function actionUpdateeditservicecallonly()
     {
+        $enggdiary_id= Yii::$app->getRequest()->get('enggdiary_id');
         $servicecall_id= Yii::$app->getRequest()->get('servicecall_id');
         $model = $this->findModel($servicecall_id);
 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Service Details Updated');
-            return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'servicecall_block'=>'true', '#'=>'servicecallbox']);
+            return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'enggdiary_id'=>$enggdiary_id, 'servicecall_block'=>'true', '#'=>'servicecallbox']);
         } else {
 
             Yii::$app->session->setFlash('warning', 'Try again from here');
@@ -139,6 +142,22 @@ class ServicecallController extends Controller
 
 
 
+    public function actionJobsheet()
+    {
+        $servicecall_id= Yii::$app->getRequest()->get('id');
+        echo $servicecall_id;
+        $model=$this->findModel($servicecall_id);
+
+        $this->renderPartial('_mpdf_report_scheda',  [
+            'model' => $model,
+
+            'mode'=> Pdf::MODE_CORE,
+            'format'=> Pdf::FORMAT_A4,
+            'orientation'=>Pdf::ORIENT_POTRAIT,
+            'destination'=> Pdf::DEST_BROWSER,
+
+           ]);
+    }
 
     public function actionEmailservicecall()
     {
@@ -151,6 +170,23 @@ class ServicecallController extends Controller
         {
             echo $email_servicecall->email;
             echo $email_servicecall->servicecall_id;
+            echo "<br>Invoice : ".$email_servicecall->invoice;
+            echo "<br>Job Sheet : ".$email_servicecall->jobsheet;
+
+            $jobsheet_url=Url::toRoute(['servicecall/jobsheet','id'=> $email_servicecall->servicecall_id]);
+
+
+
+            echo "<br> Job Sheet Url.".$jobsheet_url;
+
+
+            if ($email_servicecall->jobsheet)
+                echo "<br>Sending Jobshete";
+
+            if ($email_servicecall->invoice)
+                echo "<br>Sending Invoice";
+
+
 
             $jobsheet_url=Yii::$app->params['main_system_url'].'?r=servicecall/preview&id='.$email_servicecall->servicecall_id;
 
@@ -160,6 +196,7 @@ class ServicecallController extends Controller
             $plaintext="Please find the jobsheet";
             $mail_html_content='<h1>This is HTML. Please find job sheet</h1>';
 
+            /*
             return Yii::$app->mailer->compose()
                 ->setFrom($from_email)
                 ->setTo($recipient_emails)
@@ -168,7 +205,7 @@ class ServicecallController extends Controller
                 ->setHtmlBody($mail_html_content)
                 ->attach($jobsheet_url)
                 ->send();
-
+            */
 
         }else
         {

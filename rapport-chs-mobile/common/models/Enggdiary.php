@@ -75,4 +75,11 @@ class Enggdiary extends \yii\db\ActiveRecord
             'duration_of_call'=>Yii::t('app', 'Duration of Call')
         ];
     }
+
+
+
+    public static function loadallappointmentsbyservicecall_id($service_id)
+    {
+        return self::findAll(['servicecall_id'=>$service_id]);
+    }
 }

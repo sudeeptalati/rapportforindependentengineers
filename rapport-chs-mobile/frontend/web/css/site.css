@@ -743,3 +743,11 @@ div.today_border {
     background: none;
 }
 
+.runningtimer{
+    text-align: right;
+    position: fixed;
+    z-index: 100000;
+    top: -15px;
+    left: 28%;
+    color: white;
+}

@@ -4,6 +4,8 @@ namespace common\models;
 
 use Yii;
 
+use common\models\Handyfunctions;
+
 /**
  * This is the model class for table "servicecall".
  *
@@ -96,6 +98,23 @@ class Servicecall extends \yii\db\ActiveRecord
     }
 
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEngineer()
+    {
+        return $this->hasOne(Engineer::className(), ['id' => 'engineer_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEnggdiary()
+    {
+        return $this->hasOne(Enggdiary::className(), ['id' => 'engg_diary_id']);
+    }
+
+
 
     /**
      * @inheritdoc
@@ -173,6 +192,48 @@ class Servicecall extends \yii\db\ActiveRecord
 
         ];
     }
+
+
+
+    public static function update_activitylog($servicecall_id)
+    {
+
+        $model=Servicecall::findOne($servicecall_id);
+
+        $activity_log = trim($model->activity_log);
+
+        if ($activity_log == '') {
+            $activity_log_array = array();
+        }///end of if ($activity_log=='')
+        else {
+            $activity_log_array = json_decode($activity_log, true);
+        }/////end of else ($activity_log=='')
+
+        $log = array();
+        $log['time'] = Handyfunctions::get_datetimestamp();
+        $log['jobstatus'] = $model->jobstatus->html_name;
+        $log['engineer'] = $model->engineer->company . ', ' . $model->engineer->fullname;
+        $log['user'] = Yii::$app->user->identity->name;
+
+        array_push($activity_log_array, $log);
+
+        return self::updateAll(['activity_log' => json_encode($activity_log_array)],['id'=>$model->id]);
+
+    }//end of public function writeactivitylog($this->activity_log);
+
+    public static function update_jobstatus($job_status_id, $servicecall_id)
+    {
+
+        if (Servicecall::updateAll(['job_status_id' => $job_status_id],['id'=>$servicecall_id]))
+            return Servicecall::update_activitylog($servicecall_id);
+        else
+            return false;
+
+    }//end of public function writeactivitylog($this->activity_log);
+
+
+
+
 
 
 }

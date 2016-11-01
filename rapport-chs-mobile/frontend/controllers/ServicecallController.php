@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Emailservicecall;
+use common\models\Setup;
 use Yii;
 use common\models\Servicecall;
 use common\models\ServicecallSearch;
@@ -11,6 +12,12 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
+use mPDF;
+
+
+use common\models\Handyfunctions;
+
 
 /**
  * ServicecallController implements the CRUD actions for Servicecall model.
@@ -97,6 +104,34 @@ class ServicecallController extends Controller
     }
 
 
+    public function actionNavigatetoaddress()
+    {
+        $servicecall_id= Yii::$app->getRequest()->get('servicecall_id');
+        //http://maps.google.com/?saddr=Current%20Location&daddr=<?php echo $customer_address;
+        $model=$this->findModel($servicecall_id);
+
+        $customer_address = Handyfunctions::formataddress(
+            $model->customer->address_line_1,
+            $model->customer->address_line_2,
+            $model->customer->address_line_3,
+            $model->customer->town,
+            $model->customer->postcode
+        );
+
+        $navigation_url="http://maps.google.com/?saddr=Current%20Location&daddr=".$customer_address;
+
+        $ontheway_jobstatus_id='22';
+
+        Servicecall::update_jobstatus($ontheway_jobstatus_id, $servicecall_id);
+
+        return $this->redirect($navigation_url);
+
+
+
+
+    }/////end of     public function actionNavigatetoaddress()
+
+
 
     public function actionUpdateeditservicecallonly()
     {
@@ -118,16 +153,17 @@ class ServicecallController extends Controller
     }
 
 
-    public function actionJobfinished()
+    public function actionChangestatus()
     {
         $servicecall_id= Yii::$app->getRequest()->get('servicecall_id');
         $job_status_id= Yii::$app->getRequest()->get('job_status_id');
         $model = $this->findModel($servicecall_id);
-
-        $model->job_status_id=$job_status_id; ////This is the system status for Job completed by the engineer
-
-        if ($model->save()) {
-            Yii::$app->session->setFlash('success', 'Service call marked as finished');
+        echo $job_status_id;
+        $status_updated=$model->update_jobstatus($job_status_id,$servicecall_id);
+        if ($status_updated){
+            ///we need to reload the model to get new job status
+            $model = $this->findModel($servicecall_id);
+            Yii::$app->session->setFlash('success', 'Service call # '.$model->service_reference_number.' status changed to '.$model->jobstatus->html_name);
             return $this->redirect(['enggdiary/showappointmentsfordate']);
         } else {
 
@@ -138,6 +174,7 @@ class ServicecallController extends Controller
         }
 
 
+
     }/////end of public function actionJobfinished()
 
 
@@ -145,19 +182,38 @@ class ServicecallController extends Controller
     public function actionJobsheet()
     {
         $servicecall_id= Yii::$app->getRequest()->get('id');
-        echo $servicecall_id;
+        //echo $servicecall_id;
         $model=$this->findModel($servicecall_id);
+        $company_details=Setup::loadmycompanydetails();
 
-        $this->renderPartial('_mpdf_report_scheda',  [
-            'model' => $model,
+        $filename = 'Job Sheet '.$model->product->producttitle." Repair - Ref No# ".$model->service_reference_number;
 
-            'mode'=> Pdf::MODE_CORE,
-            'format'=> Pdf::FORMAT_A4,
-            'orientation'=>Pdf::ORIENT_POTRAIT,
-            'destination'=> Pdf::DEST_BROWSER,
+        $mpdf=new mPDF();
+        $mpdf->WriteHTML($this->renderPartial('jobsheet',  ['model' => $model, 'company_details'=>$company_details]));
+        $mpdf->Output($filename , 'I');
+    }///end of public function actionJobsheet()
 
-           ]);
-    }
+
+    public function actionInvoice()
+    {
+        $servicecall_id= Yii::$app->getRequest()->get('id');
+        //echo $servicecall_id;
+        $model=$this->findModel($servicecall_id);
+        $company_details=Setup::loadmycompanydetails();
+        $filename = 'Invoice '.$model->product->producttitle." Repair - Ref No# ".$model->service_reference_number;
+
+
+        $mpdf=new mPDF();
+        $mpdf->WriteHTML($this->renderPartial('invoice',  ['model' => $model, 'company_details'=>$company_details]));
+        //$mpdf->Output($filename, 'I');
+        return $this->renderPartial('invoice',  ['model' => $model, 'company_details'=>$company_details]);
+
+    }///end of public function actionInvoice()
+
+
+
+
+
 
     public function actionEmailservicecall()
     {
@@ -170,42 +226,90 @@ class ServicecallController extends Controller
         {
             echo $email_servicecall->email;
             echo $email_servicecall->servicecall_id;
+            echo "<br>enggdiary_id : ".$email_servicecall->enggdiary_id;
+
             echo "<br>Invoice : ".$email_servicecall->invoice;
             echo "<br>Job Sheet : ".$email_servicecall->jobsheet;
 
-            $jobsheet_url=Url::toRoute(['servicecall/jobsheet','id'=> $email_servicecall->servicecall_id]);
 
 
 
-            echo "<br> Job Sheet Url.".$jobsheet_url;
 
-
-            if ($email_servicecall->jobsheet)
-                echo "<br>Sending Jobshete";
-
-            if ($email_servicecall->invoice)
-                echo "<br>Sending Invoice";
-
-
-
-            $jobsheet_url=Yii::$app->params['main_system_url'].'?r=servicecall/preview&id='.$email_servicecall->servicecall_id;
+            $servicecall=$this->findModel($email_servicecall->servicecall_id);
+            $company_details=Setup::loadmycompanydetails();
 
             $from_email='mailtest.test10@gmail.com';
-            $recipient_emails=$email_servicecall->email;
-            $subject="Job Sheet";
-            $plaintext="Please find the jobsheet";
-            $mail_html_content='<h1>This is HTML. Please find job sheet</h1>';
+            $recipient_emails=array();
+
+            array_push($recipient_emails,$email_servicecall->email);
+            array_push($recipient_emails,$company_details->email);
+
+            var_dump($recipient_emails);
+
+
+
+
+            $subject = $servicecall->product->producttitle." Repair - Ref No# ".$servicecall->service_reference_number;
+
+            echo "<hr>Subject :".$subject;
+            $plaintext="Please find the documents";
+
+            $mail_html_content='<p>Dear '.$servicecall->customer->fullname.'</p>';
+            $mail_html_content.='<p>Please find here the enclosed document regarding the repair.</p>';
+            $mail_html_content.='<br><p>Kind Regards</p><br>';
+            $mail_html_content.='<p>'.$company_details->company;
+            $mail_html_content.='<br/>'.$company_details->email;
+            $mail_html_content.='<br/>'.$company_details->website.'</p>';
+
+
+            echo "<hr>Content :".$mail_html_content;
+
+            if ($email_servicecall->jobsheet)
+            {
+
+                $attachment_filename='Job Sheet '.$subject.'.pdf';
+                $attachment_url=Url::to(['servicecall/jobsheet','id'=> $email_servicecall->servicecall_id],true);
+                $subject = "Job Sheet ".$subject;
+                /*
+                echo Yii::$app->mailer->compose()
+                    ->setFrom($from_email)
+                    ->setTo($recipient_emails)
+                    ->setSubject($subject)
+                    ->setTextBody($plaintext)
+                    ->setHtmlBody($mail_html_content)
+                    ->attach($attachment_url,['fileName'=>$attachment_filename])
+                    ->send();
+                */
+            }
+
+
+            if ($email_servicecall->invoice)
+            {
+
+                $attachment_filename='Invoice '.$subject.'.pdf';
+                $attachment_url=Url::to(['servicecall/invoice','id'=> $email_servicecall->servicecall_id],true);
+                $subject = "Invoice ".$subject;
+
+                echo Yii::$app->mailer->compose()
+                    ->setFrom($from_email)
+                    ->setTo($recipient_emails)
+                    ->setSubject($subject)
+                    ->setTextBody($plaintext)
+                    ->setHtmlBody($mail_html_content)
+                    ->attach($attachment_url,['fileName'=>$attachment_filename])
+                    ->send();
+
+            }
+
+            Yii::$app->session->setFlash('success', 'The email has been sent');
+            //return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall->id, 'enggdiary_id'=>$email_servicecall->enggdiary_id]);
+            return $this->redirect(['enggdiary/showappointmentsfordate']);
+
 
             /*
-            return Yii::$app->mailer->compose()
-                ->setFrom($from_email)
-                ->setTo($recipient_emails)
-                ->setSubject($subject)
-                ->setTextBody($plaintext)
-                ->setHtmlBody($mail_html_content)
-                ->attach($jobsheet_url)
-                ->send();
+            echo
             */
+
 
         }else
         {

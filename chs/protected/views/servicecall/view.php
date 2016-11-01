@@ -12,7 +12,7 @@
 $editicom = '<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>';
 
 //echo $model->enggdiary->status;
-if ($model->engg_diary_id == NULL || $model->engg_diary_id == '' )
+if ($model->engg_diary_id == NULL || $model->engg_diary_id == '')
     $appointment_exists = false;
 else
     $appointment_exists = true;
@@ -128,7 +128,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
     </h4>
 
 
-
     <h4>
         <i style="color:white;" class="fa fa-briefcase" aria-hidden="true"></i>
         <a style="color:white;" href="#enggreporting">Work Done</a>
@@ -173,39 +172,60 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 </div>
 
+
+<div style="text-align:center; ">
+    <h1>Servicecall</h1>
+</div>
+
 <!-- Admin Time on Call Start -->
 
+<table>
+    <tr>
+        <td>
+            <h1 title="Time Spent By the Engineer" class="doc">
+            <i class="ukwfa ukwfa-engineer-repair" aria-hidden="true"></i>
+            <i class="fa fa-clock-o " aria-hidden="true"></i>
+            <?php
+                $all_appointments = Enggdiary::model()->getappointmentsbyserviceid($model->id);
+                $total_time_of_engg=0;
+                foreach ($all_appointments as $app)
+                {
+                    $total_time_of_engg=$total_time_of_engg+ $app->duration_of_call;
+                }
+            ?>
+            <?php echo Setup::model()->convertsecondstotime($total_time_of_engg); ?>
+            </h1>
+        </td>
+        <td>
+            <h1 title="Recording Time Spent on this call" style="text-align: right" class="cart">
+                <i class="fa fa-user " aria-hidden="true"></i>
+                <i class="fa fa-clock-o" aria-hidden="true"></i>
 
-<h1 title="Recording Time Spent on this call" style="text-align: right">
-    <i class="fa fa-clock-o" aria-hidden="true"></i>
-    <span id="admintimer"></span>
-</h1>
+                <span id="admintimer">
+                    <?php echo Setup::model()->convertsecondstotime($model->admintime); ?>
+                </span>
+            </h1>
+
+        </td>
+    </tr>
+</table>
 
 
-<h4 title="Admin Time Spent on this call" style="text-align: right" class="media">
-    <i class="fa fa-clock-o" aria-hidden="true"></i>
-
-    <span id="timespentoncall">
-        <?php echo $setupmodel->convertsecondstotime($model->admintime);?>
-    </span>
-</h4>
 
 
-<?php $timerupdateurl=Yii::app()->createUrl("servicecall/updateadmintimeofservicecall");?>
+
+<?php $timerupdateurl = Yii::app()->createUrl("servicecall/updateadmintimeofservicecall"); ?>
 
 
-<input id="timerupdateurl" value="<?php echo  $timerupdateurl;?>" type="hidden" />
+<input id="timerupdateurl" value="<?php echo $timerupdateurl; ?>" type="hidden"/>
 
-<input id="Servicecall_time_spent_on_call_now"  type="hidden" />
+<input id="admin_time_in_seconds_spent_on_servicecall" type="hidden" value="<?php echo $model->admintime;?> "/>
 
 
 
 
 <!-- Admin Time on Call End -->
 
-<div style="text-align:center; ">
-    <h1>Servicecall</h1>
-</div>
 
 <div class="servicetoolbar fixedElement" id="toolbardraggable">
     <table>
@@ -311,7 +331,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                 ));
 
 
-                echo '<div class="error">'.$_GET['error_msg'].'</div>';
+                echo '<div class="error">' . $_GET['error_msg'] . '</div>';
 
                 $this->endWidget('zii.widgets.jui.CJuiDialog');
                 // the link that may open the dialog
@@ -319,10 +339,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
                 </div>
             <?php endif; ?>
-
-
-
-
 
 
             <div class="customerheadingbox contentbox">
@@ -388,11 +404,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
     </tr>
 
 
-
-
     <tr>
         <td colspan="2">
-            <div class="customerbox contentbox"  id="customerbox">
+            <div class="customerbox contentbox" id="customerbox">
                 <div class="customerheadingbox headingbox">
                     <?php
                     $updatecustomertext = "<h4 style='color: white;'><i class='fa fa-users'></i>&nbsp;&nbsp;Customer <div style='float:right'><i class='fa fa-pencil-square-o'></i></div></h4>";
@@ -480,7 +494,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     <span class="fa fa-map-o" aria-hidden="true"></span></a>
 
                                 <div class="googlemapdiv" style="display:block; float: right;">
-                                    <?php $this->renderPartial('postcodeongooglemap', array('address' => $address, 'postcode'=>$model->customer->postcode)); ?>
+                                    <?php $this->renderPartial('postcodeongooglemap', array('address' => $address, 'postcode' => $model->customer->postcode)); ?>
                                 </div><!-- googlemapdiv -->
 
                             </td>
@@ -526,7 +540,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                     ?>
 
 
-
                 </div>
                 <div class="contentbox">
                     <table style="width: 100%">
@@ -542,9 +555,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                             <td>
 
 
-                                <?php $brandname=strtolower($model->product->brand->name); ?>
-                                <?php $brandname=preg_replace('/\s+/', '', $brandname); ?>
-                                <i class="ukw-logo-fa ukw-logo-fa-<?php echo $brandname;?> fa-4x"></i>
+                                <?php $brandname = strtolower($model->product->brand->name); ?>
+                                <?php $brandname = preg_replace('/\s+/', '', $brandname); ?>
+                                <i class="ukw-logo-fa ukw-logo-fa-<?php echo $brandname; ?> fa-4x"></i>
                                 <br>
                                 <?php echo $model->product->brand->name; ?>
 
@@ -552,9 +565,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                             </td>
                             <td><span class="datacontenttitle">Product Type</span>
                             <td>
-                                <?php $producttypename=strtolower($model->product->productType->name); ?>
-                                <?php $producttypename=preg_replace('/\s+/', '', $producttypename); ?>
-                                <i class="ukwfa ukwfa-<?php echo $producttypename;?> fa-4x"></i>
+                                <?php $producttypename = strtolower($model->product->productType->name); ?>
+                                <?php $producttypename = preg_replace('/\s+/', '', $producttypename); ?>
+                                <i class="ukwfa ukwfa-<?php echo $producttypename; ?> fa-4x"></i>
                                 <br>
                                 <?php echo '' . $model->product->productType->name; ?>
 
@@ -645,10 +658,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                     <?php
 
                     if (isset($_GET['openservicedialog']))
-                        $autoopenservice=true;
+                        $autoopenservice = true;
                     else
-                        $autoopenservice=false;
-
+                        $autoopenservice = false;
 
 
                     $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
@@ -666,7 +678,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                     $this->endWidget('zii.widgets.jui.CJuiDialog');
                     // the link that may open the dialog
                     ?>
-
 
 
                 </div>
@@ -723,15 +734,15 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 
                                 <div class="fa fa-file-text-o fa-2x" aria-hidden="true"></div>
-                                    <span
-                                        class="datacontenttitle"><?php echo $model->getAttributeLabel('fault_description'); ?></span>
+                                <span
+                                    class="datacontenttitle"><?php echo $model->getAttributeLabel('fault_description'); ?></span>
 
 
                                 <br>
 
 
                                 <a href="<?php echo $google_fault_url; ?>" target="_blank">
-                                    <?php echo CHtml::image('images/google.png', 'google', array('width'=>'100px','height'=>'100px','title'=>'image title here')); ?>
+                                    <?php echo CHtml::image('images/google.png', 'google', array('width' => '100px', 'height' => '100px', 'title' => 'image title here')); ?>
                                 </a>
                                 <br>
                                 <?php echo $model->fault_description; ?>
@@ -745,7 +756,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                             <th colspan="3">
                                 <?php
                                 $sparesicon = '<h4 style="float:right;">Add <i class="fa fa-plus-square-o" aria-hidden="true"></i><i class="fa fa-wrench" aria-hidden="true"></i></h4>';
-                                echo CHtml::link($sparesicon,'#', array('onclick' => '$("#add-spares-dialog").dialog("open"); return false;',));
+                                echo CHtml::link($sparesicon, '#', array('onclick' => '$("#add-spares-dialog").dialog("open"); return false;',));
                                 ?>
                             </th>
                         </tr>
@@ -754,7 +765,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                         <?php $sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id' => $model->id)); ?>
 
                         <?php if (count($sparesModel) > 0) : ?>
-
 
 
                             <tr class="attention">
@@ -785,7 +795,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
                                     <td>
 
-                                        <?php  $togglesparesused=$this->createUrl('sparesused/togglesparesused',array('id'=>$data->id));?>
+                                        <?php $togglesparesused = $this->createUrl('sparesused/togglesparesused', array('id' => $data->id)); ?>
                                         <a href="<?php echo $togglesparesused; ?>">
                                             <?php if ($data->used == 1): ?>
                                                 <span class="fa fa-check-square-o" aria-hidden="true"></span>
@@ -1004,7 +1014,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                             <td>
 
 
-
                                 <?php
                                 echo CHtml::link('<div class="ukwfa ukwfa-recall"></div> Change Engineer',
                                     '#', array(
@@ -1031,13 +1040,11 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                 ?>
 
 
-
-
                             </td>
                         </tr>
 
                         <?php if ($appointment_exists): ?>
-                         <tr>
+                            <tr>
                                 <td>
                                     <div>
                                         <?php echo CHtml::link('<span title="Show/Hide" class="fa fa-calendar fa-2x"></span>', '#', array('class' => 'dayview-button')); ?>
@@ -1046,29 +1053,28 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                 </td>
                                 <td>
                                     <?php
-                                    if ($model->enggdiary->status=='3')
-                                        $appointment_fontcolor='inherit';
+                                    if ($model->enggdiary->status == '3')
+                                        $appointment_fontcolor = 'inherit';
                                     else
-                                        $appointment_fontcolor='#cccbcb';
+                                        $appointment_fontcolor = '#cccbcb';
                                     ?>
 
-                                    <div style="color:<?php echo $appointment_fontcolor;?>">
-                                    <?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?>
-                                    <br>
+                                    <div style="color:<?php echo $appointment_fontcolor; ?>">
+                                        <?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_start_date); ?>
+                                        <br>
 
-                                    <?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_end_date); ?>
+                                        <?php echo $setupmodel->formatdatewithtime($model->enggdiary->visit_end_date); ?>
                                     </div>
                                 </td>
                                 <td>
 
-                                   <?php if ($model->enggdiary->status=='3'): ?>
+                                    <?php if ($model->enggdiary->status == '3'): ?>
 
-                                    <?php echo CHtml::link('<div class="fa fa-times"></div> Cancel appointment',"#", array("submit"=>array('enggdiary/cancelappointment/', 'diary_id'=>$model->engg_diary_id), 'confirm' => 'Are you sure you want to cancel the appointment?')); ?>
-                                    &nbsp;&nbsp;
-                                    <?php echo CHtml::link('<div class="fa fa-share"></div> Move appointment', array('enggdiary/viewFullDiary/', 'engg_id' => $model->engineer_id)); ?>
+                                        <?php echo CHtml::link('<div class="fa fa-times"></div> Cancel appointment', "#", array("submit" => array('enggdiary/cancelappointment/', 'diary_id' => $model->engg_diary_id), 'confirm' => 'Are you sure you want to cancel the appointment?')); ?>
+                                        &nbsp;&nbsp;
+                                        <?php echo CHtml::link('<div class="fa fa-share"></div> Move appointment', array('enggdiary/viewFullDiary/', 'engg_id' => $model->engineer_id)); ?>
 
                                     <?php endif; ////if ($appointment_exists): ?>
-
 
 
                                 </td>
@@ -1082,38 +1088,38 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     <?php echo $model->enggdiary->notes; ?>
                                 </td>
                                 <td>
-                                    <?php if ($model->enggdiary->status=='3'):  ?>
+                                    <?php if ($model->enggdiary->status == '3'): ?>
 
-                                    <?php
-                                    echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit',
-                                        '#', array(
-                                            'onclick' => '$("#edit-diarynotes-dialog").dialog("open"); return false;',
+                                        <?php
+                                        echo CHtml::link('<div class="fa fa-pencil-square-o"></div> Edit',
+                                            '#', array(
+                                                'onclick' => '$("#edit-diarynotes-dialog").dialog("open"); return false;',
+                                            ));
+                                        ?>
+
+
+                                        <?php
+                                        $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+                                            'id' => 'edit-diarynotes-dialog',
+                                            // additional javascript options for the dialog plugin
+                                            'options' => array(
+                                                'title' => 'Edit Diary Notes',
+                                                'autoOpen' => false,
+                                                'resizable' => false,
+                                                'modal' => 'true',
+                                            ),
                                         ));
-                                    ?>
+                                        $this->renderPartial('/enggdiary/editnotesonly');
 
+                                        $this->endWidget('zii.widgets.jui.CJuiDialog');
+                                        // the link that may open the dialog
+                                        ?>
 
-                                    <?php
-                                    $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-                                        'id' => 'edit-diarynotes-dialog',
-                                        // additional javascript options for the dialog plugin
-                                        'options' => array(
-                                            'title' => 'Edit Diary Notes',
-                                            'autoOpen' => false,
-                                            'resizable' => false,
-                                            'modal' => 'true',
-                                        ),
-                                    ));
-                                    $this->renderPartial('/enggdiary/editnotesonly');
-
-                                    $this->endWidget('zii.widgets.jui.CJuiDialog');
-                                    // the link that may open the dialog
-                                    ?>
-
-                                    <?php  endif; ////if ($appointment_exists): ?>
+                                    <?php endif; ////if ($appointment_exists): ?>
 
                                 </td>
                             </tr>
-
+ 
                             <tr>
                                 <td colspan="3">
                                     <?php $all_appointments = Enggdiary::model()->getappointmentsbyserviceid($model->id); ?>
@@ -1126,6 +1132,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                                 <th class="datacontenttitle">Visit Date</th>
 
                                                 <th class="datacontenttitle">Notes</th>
+                                                <th class="datacontenttitle">Duration</th>
+                                                
                                             </tr>
 
                                             <?php foreach ($all_appointments as $a): ?>
@@ -1142,6 +1150,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                                         </td>
 
                                                         <td><?php echo $a->notes; ?> </td>
+                                                        <td> <?php echo Setup::model()->convertsecondstotime($a->duration_of_call); ?> </td>
+                                                        
                                                     </tr>
                                                 <?php endif;///end of if ($a->id!=$model->engg_diary_id): ?>
 
@@ -1193,8 +1203,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 
     <!-- Engineer End -->
-
-
 
 
     <!-- attachmentsbox  Start-->
@@ -1257,56 +1265,64 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                             <th>Description</th>
                             <th></th>
                         </tr>
-                    <?php $alldocs=Documentsmanuals::model()->loadalldocumentsbyservicecallid($model->id); ?>
+                        <?php $alldocs = Documentsmanuals::model()->loadalldocumentsbyservicecallid($model->id); ?>
 
-                    <?php foreach ($alldocs as $doc): ?>
-                        <tr>
-                            <td><?php echo $doc->documentmanual->name; ?></td>
-                            <td><?php echo $doc->documentmanual->model_nos; ?></td>
-                            <td><?php echo $doc->documentmanual->description; ?></td>
-                            <td>
-                                <?php
-                                $delete_url=$this->createUrl('documentsmanuals/deletedocumentfromservicecall', array('document_id'=>$doc->document_id, 'service_id'=>$doc->servicecall_id));
-                                echo CHtml::link('<div class="btn btn-danger" title="Delete Attachment" ><i class="btn-danger fa fa-times"></i><div>',
-                                    $delete_url,array('confirm'=>'Are you sure you want to delete this item?'));
-                                ?>
-                            </td>
+                        <?php foreach ($alldocs as $doc): ?>
+                            <tr>
+                                <td><?php echo $doc->documentmanual->name; ?></td>
+                                <td><?php echo $doc->documentmanual->model_nos; ?></td>
+                                <td><?php echo $doc->documentmanual->description; ?></td>
+                                <td>
+                                    <?php
+                                    $delete_url = $this->createUrl('documentsmanuals/deletedocumentfromservicecall', array('document_id' => $doc->document_id, 'service_id' => $doc->servicecall_id));
+                                    echo CHtml::link('<div class="btn btn-danger" title="Delete Attachment" ><i class="btn-danger fa fa-times"></i><div>',
+                                        $delete_url, array('confirm' => 'Are you sure you want to delete this item?'));
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $delete_url = $this->createUrl('documentsmanuals/update', array('id' => $doc->document_id));
+                                    echo CHtml::link('<i title="Update Attachment"  class="btn btn-info fa fa-pencil fa-2x"></i>',
+                                        $delete_url, array('target'=>'_blank'));
+                                    ?>
+                                </td>
 
-                            <td>
-                                <?php
-                                                                   ?>
 
-                                <?php
-                                $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
-                                    'id'=>'glimpse_dialog'.$doc->document_id,
+                                <td>
+                                    <?php
+                                    ?>
 
-                                    // additional javascript options for the dialog plugin
-                                    'options'=>array(
-                                        'title'=>'Preview box',
-                                        'autoOpen'=>false,
-                                        'modal'=>true,
-                                        'show'=>'effect: "blind",duration: 1000',
-                                        'hide'=>'effect: "explode",duration: 1000',
-                                        'width'=>800,
-                                        'height'=>800,
+                                    <?php
+                                    $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+                                        'id' => 'glimpse_dialog' . $doc->document_id,
 
-                                    ),
-                                ));
+                                        // additional javascript options for the dialog plugin
+                                        'options' => array(
+                                            'title' => 'Preview box',
+                                            'autoOpen' => false,
+                                            'modal' => true,
+                                            'show' => 'effect: "blind",duration: 1000',
+                                            'hide' => 'effect: "explode",duration: 1000',
+                                            'width' => 800,
+                                            'height' => 800,
 
-                                    $preview_link=Yii::app()->request->baseUrl."/documents_manuals/".$doc->documentmanual->filename;
+                                        ),
+                                    ));
+
+                                    $preview_link = Yii::app()->request->baseUrl . "/documents_manuals/" . $doc->documentmanual->filename;
                                     $this->renderPartial('/documentsmanuals/minipreview', array('preview_link' => $preview_link));
 
-                                $this->endWidget('zii.widgets.jui.CJuiDialog');
+                                    $this->endWidget('zii.widgets.jui.CJuiDialog');
 
-                                // the link that may open the dialog
-                                echo CHtml::link('<i class="btn btn-primary fa fa-search-plus" aria-hidden="true"></i>', '#', array(
-                                    'onclick'=>'$("#glimpse_dialog'.$doc->document_id.'").dialog("open"); return false;',
-                                ));
-                                ?>
+                                    // the link that may open the dialog
+                                    echo CHtml::link('<i class="btn btn-primary fa fa-search-plus" aria-hidden="true"></i>', '#', array(
+                                        'onclick' => '$("#glimpse_dialog' . $doc->document_id . '").dialog("open"); return false;',
+                                    ));
+                                    ?>
 
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </table>
 
                 </div>
@@ -1317,32 +1333,32 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
     <!-- attachmentsbox  End-->
 
 
-
-
     <!-- Activity Log Start-->
     <tr>
         <td colspan="2">
             <div class="engineerbox contentbox" id="activitylog">
 
-            <div class="enginnerheadingbox contentbox">
+                <div class="enginnerheadingbox contentbox">
 
-                <?php
+                    <?php
 
-                Yii::app()->clientScript->registerScript('activitylog-div', "
+                    Yii::app()->clientScript->registerScript('activitylog-div', "
                                         $('#activitylog-button').click(function(){
 	                                    $('#activitylog-div').toggle();
 	                                    return false;
                                         });
                                 ");
-                ?>
+                    ?>
 
 
-                <?php $activitylogtext = "<h4 style='color: white;' id='activilitylogdivbutton'><i class='fa fa-code-fork'></i>&nbsp;&nbsp;Activity Log <div style='float:right;'><i class='fa fa-toggle-on'></i></div> <h4>"; ?>
-                <?php echo CHtml::link($activitylogtext, '#', array('id' => 'activitylog-button')); ?>
+                    <?php $activitylogtext = "<h4 style='color: white;' id='activilitylogdivbutton'><i class='fa fa-code-fork'></i>&nbsp;&nbsp;Activity Log <div style='float:right;'><i class='fa fa-toggle-on'></i></div> <h4>"; ?>
+                    <?php echo CHtml::link($activitylogtext, '#', array('id' => 'activitylog-button')); ?>
 
 
-            </div>
-                 <div id="activitylog-div" style="display:none">
+                </div>
+
+
+                <div id="activitylog-div" style="display:none">
                     <?php $activity_array = json_decode($model->activity_log, true); ?>
                     <?php if (count($activity_array) > 0): ?>
 

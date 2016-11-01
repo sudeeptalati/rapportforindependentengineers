@@ -11,6 +11,8 @@ class Emailservicecall extends Model
 {
     public $email;
     public $servicecall_id;
+    public $enggdiary_id;
+
     public $subject;
     public $jobsheet= true;
     public $invoice= false;
@@ -27,6 +29,8 @@ class Emailservicecall extends Model
         return [
             [['email', 'servicecall_id'], 'required'],
             [['email'], 'email'],
+
+            [['enggdiary_id'], 'safe'],
             [['servicecall_id'], 'integer'],
             ['jobsheet', 'boolean'],
             ['invoice', 'boolean'],

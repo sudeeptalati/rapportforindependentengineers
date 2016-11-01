@@ -51,8 +51,7 @@
                         <h3 id="filename_title">
                             <?php echo $model->filename; ?>
                         </h3>
-
-
+                        <embed src='<?php echo $preview_link; ?>' style="width: 100%;"> </embed>
                         <?php
                         $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
                             'id' => 'preview_dialog',

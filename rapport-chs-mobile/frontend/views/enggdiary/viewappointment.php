@@ -57,17 +57,15 @@ if (Yii::$app->getRequest()->get('signature_block'))
 ?>
 
 
-<h1 title="Recording Time Spent on this call" style="text-align: right">
-    <i class="fa fa-clock-o" aria-hidden="true"></i>
-    <span id="admintimer">00:00:00</span>
-</h1>
-<h4 title="Admin Time Spent on this call" style="text-align: right" class="media">
-    <i class="fa fa-clock-o" aria-hidden="true"></i>
-    <span id="timespentoncall">
-        <?php echo Handyfunctions::convertsecondstoduration($enggdiary->duration_of_call); ?>
 
-    </span>
-</h4>
+
+<h1 title="Recording Time Spent on this call" class="runningtimer">
+    <i class="fa fa-clock-o" aria-hidden="true"></i>
+    <span id="admintimer"><?php echo Handyfunctions::convertsecondstoduration($enggdiary->duration_of_call); ?></span>
+</h1>
+
+
+
 
 <?php
 
@@ -75,10 +73,19 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
 
 
 ?>
-<input id="update_dur_url" value="<?php echo $update_dur_url; ?>" type="hidden"/>
 
+<input id="duration_of_call_already_captured" value="<?php echo $enggdiary->duration_of_call; ?>" type="hidden"/>
+<input id="update_dur_url" value="<?php echo $update_dur_url; ?>" type="hidden"/>
 <input id="enggdiary_id" value="<?php echo $enggdiary->id; ?>" type="hidden"/>
 
+<h1>
+    <?php echo Handyfunctions::format_date($enggdiary->visit_start_date);?>
+</h1>
+<h4>
+    <?php echo Handyfunctions::format_time($enggdiary->visit_start_date); ?>
+    -
+    <?php echo Handyfunctions::format_time($enggdiary->visit_end_date); ?>
+</h4>
 
 <?= Html::button('Customer', ['class' => 'btn-lg customerheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#customerbox").toggle("slow"); })();']); ?>
 <div id="customerbox" class="customerbox contentbox" style="display: <?php echo $customer_block; ?>">
@@ -579,8 +586,8 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
 <table class="full_width responsive-stacked-table">
     <tr>
         <td>
-            <?php $job_finished_id = '22'; ?>
-            <?php $job_finished_url = Url::to(['servicecall/jobfinished', 'servicecall_id' => $servicecall->id, 'job_status_id' => $job_finished_id]); ?>
+            <?php $job_finished_id = '24'; ?>
+            <?php $job_finished_url = Url::to(['servicecall/changestatus', 'servicecall_id' => $servicecall->id, 'job_status_id' => $job_finished_id]); ?>
             <a href="<?php echo $job_finished_url; ?>">
                 <button class="btn btn-success center-block">
                     <h4>
@@ -593,7 +600,7 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
         </td>
         <td>
             <?php $no_access_id = '9'; ?>
-            <?php $no_access_url = Url::to(['servicecall/jobfinished', 'servicecall_id' => $servicecall->id, 'job_status_id' => $no_access_id]); ?>
+            <?php $no_access_url = Url::to(['servicecall/changestatus', 'servicecall_id' => $servicecall->id, 'job_status_id' => $no_access_id]); ?>
             <a href="<?php echo $no_access_url; ?>">
                 <button class="btn btn-danger center-block">
                     <h4>
@@ -608,13 +615,14 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
     <tr>
         <td colspan="2" class="contentbox">
 
-            <?= Html::button('<h4><i class="fa fa-paper-plane"></i> Email Invoice </h4>', ['class' => 'btn btn-info center-block', 'onclick' => '(function ( $event ) { $("#email_servicecall_block").toggle("slow"); })();']); ?>
+            <?= Html::button('<h4><i class="fa fa-paper-plane"></i> Email </h4>', ['class' => 'btn btn-info center-block', 'onclick' => '(function ( $event ) { $("#email_servicecall_block").toggle("slow"); })();']); ?>
 
             <div id="email_servicecall_block" style="display: none  ;">
 
 
                 <?php echo $this->render('//servicecall/emailform', [
-                        'servicecallmodel' => $servicecall
+                        'servicecallmodel' => $servicecall,
+                        'enggdiary_id' => $enggdiary->id,
                     ]
                 ); ?>
 

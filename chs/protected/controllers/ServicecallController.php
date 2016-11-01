@@ -837,6 +837,9 @@ public function actionAddProduct($cust_id)
         $servicecall_id=$_GET['servicecall_id'];
         $admin_time_in_seconds=$_GET['admintime'];
 
+        ///converting miliseconds to sec
+        $admin_time_in_seconds = intval($admin_time_in_seconds/1000);
+
         $total_admin_time= Servicecall::model()->updateadmintimebyservicecallid($servicecall_id,$admin_time_in_seconds);
 
         echo Setup::model()->convertsecondstotime($total_admin_time);

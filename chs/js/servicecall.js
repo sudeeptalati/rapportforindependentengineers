@@ -7,11 +7,24 @@
 if ( $( "#admintimer" ).length ) {
     var seconds = 0, minutes = 0, hours = 0, countingseconds=0,
         t;
+
+
+    total_seconds=$( "#admin_time_in_seconds_spent_on_servicecall" ).val();
+
+    seconds= total_seconds % 60;
+    minutes = Math.floor(total_seconds / 60);
+    hours = Math.floor(total_seconds / 3600);
+
+
     timer();
 
 }
 
 function add() {
+
+    countingseconds++;
+
+    //console.log('Counting Seconds'+countingseconds);
     seconds++;
 
     if (seconds >= 60) {
@@ -28,28 +41,14 @@ function add() {
     timer();
 }
 
-function countseconds()
-{
-    countingseconds++;
-    document.getElementById('Servicecall_time_spent_on_call_now').value=countingseconds;
-    //timer();
 
-    updateafterseconds=10;
-    remainder=countingseconds%updateafterseconds;
-    //console.log('remainder'+remainder);
 
-    if (remainder===0)
-    {
-        updateadmintimeforservicecall(updateafterseconds);
-    }
-}
 
 
 
 function timer() {
 
     t = setTimeout(add, 1000);
-    t = setTimeout(countseconds,1000);
 
     if (countingseconds==900)
     {
@@ -62,8 +61,9 @@ function timer() {
         }
 
         alert("Thank you. This helps to calculate the admin time on a job! ");
-
     }
+
+
 
 }
 
@@ -82,7 +82,7 @@ function updateadmintimeforservicecall(secondspassed)
 
     $.post( timerupdateurl, function(data) {
         console.log( "success" +data);
-        document.getElementById('timespentoncall').innerHTML =data;
+        //document.getElementById('timespentoncall').innerHTML =data;
     })
 
         .fail(function() {
@@ -90,3 +90,26 @@ function updateadmintimeforservicecall(secondspassed)
         })
 
 }///function updateadmintimeforservicecall()
+
+
+
+
+var start;
+var duration_url =$("#update_dur_url").val();
+
+$(document).ready(function() {
+    start = new Date().getTime();
+
+
+});
+
+
+$(window).on('beforeunload', function(){
+
+
+    end = new Date().getTime();
+    dur= end - start;
+    console.log('Unliading pgage');
+    updateadmintimeforservicecall( dur );
+
+});

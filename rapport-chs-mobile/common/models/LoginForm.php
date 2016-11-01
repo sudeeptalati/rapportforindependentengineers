@@ -2,6 +2,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\Handyfunctions;
 use yii\base\Model;
 
 /**
@@ -56,7 +57,13 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+
+            $user=$this->getUser();
+            if ($this->servervalidation($user))
+                return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+           else
+                return false;
+
         } else {
             return false;
         }
@@ -75,4 +82,39 @@ class LoginForm extends Model
 
         return $this->_user;
     }
+
+
+
+
+
+    public function servervalidation($user)
+    {
+
+
+        $data['email']=$user->email;
+        $data['pwd']=$user->password_hash;
+
+
+        $url='http://gomobileserver.rapportsoftware.co.uk/gomobile/index.php?r=authentication/authentication';
+
+        $response=Handyfunctions::curl_post_data($url,$data );
+        //echo $response;
+        $full_response_json=json_decode($response);
+        $response_json=$full_response_json[0];
+
+
+
+
+        if ($response_json->status=="OK")
+        {
+            return true;
+        }
+        else{
+
+            Yii::$app->session->setFlash('error', 'Login Error: '.$response_json->status_message);
+
+        }
+
+    }///end of public function servervalidation()
+
 }

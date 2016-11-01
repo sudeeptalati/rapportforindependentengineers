@@ -136,4 +136,9 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Contract::className(), ['id' => 'contract_id']);
     }
+
+    public function getProducttitle()
+    {
+        return $this->brand->name.' '.$this->productType->name;
+    }
 }

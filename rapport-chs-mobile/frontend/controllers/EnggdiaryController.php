@@ -99,19 +99,36 @@ class EnggdiaryController extends Controller
 
         $engineer_id = Yii::$app->user->identity->engineer_id;
 
-        if (!$servicecall_id )
+
+        if (!$servicecall_id || !$engineer_id || !$enggdiary_id )
         {
             return $this->redirect(['/site']);
         }
+        else{
+            $engg_currently_working_job_status_id='23';//Engineer Working on the call
+            $status_update=Servicecall::update_jobstatus($engg_currently_working_job_status_id, $servicecall_id);
 
-        $servicecall=Servicecall::findOne($servicecall_id);
-        $enggdiary=$this->findModel($enggdiary_id);
+            if ($status_update)
+            {
+                $servicecall=Servicecall::findOne($servicecall_id);
+                $enggdiary=$this->findModel($enggdiary_id);
 
-        return $this->render('viewappointment', [
-            'servicecall' => $servicecall,
-            'enggdiary' => $enggdiary,
+                return $this->render('viewappointment', [
+                    'servicecall' => $servicecall,
+                    'enggdiary' => $enggdiary,
 
-        ]);
+                ]);
+
+            }else
+            {
+                Yii::$app->session->setFlash('warning', 'There was some problem in changing job Status. Please try again');
+
+                $this->goBack();
+            }
+
+
+        }
+
 
     }
 
@@ -129,8 +146,10 @@ class EnggdiaryController extends Controller
             $duration_in_seconds = intval($duration_in_seconds/1000);
 
 
+
             $model=$this->findModel($enggdiary_id);
             $model->duration_of_call=$model->duration_of_call+$duration_in_seconds;
+
             if ($model->save())
             {
                 echo Handyfunctions::convertsecondstoduration($model->duration_of_call);

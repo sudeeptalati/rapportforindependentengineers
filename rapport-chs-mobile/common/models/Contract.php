@@ -98,6 +98,15 @@ class Contract extends \yii\db\ActiveRecord
     }
 
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMaincontactdetails()
+    {
+        return $this->hasOne(Contactdetails::className(), ['id' => 'main_contact_details_id']);
+    }
+
+
 
 
 }

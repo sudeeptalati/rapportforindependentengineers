@@ -26,6 +26,12 @@ class Handyfunctions extends Model
         return date('d-F-Y'); ///12-October-2016
     }
 
+    public static function get_datetimestamp()
+    {
+        return date('d-F-Y H:i:s'); ///12-October-2016
+
+    }
+
     public static function convertsecondstoduration($seconds)
     {
         return gmdate("H:i:s", $seconds);

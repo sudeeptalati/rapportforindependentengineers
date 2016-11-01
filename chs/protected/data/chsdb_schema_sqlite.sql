@@ -60,26 +60,32 @@ CREATE TABLE 'documents_manuals' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NUL
 ----
 -- Table structure for document_type
 ----
-CREATE TABLE 'document_type' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'name' TEXT, 'info' TEXT);
-
+CREATE TABLE 'document_type' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'name' TEXT, 'info' TEXT, 'category' TEXT)
 ----
 -- Data dump for document_type, a total of 3 rows
 ----
-INSERT INTO "document_type" ("id","name","info") VALUES ('1','Image','');
-INSERT INTO "document_type" ("id","name","info") VALUES ('2','Product Image','');
-INSERT INTO "document_type" ("id","name","info") VALUES ('3','Rating Plate Image','Rating Plate Image');
+INSERT INTO "document_type" ("id","name","info","category") VALUES ('1','Customer Signature','','SIGNATURE');
+INSERT INTO "document_type" ("id","name","info","category") VALUES ('2','Engineer''s Signature ','','SIGNATURE');
+INSERT INTO "document_type" ("id","name","info","category") VALUES ('3','Other Image','This is teh signature of customer','IMAGE');
+INSERT INTO "document_type" ("id","name","info","category") VALUES ('4','Product Image','','IMAGE');
+INSERT INTO "document_type" ("id","name","info","category") VALUES ('5','Rating Plate Image','Rating Plate Image','IMAGE');
+INSERT INTO "document_type" ("id","name","info","category") VALUES ('7','Manufacturer Manual','','MANUAL');
+
+
+
 
 CREATE TABLE "servicecalls_docs_manuals" ('servicecall_id' INTEGER NOT NULL, 'document_id' INTEGER NOT NULL, PRIMARY KEY (document_id, servicecall_id));
 
 
 
 
-CREATE TABLE 'engineer_login' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'username' TEXT, 'password' TEXT, 'authKey' TEXT, 'accessToken' TEXT, 'active' DATETIME, 'created' DATETIME);
+CREATE TABLE 'engineer_login' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,'username' TEXT, 'auth_key' TEXT, 'password_hash' TEXT, 'password_reset_token' TEXT, 'status' INTEGER, 'created_at' DATETIME, 'updated_at' DATETIME, 'name' TEXT,'email' TEXT, 'engineer_id' INTEGER)
 
 
-
-INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('22','Job Completed by Engineer','','1','1','1','1',NULL,'','1',NULL,'')
-
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('24','Job Completed by Engineer','','1','1','1','1',NULL,'','1',NULL,'')
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('23','Engineer Working','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Job Completed by Engineer</div>','1','1477319251','#E3FFEE')
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('22','Engineer On the Way','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Job Completed by Engineer</div>','1','1477319251','#E3FFEE')
 
 
 ALTER TABLE 'servicecall' ADD COLUMN 'admintime ' INETEGER;
+ALTER TABLE 'enggdiary' ADD COLUMN 'duration_of_call' INETEGER;

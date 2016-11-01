@@ -211,10 +211,18 @@ function selectrow(master_item_id, item_nm, part_nm) {
 if ( $( "#admintimer" ).length ) {
     var seconds = 0, minutes = 0, hours = 0, countingseconds=0,
         t;
+
+
+    total_seconds=$( "#duration_of_call_already_captured" ).val();
+    seconds= total_seconds % 60;
+    minutes = Math.floor(total_seconds / 60);
+    hours = Math.floor(total_seconds / 3600);
+
     timer();
 
 }
 start = new Date().getTime();
+countingseconds=900;
 
 function add() {
     seconds++;

@@ -9,6 +9,7 @@ return [
     'documents_upload_location_absolute_path'=>'/Applications/XAMPP/htdocs/rapport/forengineers/rapportforindependentengineers/chs/documents_manuals/',
     'documents_upload_location_web_path'=>'http://192.168.1.150/rapport/forengineers/rapportforindependentengineers/chs/documents_manuals/',
     'main_system_url'=>'http://192.168.1.150/rapport/forengineers/rapportforindependentengineers/chs/index.php',
+    'company_logo_url'=>'http://192.168.1.150/rapport/forengineers/rapportforindependentengineers/chs/images/company_logo.png',
 
 
     'adminEmail' => 'sudeep.makku@gmail.com',

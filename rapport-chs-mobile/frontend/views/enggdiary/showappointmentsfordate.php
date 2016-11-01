@@ -10,11 +10,45 @@ use common\models\Handyfunctions;
 use yii\helpers\Url;
 
 $this->title=$date_string.'| Diary | Rapport';
+
+$previous_day=Handyfunctions::get_previous_day($date_string);
+$next_day=Handyfunctions::get_next_day($date_string);
+
+$previous_day_appointments_url=Url::to(['enggdiary/showappointmentsfordate', 'date' => $previous_day]);
+$next_day_appointments_url=Url::to(['enggdiary/showappointmentsfordate', 'date' => $next_day]);
+
+
+
+
 ?>
 
 
+<table class="full_width">
+    <tr>
+        <td>
+        <a href="<?php echo $previous_day_appointments_url;?>">
+            <i class="fa fa-arrow-circle-left fa-3x"></i>
+        </a>
+        </td>
+        <td style="text-align: center">
+            <h1><?php echo $date_string; ?> <?php echo $weekday; ?></h1>
+        </td>
 
-<h1><?php echo $date_string; ?> <?php echo $weekday; ?></h1>
+        <td>
+            <a href="<?php echo $next_day_appointments_url;?>">
+                <i class="fa fa-arrow-circle-right fa-3x"></i>
+            </a>
+        </td>
+
+
+
+    </tr>
+</table>
+
+
+
+
+
 <table class="responsivetable">
     <caption>Your Appointments</caption>
     <thead>
@@ -85,7 +119,8 @@ $this->title=$date_string.'| Diary | Rapport';
 
                     </div>
                     <div style="float: right">
-                        <a href="http://maps.google.com/?saddr=Current%20Location&daddr=<?php echo $customer_address; ?>">
+                        <?php $navigation_url=Url::toRoute(['servicecall/navigatetoaddress','servicecall_id'=>$app->servicecall->id]); ?>
+                        <a href="<?php echo $navigation_url;?>" target="_blank">
                             <i class="fa fa-map-signs fa-3x" aria-hidden="true"></i>
                         </a>
 

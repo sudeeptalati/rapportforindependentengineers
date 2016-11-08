@@ -108,17 +108,22 @@ class EnggdiaryController extends Controller
             $engg_currently_working_job_status_id='23';//Engineer Working on the call
             $status_update=Servicecall::update_jobstatus($engg_currently_working_job_status_id, $servicecall_id);
 
+			
             if ($status_update)
             {
                 $servicecall=Servicecall::findOne($servicecall_id);
                 $enggdiary=$this->findModel($enggdiary_id);
 
+
+
+
+              
                 return $this->render('viewappointment', [
                     'servicecall' => $servicecall,
                     'enggdiary' => $enggdiary,
 
                 ]);
-
+               
             }else
             {
                 Yii::$app->session->setFlash('warning', 'There was some problem in changing job Status. Please try again');
@@ -136,8 +141,11 @@ class EnggdiaryController extends Controller
 
     public function actionUpdatedurationofappointment()
     {
-        $duration_in_seconds=Yii::$app->request->post('duration_in_seconds');
-        $enggdiary_id=Yii::$app->request->post('enggdiary_id');
+        //$duration_in_seconds=Yii::$app->request->post('duration_in_seconds');
+        //$enggdiary_id=Yii::$app->request->post('enggdiary_id');
+		
+		$duration_in_seconds=Yii::$app->request->get('duration_in_seconds');
+        $enggdiary_id=Yii::$app->request->get('enggdiary_id');
 
 
         if ($duration_in_seconds && $enggdiary_id)
@@ -153,6 +161,7 @@ class EnggdiaryController extends Controller
             if ($model->save())
             {
                 echo Handyfunctions::convertsecondstoduration($model->duration_of_call);
+                echo "<script>window.close();</script>";
             }else
             {
                 echo "Error in updating";

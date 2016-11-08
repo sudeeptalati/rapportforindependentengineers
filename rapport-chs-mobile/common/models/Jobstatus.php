@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use yii\helpers\ArrayHelper;
+
 use Yii;
 
 /**
@@ -19,6 +21,7 @@ use Yii;
  * @property integer $updated_by_user_id
  * @property string $updated
  * @property string $backgroundcolor
+ * @property integer $mobile_display
  *
  * @property NotificationRules[] $notificationRules
  */
@@ -39,7 +42,7 @@ class Jobstatus extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'information', 'html_name', 'backgroundcolor'], 'string'],
-            [['published', 'dropdown_display', 'view_order', 'dashboard_display', 'dashboard_prority_order', 'updated_by_user_id'], 'integer'],
+            [['mobile_display', 'published', 'dropdown_display', 'view_order', 'dashboard_display', 'dashboard_prority_order', 'updated_by_user_id'], 'integer'],
             [['updated'], 'safe'],
         ];
     }
@@ -62,6 +65,8 @@ class Jobstatus extends \yii\db\ActiveRecord
             'updated_by_user_id' => Yii::t('app', 'Updated By User ID'),
             'updated' => Yii::t('app', 'Updated'),
             'backgroundcolor' => Yii::t('app', 'Backgroundcolor'),
+            'mobile_display' => Yii::t('app', 'Display on Mobile'),
+
         ];
     }
 
@@ -72,4 +77,13 @@ class Jobstatus extends \yii\db\ActiveRecord
     {
         return $this->hasMany(NotificationRules::className(), ['job_status_id' => 'id']);
     }
+
+    public static function listformobiledropdown()
+    {
+
+        $items=self::find()->where(['mobile_display'=>'1'])->all();
+        return ArrayHelper::map($items, 'id', 'name') ;
+    }
+
+
 }

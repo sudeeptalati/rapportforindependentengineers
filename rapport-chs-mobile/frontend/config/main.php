@@ -14,7 +14,8 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     //'homeUrl' => 'index.php',
-
+  	'timeZone' => 'Europe/London',
+ 
     'components' => [
         'user' => [
             'identityClass' => 'common\models\User',
@@ -32,14 +33,16 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'formatter' => [
+	  
+
+     	'formatter' => [
             'class' => 'yii\i18n\Formatter',
             'nullDisplay' => '',
             'dateFormat' => 'php:d-F-Y',
             'datetimeFormat' => 'php:d-F-Y H:i:s',
             'timeFormat' => 'php:H:i:s',
+            
         ],
-
 
 
 

@@ -54,13 +54,13 @@ UPDATE "servicecall" SET "activity_log"='' WHERE 1
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-CREATE TABLE 'documents_manuals' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'document_type_id' INTEGER, 'name' TEXT, 'description' TEXT, 'brand_id' INTEGER, 'product_type_id' INTEGER, 'model_nos' TEXT, 'created' DATETIME, 'created_by_user_id' INTEGER,'filename' TEXT, 'version' TEXT, 'active' INTEGER)
+CREATE TABLE 'documents_manuals' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'document_type_id' INTEGER, 'name' TEXT, 'description' TEXT, 'brand_id' INTEGER, 'product_type_id' INTEGER, 'model_nos' TEXT, 'created' DATETIME, 'created_by_user_id' INTEGER,'filename' TEXT, 'version' TEXT, 'active' INTEGER);
 
 
 ----
 -- Table structure for document_type
 ----
-CREATE TABLE 'document_type' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'name' TEXT, 'info' TEXT, 'category' TEXT)
+CREATE TABLE 'document_type' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'name' TEXT, 'info' TEXT, 'category' TEXT);
 ----
 -- Data dump for document_type, a total of 3 rows
 ----
@@ -79,12 +79,12 @@ CREATE TABLE "servicecalls_docs_manuals" ('servicecall_id' INTEGER NOT NULL, 'do
 
 
 
-CREATE TABLE 'engineer_login' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,'username' TEXT, 'auth_key' TEXT, 'password_hash' TEXT, 'password_reset_token' TEXT, 'status' INTEGER, 'created_at' DATETIME, 'updated_at' DATETIME, 'name' TEXT,'email' TEXT, 'engineer_id' INTEGER)
+CREATE TABLE 'engineer_login' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,'username' TEXT, 'auth_key' TEXT, 'password_hash' TEXT, 'password_reset_token' TEXT, 'status' INTEGER, 'created_at' DATETIME, 'updated_at' DATETIME, 'name' TEXT,'email' TEXT, 'engineer_id' INTEGER);
 
 
-INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('24','Job Completed by Engineer','','1','1','1','1',NULL,'','1',NULL,'')
-INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('23','Engineer Working','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Job Completed by Engineer</div>','1','1477319251','#E3FFEE')
-INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('22','Engineer On the Way','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Job Completed by Engineer</div>','1','1477319251','#E3FFEE')
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('24','Job Completed by Engineer','','1','1','1','1',NULL,'','1',NULL,'');
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('23','Engineer Working','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Job Completed by Engineer</div>','1','1477319251','#E3FFEE');
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor") VALUES ('22','Engineer On the Way','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Job Completed by Engineer</div>','1','1477319251','#E3FFEE');
 
 
 ALTER TABLE 'servicecall' ADD COLUMN 'admintime ' INETEGER;

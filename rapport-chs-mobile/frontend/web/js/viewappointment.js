@@ -14,12 +14,21 @@ function toggleproducteditbox() {
 }
 
 
+function toggleservicecalleditbox() {
+    $('#servicecall_view_block').hide("slow");
+    $('#servicecall_edit_block').show("slow");
+}
+
 function toggledocumentsmanualseditbox() {
     $('#documentsmanuals_view_block').toggle("slow");
     $('#documentsmanuals_edit_block').toggle("slow");
-
-
 }
+
+function togglespareseditbox() {
+    $('#spares_view_block').toggle("slow");
+    $('#spares_edit_block').toggle("slow");
+}
+
 
 function togglesignatureeditbox() {
     $('#signature_view_block').toggle("slow");
@@ -27,6 +36,11 @@ function togglesignatureeditbox() {
 }
 
 
+function togglejobstatusdropdownblock()
+{
+    $('#job_status_dropdown_block').toggle("slow");
+
+}
 
 
 
@@ -50,7 +64,11 @@ function productdetailsverified() {
         document.getElementById('product_details_check_btn').style.color = "green";
         $('#customerbox').hide("slow");
         $('#productbox').hide("slow");
+        
+       
         $('#documentsmanualsbox').show("slow");
+        toggledocumentsmanualseditbox();
+        $('#documentsmanuals-uploadfile').click();
 
 
     } else {
@@ -95,10 +113,7 @@ function workcarriedoutadded() {
 }///end of function workcarriedoutadded() {
 
 
-function toggleservicecalleditbox() {
-    $('#servicecall_view_block').hide("slow");
-    $('#servicecall_edit_block').show("slow");
-}
+
 
 
 function sparesrequested() {
@@ -118,10 +133,7 @@ function sparesrequested() {
 
 }///end of function sparesrequested() {
 
-function togglespareseditbox() {
-    $('#spares_view_block').show("slow");
-    $('#spares_edit_block').show("slow");
-}
+
 
 
 
@@ -141,31 +153,41 @@ function formatitemvalue(val) {
 
 
 function formatoutputdata(response) {
-    console.log("formatoutputdata" + response.length);
+    //console.log("formatoutputdata" + response);
 
-    for (i = 0; i < response.length; i++) {
-        sparepart = response[i];
-        console.log(sparepart.name);
-    }
-
-
-    $("#masteritems_table").empty();
+	var json_obj = jQuery.parseJSON(response);
+ 	$("#masteritems_table").empty();
 
     $("#masteritems_table").append("<tr><th>Name</th><th>Part Number</th><th>Last used Price</th></tr>");
 
+    for (i = 0; i < json_obj.length; i++) {
+        item = json_obj[i];
+        console.log("SPARENAME: "+item.name);
+        
+         $('#masteritems_table').append('<tr id="rowno' + i + '" class="mytr" onclick="selectrow(     \' ' + item.id + '  \'    ,    \' ' + item.name + ' \'  , \' ' + item.part_number + ' \'      ) ">' +
+                '<td><span style="color:#0088cc">' + formatitemvalue(item.name) + '</span></td>' +
+                '<td> ' + formatitemvalue(item.part_number) + ' </td>' +
+                '<td> ' + item.sale_price + ' </td>' +
+                '</tr>');
+                
+                
+    }
+	
+	/*
     $(function () {
         $.each(response, function (i, item) {
-            console.log(item);
+            console.log("ITEM IS "+item);
+            
             $('#masteritems_table').append('<tr id="rowno' + i + '" class="mytr" onclick="selectrow(     \' ' + item.id + '  \'    ,    \' ' + item.name + ' \'  , \' ' + item.part_number + ' \'      ) ">' +
                 '<td><span style="color:#0088cc">' + formatitemvalue(item.name) + '</span></td>' +
                 '<td> ' + formatitemvalue(item.part_number) + ' </td>' +
                 '<td> ' + item.sale_price + ' </td>' +
                 '</tr>');
 
-
+		 
         });
     });
-
+	*/
 
 }////end of function formatoutputdata(result_data)
 
@@ -221,8 +243,7 @@ if ( $( "#admintimer" ).length ) {
     timer();
 
 }
-start = new Date().getTime();
-countingseconds=900;
+
 
 function add() {
     seconds++;
@@ -253,11 +274,15 @@ function countseconds()
 
     if (remainder===0)
     {
+    	/*
         end = new Date().getTime();
         dur= end - start;
-
         console.log(end-start);
+        */
+        
+        //dur=10000;
         //updatedurationofappointment(duration_url, dur );
+        //var start = new Date().getTime();
     }
 }
 
@@ -286,7 +311,7 @@ function timer() {
 
 
 
-function updatedurationofappointment(dur_url, duration, diary_id )
+function updatedurationofappointment(dur_url, duration )
 {
 
     diary_id =$("#enggdiary_id").val();
@@ -294,9 +319,15 @@ function updatedurationofappointment(dur_url, duration, diary_id )
     data={'duration_in_seconds': duration, enggdiary_id:diary_id};
 
     console.log("data Posted"+duration);
-
+	console.log("data dur_url"+dur_url);
+	
+	
+	get_url=dur_url+"&duration_in_seconds="+duration+"&enggdiary_id="+diary_id;
+	window.open(get_url);
+	 /*
+  
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: dur_url,
         data: data,
         success:function(result){
@@ -306,25 +337,43 @@ function updatedurationofappointment(dur_url, duration, diary_id )
 
         }
     });
-
+     */
 }
 
-var start;
+var start = new Date().getTime();
 var duration_url =$("#update_dur_url").val();
 
-$(document).ready(function() {
-    start = new Date().getTime();
+
+ 
+var isOnIOS = navigator.userAgent.match(/iPad/i)|| navigator.userAgent.match(/iPhone/i);
+var eventName = isOnIOS ? "pagehide" : "beforeunload";
 
 
-});
-
-
-$(window).on('beforeunload', function(){
-
-
+function calculateduration()
+{
     end = new Date().getTime();
     dur= end - start;
     console.log('Unliading pgage');
+    return dur;
+}
+
+
+
+window.onfocus = function() {   
+
+miliseconds_passed=calculateduration(); 
+seconds_passed = (miliseconds_passed/1000) % 60;
+console.log("comming after"+seconds_passed);
+
+};
+  
+window.addEventListener(eventName, function (event) { 
+	 
+	console.log("Unload is called");
+
+	dur=calculateduration();
     updatedurationofappointment(duration_url, dur );
 
 });
+
+ 

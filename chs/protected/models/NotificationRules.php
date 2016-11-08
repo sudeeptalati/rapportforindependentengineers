@@ -656,7 +656,7 @@ class NotificationRules extends CActiveRecord
 	{
 		$system_msg .= "Scheduled date is " . $rf->next_run;
 
-		$today_string = date('d-M-Y');
+		$today_string = date('d-M-Y 19:00');
 		$system_msg .= "<br> Today is " . $today_string;
 
 		$today_int = strtotime($today_string);

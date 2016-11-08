@@ -123,7 +123,7 @@ if(isset($_POST['ajax']) && $_POST['ajax']==='product-form')
         </tr>
 
 
-
+<!--
         <tr>
             <td colspan="3"><br><b><i>Warranty Details</i></b></td>
         </tr>
@@ -247,6 +247,7 @@ if(isset($_POST['ajax']) && $_POST['ajax']==='product-form')
                 <?php echo $form->error($productModel, 'purchase_price'); ?>
             </td>
         </tr>
+        -->
         <tr>
             <td>
                 <?php echo $form->labelEx($productModel, 'discontinued'); ?>

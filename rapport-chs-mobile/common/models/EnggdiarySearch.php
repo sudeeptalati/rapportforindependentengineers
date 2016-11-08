@@ -85,6 +85,7 @@ class EnggdiarySearch extends Enggdiary
         return Enggdiary::find()
             ->where(['between', 'visit_start_date', $date_start_int, $date_end_int])
             ->andWhere(['engineer_id'=> $engineer_id])
+            ->orderBy('visit_start_date ASC')
             ->all();
     }
 

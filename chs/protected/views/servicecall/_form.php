@@ -372,7 +372,7 @@ else
                             </td>
 
                         </tr>
-
+<!--
 	<tr><td colspan="3"><br><b><i>Warranty Details</i></b></td></tr>
 	<tr>
 			<td>
@@ -490,7 +490,7 @@ else
 		<?php echo $form->error($productModel, 'notes'); ?>
 		</td>
 	 </tr>
-
+-->
 
                     </table><!-- END OF TABLE OF PRODUCT -->
                     </div>

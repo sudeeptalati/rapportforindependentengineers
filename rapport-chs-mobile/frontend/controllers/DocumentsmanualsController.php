@@ -205,7 +205,7 @@ class DocumentsmanualsController extends Controller
                     $service_doc->document_id = $model->id;
                     if ($service_doc->save()) {
                         Yii::$app->session->setFlash('successfully', 'File Attached');
-                        return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'enggdiary_id'=>$enggdiary_id, 'signature_block'=>'true' ,'#'=>'signaturebox']);
+                        return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall_id, 'enggdiary_id'=>$enggdiary_id, 'email_servicecall_block'=>'true' ,'#'=>'email_servicecall_block']);
 
                     }////end of if ($service_doc->save())
 

@@ -95,6 +95,12 @@ class LoginForm extends Model
         $data['pwd']=$user->password_hash;
 
 
+        /*echo '<br><br><br><br>';
+        echo '<br>'.$data['email'];
+        echo '<br>'.$data['pwd'];
+        echo '<br><br><br><br>';
+		*/
+
         $url='http://gomobileserver.rapportsoftware.co.uk/gomobile/index.php?r=authentication/authentication';
 
         $response=Handyfunctions::curl_post_data($url,$data );

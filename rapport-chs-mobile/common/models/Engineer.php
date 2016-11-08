@@ -48,8 +48,8 @@ class Engineer extends \yii\db\ActiveRecord
             [['first_name', 'last_name', 'company', 'vat_reg_number', 'notes', 'fullname', 'color'], 'string'],
             [['active', 'inactivated_by_user_id', 'contact_details_id', 'delivery_contact_details_id', 'created_by_user_id', 'include_in_diary_route_planning'], 'integer'],
             [['inactivated_on', 'created', 'modified'], 'safe'],
-            [['delivery_contact_details_id'], 'exist', 'skipOnError' => true, 'targetClass' => ContactDetails::className(), 'targetAttribute' => ['delivery_contact_details_id' => 'id']],
-            [['contact_details_id'], 'exist', 'skipOnError' => true, 'targetClass' => ContactDetails::className(), 'targetAttribute' => ['contact_details_id' => 'id']],
+            [['delivery_contact_details_id'], 'exist', 'skipOnError' => true, 'targetClass' => Contactdetails::className(), 'targetAttribute' => ['delivery_contact_details_id' => 'id']],
+            [['contact_details_id'], 'exist', 'skipOnError' => true, 'targetClass' => Contactdetails::className(), 'targetAttribute' => ['contact_details_id' => 'id']],
         ];
     }
 
@@ -84,7 +84,7 @@ class Engineer extends \yii\db\ActiveRecord
      */
     public function getDeliveryContactDetails()
     {
-        return $this->hasOne(ContactDetails::className(), ['id' => 'delivery_contact_details_id']);
+        return $this->hasOne(Contactdetails::className(), ['id' => 'delivery_contact_details_id']);
     }
 
     /**
@@ -92,7 +92,7 @@ class Engineer extends \yii\db\ActiveRecord
      */
     public function getContactDetails()
     {
-        return $this->hasOne(ContactDetails::className(), ['id' => 'contact_details_id']);
+        return $this->hasOne(Contactdetails::className(), ['id' => 'contact_details_id']);
     }
 
     /**

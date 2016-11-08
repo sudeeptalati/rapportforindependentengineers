@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Emailservicecall;
+use common\models\Changeservicecallstatus;
 use common\models\Setup;
 use Yii;
 use common\models\Servicecall;
@@ -155,10 +156,26 @@ class ServicecallController extends Controller
 
     public function actionChangestatus()
     {
-        $servicecall_id= Yii::$app->getRequest()->get('servicecall_id');
-        $job_status_id= Yii::$app->getRequest()->get('job_status_id');
+
+
+        $change_status_model=new Changeservicecallstatus();
+		if ($change_status_model->load(Yii::$app->request->get()))
+		{
+			$servicecall_id= $change_status_model->servicecall_id;
+        	$job_status_id= $change_status_model->job_status_id;
+		}
+
+
+		if ( Yii::$app->request->get('servicecall_id') &&  Yii::$app->request->get('job_status_id'))
+		{
+			$servicecall_id= Yii::$app->request->get('servicecall_id');
+        	$job_status_id= Yii::$app->request->get('job_status_id');
+        }
+
+
+
         $model = $this->findModel($servicecall_id);
-        echo $job_status_id;
+
         $status_updated=$model->update_jobstatus($job_status_id,$servicecall_id);
         if ($status_updated){
             ///we need to reload the model to get new job status
@@ -201,13 +218,14 @@ class ServicecallController extends Controller
         $model=$this->findModel($servicecall_id);
         $company_details=Setup::loadmycompanydetails();
         $filename = 'Invoice '.$model->product->producttitle." Repair - Ref No# ".$model->service_reference_number;
+		return $this->renderPartial('jobsheet',  ['model' => $model, 'company_details'=>$company_details]);
 
-
+		/*
         $mpdf=new mPDF();
         $mpdf->WriteHTML($this->renderPartial('invoice',  ['model' => $model, 'company_details'=>$company_details]));
         //$mpdf->Output($filename, 'I');
         return $this->renderPartial('invoice',  ['model' => $model, 'company_details'=>$company_details]);
-
+		*/
     }///end of public function actionInvoice()
 
 
@@ -217,19 +235,19 @@ class ServicecallController extends Controller
 
     public function actionEmailservicecall()
     {
-        echo "Emailing to ";
+        $echo= "Emailing to ";
 
         $email_servicecall=new Emailservicecall();
 
 
         if ($email_servicecall->load(Yii::$app->request->post()))
         {
-            echo $email_servicecall->email;
-            echo $email_servicecall->servicecall_id;
-            echo "<br>enggdiary_id : ".$email_servicecall->enggdiary_id;
+            $echo.= $email_servicecall->email;
+            $echo.= $email_servicecall->servicecall_id;
+            $echo.= "<br>enggdiary_id : ".$email_servicecall->enggdiary_id;
 
-            echo "<br>Invoice : ".$email_servicecall->invoice;
-            echo "<br>Job Sheet : ".$email_servicecall->jobsheet;
+            $echo.= "<br>Invoice : ".$email_servicecall->invoice;
+            $echo.= "<br>Job Sheet : ".$email_servicecall->jobsheet;
 
 
 
@@ -244,14 +262,13 @@ class ServicecallController extends Controller
             array_push($recipient_emails,$email_servicecall->email);
             array_push($recipient_emails,$company_details->email);
 
-            var_dump($recipient_emails);
 
 
 
 
             $subject = $servicecall->product->producttitle." Repair - Ref No# ".$servicecall->service_reference_number;
 
-            echo "<hr>Subject :".$subject;
+            $echo.= "<hr>Subject :".$subject;
             $plaintext="Please find the documents";
 
             $mail_html_content='<p>Dear '.$servicecall->customer->fullname.'</p>';
@@ -262,7 +279,7 @@ class ServicecallController extends Controller
             $mail_html_content.='<br/>'.$company_details->website.'</p>';
 
 
-            echo "<hr>Content :".$mail_html_content;
+            $echo.= "<hr>Content :".$mail_html_content;
 
             if ($email_servicecall->jobsheet)
             {
@@ -290,7 +307,7 @@ class ServicecallController extends Controller
                 $attachment_url=Url::to(['servicecall/invoice','id'=> $email_servicecall->servicecall_id],true);
                 $subject = "Invoice ".$subject;
 
-                echo Yii::$app->mailer->compose()
+                $echo.= Yii::$app->mailer->compose()
                     ->setFrom($from_email)
                     ->setTo($recipient_emails)
                     ->setSubject($subject)
@@ -301,9 +318,9 @@ class ServicecallController extends Controller
 
             }
 
-            Yii::$app->session->setFlash('success', 'The email has been sent');
-            //return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall->id, 'enggdiary_id'=>$email_servicecall->enggdiary_id]);
-            return $this->redirect(['enggdiary/showappointmentsfordate']);
+            Yii::$app->session->setFlash('success', 'The email has been sent! <i class="fa fa-smile-o fa-2x" aria-hidden="true"></i>');
+            return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall->id, 'enggdiary_id'=>$email_servicecall->enggdiary_id, '#'=>'job_status_dropdown_block' ]);
+            //return $this->redirect(['enggdiary/viewappointment']);
 
 
             /*
@@ -313,15 +330,14 @@ class ServicecallController extends Controller
 
         }else
         {
-            Yii::$app->session->setFlash('error', 'Error in finding emails.');
-            return $this->redirect(['enggdiary/showappointmentsfordate']);
+            Yii::$app->session->setFlash('error', 'Error in sending emails. <i class="fa fa-frown-o" aria-hidden="true"></i> ');
+            return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $servicecall->id, 'enggdiary_id'=>$email_servicecall->enggdiary_id]);
         }
 
         //getting pdfs
 
         ///sendin
-
-
+	echo 	$echo;
     }////emd pf     public function actionEmailservicecall()
 
 

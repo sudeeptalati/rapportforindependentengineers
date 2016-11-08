@@ -285,6 +285,11 @@ $allStatus = JobStatus::model()->findAll( array(
 					
 					<?php
 					//echo $data->name."<br>";
+					$all_servicecalls=Servicecall::model()->findAll(array(
+																'condition'=>'job_status_id='.$data->id,
+																'order' => 'id DESC'
+															)
+														);
 					$result = Servicecall::model()->findAll(array(
 																'condition'=>'job_status_id='.$data->id,
 																'limit' => 10,
@@ -295,53 +300,48 @@ $allStatus = JobStatus::model()->findAll( array(
 					{?>
 					<tr style="background:<?php echo $data->backgroundcolor;?>;">
 						<td style="border-radius:15px;  padding:10px;">
-						<span style="margin-left:20px;margin-top:10px;  ">
-						<?php 
-						echo "<b>".$data->name."&nbsp;&nbsp;&nbsp;(".count($result).")"."</b>";
-						?>
+						<div id="servicecalllookup" style="margin-left:20px;margin-top:10px;  ">
+							<?php  echo $data->name; ?>
 						
-						<a href="#" class="<?php echo $anchor_var; ?>">
+							<a href="#" class="<?php echo $anchor_var; ?>">
 						
-						<?php 
-						$down_arrow_img = Yii::app()->request->baseUrl.'/images/arrow_down.png';
-						echo CHtml::image($down_arrow_img,'Raise Service Call',array('width'=>16,'height'=>16, 'title'=>'Show Service Calls')); 
-						?>
-						</a>
-						<div class="<?php echo $div_var; ?>">
+							<?php 
+							$down_arrow_img = Yii::app()->request->baseUrl.'/images/arrow_down.png';
+							echo CHtml::image($down_arrow_img,'Raise Service Call',array('width'=>16,'height'=>16, 'title'=>'Show Service Calls')); 
+							?>
+							</a>
+							<span style="float:right;font-size: 25px;font-weight: 300;">
+								(<?php echo count($all_servicecalls);?>)
+							</span>
+						
+							<div class="<?php echo $div_var; ?>">
  						
- 						<table><tr><td></td></tr>
-						<tr style="background: #B7D6E7;">
-							<th>Ref. No#</th>
-							<th>Customer</th>
-							<th style="width:7em;">Postcode</th>
-							<th>Product</th>
-							</tr>
-							
-						<?php 
-						foreach ($result as $row)
-						{?>
-							  
-							<tr><td>							
-								<?php echo CHtml::link($row->service_reference_number, array("Servicecall/view&id=".$row->id)); ?>
-							</td><td>
-								<?php echo $row->customer->fullname; ?>							
-							</td><td style="width:25px;">
-								<?php echo $row->customer->postcode; ?>							
-							</td><td>
-								<?php echo $row->product->productType->name; ?>							
-							
-							</td></tr>
-						<?php }//end of foreach(). 
+								<table><tr><td></td></tr>
+									<tr style="background: #B7D6E7;">
+										<th>Ref. No#</th>
+										<th>Customer</th>
+										<th style="width:7em;">Postcode</th>
+										<th>Product</th>
+									</tr>
 						
-						?> 
-						</table>
-						</div>
-						<?php 
-					}//end of if count.
-					 									
-				
-					?>
-					</span>	
+								<?php foreach ($result as $row){?>
+									<tr>
+										<td>							
+											<?php echo CHtml::link($row->service_reference_number, array("Servicecall/view&id=".$row->id)); ?>
+										</td><td>
+											<?php echo $row->customer->fullname; ?>							
+										</td><td style="width:25px;">
+											<?php echo $row->customer->postcode; ?>							
+										</td><td>
+											<?php echo $row->product->productType->name; ?>							
+						
+										</td>
+									</tr>
+								<?php }//end of foreach().?> 
+								</table>
+							</div>
+								<?php }//end of if count.?>
+						</div>	<!-- end of <div id="servicecalllookup">-->
 					</td></tr>
 					
 					<?php 

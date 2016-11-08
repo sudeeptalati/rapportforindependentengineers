@@ -69,7 +69,7 @@ $starttime = $mtime;
 <?php
 
 
-$company_logo=Yii::app()->request->baseUrl."/images/company_logo.png";
+$company_logo=Yii::app()->request->baseUrl."/images/company_logo.png?".time();
 $rapport_logo=Yii::app()->request->baseUrl."/images/rapport_logo.png";
 
 

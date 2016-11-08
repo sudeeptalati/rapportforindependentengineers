@@ -31,7 +31,7 @@ $next_day_appointments_url=Url::to(['enggdiary/showappointmentsfordate', 'date' 
         </a>
         </td>
         <td style="text-align: center">
-            <h1><?php echo $date_string; ?> <?php echo $weekday; ?></h1>
+            <h1><?php echo $date_string; ?><br> <?php echo $weekday; ?></h1>
         </td>
 
         <td>
@@ -74,6 +74,7 @@ $next_day_appointments_url=Url::to(['enggdiary/showappointmentsfordate', 'date' 
         );
 
         $view_appointment_url=Url::to(['enggdiary/viewappointment', 'servicecall_id' => $app->servicecall_id, 'enggdiary_id'=>$app->id]);
+ 		$jobsheet_url=Url::to(['servicecall/jobsheet', 'id' => $app->servicecall_id]);
 
         ?>
 
@@ -96,13 +97,22 @@ $next_day_appointments_url=Url::to(['enggdiary/showappointmentsfordate', 'date' 
 
 
 
-            <td>
-                <?php echo $app->servicecall->customer->fullname; ?>
-                <br>
-                <small>
+            <td>  
+            
+            	<small>
                     <?php echo $app->servicecall->jobstatus->html_name; ?>
 
                 </small>
+				<div style="font-size:20px;font-size: 20px;margin: 10px 22px;">
+            	<a href="<?php echo $jobsheet_url;?>" target="_blank">
+                	<i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                	<?php echo $app->servicecall->customer->fullname; ?>
+                </a>
+                </div>
+                 
+              
+
+               
             </td>
 
             <td>

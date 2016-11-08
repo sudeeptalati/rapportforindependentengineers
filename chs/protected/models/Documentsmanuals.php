@@ -162,13 +162,16 @@ class Documentsmanuals extends CActiveRecord
 
 
     public function getAllDocumenttypesforDropdown()
-    {
-        return CHtml::listData(Documenttype::model()->findAll(array( 'order'=>"`name` ASC")), 'id', 'name');
+    { 	
+    	////we wonn't display signatures and phpto images. therefore id >5 is selectde
+        return CHtml::listData(Documenttype::model()->findAll(array("condition"=>"id > '5'",  'order'=>"`category` ASC")), 'id', 'name');
 
     }//end of getAllBrands().
 
     public function getAllproducttypesforDropdown()
     {
+
+
         return CHtml::listData(ProductType::model()->findAll(array( 'order'=>"`name` ASC")), 'id', 'name');
 
     }//end of getAllBrands().
@@ -181,6 +184,9 @@ class Documentsmanuals extends CActiveRecord
         $criteria->compare('name',$keyword,true, 'OR');
         //$criteria->compare('description',$keyword,true, 'OR');
         $criteria->compare('filename',$keyword,true, 'OR');
+
+		///We will only load manuals 
+		$criteria->addCondition('document_type_id > "5"');
 
         return Documentsmanuals::findAll($criteria);
 

@@ -693,7 +693,7 @@ if(isset($_GET['system_msg']))
 			var ss = d.getSeconds();
 
 			//formatted_date=weekday+", "+date+"-"+getmonthnamebyint(monthInt)+"-"+year+" "+hh+":"+mm+":"+ss;
-			formatted_date=weekday+", "+date+"-"+getmonthnamebyint(monthInt)+"-"+year+"";
+			formatted_date=weekday+", "+date+"-"+getmonthnamebyint(monthInt)+"-"+year+" 19:00";
 			return formatted_date;
 		}
 

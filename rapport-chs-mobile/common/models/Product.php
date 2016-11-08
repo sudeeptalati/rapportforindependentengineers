@@ -59,7 +59,7 @@ class Product extends \yii\db\ActiveRecord
             [['purchase_price'], 'number'],
             //[['engineer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Engineer::className(), 'targetAttribute' => ['engineer_id' => 'id']],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
-            [['product_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductType::className(), 'targetAttribute' => ['product_type_id' => 'id']],
+            [['product_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => Producttype::className(), 'targetAttribute' => ['product_type_id' => 'id']],
             [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brand::className(), 'targetAttribute' => ['brand_id' => 'id']],
             //[['contract_id'], 'exist', 'skipOnError' => true, 'targetClass' => Contract::className(), 'targetAttribute' => ['contract_id' => 'id']],
         ];
@@ -118,7 +118,7 @@ class Product extends \yii\db\ActiveRecord
      */
     public function getProductType()
     {
-        return $this->hasOne(ProductType::className(), ['id' => 'product_type_id']);
+        return $this->hasOne(Producttype::className(), ['id' => 'product_type_id']);
     }
 
     /**

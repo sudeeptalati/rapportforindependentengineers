@@ -114,6 +114,32 @@ class SparesusedController extends Controller
             ]);
         }
     }
+    
+    
+    public function actionUpdate_qty($id)
+    {
+    	$enggdiary_id= Yii::$app->getRequest()->get('enggdiary_id');
+    	
+		$model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['enggdiary/viewappointment', 'servicecall_id' => $model->servicecall_id, 'enggdiary_id'=>$enggdiary_id, 'spares_block'=>'true' ,'#'=>'spares_edit_block']);
+
+        } else {
+        	  
+            return $this->render('update_qty', [
+                'model' => $model,
+            ]);
+        }
+        
+        
+     
+            
+            
+    }////public function actionUpdate_qty($id)
+    
+    
+    
 
     public function actionTogglesparesused($id)
     {

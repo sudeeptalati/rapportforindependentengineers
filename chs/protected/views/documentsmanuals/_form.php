@@ -48,9 +48,9 @@
                 <td>
                     <div id="upload_preview" style="display: <?php echo $blk_display; ?>">
 
-                        <h3 id="filename_title">
+                        <div style="font-size:10px;" id="filename_title">
                             <?php echo $model->filename; ?>
-                        </h3>
+                        </div>
                         <embed src='<?php echo $preview_link; ?>' style="width: 100%;"> </embed>
                         <?php
                         $this->beginWidget('zii.widgets.jui.CJuiDialog', array(

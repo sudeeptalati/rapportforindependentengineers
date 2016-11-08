@@ -10,9 +10,12 @@ use common\models\Documentsmanuals;
 use common\models\Handyfunctions;
 use common\models\Product;
 use common\models\Sparesused;
+use common\models\Jobstatus;
+use common\models\Changeservicecallstatus;
 use frontend\assets\LocateAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 LocateAsset::register($this);
 
@@ -54,6 +57,11 @@ if (Yii::$app->getRequest()->get('signature_block'))
     $signature_block = 'block';
 
 
+$email_servicecall_block = 'none';
+if (Yii::$app->getRequest()->get('email_servicecall_block'))
+    $email_servicecall_block = 'block';
+
+
 ?>
 
 
@@ -71,6 +79,7 @@ if (Yii::$app->getRequest()->get('signature_block'))
 
 $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
 
+$jobsheet_url=Url::to(['servicecall/jobsheet', 'id' => $servicecall->id]);
 
 ?>
 
@@ -78,15 +87,38 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
 <input id="update_dur_url" value="<?php echo $update_dur_url; ?>" type="hidden"/>
 <input id="enggdiary_id" value="<?php echo $enggdiary->id; ?>" type="hidden"/>
 
-<h1>
-    <?php echo Handyfunctions::format_date($enggdiary->visit_start_date);?>
-</h1>
-<h4>
-    <?php echo Handyfunctions::format_time($enggdiary->visit_start_date); ?>
-    -
-    <?php echo Handyfunctions::format_time($enggdiary->visit_end_date); ?>
-</h4>
+<table class="full_width">
+	<tr>
+		<td colspan='2'>
+			<h2 class="text-center">
+				<?php echo Handyfunctions::format_date($enggdiary->visit_start_date);?>
+			</h2>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:50%">
+			<h4 class="cart contentbox">
+    			<?php echo Handyfunctions::format_time($enggdiary->visit_start_date); ?>
+    				-
+    			<?php echo Handyfunctions::format_time($enggdiary->visit_end_date); ?>
+			</h4>
+		</td>
 
+		<td style="width:50%">
+			<h4 style="text-align:right" class="camera contentbox">
+				<a href="<?php echo $jobsheet_url;?>" target="_blank">
+                	<i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                	#<?php echo $servicecall->service_reference_number; ?>
+                </a>
+			</h4>
+		</td>
+	</tr>
+</table>
+<div id="diary_notes" class="mobile_content">
+	<i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+	<?php echo $enggdiary->notes; ?>
+</div>
+<br>
 <?= Html::button('Customer', ['class' => 'btn-lg customerheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#customerbox").toggle("slow"); })();']); ?>
 <div id="customerbox" class="customerbox contentbox" style="display: <?php echo $customer_block; ?>">
 
@@ -289,7 +321,7 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
 <?= Html::button('Photos & Attachments', ['class' => 'btn-lg attachmentsheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#documentsmanualsbox").toggle("slow"); })();']); ?>
 <div id="documentsmanualsbox" class="attachmentsbox contentbox" style="display: <?php echo $docs_manuals_block; ?>">
 
-    <?= Html::button('<i class="fa fa-camera  fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'upload_document_and_manuals_btn', 'onclick' => '(function ( $event ) {  toggledocumentsmanualseditbox(); })();']); ?>
+    <?= Html::button('<i class="fa fa-camera  fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'upload_document_and_manuals_btn', 'onclick' => '(function ( $event ) { $("#documentsmanuals-uploadfile").click(); toggledocumentsmanualseditbox(); })();']); ?>
     <div id="documentsmanuals_edit_block" style="display: none  ;">
 
 
@@ -455,7 +487,7 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
     </button>
 
     <?= Html::button('<i class="fa fa-gears  fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'upload_document_and_manuals_btn', 'onclick' => '(function ( $event ) {  togglespareseditbox(); })();']); ?>
-    <div id="spares_edit_block" style="display: block  ;">
+    <div id="spares_edit_block" style="display:block;">
 
 
         <?php echo $this->render('//sparesused/requestsparepart', [
@@ -479,6 +511,8 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
             </tr>
             <?php $appspares = Sparesused::loadallsparesbyservicecallid($servicecall->id); ?>
             <?php foreach ($appspares as $sparepart): ?>
+
+            	<?php $edit_spare_url=Url::to(['sparesused/update_qty', 'id' => $sparepart->id,'enggdiary_id' => $enggdiary->id,]);?>
                 <tr>
 
                     <td>
@@ -501,11 +535,18 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
                             <?php echo $sparepart->item_name . ' - ' . $sparepart->part_number; ?>
                         </div>
                     </td>
-                    <td>
-                        <div class="mobile_content">
-                            <?php echo $sparepart->quantity ?>
+                     <td>
+                        <div class="mobile_content" >
+                         	<?php echo $sparepart->quantity ?>
                         </div>
                     </td>
+                    <td>
+                        <a href="<?php echo $edit_spare_url; ?>">
+                            <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                        </a>
+                    </td>
+
+
 
                 </tr>
 
@@ -518,12 +559,18 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
 <!-- end of Div sparesbox  -->
 
 
+
+
+
+
 <br><br>
 
 <!-- Signature Section -->
 
 <?= Html::button('Signature', ['class' => 'btn-lg signatureheadingbox white_color full_width', 'onclick' => '(function ( $event ) { $("#signaturebox").toggle("slow"); })();']); ?>
 <div id="signaturebox" class="signaturebox contentbox" style="display: <?php echo $signature_block; ?>">
+
+
 
     <?= Html::button('<i class="fa fa-glide-g  fa-2x" aria-hidden="true"></i>', ['class' => 'btn btn-info', 'id' => 'upload_document_and_manuals_btn', 'onclick' => '(function ( $event ) {  togglesignatureeditbox(); })();']); ?>
     <div id="signature_edit_block" style="display: block  ;">
@@ -536,11 +583,11 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
             ]
         ); ?>
 
+
+
     </div><!-- <div id="signature_edit_block" end of signature_edit_block -->
 
-
     <hr>
-
 
     <div id="signature_view_block">
         <?php $signatures = Documentsmanuals::loadallallsignaturesforservicecallid($servicecall->id); ?>
@@ -575,14 +622,38 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
 </div>
 <!-- end of Div signaturebox  -->
 
+<br><br>
+
+
+
+
+
+
+
+
+<!------------------------------------------------------------------------------------>
+
+
+            <!-- <div id="email_servicecall_block" end of email_servicecall_block -->
+			<?= Html::button('<h4><i class="fa fa-paper-plane"></i> Email Jobsheet </h4>', ['class' => 'btn white_color btn-info center-block full_width', 'onclick' => '(function ( $event ) { $("#email_servicecall_block").toggle("slow"); })();']); ?>
+
+			<div id="email_servicecall_block" style="display: <?php echo $email_servicecall_block ?> ;">
+
+
+				<?php echo $this->render('//servicecall/emailform', [
+						'servicecallmodel' => $servicecall,
+						'enggdiary_id' => $enggdiary->id,
+					]
+				); ?>
+
+			</div>
+		<!-- <div id="email_servicecall_block" end of email_servicecall_block -->
+
+
+
+
+
 <hr>
-
-
-<br>
-
-
-<?php $job_finished_url = Url::to(['servicecall/jobfinished', 'servicecall_id' => $servicecall->id]); ?>
-
 <table class="full_width responsive-stacked-table">
     <tr>
         <td>
@@ -599,39 +670,58 @@ $update_dur_url = Url::toRoute(['enggdiary/updatedurationofappointment']);
             </a>
         </td>
         <td>
-            <?php $no_access_id = '9'; ?>
-            <?php $no_access_url = Url::to(['servicecall/changestatus', 'servicecall_id' => $servicecall->id, 'job_status_id' => $no_access_id]); ?>
-            <a href="<?php echo $no_access_url; ?>">
+            <?php $incomplete_job_id = '25'; ?>
+            <?php $incomplete_job_url = Url::to(['servicecall/changestatus', 'servicecall_id' => $servicecall->id, 'job_status_id' => $incomplete_job_id]); ?>
+            <a href="<?php echo $incomplete_job_url; ?>">
                 <button class="btn btn-danger center-block">
                     <h4>
                         <i class="fa fa-times-circle" aria-hidden="true"></i>
-                        No Access
+                        Job Incomplete
                     </h4>
                 </button>
             </a>
         </td>
-    </tr>
 
-    <tr>
-        <td colspan="2" class="contentbox">
-
-            <?= Html::button('<h4><i class="fa fa-paper-plane"></i> Email </h4>', ['class' => 'btn btn-info center-block', 'onclick' => '(function ( $event ) { $("#email_servicecall_block").toggle("slow"); })();']); ?>
-
-            <div id="email_servicecall_block" style="display: none  ;">
-
-
-                <?php echo $this->render('//servicecall/emailform', [
-                        'servicecallmodel' => $servicecall,
-                        'enggdiary_id' => $enggdiary->id,
-                    ]
-                ); ?>
-
-            </div><!-- <div id="signature_edit_block" end of signature_edit_block -->
-
+        <td>
+       	  <?= Html::button('<i class="fa fa-code-fork  fa-2x" aria-hidden="true"></i>', ['class' => 'btn contentbox attention center-block', 'id' => 'job_status_dropdown_block_btn', 'onclick' => '(function ( $event ) {  togglejobstatusdropdownblock(); })();']); ?>
 
         </td>
-    </tr>
 
+    </tr>
 </table>
 
 
+
+    <div id="job_status_dropdown_block" style="display: none  ;">
+
+        <div class='media contentbox' >
+
+            <?php $change_status_url = Url::to(['servicecall/changestatus', 'servicecall_id' => $servicecall->id]); ?>
+            <?php $changesservicecallstatus=new Changeservicecallstatus(); ?>
+            <?php $changesservicecallstatus->servicecall_id=$servicecall->id; ?>
+
+            <?php
+            $form = ActiveForm::begin([
+                'id' => 'change-status-form',
+                'action'=>$change_status_url,
+				'method'=>'get',
+                'options' => ['class' => 'form-horizontal'],
+            ]);
+
+            ?>
+
+            <?= $form->field($changesservicecallstatus, 'servicecall_id')->hiddenInput()->label(false) ?>
+            <?= $form->field($changesservicecallstatus, 'job_status_id')->dropDownList(Jobstatus::listformobiledropdown(),['prompt'=>'Select...'])->label(false); ?>
+            <br>
+            <div class="text-center ">
+                <?= Html::submitButton('Close the Job', ['class' => 'btn btn-info']) ?>
+            </div>
+
+            <?php ActiveForm::end() ?>
+
+        </div>
+
+
+
+
+    </div><!-- <div id="job_status_dropdown_block" end of job_status_dropdown_block -->

@@ -223,12 +223,20 @@ class Servicecall extends \yii\db\ActiveRecord
 
     public static function update_jobstatus($job_status_id, $servicecall_id)
     {
-
-        if (Servicecall::updateAll(['job_status_id' => $job_status_id],['id'=>$servicecall_id]))
-            return Servicecall::update_activitylog($servicecall_id);
+    
+    	$status_update=Servicecall::updateAll(['job_status_id' => $job_status_id],['id'=>$servicecall_id]);
+		
+        if ($status_update)
+        {
+            $log=Servicecall::update_activitylog($servicecall_id);
+            return $log ;
+        }
         else
+        {
             return false;
-
+		}
+		
+		
     }//end of public function writeactivitylog($this->activity_log);
 
 

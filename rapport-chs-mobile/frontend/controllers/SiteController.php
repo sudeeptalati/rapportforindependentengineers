@@ -107,7 +107,6 @@ class SiteController extends Controller
             return $this->goBack();
         } else {
 
-                echo "Testing";
             return $this->render('login', [
                 'model' => $model,
             ]);

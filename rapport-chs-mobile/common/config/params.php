@@ -11,9 +11,9 @@ return [
     'main_system_url'=>'http://rapportchs.careysappliancerepairs.co.uk/careys/chs/index.php',
     'company_logo_url'=>'http://rapportchs.careysappliancerepairs.co.uk/careys/chs/images/company_logo.png',
 
-
-    'adminEmail' => 'sudeep.makku@gmail.com',
-    'supportEmail' => 'sudeep.makku@gmail.com',
+    'mail_email_from' => 'info@careysappliancerepairs.co.uk',
+    'adminEmail' => 'info@careysappliancerepairs.co.uk',
+    'supportEmail' => 'info@careysappliancerepairs.co.uk',
     'user.passwordResetTokenExpire' => 3600,
 
 ];

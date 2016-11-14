@@ -36,6 +36,14 @@ use yii\helpers\Html;
                 <?= $form->field($servicecallmodel, 'notes')->textarea(['rows' => 6]) ?>
             </td>
         </tr>
+        <tr>
+          <td>
+              <?= $form->field($servicecallmodel, 'insurer_reference_number')->textInput() ?>
+          </td>
+          <td>
+              <?= $form->field($servicecallmodel, 'fault_code')->textInput() ?>
+          </td>
+      </tr>
     </table>
 
 

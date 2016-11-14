@@ -416,7 +416,7 @@ $jobsheet_url=Url::to(['servicecall/jobsheet', 'id' => $servicecall->id]);
                         <?php echo $servicecall->attributeLabels()['insurer_reference_number']; ?>
                     </div>
                     <div class="mobile_content">
-                        <?php $servicecall->insurer_reference_number; ?>
+                        <?php echo $servicecall->insurer_reference_number; ?>
                     </div>
                 </td>
 

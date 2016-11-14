@@ -4,6 +4,8 @@ namespace common\models;
 
 use Yii;
 
+use common\models\Masteritems;
+
 /**
  * This is the model class for table "spares_used".
  *
@@ -87,4 +89,39 @@ class Sparesused extends \yii\db\ActiveRecord
 
 
 
-}
+
+    public function beforeSave($insert)
+    {
+
+
+
+      if ($this->master_item_id==0)
+      {
+        $master_db_item=new Masteritems();
+        ////Insert record in master Item dataabse
+        $master_db_item->part_number=$this->part_number;
+        $master_db_item->name=$this->item_name;
+        $master_db_item->active='1';
+        $master_db_item->created=time();
+      }
+      else {
+          ///Just update price in master item database
+          $master_db_item=Masteritems::findOne($this->master_item_id);
+      }
+
+      $master_db_item->sale_price=$this->unit_price;
+
+      if ($master_db_item->save())
+      {
+        $this->master_item_id=$master_db_item->id;
+        return true;
+      }
+      else {
+        echo "Problem in saving master item";
+        return false;
+      }
+
+    }////end of   public function beforeSave($insert,$changedAttributes)
+
+
+}////end of class

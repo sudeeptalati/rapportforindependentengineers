@@ -256,7 +256,8 @@ class ServicecallController extends Controller
             $servicecall=$this->findModel($email_servicecall->servicecall_id);
             $company_details=Setup::loadmycompanydetails();
 
-            $from_email='mailtest.test10@gmail.com';
+            $from_email=Yii::$app->params['mail_email_from'];
+
             $recipient_emails=array();
 
             array_push($recipient_emails,$email_servicecall->email);
@@ -287,8 +288,8 @@ class ServicecallController extends Controller
                 $attachment_filename='Job Sheet '.$subject.'.pdf';
                 $attachment_url=Url::to(['servicecall/jobsheet','id'=> $email_servicecall->servicecall_id],true);
                 $subject = "Job Sheet ".$subject;
-                /*
-                echo Yii::$app->mailer->compose()
+
+                $echo.=Yii::$app->mailer->compose()
                     ->setFrom($from_email)
                     ->setTo($recipient_emails)
                     ->setSubject($subject)
@@ -296,7 +297,7 @@ class ServicecallController extends Controller
                     ->setHtmlBody($mail_html_content)
                     ->attach($attachment_url,['fileName'=>$attachment_filename])
                     ->send();
-                */
+
             }
 
 
@@ -337,7 +338,7 @@ class ServicecallController extends Controller
         //getting pdfs
 
         ///sendin
-	echo 	$echo;
+	         echo 	$echo;
     }////emd pf     public function actionEmailservicecall()
 
 

@@ -3578,3 +3578,144 @@ in /home/talatito/public_html/a_othersites/careysappliancerepairs.co.uk/rapportc
 in /home/talatito/public_html/a_othersites/careysappliancerepairs.co.uk/rapportchs/careys/chs/protected/extensions/ClickatellSms/ClickatellSms.php (202)
 in /home/talatito/public_html/a_othersites/careysappliancerepairs.co.uk/rapportchs/careys/chs/protected/extensions/ClickatellSms/ClickatellSms.php (95)
 in /home/talatito/public_html/a_othersites/careysappliancerepairs.co.uk/rapportchs/careys/chs/protected/models/NotificationRules.php (415)
+2016/11/14 15:18:22 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[HY000]: General error: 8 attempt to write a readonly database. The SQL statement executed was: UPDATE 'tbl_users' SET "id"=:yp0, "username"=:yp1, "email"=:yp2, "createtime"=:yp3, "lastvisit"=:yp4, "superuser"=:yp5, "status"=:yp6, "password"=:yp7, "activkey"=:yp8 WHERE 'tbl_users'."id"=1.
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/user/controllers/LoginController.php (36)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/user/controllers/LoginController.php (20)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php (20)
+2016/11/14 15:18:22 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[HY000]: General error: 8 attempt to write a readonly database. The SQL statement executed was: UPDATE 'tbl_users' SET "id"=:yp0, "username"=:yp1, "email"=:yp2, "createtime"=:yp3, "lastvisit"=:yp4, "superuser"=:yp5, "status"=:yp6, "password"=:yp7, "activkey"=:yp8 WHERE 'tbl_users'."id"=1' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/CDbCommand.php:358
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/ar/CActiveRecord.php(1748): CDbCommand->execute()
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/ar/CActiveRecord.php(1124): CActiveRecord->updateByPk('1', Array)
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/ar/CActiveRecord.php(806): CActiveRecord->update(NULL)
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/user/controllers/LoginController.php(36): CActiveRecord->save()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/user/controllers/LoginController.php(20): LoginController->lastViset()
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(49): LoginController->actionLogin()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('')
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('user/login')
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#13 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=user/login
+HTTP_REFERER=http://192.168.1.150/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=user/login
+---
+2016/11/14 15:42:54 [warning] [application] Failed to set unsafe attribute "country_id" of "Setup".
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/SetupController.php (98)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php (36)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php (20)
+2016/11/14 17:59:13 [error] [php] Undefined index: id (/Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/views/servicecall/changeEngineerOnly.php:3)
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(869): ServicecallController->renderFile()
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php(791): ServicecallController->renderPartial()
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(49): ServicecallController->actionChangejobstatusonly()
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): ServicecallController->runAction()
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): RightsFilter->filter()
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): ServicecallController->filterRights()
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): ServicecallController->runActionWithFilters()
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): ServicecallController->run()
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CWebApplication->run()
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/changejobstatusonly&service_id=1
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/views/servicecall/changeEngineerOnly.php (3)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php (791)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php (36)
+2016/11/14 18:00:06 [error] [exception.CException] exception 'CException' with message 'Property "CDbCriteria.servicecall_id" is not defined.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CComponent.php:173
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/schema/CDbCriteria.php(160): CComponent->__set('servicecall_id', '1')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/schema/CDbCommandBuilder.php(585): CDbCriteria->__construct(Array)
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/ar/CActiveRecord.php(1469): CDbCommandBuilder->createCriteria(Array, Array)
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/models/Servicecall.php(554): CActiveRecord->findAll(Array)
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php(781): Servicecall->updatejobstatusbyservicecallid('1', '102')
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(49): ServicecallController->actionChangejobstatusonly()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): CFilter->filter(Object(CFilterChain))
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): RController->filterRights(Object(CFilterChain))
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('changejobstatus...')
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('servicecall/cha...')
+#16 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#17 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#18 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/changejobstatusonly&service_id=1
+HTTP_REFERER=http://192.168.1.150/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=Servicecall/view&id=1
+---
+2016/11/14 18:00:57 [error] [exception.CException] exception 'CException' with message 'Property "CDbCriteria.servicecall_id" is not defined.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CComponent.php:173
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/schema/CDbCriteria.php(160): CComponent->__set('servicecall_id', '1')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/schema/CDbCommandBuilder.php(585): CDbCriteria->__construct(Array)
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/ar/CActiveRecord.php(1469): CDbCommandBuilder->createCriteria(Array, Array)
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/models/Servicecall.php(555): CActiveRecord->findAll(Array)
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php(781): Servicecall->updatejobstatusbyservicecallid('1', '102')
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(49): ServicecallController->actionChangejobstatusonly()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): CFilter->filter(Object(CFilterChain))
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): RController->filterRights(Object(CFilterChain))
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('changejobstatus...')
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('servicecall/cha...')
+#16 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#17 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#18 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/changejobstatusonly&service_id=1
+HTTP_REFERER=http://192.168.1.150/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=Servicecall/view&id=1
+---
+2016/11/14 18:00:59 [error] [exception.CException] exception 'CException' with message 'Property "CDbCriteria.servicecall_id" is not defined.' in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CComponent.php:173
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/schema/CDbCriteria.php(160): CComponent->__set('servicecall_id', '1')
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/schema/CDbCommandBuilder.php(585): CDbCriteria->__construct(Array)
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/db/ar/CActiveRecord.php(1469): CDbCommandBuilder->createCriteria(Array, Array)
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/models/Servicecall.php(555): CActiveRecord->findAll(Array)
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php(781): Servicecall->updatejobstatusbyservicecallid('1', '102')
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(49): ServicecallController->actionChangejobstatusonly()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): CFilter->filter(Object(CFilterChain))
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): RController->filterRights(Object(CFilterChain))
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): CController->run('changejobstatus...')
+#15 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController('servicecall/cha...')
+#16 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#17 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CApplication->run()
+#18 {main}
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/changejobstatusonly&service_id=1
+HTTP_REFERER=http://192.168.1.150/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=Servicecall/view&id=1
+---
+2016/11/14 18:01:41 [error] [php] Undefined index: id (/Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/views/servicecall/changeEngineerOnly.php:3)
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(869): ServicecallController->renderFile()
+#1 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php(791): ServicecallController->renderPartial()
+#2 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/actions/CInlineAction.php(49): ServicecallController->actionChangejobstatusonly()
+#3 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(308): CInlineAction->runWithParams()
+#4 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(133): ServicecallController->runAction()
+#5 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#6 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php(36): RightsFilter->filter()
+#7 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CInlineFilter.php(58): ServicecallController->filterRights()
+#8 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#9 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(291): CFilterChain->run()
+#10 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CController.php(265): ServicecallController->runActionWithFilters()
+#11 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(282): ServicecallController->run()
+#12 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#13 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#14 /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/index.php(20): CWebApplication->run()
+REQUEST_URI=/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=servicecall/changejobstatusonly&service_id=1
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/views/servicecall/changeEngineerOnly.php (3)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/controllers/ServicecallController.php (791)
+in /Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/modules/rights/components/RController.php (36)

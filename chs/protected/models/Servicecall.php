@@ -542,6 +542,31 @@ class Servicecall extends CActiveRecord
     public function updatejobstatusbyservicecallid($id, $job_status_id)
     {
         $model = $this->loadmodel($id);
+
+        if ($job_status_id=="102")///which means if job is cancelled.
+        {
+            ///Cancel all the associated appointments as well
+            $criteria=new CDbCriteria;
+
+            $criteria->compare('servicecall_id',$id );
+
+
+            $all_appointments=Enggdiary::model()->findAll($criteria);
+
+            foreach ($all_appointments as $app)
+            {
+                if ($app->status!="102")
+                {
+                    $diary_model=Enggdiary::model()->findByPk($app->id);
+                    Enggdiary::model()->cancelappointment($diary_model);
+                }
+            }
+
+
+
+        }
+
+
         $servicecall_update = Servicecall::model()->updateByPk($id,
             array(
                 'job_status_id' => $job_status_id

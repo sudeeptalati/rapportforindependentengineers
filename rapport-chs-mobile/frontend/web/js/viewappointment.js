@@ -164,7 +164,7 @@ function formatoutputdata(response) {
         item = json_obj[i];
         console.log("SPARENAME: "+item.name);
         
-         $('#masteritems_table').append('<tr id="rowno' + i + '" class="mytr" onclick="selectrow(     \' ' + item.id + '  \'    ,    \' ' + item.name + ' \'  , \' ' + item.part_number + ' \'      ) ">' +
+         $('#masteritems_table').append('<tr id="rowno' + i + '" class="mytr" onclick="selectrow(     \' ' + item.id + '  \'    ,    \' ' + item.name + ' \' ,    \' ' + item.part_number + ' \'   , \' ' + item.sale_price + ' \'      ) ">' +
                 '<td><span style="color:#0088cc">' + formatitemvalue(item.name) + '</span></td>' +
                 '<td> ' + formatitemvalue(item.part_number) + ' </td>' +
                 '<td> ' + item.sale_price + ' </td>' +
@@ -192,7 +192,7 @@ function formatoutputdata(response) {
 }////end of function formatoutputdata(result_data)
 
 
-function selectrow(master_item_id, item_nm, part_nm) {
+function selectrow(master_item_id, item_nm, part_nm, sale_price) {
     console.log("selected row" + item_nm);
     console.log("selected row" + part_nm);
 
@@ -205,6 +205,7 @@ function selectrow(master_item_id, item_nm, part_nm) {
     $("#sparesused-master_item_id").val(master_item_id);
     $("#sparesused-item_name").val(item_nm);
     $("#sparesused-part_number").val(part_nm);
+  	$("#sparesused-unit_price").val(sale_price);
 
     $("#searchitemwithkeyword").val("");
 

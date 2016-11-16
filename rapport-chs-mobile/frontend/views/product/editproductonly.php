@@ -61,7 +61,7 @@ use yii\helpers\Html;
 
         </table>
     </div>
-    <?= $form->field($product_model, 'production_code')->textInput(); ?> 
+  <td><?= $form->field($product_model, 'production_code')->textInput(); ?></td>
     <?= $form->field($product_model, 'notes')->textarea(['rows' => 6]) ?>
 
     <div class="form-group text-center">

@@ -11,6 +11,8 @@ return [
     'main_system_url'=>'http://rapportchs.careysappliancerepairs.co.uk/careys/chs/index.php',
     'company_logo_url'=>'http://rapportchs.careysappliancerepairs.co.uk/careys/chs/images/company_logo.png',
 
+    'vat_percentage'=>'20',
+
     'mail_email_from' => 'info@careysappliancerepairs.co.uk',
     'adminEmail' => 'info@careysappliancerepairs.co.uk',
     'supportEmail' => 'info@careysappliancerepairs.co.uk',

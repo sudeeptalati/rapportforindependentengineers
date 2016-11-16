@@ -59,6 +59,7 @@ use yii\helpers\Url;
 
     $sparepart->master_item_id=0;
     $sparepart->servicecall_id=$servicecallmodel->id;
+      $sparepart->used=0;
 
 
     $form = ActiveForm::begin([
@@ -71,26 +72,38 @@ use yii\helpers\Url;
 
     <?= $form->field($sparepart, 'master_item_id')->hiddenInput()->label(false); ?>
     <?= $form->field($sparepart, 'servicecall_id')->hiddenInput()->label(false); ?>
+    <?= $form->field($sparepart, 'used')->hiddenInput()->label(false); ?>
 
 
     <table class="full_width responsive-stacked-table">
-        <tr>
-            <td>
-                <?= $form->field($sparepart, 'item_name')->textInput(); ?>
-            </td>
-            <td>
-                <?= $form->field($sparepart, 'part_number')->textInput(); ?>
-            </td>
-            <td>
-                <?= $form->field($sparepart, 'quantity')->textInput(); ?>
-            </td>
-        </tr>
+      <tr>
+          <td>
+              <?= $form->field($sparepart, 'item_name')->textInput(); ?>
+          </td>
+          <td>
+              <?= $form->field($sparepart, 'part_number')->textInput(); ?>
+          </td>
+          <td>
+              <?= $form->field($sparepart, 'quantity')->textInput(); ?>
+          </td>
+          <td>
+              <?= $form->field($sparepart, 'unit_price')->textInput(); ?>
+          </td>
+      </tr>
+      <tr>
+          <td colspan="3">
+          </td>
+          <td>
+              <?= $form->field($sparepart, 'total_price')->textInput(['readonly'=>'readonly']); ?>
+          </td>
+      </tr>
+
     </table>
 
     <?= $form->field($sparepart, 'notes')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Request Part', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Add Part', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end() ?>
@@ -104,18 +117,18 @@ use yii\helpers\Url;
 <?php
 $this->registerJs('
 
- 
+
 
     function searchitemwithkeyword()
     {
         keyword=$("#searchitemwithkeyword").val();
         console.log("searchitemwithkeyword called: "+keyword);
-        
+
         searchurl=$("#itemsearchurl").val();
         console.log("searchurl called: "+searchurl);
-        
-        
-        
+
+
+
          if (keyword.length>3)
          {
             $.get( searchurl, { keyword: keyword } )
@@ -123,37 +136,63 @@ $this->registerJs('
                     ///This function is defined in viewappointment.js
                     formatoutputdata(data);
                 });
-         
-         }///end of if 
-      
-  
-    }////end ofunction checkfileuploaded()
-     
 
-     
+         }///end of if
+
+    }////end ofunction checkfileuploaded()
+
+
+
+
+
     $("#searchitemwithkeyword").on("keyup", function () {
-        
+
         searchitemwithkeyword();
         $("#request-sparepart-form").hide();
-        
-       
-    
-                
+
     });
-         
+
     $("#add-new-spare-btn").on("click", function () {
-        
-        $("#request-sparepart-form").show(); 
+
+        $("#request-sparepart-form").show();
         $("#sparesused-item_name").val("");
         $("#sparesused-part_number").val("");
-                
+        $("#sparesused-unit_price").val("");
+
     });
-    
-    
-    
+
+
+
+//////////////////////////////
+function calculate_individual_spare_total()
+{
+  u_p=$("#sparesused-unit_price").val();
+  qty=$("#sparesused-quantity").val();
+
+  ///individaul spare total price
+  i_s_total_price= u_p * qty;
+  $("#sparesused-total_price").val(i_s_total_price);
+
+
+}///end of function calculate_individual_spare_total()
+
+
+
+$("#sparesused-quantity").on("keyup", function () {
+
+    calculate_individual_spare_total();
+
+});
+
+$("#sparesused-unit_price").on("keyup", function () {
+
+    calculate_individual_spare_total();
+
+});
+
+
 
 ');
 
 
 ?>
-

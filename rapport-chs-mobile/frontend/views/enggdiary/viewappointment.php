@@ -416,7 +416,7 @@ $jobsheet_url=Url::to(['servicecall/jobsheet', 'id' => $servicecall->id]);
                         <?php echo $servicecall->attributeLabels()['insurer_reference_number']; ?>
                     </div>
                     <div class="mobile_content">
-                        <?php echo $servicecall->insurer_reference_number; ?>
+                        <?php echo  $servicecall->insurer_reference_number; ?>
                     </div>
                 </td>
 
@@ -503,17 +503,20 @@ $jobsheet_url=Url::to(['servicecall/jobsheet', 'id' => $servicecall->id]);
     <div id="spares_view_block" style="display: block  ;">
 
 
-        <table class="full_width ">
+        <table class="full_width responsive-stacked-table ">
             <tr>
                 <th>Used</th>
                 <th>Name</th>
                 <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+
             </tr>
             <?php $appspares = Sparesused::loadallsparesbyservicecallid($servicecall->id); ?>
             <?php foreach ($appspares as $sparepart): ?>
 
             	<?php $edit_spare_url=Url::to(['sparesused/update_qty', 'id' => $sparepart->id,'enggdiary_id' => $enggdiary->id,]);?>
-                <tr>
+                <tr style="    background: azure;border: dashed 1px #2196f3;">
 
                     <td>
                         <?php $togglesparesusedurl = Url::to(['sparesused/togglesparesused', 'id' => $sparepart->id, 'enggdiary_id' => $enggdiary->id,]); ?>
@@ -535,14 +538,29 @@ $jobsheet_url=Url::to(['servicecall/jobsheet', 'id' => $servicecall->id]);
                             <?php echo $sparepart->item_name . ' - ' . $sparepart->part_number; ?>
                         </div>
                     </td>
-                     <td>
-                        <div class="mobile_content" >
-                         	<?php echo $sparepart->quantity ?>
-                        </div>
-                    </td>
+                    <td>
+                       <div class="mobile_content" >
+                         <?php echo $sparepart->quantity ?>
+                       </div>
+                   </td>
+
+                   <td>
+                      <div class="mobile_content" >
+                        <?php echo $sparepart->unit_price ?>
+                      </div>
+                  </td>
+
+                  <td>
+                     <div class="mobile_content" >
+                       <b><?php echo $sparepart->total_price ?></b>
+                     </div>
+                 </td>
+
+
+
                     <td>
                         <a href="<?php echo $edit_spare_url; ?>">
-                            <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                            <i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i>
                         </a>
                     </td>
 
@@ -551,7 +569,49 @@ $jobsheet_url=Url::to(['servicecall/jobsheet', 'id' => $servicecall->id]);
                 </tr>
 
             <?php endforeach; ?>
+
+         
+
+            <tr>
+              <td colspan="3"></td>
+              <td><div class="mobile_content">Subtotal</div></td>
+              <td>
+                  <div class="mobile_content">
+                    <b><?php echo $servicecall->total_cost ?></b>
+                  </div>
+              </td>
+            </tr>
+
+
+            <tr>
+              <td colspan="3"></td>
+              <td><div class="mobile_content">Vat @<?php echo  Yii::$app->params['vat_percentage'];?>% </div></td>
+              <td>
+                  <div class="mobile_content">
+                    <b><?php echo $servicecall->vat_on_total ?></b>
+                  </div>
+              </td>
+            </tr>
+
+
+            <tr>
+              <td colspan="3"></td>
+              <td><div class="mobile_content">Net Cost </div></td>
+              <td>
+                  <div class="mobile_content">
+                    <b><?php echo $servicecall->net_cost ?></b>
+                  </div>
+              </td>
+            </tr>
+
+
+
+
+
+
+
         </table>
+
 
 
     </div><!-- end of spares_view_block-->

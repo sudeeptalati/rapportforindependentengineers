@@ -124,4 +124,66 @@ class Sparesused extends \yii\db\ActiveRecord
     }////end of   public function beforeSave($insert,$changedAttributes)
 
 
+    /**
+         * @inheritdoc
+         */
+        public function afterSave($insert, $changedAttributes)
+        {
+            $this->updatesparestotalinservicecall();
+            if (parent::beforeSave($insert)) {
+                // Place your custom code here
+                return true;
+            } else {
+
+                return false;
+            }
+        }//end of before save
+
+
+      public function updatesparestotalinservicecall()
+      {
+
+
+
+            $allspares=Sparesused::loadallsparesbyservicecallid($this->servicecall_id);
+
+            $total_spares_cost=0;
+            foreach ($allspares as $s)
+            {
+              //echo "<br>".$s->item_name;
+              //echo " --total_price : ".$s->total_price;
+              $total_spares_cost=$total_spares_cost+$s->total_price;
+            }
+
+            //echo '<br>'.$total_spares_cost;
+
+
+            $vat_percentage = Yii::$app->params['vat_percentage'];
+
+            $vat_on_total=$total_spares_cost*$vat_percentage/100;
+
+            $net_cost=$vat_on_total+$total_spares_cost;
+
+            /*
+            $total_spares_cost=Yii::$app->formatter->asCurrency($total_spares_cost);
+            $vat_on_total=Yii::$app->formatter->asCurrency($vat_on_total,'');
+            $net_cost=Yii::$app->formatter->asCurrency($net_cost);
+            */
+
+        	return Servicecall::updateAll([
+                'total_cost'=>$total_spares_cost,
+                'vat_on_total'=>$vat_on_total,
+                'net_cost'=>$net_cost,
+                ],
+                ///WHERE
+                ['id'=>$this->servicecall_id]
+            );
+
+         }///end of public function updatesparestotal($service_id);
+
+
+
+
+
+
 }////end of class

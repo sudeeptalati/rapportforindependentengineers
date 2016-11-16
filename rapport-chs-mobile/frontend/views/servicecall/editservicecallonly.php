@@ -28,15 +28,15 @@ use yii\helpers\Html;
     ?>
 
     <table class="responsive-stacked-table">
-        <tr>
-            <td>
-                <?= $form->field($servicecallmodel, 'work_carried_out')->textarea(['rows' => 6]) ?>
-            </td>
-            <td>
-                <?= $form->field($servicecallmodel, 'notes')->textarea(['rows' => 6]) ?>
-            </td>
-        </tr>
-        <tr>
+      <tr>
+          <td>
+              <?= $form->field($servicecallmodel, 'work_carried_out')->textarea(['rows' => 6]) ?>
+          </td>
+          <td>
+              <?= $form->field($servicecallmodel, 'notes')->textarea(['rows' => 6]) ?>
+          </td>
+      </tr>
+      <tr>
           <td>
               <?= $form->field($servicecallmodel, 'insurer_reference_number')->textInput() ?>
           </td>

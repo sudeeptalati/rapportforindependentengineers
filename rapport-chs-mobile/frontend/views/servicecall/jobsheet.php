@@ -333,7 +333,7 @@ use common\models\Enggdiary;
         <td>
             <small><b>Contract</b></small>
             <br>
-            <?php echo $model->product->contract->name; ?>
+            <?php echo $model->contract->name; ?>
             <br>
             <small><b>Reported </b></small>
             <br>
@@ -565,6 +565,3 @@ if ($model->job_payment_date != '')
     echo date('d-M-Y', $model->job_finished_date); ?>
 
 			 -->
-
-
-

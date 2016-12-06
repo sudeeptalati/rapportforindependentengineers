@@ -89,3 +89,21 @@ INSERT INTO "job_status" ("id","name","information","published","dropdown_displa
 
 ALTER TABLE 'servicecall' ADD COLUMN 'admintime ' INETEGER;
 ALTER TABLE 'enggdiary' ADD COLUMN 'duration_of_call' INETEGER;
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------MANUFACTURER SYSTEM-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+ALTER TABLE 'contract' ADD COLUMN 'api_key' TEXT;
+ALTER TABLE 'contract' ADD COLUMN 'portal_url' TEXT;
+ALTER TABLE 'contract' ADD COLUMN 'portal_login_email' TEXT;
+ALTER TABLE 'contract' ADD COLUMN 'portal_encrypt_pass' TEXT;
+ALTER TABLE 'contract' ADD COLUMN 'max_spend_limit_without_authorisation' TEXT;
+
+
+ALTER TABLE 'servicecall' ADD COLUMN 'remote_ref_no' TEXT;
+ALTER TABLE 'servicecall' ADD COLUMN 'remote_data_recieved' TEXT;

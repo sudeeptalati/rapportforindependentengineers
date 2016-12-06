@@ -176,8 +176,19 @@ class ProductType extends CActiveRecord
     {
     	return CHtml::listData(ProductType::model()->findAll(array('order'=>"`name` ASC")), 'id', 'name');
     }//end of getproductTypes().
-	
-	
-	
-	
+
+
+    public function get_product_type_id_by_producttype($product_type_name)
+    {
+        $model=ProductType::model()->findByAttributes(array('name'=>$product_type_name));
+
+        if ($model)
+            return $model->id;
+        else
+            return 1000000;//// This is $product_type Id of Unknown Brand
+    }////end of public function get_brand_id_by_brandname($brandname)
+
+
+
+
 }//end of class.

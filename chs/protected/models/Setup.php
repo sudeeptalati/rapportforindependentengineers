@@ -996,5 +996,69 @@ class Setup extends CActiveRecord
 
 
 
+    public function preparemaiwithheadersandfooters($html_mailcontent)
+    {
+        $logo_url=  Yii::app()->params['company_logo_url'];
+        $footer_content=Yii::app()->params['email_footer'];
+
+        $open_email_content_tag="<div id='email_content' style='background-color:#e3ecf3;padding:25px;'>";
+
+
+        $header="<style>li, p,div{font-size: 14px;}</style>";
+        $header.="<div> <img src='".$logo_url."' /></div>";
+
+        $content="<div id='content' class='password-reset' style='background-color:#F5F6F8;padding:25px;border-radius:10px;'>";
+        $content.=$html_mailcontent;
+        $content.="</div>";
+
+
+        $footer="<div id='footer' style='text-align:center;padding:20px;'>";
+        $footer.="<img style='height:25px;' src='".$logo_url."' />";
+        $footer.="<br><small>";
+        $footer.=$footer_content;
+        $footer.="</small>";
+        $footer.="</div>";
+
+        $close_email_content_tag="</div><!-- <div id='email_content'> -->";
+
+        $layout=$open_email_content_tag.$header.$content.$footer.$close_email_content_tag;
+
+        return $layout;
+
+
+    }///end of public function _preparemaiwithheadersandfooters($html_mailcontent)
+
+
+
+
+
+        public function callportal($url, $data, $method)
+        {
+
+
+
+            $ch = curl_init();
+
+            $final_url = $url;
+
+            //echo '<hr>'.$final_url;
+            //echo '<hr>'.$data;
+            curl_setopt($ch, CURLOPT_URL, $final_url);
+
+            curl_setopt($ch, CURLOPT_POST, 1);
+            if ($method === 'POST')
+                curl_setopt($ch, CURLOPT_POST, 1);
+            else
+                curl_setopt($ch, CURLOPT_POST, 0);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $server_output = curl_exec($ch);
+            curl_close($ch);
+
+            return $server_output;
+
+        }//end of callportal().
+
+
 
 }//end of class.

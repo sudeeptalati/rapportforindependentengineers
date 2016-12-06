@@ -523,6 +523,15 @@ class Servicecall extends CActiveRecord
 
 
 
+    public function update_engg_diary_id_by_servicecall_id($id, $engg_diary_id)
+    {
+        return Servicecall::model()->updateByPk($id,
+            array(
+                'engg_diary_id' => $engg_diary_id
+            ));
+    }///end of     public function update_engg_diary_id_by_servicecall_id()
+
+
 
 
     public function changeengineerbyservicecallid($id, $engineer_id)
@@ -539,8 +548,29 @@ class Servicecall extends CActiveRecord
 
     }////end of public function updateengineer($id, $engineer_id)
 
+
+
+    public function getserviceidbyservicerefrencenumber($service_reference_number)
+    {
+
+        $sc_model=Servicecall::model()->findByAttributes(array('service_reference_number'=>$service_reference_number));
+        if ($sc_model)
+            return $sc_model->id;
+        else
+            return null;
+
+    }//end of getserviceidbyservicerefrencenumber
+
+
+
+
+
+
+
     public function updatejobstatusbyservicecallid($id, $job_status_id)
     {
+
+
         $model = $this->loadmodel($id);
 
         if ($job_status_id=="102")///which means if job is cancelled.
@@ -561,9 +591,6 @@ class Servicecall extends CActiveRecord
                     Enggdiary::model()->cancelappointment($diary_model);
                 }
             }
-
-
-
         }
 
 
@@ -571,11 +598,56 @@ class Servicecall extends CActiveRecord
             array(
                 'job_status_id' => $job_status_id
             ));
+
+
         $this->updateactivitylog($id);
+
+        $this->tellcontractorbyapi($id);
 
         return $servicecall_update;
 
-    }////end of public function updateengineer($id, $engineer_id)
+    }////end of updatejobstatusbyservicecallid($id, $job_status_id)
+
+
+
+
+    public function tellcontractorbyapi($id)
+    {
+        $model = $this->loadmodel($id);
+        $status_log=strip_tags($model->activity_log);
+
+        /////   Find contract
+        if (!empty($model->contract->api_key))
+        {
+
+            $portal_url = $model->contract->portal_url;
+            $e = $model->contract->portal_login_email;
+            $p = $model->contract->portal_encrypt_pass;
+
+            $method = "POST";
+
+            $url = $portal_url . "?r=servicecalls/sendstatusupdatetoamica";
+
+            $data = "email=" . $e . "&pwd=" . $p . "&remote_ref_no=" . $model->remote_ref_no. "&api_key=" . $model->contract->api_key. "&status_log=" . $status_log;
+
+            //echo $url;
+
+            $result = Setup::model()->callportal($url, $data, $method);
+
+            echo $result;
+
+        }
+
+
+
+    }/////end of public function notifycontractor()
+
+
+
+
+
+
+
 
 
 
@@ -618,9 +690,20 @@ class Servicecall extends CActiveRecord
 
         $log = array();
         $log['time'] = Setup::model()->getdatetime();
-        $log['jobstatus'] = $model->jobStatus->html_name;
+        $log['jobstatus'] = $model->jobStatus->name;
         $log['engineer'] = $model->engineer->company . ', ' . $model->engineer->fullname;
         $log['user'] = Yii::app()->user->name;
+        $log['comments']="";
+
+        if ($model->engg_diary_id && $model->job_status_id==3)
+        {
+            $visit_date=Setup::model()->formatdate($model->enggdiary->visit_start_date);
+            $log['comments']= "Engineer Visit Date: ".$visit_date;
+
+        }
+
+
+
 
 
         array_push($activity_log_array, $log);

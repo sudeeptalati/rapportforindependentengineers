@@ -27,6 +27,7 @@
  * @property integer $short_name
  * @property integer $labour_warranty_months_duration
  * @property integer $parts_warranty_months_duration
+ * @property string $api_key
  *
  * The followings are the available model relations:
  * @property User $inactivatedByUser
@@ -66,14 +67,18 @@ class Contract extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, active, short_name', 'required'),
+            array('portal_login_email','email'),
 			array('contract_type_id, main_contact_details_id, active, inactivated_by_user_id, created_by_user_id', 'numerical', 'integerOnly'=>true),
-			array('vat_reg_number, notes, inactivated_on, management_contact_details, spares_contact_details, accounts_contact_details, accounts_contact_details, technical_contact_details, modified, labour_warranty_months_duration, parts_warranty_months_duration', 'safe'),
-			//CUSTOMISED RULES.
+			array('portal_url, portal_login_email, portal_encrypt_pass, api_key, max_spend_limit_without_authorisation, vat_reg_number, notes, inactivated_on, management_contact_details, spares_contact_details, accounts_contact_details, accounts_contact_details, technical_contact_details, modified, labour_warranty_months_duration, parts_warranty_months_duration', 'safe'),
+
+
+
+            //CUSTOMISED RULES.
 			//array('management_contact_details_id','boolean'),
 			
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, contract_type_id, name, main_contact_details_id, management_contact_details, spares_contact_details, accounts_contact_details, technical_contact_details, vat_reg_number, notes, active, inactivated_by_user_id, inactivated_on, created_by_user_id, created, modified', 'safe', 'on'=>'search'),
+			array('api_key, id, contract_type_id, name, main_contact_details_id, management_contact_details, spares_contact_details, accounts_contact_details, technical_contact_details, vat_reg_number, notes, active, inactivated_by_user_id, inactivated_on, created_by_user_id, created, modified', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -122,8 +127,18 @@ class Contract extends CActiveRecord
 			'management_contact_details' => 'Management Details',
 			'short_name' => 'Short Name',
 			'labour_warranty_months_duration'=> 'Labour Warranty',
-			'parts_warranty_months_duration'=> 'Parts Warranty',
-		);
+            'parts_warranty_months_duration'=> 'Parts Warranty',
+            'api_key'=> 'Contact API Key',
+            'portal_url'=> 'Portal Url',
+            'portal_login_email'=> 'Portal Login Email',
+            'portal_encrypt_pass'=> 'Portal Encrypt Pass',
+            'max_spend_limit_without_authorisation'=> 'Max Spend Limit Without Authorisation',
+
+
+
+
+
+        );
 	}
 
 	/**
@@ -153,7 +168,8 @@ class Contract extends CActiveRecord
 		$criteria->compare('created_by_user_id',$this->created_by_user_id);
 		$criteria->compare('created',$this->created,true);
 		$criteria->compare('modified',$this->modified,true);
-		$criteria->compare('short_name',$this->short_name);
+        $criteria->compare('short_name',$this->short_name);
+        $criteria->compare('api_key',$this->api_key);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -202,10 +218,19 @@ class Contract extends CActiveRecord
     {
     	return CHtml::listData(ContractType::model()->findAll(), 'id', 'name');
     }//end of getContractType().
-    
-//    public function load()
-//    {
-//    	
-//    }
-    
+
+
+
+    public function getcontractbyapikey($api_key)
+    {
+        $model=Contract::model()->findByAttributes(array('api_key'=>$api_key));
+
+        return $model;
+
+    }////end of     public function getcontractbyapikey()
+
+
+
+
+
 }//end of class.

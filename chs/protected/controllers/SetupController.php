@@ -546,6 +546,13 @@ class SetupController extends RController
 		}
 		$this->render('mailSettings',array('model'=>$model));
 	}
+
+
+
+
+
+
+
 	
 	
 }//end of class.

@@ -31,8 +31,7 @@ $dir = dirname(__FILE__);
 
 $chs_path = $dir."/chs";
 $ims_path = $dir."/ims";
-echo $chs_path."<hr>";
-echo $ims_path."<hr>";
+
 
 if(file_exists($chs_path) && !file_exists($ims_path))
 {

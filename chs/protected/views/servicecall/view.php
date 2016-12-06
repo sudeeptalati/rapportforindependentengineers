@@ -134,6 +134,10 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
     </h4>
 
 
+
+
+
+
     <h4>
         <i style="color:white;" class="ukwfa ukwfa-engineer-repair"></i>
         <a style="color:white;" href="#enginnerbox">Engineer</a>
@@ -304,8 +308,21 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                     </tr>
                 </table>
             </td>
-            <td colspan="2"><h1 style="color:green;text-align: right;">
-                    #<?php echo $model->service_reference_number; ?></h1></td>
+            <td colspan="2">
+                <h1 style="color:green;text-align: right;">
+                    #<?php echo $model->service_reference_number; ?>
+                </h1>
+
+                <?php
+                    echo CHtml::link('Submit claim',
+                        array('servicecall/submitclaimtocontractor',
+                            'id'=>$model->id),
+                        array(
+                            'class' => 'btn btn-primary',
+                            'style' => 'float:right',
+
+                        ));
+                ?>
         </tr>
     </table>
 </div>
@@ -1252,7 +1269,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     <?php if (count($all_appointments) > 1): ?>
                                         <h5>Previous Appointments</h5>
 
-                                        <table>
+                                        <table style="color:grey">
                                             <tr>
                                                 <th class="datacontenttitle">Engineer</th>
                                                 <th class="datacontenttitle">Visit Date</th>
@@ -1342,17 +1359,17 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
                     <?php
 
-                    Yii::app()->clientScript->registerScript('activitylog-div', "
-                                        $('#activitylog-button').click(function(){
-	                                    $('#activitylog-div').toggle();
-	                                    return false;
-                                        });
-                                ");
-                    ?>
+                        Yii::app()->clientScript->registerScript('activitylog-div', "
+                                            $('#activitylog-button').click(function(){
+                                            $('#activitylog-div').toggle();
+                                            return false;
+                                            });
+                                    ");
+                        ?>
 
 
-                    <?php $activitylogtext = "<h4 style='color: white;' id='activilitylogdivbutton'><i class='fa fa-code-fork'></i>&nbsp;&nbsp;Activity Log <div style='float:right;'><i class='fa fa-toggle-on'></i></div> <h4>"; ?>
-                    <?php echo CHtml::link($activitylogtext, '#', array('id' => 'activitylog-button')); ?>
+                        <?php $activitylogtext = "<h4 style='color: white;' id='activilitylogdivbutton'><i class='fa fa-code-fork'></i>&nbsp;&nbsp;Activity Log <div style='float:right;'><i class='fa fa-toggle-on'></i></div> <h4>"; ?>
+                        <?php echo CHtml::link($activitylogtext, '#', array('id' => 'activitylog-button')); ?>
 
 
                 </div>
@@ -1369,13 +1386,26 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                 <th><span class="datacontenttitle">User</span></th>
                                 <th><span class="datacontenttitle">Engineer</span></th>
                             </tr>
+                            <?php $activity_array = array_reverse($activity_array); ?>
                             <?php foreach ($activity_array as $ac): ?>
                                 <tr>
                                     <td><?php echo $ac['time']; ?></td>
-                                    <td><?php echo $ac['jobstatus']; ?></td>
+                                    <td>
+                                        <?php echo $ac['jobstatus']; ?></td>
                                     <td><?php echo $ac['user']; ?></td>
                                     <td><?php echo $ac['engineer']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <?php if(isset($ac['comments']) && (!empty($ac['comments']) ) ): /////This is because comments tag is added later in the system ?>
 
+                                            <div style="    background: #fdf3bc;    padding: 5px 25px;    border-radius: 10px;">
+                                                <?php echo $ac['comments'];?>
+
+                                        </div>
+                                        <?php endif; ?>
+                                    <hr>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>
@@ -1388,4 +1418,10 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 </table>
 
+
+
+<?php
+
+echo $this->renderPartial('chatwindow', array('model'=>$model));
+?>
 

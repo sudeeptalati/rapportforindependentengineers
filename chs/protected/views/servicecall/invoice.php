@@ -282,7 +282,7 @@ $this->layout=false;
     <tr>
         <td><small><b>Contract</b></small>
             <br>
-            <?php echo $model->product->contract->name; ?>
+            <?php echo $model->contract->name; ?>
         </td>
         <td>
             <small><b>Refrence No#</b></small>

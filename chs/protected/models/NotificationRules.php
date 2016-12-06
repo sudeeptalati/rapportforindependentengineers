@@ -298,6 +298,8 @@ class NotificationRules extends CActiveRecord
 
 	public function _prepareemail($receiver_email_address, $body, $subject, $frequency_type)
 	{
+        $body= Setup::model()->preparemaiwithheadersandfooters($body);
+
 		$receiver_email_address=trim($receiver_email_address);
 		if ($receiver_email_address!='' || $receiver_email_address!=NULL)
 		{

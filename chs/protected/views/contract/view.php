@@ -37,8 +37,15 @@
 //		'active',
 		//'inactivated_by_user_id',
 		//'inactivated_on',
-		//'created_by_user_id',
-		'createdByUser.user.username',
+        'api_key',
+        'portal_url',
+        'portal_login_email',
+        'portal_encrypt_pass',
+        'max_spend_limit_without_authorisation',
+
+
+
+        'createdByUser.user.username',
 		//'created',
 		array( 'name'=>'created', 'value'=>$model->created==null ? "":date("d-M-Y",$model->created)),
 		//'modified',

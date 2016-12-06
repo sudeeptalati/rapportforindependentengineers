@@ -91,20 +91,24 @@ use yii\helpers\Url;
           </td>
       </tr>
       <tr>
-          <td colspan="3">
+          <td colspan="2">
+              <?= $form->field($sparepart, 'notes')->textarea(['rows' => 1]) ?>
           </td>
           <td>
               <?= $form->field($sparepart, 'total_price')->textInput(['readonly'=>'readonly']); ?>
+          </td>
+          <td>
+              <div class="form-group">
+                  <?= Html::submitButton('Add Part', ['class' => 'btn btn-primary']) ?>
+              </div>
+
           </td>
       </tr>
 
     </table>
 
-    <?= $form->field($sparepart, 'notes')->textarea(['rows' => 6]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Add Part', ['class' => 'btn btn-primary']) ?>
-    </div>
+
 
     <?php ActiveForm::end() ?>
 </div>

@@ -416,12 +416,18 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'demo.co.uk',
 		'google_maps_api_key'=>'AIzaSyBAWkcVI-YmSt9V2iA5gOqe5eYQpbWpaqw',
-		'company_name'=>'DEMO',
+        'company_logo_url'=>'http://192.168.1.150/rapport/forengineers/rapportforindependentengineers/chs/images/company_logo.png',
+
+        'email_footer'=>'©'. date('Y').'UK Whitegoods, Unit 5-6 Bonnyton Industrial Estate, Munro Place    ,Kilmarnock,   KA1  2NP ' ,
+        'company_name'=>'DEMO',
 		'company_address'=>'Demo',
 		'company_contact_details'=>'Telephone:00000000 Fax:00000000 E-mail:demo.co.uk',
-		'vat_in_percentage'=>'',
+
+
 		'vat_percentage'=>'20',
-		'software_version'=>'12',	
+
+
+        'software_version'=>'12',
 		'smtp_host'=>$smtp_host,
 		'smtp_username'=>$smtp_username,
 		'smtp_password'=>$smtp_password,

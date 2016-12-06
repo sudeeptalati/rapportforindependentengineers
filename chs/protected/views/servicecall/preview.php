@@ -328,7 +328,7 @@ $this->layout = false;
         <td>
             <small><b>Contract</b></small>
             <br>
-            <?php echo $model->product->contract->name; ?>
+            <?php echo $model->contract->name; ?>
             <br>
             <small><b>Reported </b></small>
             <br>

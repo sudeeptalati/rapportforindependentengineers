@@ -188,5 +188,22 @@ class Brand extends CActiveRecord
     {
     	return CHtml::listData(Brand::model()->findAll(array('condition'=>'active=1', 'order'=>"`name` ASC")), 'id', 'name');
     }//end of getAllBrands().
-	
+
+
+    public function get_brand_id_by_brandname($brandname)
+    {
+        $model=Brand::model()->findByAttributes(array('name'=>$brandname));
+
+        if ($model)
+            return $model->id;
+
+        else
+            return 1000000;//// This is brand Id of Unknown Brand
+    }////end of public function get_brand_id_by_brandname($brandname)
+
+
+
+
+
+
 }//END OF CLASS

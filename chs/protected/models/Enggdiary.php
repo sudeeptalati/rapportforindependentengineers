@@ -245,14 +245,8 @@ class Enggdiary extends CActiveRecord
     }//end of beforeSave().
     protected function afterSave()
     {
-    	$serviceModel=Servicecall::model()->findByPk($this->servicecall_id);
-
-		Servicecall::model()->updateByPk($serviceModel->id,
-    												array(
-    												'engg_diary_id'=>$this->id,
-    												'job_status_id'=>'3'///that means status is changed to booked
-    												));
-
+        $booked_status_id='3';
+		Servicecall::model()->updatejobstatusbyservicecallid($this->servicecall_id, $booked_status_id);
     }//end of afterSave().
     
     public function fetchDiaryDetails($engg_id,$date )

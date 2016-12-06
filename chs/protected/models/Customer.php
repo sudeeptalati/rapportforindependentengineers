@@ -68,7 +68,7 @@ class Customer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, last_name, address_line_1, town, postcode', 'required'),
+			array('last_name, address_line_1, town, postcode', 'required'),
 			array('product_id, created_by_user_id', 'numerical', 'integerOnly' => true),
 			array('latitudes, longitudes, first_name, address_line_2, address_line_3, country,telephone, mobile, email, fax, notes, modified, fullname, lockcode, model_number, serial_number', 'safe'),
 			array('email', 'email'),

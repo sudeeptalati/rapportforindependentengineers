@@ -26,11 +26,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	//	'id',
 		//'name',
 		array(	'name'=>'name',
-				'value' => 'CHtml::link($data->name, array("jobStatus/update&id=".$data->id))',
+				//'value' => 'CHtml::link($data->name, array("jobStatus/update&id=".$data->id))',
+            'value' => 'CHtml::link($data->name, array("jobstatus/update&id=".$data->id), array("target"=>"_blank") )',
 		 		'type'=>'raw',
         ),
 		
-		
+		'keyword',
 		
 		'information',
 

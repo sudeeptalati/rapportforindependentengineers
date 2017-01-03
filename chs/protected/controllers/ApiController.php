@@ -825,7 +825,7 @@ class ApiController extends RController
 
                         $servicemodel->save();
 
-                        $approved_status_id = JobStatus::model()->get_status_id_by_keyword('APPROVED');;//Approved Job Status
+                        $approved_status_id = JobStatus::model()->get_status_id_by_keyword('CLAIM_APPROVED');;//Approved Job Status
 
                         Servicecall::model()->updatejobstatusbyservicecallid($servicemodel->id, $approved_status_id);
 

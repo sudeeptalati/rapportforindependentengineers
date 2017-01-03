@@ -34,7 +34,10 @@
  * @property string $comments
  * @property string $work_summary
  * @property integer $admintime
- *
+ * @property integer $received_remote_data_status
+ * @property string $test_results
+
+
  * The followings are the available model relations:
  * @property SparesUsedStatus $sparesUsedStatus
  * @property JobStatus $jobStatus
@@ -43,6 +46,7 @@
  * @property Product $product
  * @property Customer $customer
  * @property User $createdByUser
+ *
  */
 class Servicecall extends CActiveRecord
 {
@@ -64,6 +68,8 @@ class Servicecall extends CActiveRecord
     ////This will capture only seconds in the instance and will be added to actual column of admintime
     public $time_spent_on_call_now;
 
+
+
     /**
      * @return string the associated database table name
      */
@@ -80,10 +86,10 @@ class Servicecall extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('fault_description, recalled_job,engineer_id', 'required'),
-            array('admintime, created_by_user_id,	service_reference_number, customer_id, product_id, contract_id, engineer_id, job_status_id, spares_used_status_id', 'numerical', 'integerOnly' => true),
+            array('fault_date, fault_description, recalled_job,engineer_id', 'required'),
+            array('received_remote_data_status, admintime, created_by_user_id,	service_reference_number, customer_id, product_id, contract_id, engineer_id, job_status_id, spares_used_status_id', 'numerical', 'integerOnly' => true),
             array('total_cost, vat_on_total, net_cost', 'numerical'),
-            array('time_spent_on_call_now, engineer_name, product_serial_number,number_of_visits, customer_town,customer_postcode , recalled_job, activity_log , insurer_reference_number, fault_date, fault_code, engg_diary_id, work_carried_out, job_payment_date, job_finished_date, notes, modified, cancelled, closed, comments, model_number, serial_number, notify_flag, pervious_job_status, work_summary', 'safe'),
+            array('remote_data_sent, communications, remote_data_recieved, remote_ref_no, time_spent_on_call_now, engineer_name, product_serial_number,number_of_visits, customer_town,customer_postcode , recalled_job, activity_log , insurer_reference_number, fault_date, fault_code, engg_diary_id, work_carried_out, job_payment_date, job_finished_date, notes, modified, cancelled, closed, comments, model_number, serial_number, notify_flag, pervious_job_status, work_summary, test_results', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('contract_name, engineer_name,engineer_id, product_serial_number,created_by_user_id, id, customer_town , customer_postcode, customer_name, customer_id, job_status, engineer_name, product_name, service_reference_number, insurer_reference_number, job_status_id, fault_date, fault_code, fault_description, engg_visit_date, work_carried_out, spares_used_status_id, total_cost, vat_on_total, net_cost, job_payment_date, job_finished_date, notes,  created, modified, cancelled, closed, model_number, serial_number', 'safe', 'on' => 'search'),
@@ -137,7 +143,7 @@ class Servicecall extends CActiveRecord
             'net_cost' => 'Net Cost',
             'job_payment_date' => 'Job Payment Date',
             'job_finished_date' => 'Job Finished Date',
-            'notes' => 'BER Authority No. / Test Results / Booking Time , etc',
+            'notes' => 'BER Authority No. / Booking Time , etc',
             'created_by_user_id' => 'Created By User',
             'created' => 'Created',
             'modified' => 'Modified',
@@ -147,7 +153,10 @@ class Servicecall extends CActiveRecord
             'customer_postcode' => 'Postcode',
             'comments' => 'Comments ',
             'work_summary' => 'Work Summary',
-            'admintime'=>'Amount of Administration time for managing service call'
+            'admintime'=>'Amount of Administration time for managing service call',
+            'received_remote_data_status'=>'Status of Remotely Recieved Data',
+            'test_results'=>'Ω Test Results',
+
         );
     }
 
@@ -232,7 +241,7 @@ class Servicecall extends CActiveRecord
 
     public function getJobStatus($status_code)
     {
-        switch ($staus_code) {
+        switch ($status_code) {
             case 1:
                 $str = "Draft";
                 break;
@@ -562,6 +571,11 @@ class Servicecall extends CActiveRecord
     }//end of getserviceidbyservicerefrencenumber
 
 
+    public function getallsparesbyserviceid($id)
+    {
+         return SparesUsed::model()->findAllByAttributes(array('servicecall_id' => $id));
+
+    }////end of     public function getallsparesbyserviceid($id)
 
 
 
@@ -642,6 +656,30 @@ class Servicecall extends CActiveRecord
 
     }/////end of public function notifycontractor()
 
+
+    public function sendclaimviaapi($id)
+    {
+        $model=Servicecall::model()->findByPk($id);
+
+        $portal_url = $model->contract->portal_url;
+        $e = $model->contract->portal_login_email;
+        $p = $model->contract->portal_encrypt_pass;
+
+        $method = "post";
+
+        $url = $portal_url . "?r=servicecalls/postdatatorazzserverviaportal";
+
+        $data = "email=" . $e . "&pwd=" . $p . "&remote_ref_no=" . $model->remote_ref_no. "&api_key=" . $model->contract->api_key. "&json_post_data=" . $model->remote_data_sent;
+
+        //echo $url;
+
+        $result = Setup::model()->callportal($url, $data, $method);
+
+        return $result;
+
+
+
+    }///end of public function sendclaimtoviaapi($data)
 
 
 
@@ -738,11 +776,11 @@ class Servicecall extends CActiveRecord
 
         if (parent::beforeSave()) {
 
-
+            /*
             $this->job_payment_date = strtotime($this->job_payment_date);
             $this->job_finished_date = strtotime($this->job_finished_date);
             $this->fault_date = strtotime($this->fault_date);
-
+            */
 
             if ($this->isNewRecord)  // Creating new record
             {
@@ -798,6 +836,9 @@ class Servicecall extends CActiveRecord
             array('lockcode' => 0)
         );
     }
+
+
+
 
 
 }//end of class.

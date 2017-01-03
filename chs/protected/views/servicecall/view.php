@@ -758,11 +758,20 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                 <br>
 
 
-                                <a href="<?php echo $google_fault_url; ?>" target="_blank">
-                                    <?php echo CHtml::image('images/google.png', 'google', array('width' => '100px', 'height' => '100px', 'title' => 'image title here')); ?>
-                                </a>
-                                <br>
-                                <?php echo $model->fault_description; ?>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <?php echo $model->fault_description; ?>
+                                        </td>
+                                        <td>
+                                            <a href="<?php echo $google_fault_url; ?>" target="_blank">
+                                                <?php echo CHtml::image('images/google.png', 'google', array('style'=>'width:200px;', 'title' => 'Google This fault ')); ?>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                </table>
+
 
                             </td>
                         </tr>
@@ -779,7 +788,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                         </tr>
 
 
-                        <?php $sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id' => $model->id)); ?>
+                        <?php $sparesModel = $model->getallsparesbyserviceid($model->id); ?>
 
                         <?php if (count($sparesModel) > 0) : ?>
 
@@ -897,14 +906,31 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                             <?php echo $model->work_carried_out; ?>
                         </div>
 
+
                         <div class="datacontenttitle">
+                            <div class="fa fa-unlink fa-2x"></div>
+                            <?php echo $model->getAttributeLabel('test_results'); ?>
+                        </div>
+                        <div class="contentbox">
+                            <?php echo $model->test_results; ?>
+                        </div>
+
+
+
+                        <div class="datacontenttitle">
+                            <div class="fa fa-sticky-note-o fa-2x"></div>
                             <?php echo $model->getAttributeLabel('notes'); ?>
                         </div>
                         <div class="contentbox">
                             <?php echo $model->notes; ?>
                         </div>
 
+
+
+
                         <div class="datacontenttitle">
+                            <div class="fa fa-commenting-o fa-2x"></div>
+
                             <?php echo $model->getAttributeLabel('comments'); ?>
                         </div>
                         <div class="contentbox">
@@ -1386,7 +1412,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                 <th><span class="datacontenttitle">User</span></th>
                                 <th><span class="datacontenttitle">Engineer</span></th>
                             </tr>
-                            <?php $activity_array = array_reverse($activity_array); ?>
+                            <?php //$activity_array = array_reverse($activity_array); ?>
                             <?php foreach ($activity_array as $ac): ?>
                                 <tr>
                                     <td><?php echo $ac['time']; ?></td>
@@ -1425,3 +1451,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 echo $this->renderPartial('chatwindow', array('model'=>$model));
 ?>
 
+<script>
+
+
+</script>

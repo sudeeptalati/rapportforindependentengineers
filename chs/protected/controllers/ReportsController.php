@@ -3,6 +3,13 @@ class ReportsController extends RController
 {
 
 
+    public function filters()
+    {
+        return array(
+            'rights', // perform access control for CRUD operations
+        );
+    }
+
 
 	public function actionDisplayDropdown()
 	{

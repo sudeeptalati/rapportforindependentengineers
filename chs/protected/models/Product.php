@@ -352,7 +352,10 @@ class Product extends CActiveRecord
 		$serialnumber = strtoupper($serialnumber);
 		return $serialnumber;
 	}
-	
-	
-	
+
+
+
+
+
+
 }//end of class.

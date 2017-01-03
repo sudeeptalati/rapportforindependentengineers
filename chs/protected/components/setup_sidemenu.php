@@ -10,7 +10,11 @@ $sidebarMenuItems=array(
 
 
 	array('label'=>'Brands / Make', 'url'=>array('Brand/admin')),
-	array('label'=>'Company Details', 'url'=>array('/setup/view&id=1')),
+    array('label'=>'Company Details', 'url'=>array('/setup/view&id=1')),
+    array('label'=>'Business Running Cost', 'url'=>array('businessrunningcost/index')),
+
+
+
 	array('label'=>'Job Type', 'url'=>array('Contract/admin')),
 	array('label'=>'Company Logo', 'url'=>array('setup/changeLogo')),
 	array('label'=>'Countries', 'url'=>array('countryCodes/admin')),

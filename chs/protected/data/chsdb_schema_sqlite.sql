@@ -107,3 +107,61 @@ ALTER TABLE 'contract' ADD COLUMN 'max_spend_limit_without_authorisation' TEXT;
 
 ALTER TABLE 'servicecall' ADD COLUMN 'remote_ref_no' TEXT;
 ALTER TABLE 'servicecall' ADD COLUMN 'remote_data_recieved' TEXT;
+ALTER TABLE 'servicecall' ADD COLUMN 'communications' TEXT;
+ALTER TABLE 'servicecall' ADD COLUMN 'remote_data_sent' TEXT;
+ALTER TABLE 'servicecall' ADD COLUMN 'test_results' TEXT;
+ALTER TABLE 'servicecall' ADD COLUMN 'received_remote_data_status' INT;
+
+
+
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('33','Job Details Updated Remotely','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Job Details Updated Remotely</div>','1','1477319251','#E3FFEE');
+
+
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('34','Claim Approved','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Claim Approved</div>','1','1477319251','#E3FFEE');
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('35','Claim Submitted','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Claim Submitted	</div>','1','1477319251','#E3FFEE');
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('36','Message Recieved ','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Message Recieved  	</div>','1','1477319251','#E3FFEE');
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('37','Message Sent','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Message Sent</div>','1','1477319251','#E3FFEE');
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('38','Message Delivered   ','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Message Delivered </div>','1','1477319251','#E3FFEE');
+
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('39','Pending More Info','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Pending More Info</div>','1','1477319251','#E3FFEE');
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('40','Claim Rejected','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Claim Rejected</div>','1','1477319251','#E3FFEE');
+
+
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('41','Read','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Read</div>','1','1477319251','#E3FFEE');
+
+
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('42','Unread','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Unread</div>','1','1477319251','#E3FFEE');
+
+
+
+INSERT INTO "job_status" ("id","name","information","published","dropdown_display","view_order","dashboard_display","dashboard_prority_order","html_name","updated_by_user_id","updated","backgroundcolor")
+      VALUES ('43','Archived','','1','1','1','1',NULL,'<div style="padding: 5px 5px 5px 30px; border-radius: 10px;background:#E3FFEE" >Archived</div>','1','1477319251','#E3FFEE');
+
+
+
+CREATE TABLE 'business_running_cost' ('id' INTEGER PRIMARY KEY NOT NULL, 'cost_of' TEXT, 'daily_cost' REAL, 'weekly_cost' REAL, 'monthly_cost' REAL, 'yearly_cost' REAL);
+
+
+ALTER TABLE 'job_status' ADD COLUMN 'keyword' TEXT;
+
+/*RE-INSERT JOB STATUS TABLE AS NEEDS SEVERAL NEW STATUS*/

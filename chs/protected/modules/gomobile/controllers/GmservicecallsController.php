@@ -246,7 +246,12 @@ class GmservicecallsController extends RController
 	
 	public function actionReceiveservicecallfrommobile()
 	{
-	 	$this->render('receiveservicecallfrommobile');
+
+	    $this->render('receiveservicecallfrommobile');
+
+
+
+
 	}
 	
 	

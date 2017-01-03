@@ -35,6 +35,9 @@ use yii\helpers\Html;
           <td>
               <?= $form->field($servicecallmodel, 'notes')->textarea(['rows' => 6]) ?>
           </td>
+          <td>
+              <?= $form->field($servicecallmodel, 'test_results')->textarea(['rows' => 6]) ?>
+          </td>
       </tr>
       <tr>
           <td>

@@ -14,6 +14,7 @@ class DefaultController extends Controller
 	public function accessRules()
 	{
 		return array(
+
 		
 		array('allow', // allow authenticated user to perform 'create' and 'update' actions
 		'actions'=>array('paidcustomer', 'index','getcustomdaysdata','getexpirydate','servercode_simple_for_json','getServicecallsCountByStatusesInDateRange'),
@@ -24,9 +25,12 @@ class DefaultController extends Controller
 		'actions'=>array(),
 		'users'=>array('admin'),
 		),
-		array('deny',  // deny all users
-		'users'=>array('*'),
+		array('allow',  // deny all users
+            'actions'=>array('getcustomdaysdata'),
+            'users'=>array('*'),
 		),
+
+
 		);
 	}//end of access rules
 	
@@ -78,7 +82,7 @@ class DefaultController extends Controller
 			
 	 
 	}
-	
+
 	
 	public function actionGetCustomDaysData()
 	{

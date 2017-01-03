@@ -609,14 +609,25 @@ class Enggdiary extends CActiveRecord
 
 
 
-	public function getappointmentsbyserviceid($servicecall_id)
-	{
-		return Enggdiary::model()->findAllByAttributes(array('servicecall_id'=>$servicecall_id));
-	}///end of public function getappointmentsbyserviceid($service_id)
+    public function getappointmentsbyserviceid($servicecall_id)
+    {
+        return Enggdiary::model()->findAllByAttributes(array('servicecall_id'=>$servicecall_id));
+    }///end of public function getappointmentsbyserviceid($service_id)
+
+    public function get_firstappointmentbyserviceid($servicecall_id)
+    {
+        $all=Enggdiary::model()->findAllByAttributes(array('servicecall_id'=>$servicecall_id, ),array('order'=>'visit_start_date ASC'));
+
+        if ($all)
+            return $all[0];
+        else
+            return null;
+
+    }///end of public function getappointmentsbyserviceid($service_id)
 
 
 
-	public function cancelappointment($model)
+    public function cancelappointment($model)
 	{
 		$notes="<b style='color:red'>Cancelled by ". Yii::app()->user->name." on ".date('d-M-Y H:i:s')." </b><br>";
 		$notes=$notes.$model->notes;

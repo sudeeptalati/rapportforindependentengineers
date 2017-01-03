@@ -81,7 +81,12 @@ $('.search-form form').submit(function(){
 		),
 
 
-		array('name'=>'fault_date', 'value'=>'date("d-M-Y",$data->fault_date)', 'filter'=>false),
+		array('name'=>'fault_date',
+            'value'=>'$data->fault_date==null ? "" : date("d-M-Y",$data->fault_date)', 'filter'=>false),
+
+
+
+
 		/*
 		'insurer_reference_number',
 		'job_status_id',

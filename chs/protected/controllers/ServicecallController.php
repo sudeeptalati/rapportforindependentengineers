@@ -362,6 +362,13 @@ class ServicecallController extends RController
     {
         echo "called";
         $error_msg='';
+
+        if (isset($_GET['id']))
+            $id=$_GET['id'];
+
+
+
+
         if (isset($_POST['Servicecall'])) {
 
             $servicecall_id=$_GET['servicecall_id'];
@@ -776,13 +783,24 @@ public function actionAddProduct($cust_id)
     public function actionSubmitclaimtocontractor()
     {
         $service_id=$_GET['id'];
-        echo $service_id;
+        $model = $this->loadModel( $service_id);
+        ///$this->performAjaxValidation($model);
+        $system_message='';
+
+
+
+        $workcarriedoutmodel = new Workcarriedout( 'update' );
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'workcarriedout-form') {
+            echo CActiveForm::validate( $workcarriedoutmodel );
+            Yii::app()->end();
+        }
+
 
 
         if (isset($_POST['Workcarriedout'])) {
             $workcarriedoutmodel->attributes = $_POST['Workcarriedout'];
 
-            $data_type='servicecall_data';
+
 
             if ($workcarriedoutmodel->validate()) {
 
@@ -793,7 +811,10 @@ public function actionAddProduct($cust_id)
                 $wco_array['product_serial_number'] = $workcarriedoutmodel->product_serial_number;
 
                 $workcarriedoutmodel->product_plating_image=CUploadedFile::getInstance($workcarriedoutmodel,'product_plating_image');
-                if ($this->checkiffileuploaded($workcarriedoutmodel->product_plating_image)) {
+
+
+
+                if ($workcarriedoutmodel->checkiffileuploaded($workcarriedoutmodel->product_plating_image)) {
 
                     $workcarriedoutmodel->product_plating_image = CUploadedFile::getInstance( $workcarriedoutmodel, 'product_plating_image' );
 
@@ -817,47 +838,82 @@ public function actionAddProduct($cust_id)
                 $wco_array['product_plating_image_url']=$workcarriedoutmodel->product_plating_image_url;
 
                 $wco_array['work_done'] = $workcarriedoutmodel->work_done;
-                $wco_array['first_visit_date'] = $workcarriedoutmodel->first_visit_date;
-                $wco_array['job_completion_date'] = $workcarriedoutmodel->job_completion_date;
+                $wco_array['first_visit_date'] = date('d-M-Y',$workcarriedoutmodel->first_visit_date);
+                $wco_array['job_completion_date'] = date('d-M-Y',$workcarriedoutmodel->job_completion_date);
                 $wco_array['submission_date'] = date('d-M-Y H:i:s');
 
                 $wco_array['spares_used'] = $workcarriedoutmodel->spares_used;
-                $wco_array['spares_array'] = $workcarriedoutmodel->spares_array;
+                $wco_array['spares_array'] = json_decode($workcarriedoutmodel->spares_array,true);
 
-                $wco_json = json_encode( $wco_array );
 
-                //echo json_encode( $wco_array );
-                $model->data_sent = $wco_json;
+
+
+
+                $model->remote_data_sent = json_encode($wco_array);
 
                 $workcarriedoutmodel->chat_message = trim( $workcarriedoutmodel->chat_message );
+                $fullchat = $model->communications;
+                $full_chat_array = json_decode( $fullchat, true );
+
                 if ($workcarriedoutmodel->chat_message != '') {
                     $chat_array = array();
                     $chat_array['date'] = date( 'l jS \of F Y h:i:s A' );
                     $chat_array['person'] = 'me';
                     $chat_array['message'] = $workcarriedoutmodel->chat_message;
-                    $fullchat = $model->communications;
-                    $full_chat_array = json_decode( $fullchat, true );
                     array_push( $full_chat_array['chats'], $chat_array );
                     $model->communications = json_encode( $full_chat_array );
                 }
 
-                $model->jobstatus_id = '35';///it means job is submitted
+                $model->job_status_id = '35';///it means job is submitted
+
+
+
+                $post_data_array=array();
+
+                $post_data_array['claim_content']=$wco_array;
+                $post_data_array['communications']=$full_chat_array;
+                $post_data_array['status_log']=json_decode($model->activity_log,true);
+
+
+                $data_type='claim_submission_servicecall_data';
+
+                $return_data_array['data_type'] = $data_type;///is it a message or  servicecall_data
+
+                $return_data_array['engineer_email'] = $model->contract->portal_login_email;
+
+                $return_data_array['service_reference_number'] = $model->remote_ref_no;
+
+                $return_data_array['api_key'] =$model->contract->api_key;
+
+
+                $return_data_array['sent_data'] = $post_data_array;
+
+
+
+                $data_to_be_sent_string = json_encode($return_data_array);
+
+                $model->remote_data_sent =   $data_to_be_sent_string ;
+
+
 
                 if ($model->save()) {
 
-                    $system_message.= '<div class="flash-success">Data successfully Saved</div>';
+                    $system_message.= '<div class="flash-success">Claim  successfully Submitted</div>';
 
-                    $system_message.= $model->senddatatoserver($data_type);
+                    //$system_message.= Servicecall::model()->sendclaimviaapi($model->id);
+
 
                 } else
+                {
                     ///$system_message.= var_dump( $model->getErrors() );
                     $system_message.='<div class="flash-error">Data cannot be successfully Saved</div>';
+                }
 
 
             }
         }
-
-
+        echo $system_message;
+        $this->render('workcarriedout', array('workcarriedoutmodel'=>$workcarriedoutmodel, 'model'=>$model, ));
 
 
 

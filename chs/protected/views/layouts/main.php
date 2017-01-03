@@ -219,6 +219,12 @@ if (is_dir(Yii::getPathOfAlias('application.modules.oow.assets')))
 
 ?>
 
+
+
+
+
+
+
 </body>
 </html>
 

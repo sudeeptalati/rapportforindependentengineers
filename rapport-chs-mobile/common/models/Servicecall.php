@@ -57,7 +57,7 @@ class Servicecall extends \yii\db\ActiveRecord
     {
         return [
             [['service_reference_number', 'customer_id', 'product_id', 'contract_id', 'engineer_id', 'job_status_id', 'engg_diary_id', 'spares_used_status_id', 'created_by_user_id', 'number_of_visits', 'recalled_job'], 'integer'],
-            [['insurer_reference_number', 'fault_code', 'fault_description', 'work_carried_out', 'notes', 'activity_log', 'comments', 'work_summary'], 'string'],
+            [['test_results', 'insurer_reference_number', 'fault_code', 'fault_description', 'work_carried_out', 'notes', 'activity_log', 'comments', 'work_summary'], 'string'],
             [['fault_date', 'job_payment_date', 'job_finished_date', 'created', 'modified', 'cancelled', 'closed'], 'safe'],
             [['total_cost', 'vat_on_total', 'net_cost'], 'number'],
         ];
@@ -178,7 +178,7 @@ class Servicecall extends \yii\db\ActiveRecord
             'net_cost' => 'Net Cost',
             'job_payment_date' => 'Job Payment Date',
             'job_finished_date' => 'Job Finished Date',
-            'notes' => 'Ω BER Authority No. / Test Results / Booking Time , etc',
+            'notes' => 'BER Authority No. / Booking Time , etc',
             'created_by_user_id' => 'Created By User',
             'created' => 'Created',
             'modified' => 'Modified',
@@ -186,6 +186,7 @@ class Servicecall extends \yii\db\ActiveRecord
             'closed' => 'Closed',
             'comments' => 'Comments ',
             'work_summary' => 'Work Summary',
+            'test_results' => 'Ω Test Results',
 
             ///Custom Labels
             'contract' => 'Contract',

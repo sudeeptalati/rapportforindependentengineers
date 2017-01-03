@@ -1901,6 +1901,7 @@ if(isset($_GET['help']))
 	</head>
 
 	<body style="direction:<?php echo $lang['direction']; ?>;">
+    <h1 style="text-align: left"> Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - </h1>
 
 	<div id='help_container'>
 
@@ -1970,6 +1971,9 @@ if(isset($_GET['help']))
 
 <body style="direction:<?php echo $lang['direction']; ?>;">
 
+<h1>
+    Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer - Engineer
+</h1>
 <?php
 
 if(ini_get("register_globals") == "on" || ini_get("register_globals")=="1") //check whether register_globals is turned on - if it is, we need to not continue

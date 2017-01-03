@@ -552,9 +552,8 @@ class Setup extends CActiveRecord
  		curl_setopt($curl_req, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($curl_req, CURLOPT_HEADER, FALSE);
 
-		$contents = curl_exec($curl_req);
 
-		curl_close($curl_req);
+		$contents = curl_exec($curl_req);
 
 		return $contents;
 	}///end of functn curl File get contents

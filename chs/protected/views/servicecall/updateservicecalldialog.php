@@ -31,20 +31,17 @@
             <!-- ***** Fault  Date**** -->
 
             <?php
-
-
+            $fault_date_string="";
             if (!empty($serviecallmodel->fault_date)) {
-                $serviecallmodel->fault_date = date('j-F-Y', $serviecallmodel->fault_date);
+                $fault_date_string = date('j-F-Y', $serviecallmodel->fault_date);
             }
-            //$serviecallmodel->fault_date='';
-
-            ?>
+             ?>
 
 
 
             <?php echo $form->labelEx($serviecallmodel, 'fault_date'); ?>
-            <?php echo $form->textField($serviecallmodel, 'fault_date', array('readonly' => 'readonly', 'style' => 'cursor: pointer;background-color: #ffffff;')); ?>
-            <?php //echo $form->textField($serviecallmodel,'fault_date', array('readonly'=>'readonly')); ?>
+            <?php echo CHtml::textField('fault_date_string',$fault_date_string,array('id'=>'fault_date_string', 'readonly' => 'readonly', 'style' => 'cursor: pointer'));?>
+            <?php echo $form->hiddenField($serviecallmodel, 'fault_date' ); ?>
             <?php echo $form->error($serviecallmodel, 'fault_date'); ?>
 
 
@@ -55,6 +52,70 @@
             <?php echo $form->labelEx($serviecallmodel, 'work_carried_out'); ?>
             <?php echo $form->textArea($serviecallmodel, 'work_carried_out', array('style' => 'width:600px;height:100px;')); ?>
             <?php echo $form->error($serviecallmodel, 'work_carried_out'); ?>
+
+
+            <table>
+                <tr>
+                    <td>
+                        <?php echo $form->labelEx($serviecallmodel, 'test_results'); ?>
+                        <?php echo $form->textArea($serviecallmodel, 'test_results', array('style' => 'width:200px;height:200px;')); ?>
+                        <?php echo $form->error($serviecallmodel, 'test_results'); ?>
+
+                    </td>
+                    <td>
+
+                        <!-- ***** Fault  Date**** -->
+
+                        <?php
+                        $fault_date_string="";
+                        if (!empty($serviecallmodel->fault_date)) {
+                            $fault_date_string = date('j-F-Y', $serviecallmodel->fault_date);
+                        }
+                        ?>
+
+
+
+                        <?php echo $form->labelEx($serviecallmodel, 'fault_date'); ?>
+                        <?php echo CHtml::textField('fault_date_string',$fault_date_string,array('id'=>'fault_date_string', 'readonly' => 'readonly', 'style' => 'cursor: pointer'));?>
+                        <?php echo $form->hiddenField($serviecallmodel, 'fault_date' ); ?>
+                        <?php echo $form->error($serviecallmodel, 'fault_date'); ?>
+
+
+                        <!-- ***** Job Completed Date**** -->
+                        <br>
+                        <?php
+                        $job_finished_date_string="";
+                        if (!empty($serviecallmodel->job_finished_date)) {
+                            $job_finished_date_string = date('j-F-Y', $serviecallmodel->job_finished_date);
+                        }
+                        ?>
+
+                        <?php echo $form->labelEx($serviecallmodel, 'job_finished_date'); ?>
+                        <?php echo CHtml::textField('job_finished_date_string',$job_finished_date_string,array('id'=>'job_finished_date_string', 'readonly' => 'readonly','style' => 'cursor: pointer;')); ?>
+                        <?php echo $form->hiddenField($serviecallmodel, 'job_finished_date'); ?>
+                        <?php echo $form->error($serviecallmodel, 'job_finished_date'); ?>
+
+                        <hr>
+
+                        <!-- Job Payment date  -->
+
+
+                        <?php
+                        $job_payment_date_string="";
+                        if (!empty($serviecallmodel->job_payment_date)) {
+                            $job_payment_date_string = date('j-F-Y', $serviecallmodel->job_payment_date);
+                        }
+                        ?>
+
+                        <?php echo $form->labelEx($serviecallmodel, 'job_payment_date'); ?>
+                        <?php echo CHtml::textField('job_payment_date_string',$job_payment_date_string,array('id'=>'job_payment_date_string','readonly' => 'readonly', 'style' => 'cursor: pointer;')); ?>
+                        <?php echo $form->hiddenField($serviecallmodel, 'job_payment_date'); ?>
+                        <?php echo $form->error($serviecallmodel, 'job_payment_date'); ?>
+
+                        <!-- Job Payment date END  -->
+                    </td>
+                </tr>
+            </table>
 
 
         </td>
@@ -74,24 +135,7 @@
             <?php echo $form->error($serviecallmodel, 'contract_id'); ?>
 
 
-            <!-- ***** Job Completed Date**** -->
-            <?php if (!empty($serviecallmodel->job_finished_date)) {
-                $serviecallmodel->job_finished_date = date('j-M-Y', $serviecallmodel->job_finished_date);
-            } ?>
-            <?php echo $form->labelEx($serviecallmodel, 'job_finished_date'); ?>
-            <?php echo $form->textField($serviecallmodel, 'job_finished_date', array('readonly' => 'readonly', 'style' => 'cursor: pointer;background-color: #ffffff;')); ?>
-            <?php echo $form->error($serviecallmodel, 'job_finished_date'); ?>
 
-
-            <!-- Job Payment date  -->
-            <?php if (!empty($serviecallmodel->job_payment_date)) {
-                $serviecallmodel->job_payment_date = date('j-M-Y', $serviecallmodel->job_payment_date);
-            } ?>
-            <?php echo $form->labelEx($serviecallmodel, 'job_payment_date'); ?>
-            <?php echo $form->textField($serviecallmodel, 'job_payment_date', array('readonly' => 'readonly', 'style' => 'cursor: pointer;background-color: #ffffff;')); ?>
-            <?php echo $form->error($serviecallmodel, 'job_payment_date'); ?>
-
-            <!-- Job Payment date END  -->
 
 
         </td>
@@ -210,37 +254,63 @@
 <?php $this->endWidget(); ?>
 
 
-<script>
+<?php
+
+Yii::app()->clientScript->registerScript('search', "
 
 
-    var Servicecall_fault_date = new Pikaday(
+  
+       var fault_date_string = new Pikaday(
         {
-            field: document.getElementById('Servicecall_fault_date'),
+            field: document.getElementById('fault_date_string'),
             format: 'D-MMM-YYYY',
-
+            onSelect : function(date) {
+                unix_time=this.getMoment().format('X'); ////To format to UNIX time                
+                $('#Servicecall_fault_date').val(unix_time);
+            },
         });
-
-
-    var Servicecall_job_finished_date = new Pikaday(
+        
+        
+        var job_finished_date_string = new Pikaday(
         {
-            field: document.getElementById('Servicecall_job_finished_date'),
+            field: document.getElementById('job_finished_date_string'),
             format: 'D-MMM-YYYY',
+            onSelect : function(date) {
+                unix_time=this.getMoment().format('X'); ////To format to UNIX time                
+                $('#Servicecall_job_finished_date').val(unix_time);
+            },
         });
-
-
-    var Servicecall_job_payment_date = new Pikaday(
+        
+        
+        var job_payment_date_string = new Pikaday(
         {
-            field: document.getElementById('Servicecall_job_payment_date'),
+            field: document.getElementById('job_payment_date_string'),
             format: 'D-MMM-YYYY',
-
+            onSelect : function(date) {
+                unix_time=this.getMoment().format('X'); ////To format to UNIX time                
+                $('#Servicecall_job_payment_date').val(unix_time);
+            },
         });
+        
+        
+        
+        
+
+  
 
 
-    $('#Servicecall_notes').keyup(function() {
-        var value = $(this).val().replace(/\n/g, '<br/>');
-        console.log("This is "+value);
-        $("#Servicecall_notes").val(value);
+    
+    
 
-    });
+");
+?>
+
+  <script>
+      $('#Servicecall_notes').keyup(function() {
+          var value = $(this).val().replace(/\n/g, '<br/>');
+          console.log("This is "+value);
+          $("#Servicecall_notes").val(value);
+
+      });
 </script>
 

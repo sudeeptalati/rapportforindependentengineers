@@ -53,3 +53,6 @@
 		
 	),
 )); ?>
+
+
+<?php $this->renderPartial('contract_value_calculator');?>

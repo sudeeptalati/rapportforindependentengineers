@@ -738,139 +738,64 @@ class ApiController extends RController
 
     public function actionGetmyservicecallsfromserver()
     {
-        //echo "GETTING SERVICECALLS FROM THE PORTAL";
+        echo "GETTING SERVICECALLS FROM THE PORTAL";
         $all_contracts = Contract::model()->findAll();
 
 
         foreach ($all_contracts as $contract) {
-            //echo "<hr>RUNNING ";
 
-            $portal_url =$contract->portal_url;
+            // echo "<hr>RUNNING ";
+
+            $portal_url = $contract->portal_url;
             $e = $contract->portal_login_email;
             $p = $contract->portal_encrypt_pass;
+
+
+
 
             $method = "POST";
             $data = "";
             $url = $portal_url . "?r=servicecalls/getdataforengineerdesktop";
 
+            //echo $url;
+
             $data = "email=" . $e . "&pwd=" . $p . "&data=" . $data;
             $result = Setup::model()->callportal($url, $data, $method);
 
-            //echo $result;
+            echo $result;
             $json_response = json_decode($result);
 
 
-
-
-            $response_array=json_decode($result,true);
+            $response_array = json_decode($result, true);
             //echo $response_array['data'];
 
-            $this->processservicecall_recieved( $response_array['data']);
+            $this->processservicecall_recieved($response_array['data']);
 
 
         }///end of foreach ($all_contracts as $contract) {
 
 
+        $this->redirect('index.php');
+
     }//end of function checkAuth
-
-
-
-
-
-
-    public function actionSendmessageviaportal()
-    {
-
-        $output['status'] = 'NOT OK';
-        $output['message'] = 'Service NOYT ';
-
-        if (isset( $_POST['api_key'])){
-
-            $output['status'] = 'VALID_KEY';
-            $output['api_key'] = $_POST['api_key'];
-
-            $chat_msg=$_POST['chat_msg'];
-            $service_id=$_POST['service_id'];
-
-            $service_model=Servicecall::model()->findByPk($service_id);
-            if ($service_model)
-            {
-
-                $chat_array = array();
-                $chat_array['date'] = date( 'l jS \of F Y h:i:s A' );
-                $chat_array['person'] = 'me';
-                $chat_array['message'] = $chat_msg;
-                $fullchat = $service_model->communications;
-                $full_chat_array = json_decode( $fullchat, true );
-                array_push( $full_chat_array['chats'], $chat_array );
-                $service_model->communications = json_encode( $full_chat_array );
-
-                $remote_ref_no=$service_model->remote_ref_no;
-
-
-                if ($service_model->save())
-                {
-
-                    $portal_url=$service_model->contract->portal_url;
-
-                    $method = "POST";
-                    $data = "&chat_msg=" . $chat_msg . "&service_reference_number=" .$remote_ref_no;
-                    $url = $portal_url . "?r=servicecalls/sendmessagetoamica";
-
-                    $e=$service_model->contract->portal_login_email;
-                    $p=$service_model->contract->portal_encrypt_pass;
-
-                    $data = "email=" . $e . "&pwd=" . $p . $data;
-
-                    echo "<br>".$data;
-                    echo "<br>".$url;
-
-
-
-                    $result = Setup::model()->callportal($url, $data, $method);
-
-
-                    echo $result;
-                    $json_response = json_decode($result);
-
-
-
-
-                }///end of if ($service_model->save())
-
-            }///end of if ($service_model)
-
-        }///end of if (isset( $_POST[api_key]))
-
-        echo json_encode($output);
-
-    }///end of public function postjobtotheportal($brand_id, $product_type_id, $model_no)
-
-
-
-
 
     public function processservicecall_recieved($data)
     {
 
-        $data=trim($data);
-        $json_response = json_decode($data,true);
+        $data = trim($data);
+        $json_response = json_decode($data, true);
 
 
         if ($json_response['status'] == "OK") {
             $servicecalls = $json_response['details'];
 
 
-
             echo json_encode($servicecalls[0]['service_reference_number']);
 
             foreach ($servicecalls as $servicecall) {
 
-                $json_string=json_encode($servicecall);
-                $servicecall=json_decode($json_string);
-
-
-
+                $json_string = json_encode($servicecall);
+                $servicecall = json_decode($json_string);
 
 
                 echo "<hr>" . $servicecall->service_reference_number;
@@ -878,7 +803,7 @@ class ApiController extends RController
                 var_dump($servicecall);
                 switch ($servicecall->type) {
                     case "servicecall_data":
-                        $this->save_the_job($servicecall);
+                        $this->save_remote_job($servicecall);
                         break;
 
                     case "chat_message":
@@ -886,8 +811,28 @@ class ApiController extends RController
                         break;
 
 
-                }
+                    case "claim_approved_in_chat_message":
+                        $this->save_the_recieved_chat_msg($servicecall);
 
+                        ///Change status to Approved
+                        $api_key = $servicecall->gomobile_account_id;
+
+                        $servicemodel = $this->findservicecallmodelbyremoterefnoandapikey($servicecall->service_reference_number, $api_key);
+
+                        $servicemodel->job_payment_date = strtotime($servicecall->payment_date);
+
+                        $servicemodel->received_remote_data_status = JobStatus::model()->get_status_id_by_keyword('UNREAD');
+
+                        $servicemodel->save();
+
+                        $approved_status_id = JobStatus::model()->get_status_id_by_keyword('APPROVED');;//Approved Job Status
+
+                        Servicecall::model()->updatejobstatusbyservicecallid($servicemodel->id, $approved_status_id);
+
+                        break;
+
+
+                }
 
 
                 //$this->save_the_job($servicecall);
@@ -898,18 +843,10 @@ class ApiController extends RController
         }////end of if ($json_response->status="OK")
 
 
+    }///end of public function postjobtotheportal($brand_id, $product_type_id, $model_no)
 
-
-    }//end of actionRaiseServicecall().
-
-
-    ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// //////////////////////////
-    ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// //////////////////////////
-    ////////////////////////////////////////////////////Manufacturer Remote call Booking  ////////////////////////// ////////////////////////// //////////////////////////
-    ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// //////////////////////////
-    ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// //////////////////////////
-
-public function save_the_job($job)
+    /*
+    public function save_the_job($job)
     {
 
         $api_key = $job->gomobile_account_id;
@@ -925,13 +862,41 @@ public function save_the_job($job)
 
             //echo $job->allchatmessage;
 
-            $this->save_as_new_job($job);
+            $this->save_remote_job($job);
 
         }
 
-    }///end of public function save_the_chat_response()
+    }//end of actionRaiseServicecall().
 
-public function check_if_job_exists($remote_ref_no, $api_key)
+    */
+
+    ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// //////////////////////////
+    ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// //////////////////////////
+    ////////////////////////////////////////////////////Manufacturer Remote call Booking  ////////////////////////// ////////////////////////// //////////////////////////
+    ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// //////////////////////////
+    ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// ////////////////////////// //////////////////////////
+
+
+
+
+    public function update_existing_job_details($job)
+    {
+
+        $servicecall_model=$this->findservicecallmodelbyremoterefnoandapikey($job->service_reference_number, $job->gomobile_account_id);
+
+
+
+
+    }///end of public function update_existing_job_details($job)
+
+
+
+
+
+
+
+
+    public function check_if_job_exists($remote_ref_no, $api_key)
     {
 
         $servicecall_model = $this->findservicecallmodelbyremoterefnoandapikey($remote_ref_no, $api_key);
@@ -940,7 +905,7 @@ public function check_if_job_exists($remote_ref_no, $api_key)
             return true;
         else
             return false;
-    }
+    }///end of public function save_the_chat_response()
 
     public function findservicecallmodelbyremoterefnoandapikey($remote_ref_no, $api_key)
     {
@@ -954,111 +919,78 @@ public function check_if_job_exists($remote_ref_no, $api_key)
             return null;
         }
 
-    }////    public function check_if_job_exists($remote_ref_no, $contract_id)
+    }
 
-/**
-     * @param $remote_ref_no
-     * @param $contract_id
-     * @return CActiveRecord
-     *
-     * We are choosing remote ref no & contract id together to identify if job exists or not.
-     * There are no chances that a contract can have same two job nos
-     *
-     */
 
-    public function save_the_recieved_chat_msg($job)
+
+
+
+    public function save_remote_job($job)
     {
-        echo "SAVE CHAT MSG NEEDS TO BE WRITTEN";
-        echo "<br><br>" . json_encode($job);
-
-        $api_key = $job->gomobile_account_id;
-
-        $servicemodel = $this->findservicecallmodelbyremoterefnoandapikey($job->service_reference_number, $api_key);
-
-        if ($servicemodel) {
-
-            echo "<br>NEW CHATS in :".json_encode($job->communications);
-            echo "<br>OLD CHATS in :".$servicemodel->communications;
-
-            $chat_array = array();
-            $chat_array['date'] = $job->communications->date;
-            $chat_array['person'] = $job->communications->person;
-            $chat_array['message'] = $job->communications->message;
-
-            $fullchat = $servicemodel->communications;
-            $full_chat_array = json_decode( $fullchat, true );
-            array_push( $full_chat_array['chats'], $chat_array );
-
-            $servicemodel->communications = json_encode($full_chat_array);
 
 
-            if ($servicemodel->save()) {
-                return true;
-            } else {
-                return false;
-            }
 
-        } else {
-            return false;
+
+
+
+
+        //Since we have to conver this to array, therefore,converted to string first
+        $data_string = json_encode($job->data);
+        $data_array = json_decode($data_string , true);
+
+
+
+
+
+        $job_exists= $this->check_if_job_exists($job->service_reference_number, $job->gomobile_account_id);
+
+        if ($job_exists)
+        {
+            $servicecall_model = $this->findservicecallmodelbyremoterefnoandapikey($job->service_reference_number, $job->gomobile_account_id);
 
         }
-        //json_encode($job->communications);
+        else
+        {
+            $servicecall_model = new Servicecall();
 
-        /*
-
-                if ($servicemodel->save())
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-       */
-
-    }////end of   public function save_the_job($job)
-
-public function save_as_new_job($job)
-    {
-
-        $api_key = $job->gomobile_account_id;
-        $contract = Contract::model()->getcontractbyapikey($api_key);
-
-        $contract_ref_no = $contract->short_name . $job->service_reference_number;
-        // $data=json_decode($job->data);
+        }
 
 
-        $data_string = json_encode($job->data);
-        $data_array = json_decode($data_string, true);
+
+        //$product_model = $this->saveproduct($product_id, $brand_id, $product_type_id, $model_number);
+        //product_model = $this->saveproduct($servicecall_model->customer->product_id, $data_array);
 
 
-        $brand_name = $this->extract_from_data_for_key('Brand', $data_array);
-        $product_type = $this->extract_from_data_for_key('Type', $data_array);
+        echo "<hr>DATA ARRAY <br>";
+        echo json_encode($data_array);
+        echo "<hr>";
 
-        $brand_id = Brand::model()->get_brand_id_by_brandname($brand_name);
-        $product_type_id = ProductType::model()->get_product_type_id_by_producttype($product_type);
-        $model_number = $this->extract_from_data_for_key('Model', $data_array);
 
-        $product_model = $this->saveproduct($brand_id, $product_type_id, $model_number);
 
+        $product_model = $this->saveproduct($servicecall_model->product_id, $data_array);
 
         if ($product_model) {
-            $customer_name = $this->extract_from_data_for_key('Customer', $data_array);
-            $address_line1 = $this->extract_from_data_for_key('address_line_1', $data_array);
-            $town = $this->extract_from_data_for_key('town', $data_array);
-            $postcode = $this->extract_from_data_for_key('postcode', $data_array);
-            $telephone = $this->extract_from_data_for_key('telephone', $data_array);
-            $email = $this->extract_from_data_for_key('email', $data_array);
 
-            $customer_model = $this->savecustomer($product_model->id, $customer_name, $address_line1, $town, $postcode, $telephone, $email);
+            $customer_model = $this->savecustomer($servicecall_model->customer_id, $product_model->id, $data_array);
 
             if ($customer_model) {
-                $fault = $this->extract_from_data_for_key('Fault', $data_array);
-
-
-                $servicecall_model = $this->saveservicecall($job, $data_string, $fault, $product_model->id, $customer_model->id, $contract->id, $contract_ref_no);
+                                    ///// public function saveservicecall($job, $data_array, $product_id, $customer_id)
+                $servicecall_model = $this->saveservicecall($job, $data_array, $servicecall_model->id, $product_model->id, $customer_model->id);
 
                 if ($servicecall_model) {
+
+                    ///Update status as Remotely Booked
+
+                    if ($job_exists)
+                    {
+                        $remotely_updated_job_status_id='33'; ////
+                        Servicecall::model()->updatejobstatusbyservicecallid($servicecall_model->id, $remotely_updated_job_status_id);
+
+                    }else
+                    {
+                        $remotely_logged_job_status_id='2'; ////
+                        Servicecall::model()->updatejobstatusbyservicecallid($servicecall_model->id, $remotely_logged_job_status_id);
+                    }
 
                     return 'Saved';
                 }
@@ -1072,8 +1004,7 @@ public function save_as_new_job($job)
         //$this->saveproduct($data)
 
 
-    }//end of 	 save_as_new_job($job)
-
+    }////    public function check_if_job_exists($remote_ref_no, $contract_id)
 
     public function extract_from_data_for_key($attribute, $data)
     {
@@ -1101,18 +1032,10 @@ public function save_as_new_job($job)
         }///end of foreach ($data as $key=>$value)
 
 
-        switch ($attribute) {
-            case 'email':
-                return "";
-                break;
-
-            default:
-                return "UNKNOWN ATTRIBUTE " . $attribute;
-
-        }
+        return null;
 
 
-    }/////public function  actionGetservicecallsfrommanufacturer()
+    }////end of   public function save_the_job($job)
 
     public function takespacesoff_and_convert_tolowercase($string)
     {
@@ -1121,15 +1044,29 @@ public function save_as_new_job($job)
 
         return $formatted_string;
 
-    }////end of public function processservicecall_recieved()
+    }//end of 	 save_as_new_job($job)
 
-    public function saveproduct($brand_id, $product_type_id, $model_no)
+    public function saveproduct($product_id, $data_array)
     {
-        $newRemoteProductModel = new Product;
+
+        $newRemoteProductModel = Product::model()->findByPk($product_id);
+
+        if (!$newRemoteProductModel)
+        {
+            $newRemoteProductModel = new Product;
+        }
+
+        $brand_name = $this->extract_from_data_for_key('product_brand_name', $data_array);
+        $product_type = $this->extract_from_data_for_key('product_product_type_name', $data_array);
+
+        $brand_id = Brand::model()->get_brand_id_by_brandname($brand_name);
+        $product_type_id = ProductType::model()->get_product_type_id_by_producttype($product_type);
+        $model_number = $this->extract_from_data_for_key('product_model_number', $data_array);
+
         $newRemoteProductModel->customer_id = '99999999';
         $newRemoteProductModel->brand_id = $brand_id;
         $newRemoteProductModel->product_type_id = $product_type_id;
-        $newRemoteProductModel->model_number = $model_no;
+        $newRemoteProductModel->model_number = $model_number;
 
         if ($newRemoteProductModel->save()) {
             return $newRemoteProductModel;
@@ -1137,14 +1074,31 @@ public function save_as_new_job($job)
             var_dump($newRemoteProductModel->getErrors());
             return false;
         }
-    }///end of public function saveservicecall($service_data)
 
-    public function savecustomer($product_id, $name, $address_line1, $town, $postcode, $telephone, $email)
+    }/////public function  actionGetservicecallsfrommanufacturer()
+
+    public function savecustomer($customer_id, $product_id, $data_array)
     {
+        $customer_name = $this->extract_from_data_for_key('customer_fullname', $data_array);
+        $address_line1 = $this->extract_from_data_for_key('customer_address_line_1', $data_array);
+        $town = $this->extract_from_data_for_key('customer_town', $data_array);
+        $postcode = $this->extract_from_data_for_key('customer_postcode', $data_array);
+        $telephone = $this->extract_from_data_for_key('customer_telephone', $data_array);
+        $email = $this->extract_from_data_for_key('customer_email', $data_array);
 
-        $newRemoteCustomerModel = new Customer();
+
+
+
+        $newRemoteCustomerModel = Customer::model()->findByPk($customer_id);
+
+        if (!$newRemoteCustomerModel)
+        {
+            $newRemoteCustomerModel = new Customer;
+        }
+
+
         $newRemoteCustomerModel->product_id = $product_id;
-        $newRemoteCustomerModel->last_name = $name;
+        $newRemoteCustomerModel->last_name = $customer_name;
         $newRemoteCustomerModel->address_line_1 = $address_line1;
         $newRemoteCustomerModel->town = $town;
         $newRemoteCustomerModel->postcode = $postcode;
@@ -1157,35 +1111,54 @@ public function save_as_new_job($job)
             var_dump($newRemoteCustomerModel->getErrors());
             return false;
         }
-    }///end of     public function saveservicecall(){
+    }////end of public function processservicecall_recieved()
 
-    public function saveservicecall($job, $data, $fault, $product_id, $customer_id, $contact_id, $contract_ref_no)
+    public function saveservicecall($job, $data_array, $service_id, $product_id, $customer_id)
     {
+
+
+        $api_key = $job->gomobile_account_id;
+        $contract = Contract::model()->getcontractbyapikey($api_key);
+
+        $contract_ref_no = $contract->short_name . $job->service_reference_number;
+        // $data=json_decode($job->data);
+
+
+        $fault = $this->extract_from_data_for_key('fault_description', $data_array);
+
 
         $remotely_booked_status_id = 2;
         $engineer_id = "90000000"; ///This is default Engineer Id
 
-        $newRemoteServicecall = new Servicecall;
+        $newRemoteServicecall = Servicecall::model()->findByPk($service_id);
+
+        if (!$newRemoteServicecall)
+        {
+            $newRemoteServicecall = new Servicecall();
+        }
+
+
+
         $newRemoteServicecall->customer_id = $customer_id;
         $newRemoteServicecall->product_id = $product_id;
         $newRemoteServicecall->fault_description = $fault;
-        $newRemoteServicecall->fault_date = date('d-M-Y');
+        $newRemoteServicecall->fault_date = time();
         $newRemoteServicecall->recalled_job = '0';
         $newRemoteServicecall->job_status_id = $remotely_booked_status_id;
-        $newRemoteServicecall->contract_id = $contact_id;
+        $newRemoteServicecall->contract_id = $contract->id;
         $newRemoteServicecall->engineer_id = $engineer_id;
         $newRemoteServicecall->insurer_reference_number = $contract_ref_no;
-        $newRemoteServicecall->remote_data_recieved = $data;
+        $newRemoteServicecall->remote_data_recieved = json_encode($data_array);
+
         $newRemoteServicecall->remote_ref_no = $job->service_reference_number;
 
 
         /*This is the first msg so initiated this way*/
         $full_chat_array = array();
-        $chat_array=$job->allchatmessage->chats;
-        $full_chat_array['chats']=array();
-        array_push( $full_chat_array['chats'], $chat_array );
+        $chat_array = $job->allchatmessage->chats;
+        $full_chat_array['chats'] = array();
+        array_push($full_chat_array['chats'], $chat_array);
         $newRemoteServicecall->communications = json_encode($full_chat_array);
-
 
 
         //$newRemoteServicecall->communications = json_encode($job->allchatmessage);
@@ -1198,18 +1171,117 @@ public function save_as_new_job($job)
             return false;
         }
 
+    }///end of public function saveservicecall($service_data)
+
+    /**
+     * @param $remote_ref_no
+     * @param $contract_id
+     * @return CActiveRecord
+     *
+     * We are choosing remote ref no & contract id together to identify if job exists or not.
+     * There are no chances that a contract can have same two job nos
+     *
+     */
+
+    public function save_the_recieved_chat_msg($job)
+    {
+        echo "<br><br>" . json_encode($job);
+        $api_key = $job->gomobile_account_id;
+        $servicemodel = $this->findservicecallmodelbyremoterefnoandapikey($job->service_reference_number, $api_key);
+
+        if ($servicemodel) {
+
+            echo "<br>NEW CHATS in :" . json_encode($job->communications);
+            echo "<br>OLD CHATS in :" . $servicemodel->communications;
+
+            $chat_array = array();
+            $chat_array['date'] = $job->communications->date;
+            $chat_array['person'] = $job->communications->person;
+            $chat_array['message'] = $job->communications->message;
+
+            $fullchat = $servicemodel->communications;
+            $full_chat_array = json_decode($fullchat, true);
+            array_push($full_chat_array['chats'], $chat_array);
+
+            $servicemodel->communications = json_encode($full_chat_array);
+
+
+            if ($servicemodel->save()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+
+        }
+
+
+    }///end of     public function saveservicecall(){
+
+    public function actionSendmessageviaportal()
+    {
+
+        $output['status'] = 'NOT OK';
+        $output['message'] = 'Service NOYT ';
+
+        if (isset($_POST['api_key'])) {
+
+            $output['status'] = 'VALID_KEY';
+            $output['api_key'] = $_POST['api_key'];
+
+            $chat_msg = $_POST['chat_msg'];
+            $service_id = $_POST['service_id'];
+
+            $service_model = Servicecall::model()->findByPk($service_id);
+            if ($service_model) {
+
+                $chat_array = array();
+                $chat_array['date'] = date('l jS \of F Y h:i:s A');
+                $chat_array['person'] = 'me';
+                $chat_array['message'] = $chat_msg;
+                $fullchat = $service_model->communications;
+                $full_chat_array = json_decode($fullchat, true);
+                array_push($full_chat_array['chats'], $chat_array);
+                $service_model->communications = json_encode($full_chat_array);
+
+                $remote_ref_no = $service_model->remote_ref_no;
+
+
+                if ($service_model->save()) {
+
+                    $portal_url = $service_model->contract->portal_url;
+
+                    $method = "POST";
+                    $data = "&chat_msg=" . $chat_msg . "&service_reference_number=" . $remote_ref_no;
+                    $url = $portal_url . "?r=servicecalls/sendmessagetoamica";
+
+                    $e = $service_model->contract->portal_login_email;
+                    $p = $service_model->contract->portal_encrypt_pass;
+
+                    $data = "email=" . $e . "&pwd=" . $p . $data;
+
+                    echo "<br>" . $data;
+                    echo "<br>" . $url;
+
+
+                    $result = Setup::model()->callportal($url, $data, $method);
+
+
+                    echo $result;
+                    $json_response = json_decode($result);
+
+
+                }///end of if ($service_model->save())
+
+            }///end of if ($service_model)
+
+        }///end of if (isset( $_POST[api_key]))
+
+        echo json_encode($output);
+
     }///end of public function savecustomer($brand_id, $product_type_id, $model_no)
-
-
-
-
-
-
-
-
-
-
-
 
     private function _checkAuth()
     {

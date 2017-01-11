@@ -102,7 +102,7 @@ ALTER TABLE 'contract' ADD COLUMN 'api_key' TEXT;
 ALTER TABLE 'contract' ADD COLUMN 'portal_url' TEXT;
 ALTER TABLE 'contract' ADD COLUMN 'portal_login_email' TEXT;
 ALTER TABLE 'contract' ADD COLUMN 'portal_encrypt_pass' TEXT;
-ALTER TABLE 'contract' ADD COLUMN 'max_spend_limit_without_authorisation' TEXT;
+ALTER TABLE 'contract' ADD COLUMN 'max_spend_limit_without_authorisation' REAL;
 
 
 ALTER TABLE 'servicecall' ADD COLUMN 'remote_ref_no' TEXT;
@@ -119,8 +119,6 @@ ALTER TABLE 'servicecall' ADD COLUMN 'received_remote_data_status' INT;
 
 
 
-
-DELETE FROM "job_status" WHERE "1"
 
 ----
 -- Table structure for job_status
@@ -179,6 +177,33 @@ INSERT INTO "job_status" ("id","name","information","published","dropdown_displa
 COMMIT;
 
 
+CREATE TABLE 'business_running_cost' ('id' INTEGER PRIMARY KEY NOT NULL, 'cost_of' TEXT, 'weekly_cost' REAL, 'monthly_cost' REAL, 'yearly_cost' REAL, 'daily_cost' REAL);
+
+----
+-- Data dump for business_running_cost, a total of 21 rows
+----
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('3','Salaries','40.0','310.0','3720.0','10.0');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('4','Rent','64.52','500.0','6000.0','16.13');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('5','Van ','38.71','300.0','3600.0','9.68');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('6','Fuel (Petrol/Disel)','64.52','500.0','6000.0','16.13');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('7','Insurance (Liability)','10.32','80.0','960.0','2.58');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('8','Insurance (Vehicle/s)','10.32','80.0','960.0','2.58');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('9','Insurance (Building)','4.61','20.0','240.0','0.65');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('10','Mobile Telecoms','11.52','50.0','600.0','1.61');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('11','Telecoms (Fixed)','11.52','50.0','600.0','1.61');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('12','Internet','4.61','20.0','240.0','0.65');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('13','Vehicle Maintenance','23.04','100.0','1200.0','3.23');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('14','Printing','9.22','40.0','480.0','1.29');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('15','Printing Supplies','4.61','20.0','240.0','0.65');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('16','IT Systems','9.22','40.0','480.0','1.29');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('17','IT Software','23.04','100.0','1200.0','3.23');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('18','Office Equipment','4.61','20.0','240.0','0.65');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('19','Office Sundries','6.91','30.0','360.0','0.97');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('20','Advertising','23.04','100.0','1200.0','3.23');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('21','Tools','3.46','15.0','180.0','0.48');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('22','Subscriptions','1.15','5.0','60.0','0.16');
+INSERT INTO "business_running_cost" ("id","cost_of","weekly_cost","monthly_cost","yearly_cost","daily_cost") VALUES ('23','Website','5.76','25.0','300.0','0.81');
+COMMIT;
 
 
 

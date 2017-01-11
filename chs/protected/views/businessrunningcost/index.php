@@ -30,14 +30,15 @@
 </style>
 
 
-<div class="infotooltip"><h4>Empty Days &nbsp;&nbsp;<i class="fa fa-info-circle" aria-hidden="true"></i></h4>
+<div class="infotooltip"><h4>Contract Value Calculator &nbsp;&nbsp;<i class="fa fa-info-circle" aria-hidden="true"></i></h4>
 
     <span class="infotooltiptext">
 
-                                                    The following days in diary with associated engineers  has not been filled with any appointments.
+        The contract value calculator is a clever program designed to calculate value of the contract you are offered.
+        The more value is input in the contract, more accurate will be results. The contract takes into considerations all business runnning costs
+         and then calculates various KPIs.
 
-
-                                                </span>
+    </span>
 </div>
 
 <h1>

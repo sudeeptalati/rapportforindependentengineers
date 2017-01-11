@@ -82,4 +82,13 @@ class Enggdiary extends \yii\db\ActiveRecord
     {
         return self::findAll(['servicecall_id'=>$service_id]);
     }
+
+
+
+
+
+
+
+
+
 }

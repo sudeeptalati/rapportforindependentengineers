@@ -8,3 +8,4 @@ DELETE FROM servicecalls_docs_manuals;
 DELETE FROM spares_used;
 DELETE FROM tasks_to_do;
 VACUUM
+

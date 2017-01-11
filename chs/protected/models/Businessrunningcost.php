@@ -164,19 +164,20 @@ class Businessrunningcost extends CActiveRecord
     {
 
 
-        $yesterday=date('d-m-Y',strtotime("-1 days"));
-        $last_month_date=date('d-m-Y',strtotime("-31 days"));
+        $yesterday=date('d-n-Y',strtotime("-1 days"));
+        $last_month_date=date('d-n-Y',strtotime("-31 days"));
 
         //http://127.0.0.1/rapport/forengineers/rapportforindependentengineers/chs/index.php?r=graph/default/GetCustomDaysData&start_date=14-11-2016&end_date=14-12-2016&weekdays=1234567&job_status_id=0
 
 
-        $data_url=$url=Yii::app()->createAbsoluteUrl('graph/default/GetCustomDaysData',array(
+        $data_url=Yii::app()->createAbsoluteUrl('graph/default/GetCustomDaysData',array(
             'start_date'=>$last_month_date,
             'end_date'=>$yesterday,
             'weekdays'=>'1234567',
             'job_status_id'=>'0',
 
         ));
+
 
 
         $output=Setup::model()->curl_file_get_contents($data_url);

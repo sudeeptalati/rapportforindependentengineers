@@ -92,6 +92,19 @@ class EnggdiarySearch extends Enggdiary
     }
 
 
+    public static function count_no_of_appointments_on_date($date_string)
+    {
+        $logged_in_engineer_id = Yii::$app->user->identity->engineer_id;
+
+        $appointments = EnggdiarySearch::appointmentsfordateforengineer($logged_in_engineer_id, $date_string);
+
+
+        return count($appointments);
+
+
+
+    }///end of public static function count_no_of_appointments_on_date($date_string)
+
 
 
 

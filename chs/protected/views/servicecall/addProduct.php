@@ -88,28 +88,21 @@
 			<td><h3 style="margin-bottom:0.01px;">Service Call Details</h3></td>
 			</tr>
  			<tr>
-				<td style="vertical-align: top;">	
-					<?php echo $form->labelEx($model,'fault_date'); ?>
-					<?php 
-				
-					$model->fault_date=date('d-m-Y');
-					$this->widget('zii.widgets.jui.CJuiDatePicker', array(
-				    'name'=>CHtml::activeName($model, 'fault_date'),
-					'model'=>$model,
-		       		'value' => $model->attributes['fault_date'],
-				    // additional javascript options for the date picker plugin
-				    'options'=>array(
-				        'showAnim'=>'fold',
-						'dateFormat' => 'dd-mm-yy',
-				    ),
-				    'htmlOptions'=>array(
-			        'style'=>'height:20px;'
-				    ),
-					));
-					?>
-					<?php echo $form->error($model,'fault_date'); ?>
+				<td style="vertical-align: top;">
 
-					<?php echo $form->labelEx($model,'fault_description'); ?>
+                    <?php $fault_date_string=date('d-M-Y');?>
+                    <?php $model->fault_date=strtotime($fault_date_string);?>
+                    <?php echo $form->labelEx($model, 'fault_date'); ?>
+                    <?php echo CHtml::textField('fault_date_string',$fault_date_string,array('id'=>'fault_date_string', 'readonly' => 'readonly', 'style' => 'cursor: pointer'));?>
+
+                    <?php echo $form->hiddenField($model, 'fault_date' ); ?>
+                    <?php echo $form->error($model, 'fault_date'); ?>
+
+
+
+
+
+                    <?php echo $form->labelEx($model,'fault_description'); ?>
 					<?php echo $form->textArea($model,'fault_description',array('rows'=>3, 'cols'=>40)); ?>
 					<?php echo $form->error($model,'fault_description'); ?>
 					
@@ -369,4 +362,22 @@
 
 </div><!-- form -->
 
+
+<?php
+
+Yii::app()->clientScript->registerScript('dateselect', "
+       var fault_date_string = new Pikaday(
+        {
+            field: document.getElementById('fault_date_string'),
+            format: 'D-MMM-YYYY',
+            onSelect : function(date) {
+
+
+                unix_time=this.getMoment().format('X'); ////To format to UNIX time
+                $('#Servicecall_fault_date').val(unix_time);
+            },
+        });
+
+");
+?>
 

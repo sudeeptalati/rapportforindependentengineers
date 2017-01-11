@@ -7,6 +7,7 @@
  */
 
 use common\models\Handyfunctions;
+use common\models\EnggdiarySearch;
 
 use yii\helpers\Url;
 
@@ -219,9 +220,18 @@ $next_month_url= Url::to(['site/calendar', 'date' => $first_date_of_next_month])
 
             <span <?php echo $today_css_class;?> >
                 <?php $servicecall_url= Url::to(['enggdiary/showappointmentsfordate', 'date' => $for_loop_date_string    ]);?>
+                <?php $no_of_appointments= EnggdiarySearch::count_no_of_appointments_on_date( $for_loop_date_string );?>
+
                 <a href="<?php echo $servicecall_url;?>">
                     <?php echo $i;?>
                 </a>
+
+                <?php if ($no_of_appointments > 0): ?>
+                    <small>
+                        (<?php echo $no_of_appointments;?>)
+                    </small>
+                <?php endif;?>
+
             </span>
 
 

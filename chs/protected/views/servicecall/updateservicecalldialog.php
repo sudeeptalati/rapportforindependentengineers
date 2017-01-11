@@ -76,9 +76,7 @@
 
 
                         <?php echo $form->labelEx($serviecallmodel, 'fault_date'); ?>
-                        <?php echo CHtml::textField('fault_date_string',$fault_date_string,array('id'=>'fault_date_string', 'readonly' => 'readonly', 'style' => 'cursor: pointer'));?>
-                        <?php echo $form->hiddenField($serviecallmodel, 'fault_date' ); ?>
-                        <?php echo $form->error($serviecallmodel, 'fault_date'); ?>
+                        <?php echo $fault_date_string; ?>
 
 
                         <!-- ***** Job Completed Date**** -->
@@ -256,7 +254,7 @@
 
 <?php
 
-Yii::app()->clientScript->registerScript('search', "
+Yii::app()->clientScript->registerScript('dateselect', "
 
 
   
@@ -265,6 +263,8 @@ Yii::app()->clientScript->registerScript('search', "
             field: document.getElementById('fault_date_string'),
             format: 'D-MMM-YYYY',
             onSelect : function(date) {
+            
+                 
                 unix_time=this.getMoment().format('X'); ////To format to UNIX time                
                 $('#Servicecall_fault_date').val(unix_time);
             },
@@ -291,26 +291,9 @@ Yii::app()->clientScript->registerScript('search', "
                 $('#Servicecall_job_payment_date').val(unix_time);
             },
         });
-        
-        
-        
-        
-
-  
-
-
-    
-    
+ 
 
 ");
 ?>
 
-  <script>
-      $('#Servicecall_notes').keyup(function() {
-          var value = $(this).val().replace(/\n/g, '<br/>');
-          console.log("This is "+value);
-          $("#Servicecall_notes").val(value);
-
-      });
-</script>
 

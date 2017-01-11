@@ -64,10 +64,34 @@ if(file_exists($filename))
 		</small><br>
 	
 	<b>No. of calls per day per Engineer</b><br><input type="text" name="totalnoofcallsperday" value=<?php echo $totalnoofcallsperday;?>><br><br>
-	
-	<b>Average time per call (in minutes)</b><br><input type="text" name="averagetimeperservicecall" value=<?php echo $averagetimeperservicecall;?>><br><br>
-	
-	<b>Maximum Distance to be travelled in a day (in Miles)</b><br><input type="text" name="totaldistancetobetravelledinaday" value=<?php echo $totaldistancetobetravelledinaday;?>><br><br>
+
+
+    <b>Average time per call (in minutes)</b>
+
+
+    <br />
+    <select name="averagetimeperservicecall" >
+
+        <option selected="selected" value="<?php echo $averagetimeperservicecall;?>"><?php echo $averagetimeperservicecall;?></option>
+        <?php for( $i=1; $i<10;$i++) {
+
+            $for_mins=$i*30;
+            $for_hours=$for_mins/60;
+            $for_hours=$for_hours.' hours';
+            echo "<option value='".$for_mins."'>".$for_hours."</option>";
+
+        }?>
+
+    </select>
+
+
+
+    <br />
+
+
+
+
+    <b>Maximum Distance to be travelled in a day (in Miles)</b><br><input type="text" name="totaldistancetobetravelledinaday" value=<?php echo $totaldistancetobetravelledinaday;?>><br><br>
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="diary_parameters_values"  type="submit" style="width:100px">
 	

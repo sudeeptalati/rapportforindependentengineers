@@ -6,7 +6,7 @@ else
 	$task='completetasks';
 
 
- 
+
 $rooturl="http://84.9.30.62:260/test/crontest/yii/chs/";
 
 if ($task=='sendbookingnotification')
@@ -17,9 +17,9 @@ if ($task=='completetasks')
 
 */
 
-
+++6
 $rooturl="http://84.9.30.62:255/careys/yii/chs/";
- 
+
 triggerurl($rooturl."index.php?r=tasksToDo/completeTasks");
 
 ////////////FUNCTIONS =///////////////

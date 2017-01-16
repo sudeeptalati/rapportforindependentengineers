@@ -1,0 +1,172 @@
+2016-07-07 14:13:47 [-][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[HY000] [14] unable to open database file' in /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php:600
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(600): PDO->__construct('sqlite:/data/ex...', NULL, NULL, NULL)
+#1 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(542): yii\db\Connection->createPdoInstance()
+#2 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(861): yii\db\Connection->open()
+#3 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(848): yii\db\Connection->getMasterPdo()
+#4 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(219): yii\db\Connection->getSlavePdo()
+#5 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(894): yii\db\Command->prepare(true)
+#6 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(362): yii\db\Command->queryInternal('fetchAll', NULL)
+#7 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/sqlite/Schema.php(143): yii\db\Command->queryAll()
+#8 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/sqlite/Schema.php(126): yii\db\sqlite\Schema->findColumns(Object(yii\db\TableSchema))
+#9 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Schema.php(149): yii\db\sqlite\Schema->loadTableSchema('migration')
+#10 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/MigrateController.php(178): yii\db\Schema->getTableSchema('{{%migration}}', true)
+#11 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/BaseMigrateController.php(627): yii\console\controllers\MigrateController->getMigrationHistory(NULL)
+#12 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/BaseMigrateController.php(102): yii\console\controllers\BaseMigrateController->getNewMigrations()
+#13 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#14 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#15 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Controller.php(154): yii\base\InlineAction->runWithParams(Array)
+#16 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Controller.php(119): yii\base\Controller->runAction('', Array)
+#17 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Module.php(454): yii\console\Controller->runAction('', Array)
+#18 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Application.php(176): yii\base\Module->runAction('migrate', Array)
+#19 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Application.php(143): yii\console\Application->runAction('migrate', Array)
+#20 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#21 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/yii(27): yii\base\Application->run()
+#22 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[HY000] [14] unable to open database file' in /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php:547
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(861): yii\db\Connection->open()
+#1 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(848): yii\db\Connection->getMasterPdo()
+#2 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(219): yii\db\Connection->getSlavePdo()
+#3 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(894): yii\db\Command->prepare(true)
+#4 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(362): yii\db\Command->queryInternal('fetchAll', NULL)
+#5 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/sqlite/Schema.php(143): yii\db\Command->queryAll()
+#6 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/sqlite/Schema.php(126): yii\db\sqlite\Schema->findColumns(Object(yii\db\TableSchema))
+#7 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Schema.php(149): yii\db\sqlite\Schema->loadTableSchema('migration')
+#8 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/MigrateController.php(178): yii\db\Schema->getTableSchema('{{%migration}}', true)
+#9 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/BaseMigrateController.php(627): yii\console\controllers\MigrateController->getMigrationHistory(NULL)
+#10 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/BaseMigrateController.php(102): yii\console\controllers\BaseMigrateController->getNewMigrations()
+#11 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#12 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#13 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Controller.php(154): yii\base\InlineAction->runWithParams(Array)
+#14 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Controller.php(119): yii\base\Controller->runAction('', Array)
+#15 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Module.php(454): yii\console\Controller->runAction('', Array)
+#16 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Application.php(176): yii\base\Module->runAction('migrate', Array)
+#17 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Application.php(143): yii\console\Application->runAction('migrate', Array)
+#18 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#19 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/yii(27): yii\base\Application->run()
+#20 {main}
+Additional Information:
+
+2016-07-07 14:13:47 [-][-][-][info][application] $_SERVER = [
+    'TERM_PROGRAM' => 'Apple_Terminal'
+    'SHELL' => '/bin/bash'
+    'TERM' => 'xterm-256color'
+    'TMPDIR' => '/var/folders/dw/k0k4tmpx3h31rrr8m28cyft80000gn/T/'
+    'Apple_PubSub_Socket_Render' => '/private/tmp/com.apple.launchd.CisG4AFdfU/Render'
+    'TERM_PROGRAM_VERSION' => '369'
+    'TERM_SESSION_ID' => '00BF5415-3166-4DBB-8390-9670E0018035'
+    'USER' => 'sudeeptalati'
+    'SSH_AUTH_SOCK' => '/private/tmp/com.apple.launchd.qvLLawHgbU/Listeners'
+    '__CF_USER_TEXT_ENCODING' => '0x1F5:0x0:0x2'
+    'PATH' => '/Applications/XAMPP/xamppfiles/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin'
+    'PWD' => '/Applications/XAMPP/htdocs/talatitoolsExpensesYii2/advanced'
+    'LANG' => 'en_GB.UTF-8'
+    'XPC_FLAGS' => '0x0'
+    'XPC_SERVICE_NAME' => '0'
+    'SHLVL' => '1'
+    'HOME' => '/Users/sudeeptalati'
+    'LOGNAME' => 'sudeeptalati'
+    'DISPLAY' => '/private/tmp/com.apple.launchd.ejaHnsBMhI/org.macosforge.xquartz:0'
+    '_' => './yii'
+    'OLDPWD' => '/Applications/XAMPP/htdocs/talatitoolsExpensesYii2'
+    'PHP_SELF' => './yii'
+    'SCRIPT_NAME' => './yii'
+    'SCRIPT_FILENAME' => './yii'
+    'PATH_TRANSLATED' => './yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1467893627.0665
+    'REQUEST_TIME' => 1467893627
+    'argv' => [
+        0 => './yii'
+        1 => 'migrate'
+    ]
+    'argc' => 2
+]
+2016-07-07 14:14:05 [-][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[HY000] [14] unable to open database file' in /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php:600
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(600): PDO->__construct('sqlite:/data/ex...', NULL, NULL, NULL)
+#1 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(542): yii\db\Connection->createPdoInstance()
+#2 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(861): yii\db\Connection->open()
+#3 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(848): yii\db\Connection->getMasterPdo()
+#4 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(219): yii\db\Connection->getSlavePdo()
+#5 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(894): yii\db\Command->prepare(true)
+#6 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(362): yii\db\Command->queryInternal('fetchAll', NULL)
+#7 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/sqlite/Schema.php(143): yii\db\Command->queryAll()
+#8 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/sqlite/Schema.php(126): yii\db\sqlite\Schema->findColumns(Object(yii\db\TableSchema))
+#9 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Schema.php(149): yii\db\sqlite\Schema->loadTableSchema('migration')
+#10 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/MigrateController.php(178): yii\db\Schema->getTableSchema('{{%migration}}', true)
+#11 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/BaseMigrateController.php(627): yii\console\controllers\MigrateController->getMigrationHistory(NULL)
+#12 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/BaseMigrateController.php(102): yii\console\controllers\BaseMigrateController->getNewMigrations()
+#13 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#14 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#15 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Controller.php(154): yii\base\InlineAction->runWithParams(Array)
+#16 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Controller.php(119): yii\base\Controller->runAction('', Array)
+#17 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Module.php(454): yii\console\Controller->runAction('', Array)
+#18 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Application.php(176): yii\base\Module->runAction('migrate', Array)
+#19 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Application.php(143): yii\console\Application->runAction('migrate', Array)
+#20 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#21 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/yii(27): yii\base\Application->run()
+#22 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[HY000] [14] unable to open database file' in /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php:547
+Stack trace:
+#0 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(861): yii\db\Connection->open()
+#1 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Connection.php(848): yii\db\Connection->getMasterPdo()
+#2 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(219): yii\db\Connection->getSlavePdo()
+#3 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(894): yii\db\Command->prepare(true)
+#4 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Command.php(362): yii\db\Command->queryInternal('fetchAll', NULL)
+#5 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/sqlite/Schema.php(143): yii\db\Command->queryAll()
+#6 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/sqlite/Schema.php(126): yii\db\sqlite\Schema->findColumns(Object(yii\db\TableSchema))
+#7 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/db/Schema.php(149): yii\db\sqlite\Schema->loadTableSchema('migration')
+#8 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/MigrateController.php(178): yii\db\Schema->getTableSchema('{{%migration}}', true)
+#9 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/BaseMigrateController.php(627): yii\console\controllers\MigrateController->getMigrationHistory(NULL)
+#10 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/controllers/BaseMigrateController.php(102): yii\console\controllers\BaseMigrateController->getNewMigrations()
+#11 [internal function]: yii\console\controllers\BaseMigrateController->actionUp(0)
+#12 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#13 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Controller.php(154): yii\base\InlineAction->runWithParams(Array)
+#14 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Controller.php(119): yii\base\Controller->runAction('', Array)
+#15 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Module.php(454): yii\console\Controller->runAction('', Array)
+#16 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Application.php(176): yii\base\Module->runAction('migrate', Array)
+#17 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/console/Application.php(143): yii\console\Application->runAction('migrate', Array)
+#18 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/vendor/yiisoft/yii2/base/Application.php(375): yii\console\Application->handleRequest(Object(yii\console\Request))
+#19 /Applications/XAMPP/xamppfiles/htdocs/talatitoolsExpensesYii2/advanced/yii(27): yii\base\Application->run()
+#20 {main}
+Additional Information:
+
+2016-07-07 14:14:05 [-][-][-][info][application] $_SERVER = [
+    'TERM_PROGRAM' => 'Apple_Terminal'
+    'SHELL' => '/bin/bash'
+    'TERM' => 'xterm-256color'
+    'TMPDIR' => '/var/folders/dw/k0k4tmpx3h31rrr8m28cyft80000gn/T/'
+    'Apple_PubSub_Socket_Render' => '/private/tmp/com.apple.launchd.CisG4AFdfU/Render'
+    'TERM_PROGRAM_VERSION' => '369'
+    'TERM_SESSION_ID' => '00BF5415-3166-4DBB-8390-9670E0018035'
+    'USER' => 'sudeeptalati'
+    'SSH_AUTH_SOCK' => '/private/tmp/com.apple.launchd.qvLLawHgbU/Listeners'
+    '__CF_USER_TEXT_ENCODING' => '0x1F5:0x0:0x2'
+    'PATH' => '/Applications/XAMPP/xamppfiles/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin'
+    'PWD' => '/Applications/XAMPP/htdocs/talatitoolsExpensesYii2/advanced'
+    'LANG' => 'en_GB.UTF-8'
+    'XPC_FLAGS' => '0x0'
+    'XPC_SERVICE_NAME' => '0'
+    'SHLVL' => '1'
+    'HOME' => '/Users/sudeeptalati'
+    'LOGNAME' => 'sudeeptalati'
+    'DISPLAY' => '/private/tmp/com.apple.launchd.ejaHnsBMhI/org.macosforge.xquartz:0'
+    '_' => './yii'
+    'OLDPWD' => '/Applications/XAMPP/htdocs/talatitoolsExpensesYii2'
+    'PHP_SELF' => './yii'
+    'SCRIPT_NAME' => './yii'
+    'SCRIPT_FILENAME' => './yii'
+    'PATH_TRANSLATED' => './yii'
+    'DOCUMENT_ROOT' => ''
+    'REQUEST_TIME_FLOAT' => 1467893645.7953
+    'REQUEST_TIME' => 1467893645
+    'argv' => [
+        0 => './yii'
+        1 => 'migrate'
+    ]
+    'argc' => 2
+]

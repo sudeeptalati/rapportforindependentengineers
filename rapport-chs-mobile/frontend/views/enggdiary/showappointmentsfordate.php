@@ -63,6 +63,7 @@ $next_day_appointments_url=Url::to(['enggdiary/showappointmentsfordate', 'date' 
 
 
     <?php foreach ($appointments as $app): ?>
+    <?php if ($app->id==$app->servicecall->engg_diary_id): ?>
 
         <?php
         $customer_address = Handyfunctions::formataddress(
@@ -147,7 +148,7 @@ $next_day_appointments_url=Url::to(['enggdiary/showappointmentsfordate', 'date' 
             </td>
 
         </tr>
-
+        <?php endif;////end of if ($app->id==$app->servicecall->engg_diary_id): ?>
     <?php endforeach; ?>
 
 

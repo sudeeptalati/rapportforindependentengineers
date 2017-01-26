@@ -157,9 +157,11 @@ $this->registerJs('
     });
 
     $("#add-new-spare-btn").on("click", function () {
+  
+        search_term=$("#searchitemwithkeyword").val();
 
         $("#request-sparepart-form").show();
-        $("#sparesused-item_name").val("");
+        $("#sparesused-item_name").val(search_term);
         $("#sparesused-part_number").val("");
         $("#sparesused-unit_price").val("");
 

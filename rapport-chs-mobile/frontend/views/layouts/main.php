@@ -33,10 +33,15 @@ AppAsset::register($this);
 
 </head>
 <body>
+
+
+
+
 <?php $this->beginBody() ?>
 
 <?= Html::hiddenInput('google_maps_api_key',Yii::$app->params['google_maps_api_key'], ['id'=>'google_maps_api_key']) ?>
 <?= Html::hiddenInput('frontend_url',Yii::$app->params['frontend_url'], ['id'=>'frontend_url']) ?>
+<?= Html::hiddenInput('baseUrl',Yii::$app->request->baseUrl, ['id'=>'baseUrl']) ?>
 
 <div class="wrap">
     <?php

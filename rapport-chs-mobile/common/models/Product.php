@@ -141,4 +141,14 @@ class Product extends \yii\db\ActiveRecord
     {
         return $this->brand->name.' '.$this->productType->name;
     }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getServicecalls()
+    {
+        return $this->hasMany(Servicecall::className(), ['product_id' => 'id']);
+    }
+
 }

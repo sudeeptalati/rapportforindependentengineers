@@ -3,7 +3,6 @@
 namespace common\models;
 
 use Yii;
-
 use common\models\Handyfunctions;
 
 /**
@@ -39,6 +38,13 @@ use common\models\Handyfunctions;
  * @property string $comments
  * @property integer $recalled_job
  * @property string $work_summary
+ * @property integer $admintime
+ * @property string $remote_ref_no
+ * @property string $remote_data_recieved
+ * @property string $communications
+ * @property string $remote_data_sent
+ * @property string $test_results
+ * @property integer $received_remote_data_status
  */
 class Servicecall extends \yii\db\ActiveRecord
 {
@@ -62,7 +68,6 @@ class Servicecall extends \yii\db\ActiveRecord
             [['total_cost', 'vat_on_total', 'net_cost'], 'number'],
         ];
     }
-
 
     /**
      * @return \yii\db\ActiveQuery
@@ -121,81 +126,55 @@ class Servicecall extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-
-
-
         return [
-
-            /*
-            'id' => Yii::t('app', 'ID'),
-            'service_reference_number' => Yii::t('app', 'Service Reference Number'),
-            'customer_id' => Yii::t('app', 'Customer ID'),
-            'product_id' => Yii::t('app', 'Product ID'),
-            'contract_id' => Yii::t('app', 'Contract ID'),
-            'engineer_id' => Yii::t('app', 'Engineer ID'),
-            'insurer_reference_number' => Yii::t('app', 'Insurer Reference Number'),
-            'job_status_id' => Yii::t('app', 'Job Status ID'),
-            'fault_date' => Yii::t('app', 'Fault Date'),
-            'fault_code' => Yii::t('app', 'Fault Code'),
-            'fault_description' => Yii::t('app', 'Issue Reported '),
-            'engg_diary_id' => Yii::t('app', 'Engg Diary ID'),
-            'work_carried_out' => Yii::t('app', 'Work Carried Out'),
-            'spares_used_status_id' => Yii::t('app', 'Spares Used Status ID'),
-            'total_cost' => Yii::t('app', 'Total Cost'),
-            'vat_on_total' => Yii::t('app', 'Vat On Total'),
-            'net_cost' => Yii::t('app', 'Net Cost'),
-            'job_payment_date' => Yii::t('app', 'Job Payment Date'),
-            'job_finished_date' => Yii::t('app', 'Job Finished Date'),
-            'notes' => Yii::t('app', 'Notes'),
-            'created_by_user_id' => Yii::t('app', 'Created By User ID'),
-            'created' => Yii::t('app', 'Created'),
-            'modified' => Yii::t('app', 'Modified'),
-            'cancelled' => Yii::t('app', 'Cancelled'),
-            'closed' => Yii::t('app', 'Closed'),
-            'number_of_visits' => Yii::t('app', 'Number Of Visits'),
-            'activity_log' => Yii::t('app', 'Activity Log'),
-            'comments' => Yii::t('app', 'Comments'),
-            'recalled_job' => Yii::t('app', 'Recalled Job'),
-            'work_summary' => Yii::t('app', 'Work Summary'),
-
-            */
             'id' => 'ID',
-            'service_reference_number' => 'Job Ref. No#',
-            'customer_id' => 'Customer',
-            'product_id' => 'Product',
-            'contract_id' => 'Job Type',
-            'engineer_id' => 'Servicecall Engineer',
-            'insurer_reference_number' => 'Insurer Reference No#',
-            'job_status_id' => 'Job Status',
-            'fault_date' => 'Reported Date',
-            'fault_code' => 'Agreement No./ Plan No. ',
-            'fault_description' => 'Issue Reported',
-            'engg_diary_id' => 'Engineer Diary',
+            'service_reference_number' => 'Job Ref. No# ',
+            'customer_id' => 'Customer ',
+            'product_id' => 'Product ',
+            'contract_id' => 'Contract ',
+            'engineer_id' => 'Engineer ',
+            'insurer_reference_number' => 'Insurer Reference Number',
+            'job_status_id' => 'Job Status ',
+            'fault_date' => 'Fault Date',
+            'fault_code' => 'Fault Code',
+            'fault_description' => 'Fault Description',
+            'engg_diary_id' => 'Engg Diary ',
             'work_carried_out' => 'Work Carried Out',
-            'spares_used_status_id' => 'Spares Used ',
+            'spares_used_status_id' => 'Spares Used Status ',
             'total_cost' => 'Total Cost',
             'vat_on_total' => 'Vat On Total',
             'net_cost' => 'Net Cost',
             'job_payment_date' => 'Job Payment Date',
             'job_finished_date' => 'Job Finished Date',
-            'notes' => 'BER Authority No. / Booking Time , etc',
-            'created_by_user_id' => 'Created By User',
+            'notes' => 'Notes',
+            'created_by_user_id' => 'Created By User ',
             'created' => 'Created',
             'modified' => 'Modified',
             'cancelled' => 'Cancelled',
             'closed' => 'Closed',
-            'comments' => 'Comments ',
+            'number_of_visits' => 'Number Of Visits',
+            'activity_log' => 'Activity Log',
+            'comments' => 'Comments',
+            'recalled_job' => 'Recalled Job',
             'work_summary' => 'Work Summary',
-            'test_results' => 'Ω Test Results',
+            'admintime' => 'Admintime',
+            'remote_ref_no' => 'Remote Ref No',
+            'remote_data_recieved' => 'Remote Data Recieved',
+            'communications' => 'Communications',
+            'remote_data_sent' => 'Remote Data Sent',
+            'test_results' => 'Ω  Test Results',
+            'received_remote_data_status' => 'Received Remote Data Status',
 
             ///Custom Labels
             'contract' => 'Contract',
-
         ];
     }
 
 
-
+    /**
+     * @param $servicecall_id
+     * @return int
+     */
     public static function update_activitylog($servicecall_id)
     {
 
@@ -222,11 +201,19 @@ class Servicecall extends \yii\db\ActiveRecord
 
     }//end of public function writeactivitylog($this->activity_log);
 
+
+
+    /**
+     * @param $job_status_id
+     * @param $servicecall_id
+     * @return bool
+     */
+
     public static function update_jobstatus($job_status_id, $servicecall_id)
     {
-    
-    	$status_update=Servicecall::updateAll(['job_status_id' => $job_status_id],['id'=>$servicecall_id]);
-		
+
+        $status_update=Servicecall::updateAll(['job_status_id' => $job_status_id],['id'=>$servicecall_id]);
+
         if ($status_update)
         {
             $log=Servicecall::update_activitylog($servicecall_id);
@@ -235,14 +222,15 @@ class Servicecall extends \yii\db\ActiveRecord
         else
         {
             return false;
-		}
-		
-		
+        }
+
+
     }//end of public function writeactivitylog($this->activity_log);
 
 
-
-
-
+    public static function get_servicecalls_by_job_status_id($job_status_id)
+    {
+        return self::findAll(['job_status_id' => $job_status_id]);
+    }
 
 }

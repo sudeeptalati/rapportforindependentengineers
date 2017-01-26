@@ -125,4 +125,16 @@ class Customer extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Product::className(), ['customer_id' => 'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getServicecalls()
+    {
+        return $this->hasMany(Servicecall::className(), ['customer_id' => 'id']);
+    }
+
+
+
+
 }

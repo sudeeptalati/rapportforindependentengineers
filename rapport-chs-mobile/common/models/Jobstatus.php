@@ -85,5 +85,15 @@ class Jobstatus extends \yii\db\ActiveRecord
         return ArrayHelper::map($items, 'id', 'name') ;
     }
 
+    public static function getDashboradJobStatuses()
+    {
+
+        return self::find()->where(['dashboard_display'=>'1' ])->all();
+
+    }
+
+
+
+
 
 }

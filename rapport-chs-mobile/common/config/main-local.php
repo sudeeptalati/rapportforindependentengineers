@@ -5,7 +5,7 @@ return [
 
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'sqlite:/Applications/XAMPP/xamppfiles/htdocs/rapport/forengineers/rapportforindependentengineers/chs/protected/data/chs.db', // SQLite
+            'dsn' => 'sqlite:/Applications/XAMPP/xamppfiles/htdocs//rapport/call-handling-engineers/chs/protected/data/chs.db', // SQLite
 
 
             /*
@@ -35,10 +35,10 @@ return [
 
         'clickatell' => [
             'class' => 'albertborsos\clickatell\ClickatellHttp',
-            'username' => 'careys',
-            'password' => 'careys48',
-            'apiID' => '3601987',
-            'from' => 'careys', // optional parameter,
+            'username' => '00',
+            'password' => '00',
+            'apiID' => '00',
+            'from' => '00', // optional parameter,
             'mo' => 1 // optional parameter
         ],
 

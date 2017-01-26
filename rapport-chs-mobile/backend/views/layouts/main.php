@@ -32,6 +32,8 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
+<?= Html::hiddenInput('baseUrl',Yii::$app->request->baseUrl, ['id'=>'baseUrl']) ?>
+
 <div class="wrap">
     <?php
     NavBar::begin([
@@ -43,18 +45,23 @@ AppAsset::register($this);
     ]);
     $menuItems = [
 
+        ['label' => 'Dashboard', 'url' => ['/servicecall/dashboard']],
 
-        ['label' => 'Customer Enquiries', 'url' => ['/customer']],
-        ['label' => 'Dead Regions', 'url' => ['/deadregions']],
-        ['label' => 'Product Types', 'url' => ['/producttype']],
-        ['label' => 'Brands ', 'url' => ['/brand']],
-        ['label' => 'Postcodes ', 'url' => ['/postcodes']],
+        /*
+                ['label' => 'Customer Enquiries', 'url' => ['/customer']],
+                ['label' => 'Dead Regions', 'url' => ['/deadregions']],
+                ['label' => 'Product Types', 'url' => ['/producttype']],
+                ['label' => 'Brands ', 'url' => ['/brand']],
+                ['label' => 'Postcodes ', 'url' => ['/postcodes']],
 
 
 
-        ['label' => 'Engineers', 'url' => ['/engineer']],
-        //['label' => 'Expenses', 'url' => ['/expense']],
-       // ['label' => 'Roles', 'url' => ['/roles']],
+                ['label' => 'Engineers', 'url' => ['/engineer']],
+                //['label' => 'Expenses', 'url' => ['/expense']],
+               // ['label' => 'Roles', 'url' => ['/roles']],
+          */
+
+
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
@@ -87,7 +94,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; Talati Electric Works <?= date('Y') ?></p>
+        <p class="pull-left">&copy; Rapport Software <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>

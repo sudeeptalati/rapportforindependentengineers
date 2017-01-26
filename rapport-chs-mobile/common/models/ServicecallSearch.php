@@ -18,8 +18,8 @@ class ServicecallSearch extends Servicecall
     public function rules()
     {
         return [
-            [['id', 'service_reference_number', 'customer_id', 'product_id', 'contract_id', 'engineer_id', 'job_status_id', 'engg_diary_id', 'spares_used_status_id', 'created_by_user_id', 'number_of_visits', 'recalled_job'], 'integer'],
-            [['insurer_reference_number', 'fault_date', 'fault_code', 'fault_description', 'work_carried_out', 'job_payment_date', 'job_finished_date', 'notes', 'created', 'modified', 'cancelled', 'closed', 'activity_log', 'comments', 'work_summary'], 'safe'],
+            [['id', 'service_reference_number', 'customer_id', 'product_id', 'contract_id', 'engineer_id', 'job_status_id', 'engg_diary_id', 'spares_used_status_id', 'created_by_user_id', 'number_of_visits', 'recalled_job', 'admintime', 'received_remote_data_status'], 'integer'],
+            [['insurer_reference_number', 'fault_date', 'fault_code', 'fault_description', 'work_carried_out', 'job_payment_date', 'job_finished_date', 'notes', 'created', 'modified', 'cancelled', 'closed', 'activity_log', 'comments', 'work_summary', 'remote_ref_no', 'remote_data_recieved', 'communications', 'remote_data_sent', 'test_results'], 'safe'],
             [['total_cost', 'vat_on_total', 'net_cost'], 'number'],
         ];
     }
@@ -82,6 +82,8 @@ class ServicecallSearch extends Servicecall
             'closed' => $this->closed,
             'number_of_visits' => $this->number_of_visits,
             'recalled_job' => $this->recalled_job,
+            'admintime' => $this->admintime,
+            'received_remote_data_status' => $this->received_remote_data_status,
         ]);
 
         $query->andFilterWhere(['like', 'insurer_reference_number', $this->insurer_reference_number])
@@ -91,8 +93,17 @@ class ServicecallSearch extends Servicecall
             ->andFilterWhere(['like', 'notes', $this->notes])
             ->andFilterWhere(['like', 'activity_log', $this->activity_log])
             ->andFilterWhere(['like', 'comments', $this->comments])
-            ->andFilterWhere(['like', 'work_summary', $this->work_summary]);
+            ->andFilterWhere(['like', 'work_summary', $this->work_summary])
+            ->andFilterWhere(['like', 'remote_ref_no', $this->remote_ref_no])
+            ->andFilterWhere(['like', 'remote_data_recieved', $this->remote_data_recieved])
+            ->andFilterWhere(['like', 'communications', $this->communications])
+            ->andFilterWhere(['like', 'remote_data_sent', $this->remote_data_sent])
+            ->andFilterWhere(['like', 'test_results', $this->test_results]);
 
         return $dataProvider;
     }
+
+
+
+
 }

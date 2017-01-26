@@ -1320,7 +1320,10 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
                                                         <td><?php echo $a->notes; ?> </td>
                                                         <td> <?php echo Setup::model()->convertsecondstotime($a->duration_of_call); ?> </td>
-                                                        
+
+
+
+
                                                     </tr>
                                                 <?php endif;///end of if ($a->id!=$model->engg_diary_id): ?>
 

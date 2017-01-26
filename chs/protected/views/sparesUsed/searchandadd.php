@@ -322,12 +322,13 @@ $service_id=$_GET['id'];///this is when called from servicecall page
     function additemnotinlist()
     {
         console.log("mNew Item");
-
+        search_term=$("#searchterm").val();
         $("#sparesform").show();
         $("#SparesUsed_master_item_id").val(0);
-        $("#SparesUsed_item_name").val("");
+        $("#SparesUsed_item_name").val(search_term);
         $("#SparesUsed_part_number").val("");
         $("#SparesUsed_unit_price").val("");
+
 
     }////end of function additemnotinlist()
 

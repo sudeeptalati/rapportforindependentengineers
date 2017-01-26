@@ -143,7 +143,9 @@
 
         str=str.replace(/ /g,"_");
         str=str.toUpperCase();
-
+        str = str.replace(/'/g, "");///remove single quote
+        str = str.replace(/"/g, "");///remove double quotes
+        str = str.replace(/`/g, "");///remove extra quote
         return str;
 
     }

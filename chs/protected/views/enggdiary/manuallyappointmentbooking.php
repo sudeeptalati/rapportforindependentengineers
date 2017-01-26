@@ -32,7 +32,11 @@
 <?php
 $this->layout = 'main';
 
-$servicecall_id = $_GET['servicecall_id'];
+if (isset ($_GET['servicecall_id']))
+    $servicecall_id = $_GET['servicecall_id'];
+else
+    $servicecall_id =0;
+
 $servicecallmodel = Servicecall::model()->findbyPK(array('id' => $servicecall_id));
 
 
@@ -52,281 +56,290 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
 //echo $data->servicecall->customer->postcode;
 ?>
 
+
 <div class="boxframe customerbox" style='width:40%; float:left;'>
-    <div class="headingbox customerheadingbox">Customer</div>
-    <div class="contentbox">
-        <div class="title">
-            <?php echo $servicecallmodel->customer->fullname; ?>
 
-            <table>
-                <tr>
-                    <td>
-                        <div class="address">
-                            <?php
-                            $line1 = $servicecallmodel->customer->address_line_1;
-                            $line2 = $servicecallmodel->customer->address_line_2;
-                            $line3 = $servicecallmodel->customer->address_line_3;
-                            $town = $servicecallmodel->customer->town;
-                            $postcode = $servicecallmodel->customer->postcode;
-
-                            ?>
-                            <?php echo $setupmodel->formataddressinhtml($line1, $line2, $line3, $town, $postcode); ?>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-
-                            <table>
-                                <tr>
-                                    <th style="width: 10%"></th>
-                                    <th style="width: 90%"></th>
-                                </tr>
-                                <tr>
-                                    <td><span class="fa fa-mobile"></span></td>
-                                    <td>
-                                        <?php echo $servicecallmodel->customer->mobile; ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fa fa-mobile"></span></td>
-                                    <td>
-                                        <?php echo $servicecallmodel->customer->fax; ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span class="fa fa-phone"></span></td>
-                                    <td>
-                                        <?php echo $servicecallmodel->customer->telephone; ?>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-        </div>
-    </div><!-- end of content box-->
-
-    <div class="containerbox productbox">
-        <div class="headingbox productheadingbox">Product</div>
+    <?php if ($servicecall_id!=0): ?>
+        <div class="headingbox customerheadingbox">Customer</div>
         <div class="contentbox">
             <div class="title">
-                <?php echo $servicecallmodel->product->brand->name; ?>
-                <?php echo $servicecallmodel->product->productType->name; ?>
-            </div>
-        </div>
-    </div><!-- end of     <div class="containerbox productbox"> -->
+                <?php echo $servicecallmodel->customer->fullname; ?>
 
-    <div class="containerbox servicebox">
-        <div class="headingbox serviceheadingbox">
-            Service
-            <div style="float: right">
+                <table>
+                    <tr>
+                        <td>
+                            <div class="address">
+                                <?php
+                                $line1 = $servicecallmodel->customer->address_line_1;
+                                $line2 = $servicecallmodel->customer->address_line_2;
+                                $line3 = $servicecallmodel->customer->address_line_3;
+                                $town = $servicecallmodel->customer->town;
+                                $postcode = $servicecallmodel->customer->postcode;
+
+                                ?>
+                                <?php echo $setupmodel->formataddressinhtml($line1, $line2, $line3, $town, $postcode); ?>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+
+                                <table>
+                                    <tr>
+                                        <th style="width: 10%"></th>
+                                        <th style="width: 90%"></th>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="fa fa-mobile"></span></td>
+                                        <td>
+                                            <?php echo $servicecallmodel->customer->mobile; ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="fa fa-mobile"></span></td>
+                                        <td>
+                                            <?php echo $servicecallmodel->customer->fax; ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="fa fa-phone"></span></td>
+                                        <td>
+                                            <?php echo $servicecallmodel->customer->telephone; ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div><!-- end of content box-->
+
+        <div class="containerbox productbox">
+            <div class="headingbox productheadingbox">Product</div>
+            <div class="contentbox">
+                <div class="title">
+                    <?php echo $servicecallmodel->product->brand->name; ?>
+                    <?php echo $servicecallmodel->product->productType->name; ?>
+                </div>
+            </div>
+        </div><!-- end of     <div class="containerbox productbox"> -->
+
+        <div class="containerbox servicebox">
+            <div class="headingbox serviceheadingbox">
+                Service
+                <div style="float: right">
+                    <?php
+                    $linktext = '<div class="fa fa-edit"></div>#' . $servicecallmodel->service_reference_number;
+                    echo CHtml::link($linktext, array('/servicecall/view', 'id' => $servicecallmodel->id), array('style' => 'color:white'));
+                    ?>
+                </div>
+            </div>
+            <div class="contentbox">
+                <div class="title">
+                    <?php echo $servicecallmodel->fault_description; ?>
+                </div>
+            </div>
+
+        </div><!-- end of     <div class="containerbox productbox"> -->
+
+
+
+
+
+        <div id="engineerbox" class="beauty containerbox engineerbox" style="cursor: move;"
+             title="You can drag and move this window">
+            <div class="headingbox enginnerheadingbox">Appointment
+                <i class="fa fa-arrows" aria-hidden="true"></i></div>
+            <div class="contentbox engineerbox">
+
+                <h5>
+                    <i class="ukwfa ukwfa-engineer-repair fa-2x"></i>
+                    <span class="datacontenttitle" >Last visited by </span>-
+                    <span><?php echo $servicecallmodel->engineer->fullname; ?></span>
+                </h5>
+
+                <h3 style="margin:20px;">
+                    <span class="fa fa-clock-o" aria-hidden="true"></span>
+                    <span id="appointment-time"></span>
+                </h3>
                 <?php
-                $linktext = '<div class="fa fa-edit"></div>#' . $servicecallmodel->service_reference_number;
-                echo CHtml::link($linktext, array('/servicecall/view', 'id' => $servicecallmodel->id), array('style' => 'color:white'));
+                $timeofcallarray = Enggdiary::model()->timeofcalls();
+                echo CHtml::dropDownList('timeofcall', '', $timeofcallarray);
                 ?>
-            </div>
-        </div>
-        <div class="contentbox">
-            <div class="title">
-                <?php echo $servicecallmodel->fault_description; ?>
-            </div>
-        </div>
-    </div><!-- end of     <div class="containerbox productbox"> -->
+
+                <br>
+                Duration <span id="callduration"></span>
+                <br>
 
 
-    <div id="engineerbox" class="beauty containerbox engineerbox" style="cursor: move;"
-         title="You can drag and move this window">
-        <div class="headingbox enginnerheadingbox">Appointment
-            <i class="fa fa-arrows" aria-hidden="true"></i></div>
-        <div class="contentbox engineerbox">
+                <?php //echo CHtml::dropDownList('slots', '8', array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10','11' => '11', '12' => '12', '13' => '13', '14' => '14', '15' => '15', '16' => '16', '17' => '17', '18' => '18'), array('style' => 'width:50px;')); ?>
+                <?php
+                $avg_time_per_call_minutes= Enggdiary::model()->getAveragetimeperservicecall();
+                $slots=$avg_time_per_call_minutes/30;
+                ?>
 
-            <h5>
-                <i class="ukwfa ukwfa-engineer-repair fa-2x"></i>
-                <span class="datacontenttitle" >Last visited by </span>-
-                <span><?php echo $servicecallmodel->engineer->fullname; ?></span>
-            </h5>
-
-            <h3 style="margin:20px;">
-                <span class="fa fa-clock-o" aria-hidden="true"></span>
-                <span id="appointment-time"></span>
-            </h3>
-            <?php
-            $timeofcallarray = Enggdiary::model()->timeofcalls();
-            echo CHtml::dropDownList('timeofcall', '', $timeofcallarray);
-            ?>
-
-            <br>
-            Duration <span id="callduration"></span>
-            <br>
-
-
-            <?php //echo CHtml::dropDownList('slots', '8', array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '7' => '7', '8' => '8', '9' => '9', '10' => '10','11' => '11', '12' => '12', '13' => '13', '14' => '14', '15' => '15', '16' => '16', '17' => '17', '18' => '18'), array('style' => 'width:50px;')); ?>
-            <?php
-            $avg_time_per_call_minutes= Enggdiary::model()->getAveragetimeperservicecall();
-            $slots=$avg_time_per_call_minutes/30;
-            ?>
-
-            <?php echo CHtml::hiddenField('slots',$slots);?>
-            <div title="Slide to change the duration" id='slider'></div>
+                <?php echo CHtml::hiddenField('slots',$slots);?>
+                <div title="Slide to change the duration" id='slider'></div>
 
 
 
-            <script>
-                $( function() {
-                    var slotsHiddenfield = $( "#slots" );
-                    var slider = $( "#slider" ).slider({
-                        min: 1,
-                        max: 18,
-                        range: "min",
-                        value:slotsHiddenfield.val(),
-                        slide: function( event, ui ) {
-                            //select[ 0 ].selectedIndex = ui.value - 1;
-                            slotsHiddenfield.val(ui.value);
-                            printappointment();
-                        }
+                <script>
+                    $( function() {
+                        var slotsHiddenfield = $( "#slots" );
+                        var slider = $( "#slider" ).slider({
+                            min: 1,
+                            max: 18,
+                            range: "min",
+                            value:slotsHiddenfield.val(),
+                            slide: function( event, ui ) {
+                                //select[ 0 ].selectedIndex = ui.value - 1;
+                                slotsHiddenfield.val(ui.value);
+                                printappointment();
+                            }
+                        });
+                        $( "#slots" ).on( "change", function() {
+                            slider.slider( "value", this.selectedIndex + 1 );
+
+
+                        });
+                    } );
+
+
+
+
+                    $("#slots").change(function () {
+                        printappointment();
                     });
-                    $( "#slots" ).on( "change", function() {
-                        slider.slider( "value", this.selectedIndex + 1 );
 
-
+                    $("#timeofcall").change(function () {
+                        printappointment();
                     });
-                } );
 
 
-
-
-                $("#slots").change(function () {
                     printappointment();
-                });
-
-                $("#timeofcall").change(function () {
-                    printappointment();
-                });
-
-
-                printappointment();
 
 
 
 
-                function printappointment() {
-                    $("#slider").show();
+                    function printappointment() {
+                        $("#slider").show();
 
-                    slots = $("#slots").val();
-                    calldurationminutes = slots * 30;
-
-                    if (slots < 2) {
-                        $("#callduration").html(calldurationminutes + ' minutes');
-                    }
-                    else {
-                        calldurationhours = slots / 2;
-                        $("#callduration").html(calldurationhours + ' hours');
-                    }
-
-
-                    //appointment-time
-                    timofcall = $("#timeofcall").val();
-
-
-                    if (timofcall.includes("Anytime") ) {
-
-                        $("#slots").val('16');
                         slots = $("#slots").val();
-
                         calldurationminutes = slots * 30;
 
-                        var m = moment("2010-10-20 09:00", "YYYY-MM-DD HH:mm");
-                        m.add(calldurationminutes, 'minutes').minutes(); // 6
-                        endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('09:00 am - '+endtimestring );
-                        calldurationhours = slots / 2;
-                        $("#callduration").html(calldurationhours + ' hours');
-
-                        console.log(calldurationminutes );
-                        $("#slider").hide();
-
-                    }
-
-                    if (timofcall.includes("Morning")) {
-
-                        var m = moment("2010-10-20 09:00", "YYYY-MM-DD HH:mm");
-                        m.add(calldurationminutes, 'minutes').minutes(); // 6
-                        endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('09:00 am - '+endtimestring  );
-                    }
-
-                    if (timofcall.includes("First")) {
-                        var m = moment("2010-10-20 08:00", "YYYY-MM-DD HH:mm");
-                        m.add(calldurationminutes, 'minutes').minutes(); // 6
-                        endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('08:00 am - ' + endtimestring);
-                    }
+                        if (slots < 2) {
+                            $("#callduration").html(calldurationminutes + ' minutes');
+                        }
+                        else {
+                            calldurationhours = slots / 2;
+                            $("#callduration").html(calldurationhours + ' hours');
+                        }
 
 
-                    if (timofcall.includes("Lunch")) {
-                        var m = moment("2010-10-20 11:00", "YYYY-MM-DD HH:mm");
-                        m.add(calldurationminutes, 'minutes').minutes(); // 6
-                        endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('11:00 am - ' + endtimestring);
-                    }
+                        //appointment-time
+                        timofcall = $("#timeofcall").val();
 
 
-                    if (timofcall.includes("Afternoon")) {
-                        var m = moment("2010-10-20 13:00", "YYYY-MM-DD HH:mm");
-                        m.add(calldurationminutes, 'minutes').minutes(); // 6
-                        endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('01:00 pm - ' + endtimestring);
-                    }
+                        if (timofcall.includes("Anytime") ) {
 
-                    if (timofcall.includes("Snacks")) {
-                        var m = moment("2010-10-20 15:00", "YYYY-MM-DD HH:mm");
-                        m.add(calldurationminutes, 'minutes').minutes(); // 6
-                        endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('03:00 pm - ' + endtimestring);
-                    }
+                            $("#slots").val('16');
+                            slots = $("#slots").val();
+
+                            calldurationminutes = slots * 30;
+
+                            var m = moment("2010-10-20 09:00", "YYYY-MM-DD HH:mm");
+                            m.add(calldurationminutes, 'minutes').minutes(); // 6
+                            endtimestring = m.format("hh:mm a");
+                            $("#appointment-time").html('09:00 am - '+endtimestring );
+                            calldurationhours = slots / 2;
+                            $("#callduration").html(calldurationhours + ' hours');
+
+                            console.log(calldurationminutes );
+                            $("#slider").hide();
+
+                        }
+
+                        if (timofcall.includes("Morning")) {
+
+                            var m = moment("2010-10-20 09:00", "YYYY-MM-DD HH:mm");
+                            m.add(calldurationminutes, 'minutes').minutes(); // 6
+                            endtimestring = m.format("hh:mm a");
+                            $("#appointment-time").html('09:00 am - '+endtimestring  );
+                        }
+
+                        if (timofcall.includes("First")) {
+                            var m = moment("2010-10-20 08:00", "YYYY-MM-DD HH:mm");
+                            m.add(calldurationminutes, 'minutes').minutes(); // 6
+                            endtimestring = m.format("hh:mm a");
+                            $("#appointment-time").html('08:00 am - ' + endtimestring);
+                        }
 
 
-
-                    if (timofcall.includes("Evening")) {
-                        var m = moment("2010-10-20 17:00", "YYYY-MM-DD HH:mm");
-                        m.add(calldurationminutes, 'minutes').minutes(); // 6
-                        endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('05:00 pm - ' + endtimestring);
-                    }
-
-
-                    if (timofcall.includes("Last")) {
-                        var m = moment("2010-10-20 18:00", "YYYY-MM-DD HH:mm");
-                        m.add(calldurationminutes, 'minutes').minutes(); // 6
-                        endtimestring = m.format("hh:mm a");
-                        $("#appointment-time").html('06:00 pm - ' + endtimestring);
-                    }
+                        if (timofcall.includes("Lunch")) {
+                            var m = moment("2010-10-20 11:00", "YYYY-MM-DD HH:mm");
+                            m.add(calldurationminutes, 'minutes').minutes(); // 6
+                            endtimestring = m.format("hh:mm a");
+                            $("#appointment-time").html('11:00 am - ' + endtimestring);
+                        }
 
 
-                    if (timofcall.includes("Call")) {
-                        $("#appointment-time").html('');
-                    }
+                        if (timofcall.includes("Afternoon")) {
+                            var m = moment("2010-10-20 13:00", "YYYY-MM-DD HH:mm");
+                            m.add(calldurationminutes, 'minutes').minutes(); // 6
+                            endtimestring = m.format("hh:mm a");
+                            $("#appointment-time").html('01:00 pm - ' + endtimestring);
+                        }
+
+                        if (timofcall.includes("Snacks")) {
+                            var m = moment("2010-10-20 15:00", "YYYY-MM-DD HH:mm");
+                            m.add(calldurationminutes, 'minutes').minutes(); // 6
+                            endtimestring = m.format("hh:mm a");
+                            $("#appointment-time").html('03:00 pm - ' + endtimestring);
+                        }
 
 
 
-                }///end of function printappointment()
+                        if (timofcall.includes("Evening")) {
+                            var m = moment("2010-10-20 17:00", "YYYY-MM-DD HH:mm");
+                            m.add(calldurationminutes, 'minutes').minutes(); // 6
+                            endtimestring = m.format("hh:mm a");
+                            $("#appointment-time").html('05:00 pm - ' + endtimestring);
+                        }
 
 
-            </script>
+                        if (timofcall.includes("Last")) {
+                            var m = moment("2010-10-20 18:00", "YYYY-MM-DD HH:mm");
+                            m.add(calldurationminutes, 'minutes').minutes(); // 6
+                            endtimestring = m.format("hh:mm a");
+                            $("#appointment-time").html('06:00 pm - ' + endtimestring);
+                        }
 
 
-            <br>
+                        if (timofcall.includes("Call")) {
+                            $("#appointment-time").html('');
+                        }
 
-            <?php echo CHtml::textArea('appointment_notes', '', array('placeholder' => 'Additional Notes for call',
-                    'style' => 'width:250px;height:100px;'
 
-                )
-            ); ?>
-        </div>
-    </div><!-- end of class="containerbox engineerbox" -->
 
+                    }///end of function printappointment()
+
+
+                </script>
+
+
+                <br>
+
+                <?php echo CHtml::textArea('appointment_notes', '', array('placeholder' => 'Additional Notes for call',
+                        'style' => 'width:250px;height:100px;'
+
+                    )
+                ); ?>
+            </div>
+
+
+        </div><!-- end of class="containerbox engineerbox" -->
+    <?php endif; ///end of  ($servicecall_id!=0): ?>
 </div><!-- end of Boxframe -->
 
 
@@ -501,7 +514,20 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
                         $diary_customer_postcode = strtoupper($diary_customer_postcode);
                         $diary_customer_postcode = trim($diary_customer_postcode);
                         $visit_start_time_str = date('H:i', $d->visit_start_date);
-                        echo '<small>' . $visit_start_time_str . '</small>&nbsp;&nbsp;' . $d->servicecall->customer->postcode . '<br>';
+                        $visit_end_time_str = date('H:i', $d->visit_end_date);
+
+                        echo '<div style="
+                        margin: 5px;
+                        padding: 5px;
+                            text-align: center;
+                            font-size:14px; font-weight: 600;
+                            letter-spacing:0.2px;
+    border-radius: 13px;
+    border: 4px solid #fff !important;
+">';
+                        echo '<small>' . $visit_start_time_str .'-'.$visit_end_time_str. '</small><br>'  ;
+                        echo '<a  href="index.php?r=servicecall/view&id='.$d->servicecall->id.'" target="_blank">' . $d->servicecall->customer->postcode . '</a><br>';
+                        echo '</div>';
 
                     }///end of foreach ($data as $d)
 
@@ -510,12 +536,14 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
 
                     ?>
 
-                    <button class="themebtn-info" title="Book"
-                            onclick="booktheappointmnet(<?php echo $engineer_id; ?>,  '<?php echo $engineer_name; ?>',  '<?php echo $input_date; ?>')">
-                        <i class="fa fa-wrench" aria-hidden="true"></i>&nbsp;&nbsp;Book
+                    <?php if($servicecall_id!=0): ?>
 
-                    </button>
+                        <button class="themebtn-info" title="Book"
+                                onclick="booktheappointmnet(<?php echo $engineer_id; ?>,  '<?php echo $engineer_name; ?>',  '<?php echo $input_date; ?>')">
+                            <i class="fa fa-wrench" aria-hidden="true"></i>&nbsp;&nbsp;Book
 
+                        </button>
+                    <?php endif; ///end of  ($servicecall_id!=0): ?>
 
                     <?php
 
@@ -623,5 +651,3 @@ $allactiveenggs = Engineer::model()->getallactiveengineersarray();
 
 
 </script>
-
-

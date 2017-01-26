@@ -74,6 +74,11 @@ $this->layout = false;
                 <?php
             }///end of if ($model->enggdiary->visit_start_date)
             ?>
+            <br>
+            <small>
+                <?php echo $model->enggdiary->notes; ?>
+            </small>
+
         </td>
 
         <td align="right" style="font-size:8px;">

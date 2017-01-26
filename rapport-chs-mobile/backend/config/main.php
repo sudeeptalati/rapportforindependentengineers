@@ -42,14 +42,14 @@ return [
             'datetimeFormat' => 'php:d-F-Y H:i:s',
             'timeFormat' => 'php:H:i:s',
         ],
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];

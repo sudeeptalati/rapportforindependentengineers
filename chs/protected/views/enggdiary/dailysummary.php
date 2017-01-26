@@ -23,8 +23,10 @@ echo $engineer->first_name; ?></h2>
     color: white;'> Type</th>
 	<th style='border: 1px solid DARKSEAGREEN; background-color: DARKSEAGREEN;
     color: white;'> Telephone</th>
-	<th style='border: 1px solid DARKSEAGREEN; background-color: DARKSEAGREEN;
+    <th style='border: 1px solid DARKSEAGREEN; background-color: DARKSEAGREEN;
     color: white;'> Product</th>
+    <th style='border: 1px solid DARKSEAGREEN; background-color: DARKSEAGREEN;
+    color: white;'> Fault</th>
 	<th style='border: 1px solid DARKSEAGREEN; background-color: DARKSEAGREEN;
     color: white;'> Spares</th>
 
@@ -64,10 +66,11 @@ echo $engineer->first_name; ?></h2>
 			echo "<td style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->contract->name."</td>";
 			echo "<td style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->customer->mobile;
 			echo "<br> <style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->customer->telephone."</td>";
-			echo "<td style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->product->brand->name." ".$servicecall->product->productType->name."</td>";
-			
-			
-			echo "<td style='border: 1px solid DARKSEAGREEN; '>";
+            echo "<td style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->product->brand->name." ".$servicecall->product->productType->name."</td>";
+            echo "<td style='border: 1px solid DARKSEAGREEN; '> ".$servicecall->fault_description."</td>";
+
+
+        echo "<td style='border: 1px solid DARKSEAGREEN; '>";
 				$sparesModel = SparesUsed::model()->findAllByAttributes(array('servicecall_id'=> $r->servicecall_id));
 				foreach ($sparesModel as $data)
 				{	

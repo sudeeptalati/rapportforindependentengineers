@@ -300,7 +300,7 @@ class CWebApplication extends CApplication
 	 * will be used to create the controller;</li>
 	 * <li>Otherwise, it will search under the {@link controllerPath} to create
 	 * the corresponding controller. For example, if the route is "admin/user/create",
-	 * then the controller will be created using the class file "protected/controllers/admin/UserController.php".</li>
+	 * then the controller will be created using the class file "protected/controllers/admin/ApiController.php".</li>
 	 * </ol>
 	 * @param string $route the route of the request.
 	 * @param CWebModule $owner the module that the new controller will belong to. Defaults to null, meaning the application
